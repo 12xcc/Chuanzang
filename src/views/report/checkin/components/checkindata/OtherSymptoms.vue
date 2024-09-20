@@ -1,0 +1,274 @@
+<template>
+  <div class="container">
+    <el-form
+      :model="form"
+      label-width="180px"
+      class="form-container"
+      ref="form"
+      :rules="rules"
+    >
+      <div class="GeneralSymptoms">
+        <div class="Condition">
+          <div class="title-container">
+            <div class="blue-box"></div>
+            <span class="title-text">症状</span>
+          </div>
+          <el-check-tag
+            :checked="form.HasSuddenOnset"
+            type="primary"
+            @change="toggleTag('HasSuddenOnset')"
+          >
+            突然发病
+          </el-check-tag>
+
+          <el-check-tag
+            :checked="form.HasRapidProgress"
+            type="primary"
+            @change="toggleTag('HasRapidProgress')"
+          >
+            病情进展迅速
+          </el-check-tag>
+
+          <el-check-tag
+            :checked="form.HasPeriodicAttack"
+            type="primary"
+            @change="toggleTag('HasPeriodicAttack')"
+          >
+            周期性发作
+          </el-check-tag>
+
+          <el-check-tag
+            :checked="form.HasForcedPosture"
+            type="primary"
+            @change="toggleTag('HasForcedPosture')"
+          >
+            强迫体位
+          </el-check-tag>
+
+          <el-check-tag
+            :checked="form.HasCalfMusclePain"
+            type="primary"
+            @change="toggleTag('HasCalfMusclePain')"
+          >
+            腓肠肌疼痛
+          </el-check-tag>
+        </div>
+
+        <div class="Condition">
+          <div class="title-container">
+            <div class="blue-box"></div>
+            <span class="title-text">生活情况</span>
+          </div>
+          <el-form-item label="睡眠状况">
+            <el-radio-group v-model="form.SleepQuality">
+              <el-radio :label="'好'">好</el-radio>
+              <el-radio :label="'一般'">一般</el-radio>
+              <el-radio :label="'差'">差</el-radio>
+            </el-radio-group>
+          </el-form-item>
+
+          <el-form-item label="营养状况">
+            <el-radio-group v-model="form.NutritionStatus">
+              <el-radio :label="'好'">好</el-radio>
+              <el-radio :label="'一般'">一般</el-radio>
+              <el-radio :label="'差'">差</el-radio>
+            </el-radio-group>
+          </el-form-item>
+
+          <el-form-item label="工作和生活压力">
+            <el-radio-group v-model="form.WorkLifeStress">
+              <el-radio :label="'大'">大</el-radio>
+              <el-radio :label="'一般'">一般</el-radio>
+              <el-radio :label="'小'">小</el-radio>
+            </el-radio-group>
+          </el-form-item>
+
+          <el-form-item label="自我感觉症状的严重程度">
+            <el-radio-group v-model="form.SymptomSeverity">
+              <el-radio :label="'轻'">轻</el-radio>
+              <el-radio :label="'中'">中</el-radio>
+              <el-radio :label="'重'">重</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </div>
+
+        <div class="Condition">
+          <div class="title-container">
+            <div class="blue-box"></div>
+            <span class="title-text">其他症状</span>
+          </div>
+          <el-check-tag
+            :checked="form.HasOtherSymptoms"
+            type="primary"
+            @change="toggleTag('HasOtherSymptoms')"
+          >
+            其他
+          </el-check-tag>
+
+          <el-form-item
+            v-if="form.HasOtherSymptoms"
+            label=""
+            style="margin-left: -170px; margin-top: 10px"
+          >
+            <el-input
+              v-model="form.OtherSymptomsName"
+              placeholder="请输入其他症状"
+              clearable
+              size="default"
+              style="width: 300px"
+            />
+          </el-form-item>
+        </div>
+      </div>
+    </el-form>
+  </div>
+</template>
+
+<script>
+import { ElMessage } from "element-plus";
+import Dateselection from "@/components/date_selection.vue";
+export default {
+  components: {
+    Dateselection,
+  },
+  data() {
+    return {
+      visible: false, // 控制弹窗显示
+      form: {
+        HasSuddenOnset: false,
+        HasRapidProgress: false,
+        HasPeriodicAttack: false,
+        HasForcedPosture: false,
+        HasCalfMusclePain: false,
+        SleepQuality: "",
+        NutritionStatus: "",
+        WorkLifeStress: "",
+        SymptomSeverity: "",
+        HasOtherSymptoms: false,
+        OtherSymptomsName: "",
+      },
+
+      rules: {},
+    };
+  },
+  methods: {
+    toggleTag(field) {
+      this.form[field] = !this.form[field];
+      if (!this.form.HasOtherSymptoms) {
+        this.form.OtherSymptomsName = "";
+      }
+    },
+    showDrawer(user) {
+      this.form = { ...user };
+      this.visible = true;
+    },
+    handleCancel() {
+      this.visible = false;
+      this.handleReset();
+    },
+    handleSubmit() {
+      console.log("触发");
+      this.$refs.form.validate((valid) => {
+        console.log("Form is valid:", valid);
+        if (valid) {
+          console.log("Form data:", this.form);
+          this.visible = false;
+          ElMessage({
+            message: "提交成功",
+            type: "success",
+          });
+          this.handleReset();
+        } else {
+          console.log("表单验证失败");
+          ElMessage({
+            message: "提交失败",
+            type: "error",
+          });
+          return false;
+        }
+      });
+    },
+
+    handleReset() {
+      this.form = this.getInitialForm();
+      this.message = "";
+    },
+    getInitialForm() {
+      return {
+        HasSuddenOnset: false,
+        HasRapidProgress: false,
+        HasPeriodicAttack: false,
+        HasForcedPosture: false,
+        HasCalfMusclePain: false,
+        SleepQuality: "",
+        NutritionStatus: "",
+        WorkLifeStress: "",
+        SymptomSeverity: "",
+        HasOtherSymptoms: false,
+        OtherSymptomsName: "",
+      };
+    },
+  },
+};
+</script>
+
+
+
+<style scoped>
+.custom-drawer {
+  height: 100%;
+}
+.form-container {
+  margin-top: 10px;
+}
+.title {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 700px;
+  background: #ffffff;
+  padding-bottom: 25px;
+  z-index: 100;
+  border: 3px solid #fafafa;
+}
+.custom-input {
+  margin-bottom: 10px;
+}
+.el-dropdown-link:focus {
+  outline: none;
+}
+.title-container {
+  display: flex;
+  margin-left: 0px;
+  margin-bottom: 20px;
+}
+
+.blue-box {
+  width: 6px;
+  height: 18px;
+  background-color: #285ac8;
+  margin-right: 10px;
+}
+
+.title-text {
+  font-size: 12px;
+  font-weight: bold;
+  color: #4a4a4a;
+}
+.el-check-tag {
+  margin: 10px;
+  font-weight: normal;
+}
+.el-check-tag.is-checked {
+  background-color: #285ac8 !important;
+  color: #fff !important;
+  font-weight: normal;
+}
+.GeneralSymptoms {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+.Condition {
+  margin-top: 20px;
+}
+</style>

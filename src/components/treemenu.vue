@@ -1,0 +1,186 @@
+<template>
+  <el-menu
+    :default-active="activeIndex"
+    active-text-color="#FFFFFF"
+    text-color="#333333"
+    background-color="#FFFFFF"
+    class="custom-menu"
+    @select="handleSelect"
+    unique-opened
+  >
+     <el-sub-menu index="1">
+      <template #title>
+        <img src="../assets/menu_icons/user.svg" alt="" class="menu-icons" />
+        <span>用户管理</span>
+      </template>
+      <el-menu-item index="/user/alluser">
+        <img src="../assets/menu_icons/all-users.svg" alt="" class="menu-icons" />
+        <span>所有用户管理</span>
+      </el-menu-item>
+      <el-menu-item index="/user/password">
+        <img src="../assets/menu_icons/password.svg" alt="" class="menu-icons" />
+        <span>个人密码修改</span>
+      </el-menu-item>
+    </el-sub-menu>
+
+    <el-menu-item index="/work-env">
+      <img src="../assets/menu_icons/work-env.svg" alt="" class="menu-icons" />
+      <span>工作环境管理</span>
+    </el-menu-item>
+
+    <el-sub-menu index="/report">
+      <template #title>
+        <img src="../assets/menu_icons/report.svg" alt="" class="menu-icons" />
+        <span>统计报表</span>
+      </template>
+      <el-menu-item index="/report/check-in">
+        <img src="../assets/menu_icons/checkin.svg" alt="" class="menu-icons" />
+        <span>职工打卡信息</span>
+      </el-menu-item>
+      <el-menu-item index="/report/disease-report">
+        <img src="../assets/menu_icons/virus.svg" alt="" class="menu-icons" />
+        <span>疾病统计报表</span>
+      </el-menu-item>
+      <el-menu-item index="/report/screen">
+        <img src="../assets/menu_icons/screen.svg" alt="" class="menu-icons" />
+        <span>数据大屏</span>
+      </el-menu-item>  
+    </el-sub-menu>
+
+    <el-menu-item index="/diagnosis">
+      <img src="../assets/menu_icons/diagnosis.svg" alt="" class="menu-icons" />
+      <span>诊断信息管理</span>
+    </el-menu-item>
+
+    <el-menu-item index="/check">
+      <img src="../assets/menu_icons/check.svg" alt="" class="menu-icons" />
+      <span>检查信息管理</span>
+    </el-menu-item>
+
+    <el-sub-menu index="/system">
+      <template #title>
+        <img src="../assets/menu_icons/system.svg" alt="" class="menu-icons" />
+        <span>系统管理</span>
+      </template>
+      <el-menu-item index="/system/dis-data">
+        <img src="../assets/menu_icons/disease_data_management.svg" alt="" class="menu-icons" />
+        <span>疾病基础数据管理</span>
+      </el-menu-item>
+      <el-menu-item index="/system/weight">
+        <img src="../assets/menu_icons/weight_management.svg" alt="" class="menu-icons" />
+        <span>权重管理</span>
+      </el-menu-item>
+      <el-menu-item index="/system/auto-weight" @click="handleAuto">
+        <img src="../assets/menu_icons/auto_weight_update.svg" alt="" class="menu-icons" />
+        <span>启动自动权重更新</span>
+      </el-menu-item>
+      <el-menu-item index="/system/expert-AI" @click="handleExAi">
+        <img src="../assets/menu_icons/ExpertorAI_diagnosis_switching.svg" alt="" class="menu-icons" />
+        <span>专家/AI诊断切换</span>
+      </el-menu-item>
+      <el-menu-item index="/system/hospital">
+        <img src="../assets/menu_icons/hospital.svg" alt="" class="menu-icons" />
+        <span>医院基础数据管理</span>
+      </el-menu-item>
+    </el-sub-menu>
+
+    <el-menu-item index="/feedback">
+      <img src="../assets/menu_icons/user_feedback.svg" alt="" class="menu-icons" />
+      <span>用户反馈</span>
+    </el-menu-item>
+  </el-menu>
+</template>
+
+<script>
+import { ref, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useTagsStore } from '@/store/tags';
+
+export default {
+  name: 'Aside',
+  data() {
+    return {
+      activeIndex: this.$route.path
+    };
+  },
+  methods: {
+    handleSelect(key) {
+      this.activeIndex = key;
+      const tag = {
+        path: key,
+        title: this.getTitleByPath(key) // 根据路径获取标签的标题
+      };
+      this.$tagsStore.addTag(tag); // 添加标签
+      this.$router.push(key);
+    },
+    handleAuto() {
+      
+    },
+    handleExAi() {
+      // 专家/AI诊断切换逻辑
+    },
+    getTitleByPath(path) {
+      const menuMap = {
+        '/user/alluser': '所有用户管理',
+        '/user/password': '个人密码修改',
+        '/work-env': '工作环境管理',
+        '/report/check-in': '职工打卡信息',
+        '/report/disease-report': '疾病统计报表',
+        '/report/screen': '数据大屏',
+        '/diagnosis': '诊断信息管理',
+        '/check': '检查信息管理',
+        '/system/dis-data': '疾病基础数据管理',
+        '/system/weight': '权重管理',
+        '/system/auto-weight': '启动自动权重更新',
+        '/system/expert-AI': '专家/AI诊断切换',
+        '/system/hospital': '医院基础数据管理',
+        '/feedback': '用户反馈'
+      };
+      return menuMap[path] || '未知标题';
+    }
+  },
+  created() {
+    this.$tagsStore = useTagsStore();
+    this.$router = useRouter();
+    this.$route = useRoute();
+
+    // 监听路由路径变化以更新活动菜单项
+    this.$watch(() => this.$route.path, (newPath) => {
+      this.activeIndex = newPath;
+    });
+  }
+};
+</script>
+
+
+<style scoped>
+.el-menu {
+  border-right: 1px solid #FFFFFF; 
+  font-size: 18px;
+  width: 210px;
+}
+ul.el-menu.el-menu--vertical {
+  --el-menu-hover-bg-color: #F5F5F5 !important;
+}
+.menu-icons {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  vertical-align: middle;
+  filter: grayscale(100%) brightness(0) invert(0) sepia(1) hue-rotate(0deg) saturate(1000%) brightness(80%);
+  transition: filter 0.3s ease;
+}
+.el-menu-item.is-active {
+  background-color: #FFFFFF !important;
+  color: #285AC8 !important;
+}
+.el-menu-item.is-active .menu-icons {
+  filter: grayscale(0) brightness(0) invert(27%) sepia(85%) saturate(500%) hue-rotate(180deg) brightness(100%);
+}
+.el-menu-item:not(.is-active):hover .menu-icons {
+  filter: grayscale(0) brightness(0) invert(20%) sepia(85%) saturate(300%) hue-rotate(150deg) brightness(90%);
+}
+.el-menu-item:not(.is-active):hover {
+  background-color: #F5F5F5 !important;
+}
+</style>
