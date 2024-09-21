@@ -59,7 +59,7 @@
         <el-button
           type="primary"
           class="custom-button"
-          @click="handleDownload"
+          @click="handleSubmitDiagnosis"
           size="default"
         >提交诊断信息</el-button>
       </el-form-item>
@@ -108,7 +108,7 @@
         <el-table-column prop="DeathDate" label="死亡日期" width="120" />
         <el-table-column fixed="right" label="操作" min-width="260">
           <template #default="scope">
-            <el-button link type="primary" size="large" @click="handleCheck">
+            <el-button link type="primary" size="large" @click="handleCheck(scope.row)">
               查看
             </el-button>
             <el-button link type="primary" size="large">编辑</el-button>
@@ -125,16 +125,19 @@
         @pagination="handlePagination"
       />
     </div>
+
+    <Adddiagnosisdata ref="Adddiagnosisdata" />
   </div>
 </template>
 
 <script>
 import { ref, computed, onMounted } from 'vue';
 import Pagination from '@/components/pagination.vue';
-
+import Adddiagnosisdata from './components/adddiagnosisdata/adddiagnosisdata.vue';
 export default {
   components: {
-    Pagination
+    Pagination,
+    Adddiagnosisdata,
   },
   data() {
     return {
@@ -283,11 +286,10 @@ export default {
     handleExport() {
       console.log('导出功能未实现');
     },
-    handleDownload() {
-      console.log('含检测数据导出功能未实现');
+    handleSubmitDiagnosis(){
     },
-    handleCheck() {
-      console.log('查看功能未实现');
+    handleCheck(row) {
+      this.$refs.Adddiagnosisdata.showDrawer(row);
     }
   }
 };

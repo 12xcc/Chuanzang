@@ -170,7 +170,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style  scoped>
 .container {
   height: 250px;
   width: 600px;
@@ -186,21 +186,24 @@ export default {
   margin-bottom: 20px;
 }
 .title-container {
-  display: flex;
-  margin-left: 0px;
-  margin-bottom: 20px;
-}
-.blue-box {
-  width: 6px;
-  height: 22px;
-  background-color: #285ac8;
-  margin-right: 10px;
-}
-.title-text {
-  font-size: 14px;
-  font-weight: bold;
-  color: #333333;
-}
+    display: flex;
+    margin-left: 0px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  
+  .blue-box {
+    width: 6px;
+    height: 18px;
+    background-color: #285ac8;
+    margin-right: 10px;
+  }
+  
+  .title-text {
+    font-size: 12px;
+    font-weight: bold;
+    color: #4a4a4a;
+  }
 .status {
   margin-bottom: 10px;
   font-size: 14px;

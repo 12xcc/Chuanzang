@@ -367,7 +367,7 @@
         </el-form-item>
 
         <!-- 身高 -->
-        <el-form-item label="身高" prop="Height">
+        <el-form-item label="身高(cm)" prop="Height">
           <el-input
             v-model="form.Height"
             style="width: 200px"
@@ -377,7 +377,7 @@
         </el-form-item>
 
         <!-- 体重 -->
-        <el-form-item label="体重" prop="Weight">
+        <el-form-item label="体重(kg)" prop="Weight">
           <el-input
             v-model="form.Weight"
             style="width: 200px"

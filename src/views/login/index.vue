@@ -1,80 +1,100 @@
 <template>
   <div class="login-wrapper">
     <div class="container">
-    <div class="login-container">
-      <div class="login-title">登录</div>
-      <form @submit.prevent="handleSubmit">
-        <div class="input-group">
-          <label for="username">用户名</label>
-          <input
-            v-model="username"
-            type="text"
-            id="username"
-            placeholder="手机号"
-            maxlength="11"
-            @input="validateAndFormatUsername"
-          />
-          <span v-if="usernameError" class="error-message">{{ usernameError }}</span>
-        </div>
-        <div class="input-group">
-          <label for="password">密码</label>
-          <div class="password-wrapper">
+      <div class="login-container">
+        <div class="login-title">登录</div>
+        <form @submit.prevent="handleSubmit">
+          <div class="input-group">
+            <label for="username">用户名</label>
             <input
-              :type="passwordFieldType"
-              v-model="password"
-              id="password"
-              placeholder="默认为身份证后六位"
-              maxlength="8"
-              @input="validateAndFormatPassword"
+              v-model="username"
+              type="text"
+              id="username"
+              placeholder="手机号"
+              maxlength="11"
+              @input="validateAndFormatUsername"
             />
-            <span class="eye-icon" @click="togglePasswordVisibility">
-              <img :src="passwordFieldType === 'password' ?  passwordClose : passwordOpen">
-            </span>
-
+            <span v-if="usernameError" class="error-message">{{
+              usernameError
+            }}</span>
           </div>
-          <span v-if="passwordError" class="error-message">{{ passwordError }}</span>
-        </div>
-        <button  @click="handleSubmit" type="button" :disabled="isSubmitDisabled">提交</button>
-        <a href="#" @click.prevent="resetPassword">重置密码</a>
-      </form>
+          <div class="input-group">
+            <label for="password">密码</label>
+            <div class="password-wrapper">
+              <input
+                :type="passwordFieldType"
+                v-model="password"
+                id="password"
+                placeholder="默认为身份证后六位"
+                maxlength="8"
+                @input="validateAndFormatPassword"
+              />
+              <span class="eye-icon" @click="togglePasswordVisibility">
+                <img
+                  :src="
+                    passwordFieldType === 'password'
+                      ? passwordClose
+                      : passwordOpen
+                  "
+                />
+              </span>
+            </div>
+            <span v-if="passwordError" class="error-message">{{
+              passwordError
+            }}</span>
+          </div>
+          <button
+            @click="handleSubmit"
+            type="button"
+            :disabled="isSubmitDisabled"
+          >
+            提交
+          </button>
+          <a href="#" @click.prevent="resetPassword">重置密码</a>
+        </form>
+      </div>
+      <div class="title">
+        <div>--- 川藏铁路突发传染病自主判别和现场调查管理系统 ---</div>
+      </div>
     </div>
-           <div class="title">
-    <div>--- 川藏铁路突发传染病自主判别和现场调查管理系统 ---</div>
-  </div>
-    </div>
-  
   </div>
 </template>
 
 <script>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import passwordOpen from '../../assets/password_close.png';
-import passwordClose from '../../assets/password_open.png';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import passwordOpen from "../../assets/password_close.png";
+import passwordClose from "../../assets/password_open.png";
 
 export default {
   setup() {
     const router = useRouter();
-    const username = ref('');
-    const password = ref('');
-    const passwordFieldType = ref('password');
-    const usernameError = ref('');
-    const passwordError = ref('');
+    const username = ref("");
+    const password = ref("");
+    const passwordFieldType = ref("password");
+    const usernameError = ref("");
+    const passwordError = ref("");
 
     const togglePasswordVisibility = () => {
-      passwordFieldType.value = passwordFieldType.value === 'password' ? 'text' : 'password';
+      passwordFieldType.value =
+        passwordFieldType.value === "password" ? "text" : "password";
     };
 
     const handleSubmit = () => {
-      console.log('点击登录');
-      if (username.value && password.value && !usernameError.value && !passwordError.value) {
-        router.push('/user/alluser'); 
+      console.log("点击登录");
+      if (
+        username.value &&
+        password.value &&
+        !usernameError.value &&
+        !passwordError.value
+      ) {
+        router.push("/user/alluser");
       }
     };
 
     const resetPassword = () => {
       password.value = username.value.slice(-6);
-      alert('密码已重置为身份证后六位');
+      alert("密码已重置为身份证后六位");
     };
 
     const validateAndFormatUsername = () => {
@@ -82,9 +102,10 @@ export default {
       if (!phonePattern.test(username.value)) {
         username.value = username.value.slice(0, -1); // 删除最后一个无效字符
       }
-      usernameError.value = username.value.length === 11 && phonePattern.test(username.value)
-        ? ''
-        : '请输入正确的用户名';
+      usernameError.value =
+        username.value.length === 11 && phonePattern.test(username.value)
+          ? ""
+          : "请输入正确的用户名";
     };
 
     const validateAndFormatPassword = () => {
@@ -92,9 +113,10 @@ export default {
       if (!passwordPattern.test(password.value)) {
         password.value = password.value.slice(0, -1); // 删除最后一个无效字符
       }
-      passwordError.value = password.value.length === 6 && passwordPattern.test(password.value)
-        ? ''
-        : '';
+      passwordError.value =
+        password.value.length === 6 && passwordPattern.test(password.value)
+          ? ""
+          : "";
     };
 
     return {
@@ -111,13 +133,14 @@ export default {
       validateAndFormatUsername,
       validateAndFormatPassword,
     };
-  }
+  },
 };
 </script>
 
 <style scoped>
 * {
-  font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif;
+  font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Helvetica Neue", "Arial", sans-serif;
 }
 
 .login-wrapper {
@@ -130,20 +153,20 @@ export default {
 }
 
 .login-wrapper::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('../images/background_login.jpg');
+  background-image: url("../images/background_login.jpg");
   background-size: cover;
   background-position: center;
   z-index: -1;
 }
 
 .login-wrapper::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -152,15 +175,15 @@ export default {
   background-color: rgba(0, 0, 0, 0.3);
   z-index: -1;
 }
-.title{
+.title {
   margin-top: 40px;
   font-size: 20px;
   font-weight: bold;
-  color: #FFFFFF;
-  margin-left: -40px;
+  color: #ffffff;
+  margin-left: -35px;
 }
 .login-container {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;
   width: 300px;
@@ -189,14 +212,15 @@ label {
   display: block;
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"],
+input[type="password"] {
   width: 100%;
   height: 50px;
   line-height: 50px;
   padding: 10px;
-  border: 1px solid #FAFAFA;
+  border: 1px solid #fafafa;
   border-radius: 4px;
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   color: #333333;
   box-sizing: border-box;
   outline: none;
@@ -204,13 +228,13 @@ input[type="text"], input[type="password"] {
 }
 
 input::-webkit-input-placeholder {
-        color: #A6A6A6;
-        font-size: 14px;
+  color: #a6a6a6;
+  font-size: 14px;
 }
 
 input:focus {
-  outline: none; 
-  border: 1px solid #285AC8; 
+  outline: none;
+  border: 1px solid #285ac8;
   /* box-shadow: 1px 10px 20px rgba(56,56,56,0.05); */
 }
 
@@ -226,18 +250,17 @@ input:focus {
   cursor: pointer;
 }
 
-
 button {
   width: 100%;
   height: 50px;
   padding: 10px;
-  background-color: #285AC8;
-  color: #FFFFFF;
+  background-color: #285ac8;
+  color: #ffffff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   margin-top: 10px;
-  box-shadow:0.8px 0.8px 24px 0.8px rgba(40,90,200,0.3);
+  box-shadow: 0.8px 0.8px 24px 0.8px rgba(40, 90, 200, 0.3);
 }
 
 button:hover {
@@ -247,7 +270,7 @@ button:hover {
 a {
   display: block;
   margin-top: 15px;
-  color: #285AC8;
+  color: #285ac8;
   text-decoration: none;
   font-size: 14px;
 }

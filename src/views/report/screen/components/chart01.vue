@@ -92,31 +92,31 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
+<style  scoped>
 .container {
   margin-top: 30px;
   width: 100%;
   height: auto;
 }
-
 .title-container {
-  margin: 10px;
-  display: flex;
-}
-
-.blue-box {
-  width: 6px;
-  height: 22px;
-  background-color: #285AC8;
-  margin-right: 10px;
-}
-
-.title-text {
-  font-size: 16px;
-  font-weight: bold;
-  color: #333333;
-}
-
+    display: flex;
+    margin-left: 0px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  
+  .blue-box {
+    width: 6px;
+    height: 18px;
+    background-color: #285ac8;
+    margin-right: 10px;
+  }
+  
+  .title-text {
+    font-size: 12px;
+    font-weight: bold;
+    color: #4a4a4a;
+  }
 .chart-container {
   width: 320px;
   height: 200px;

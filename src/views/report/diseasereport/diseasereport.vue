@@ -16,7 +16,7 @@
       </span>
     </div>
     <div v-if="radio === 5" class="date-selection-container">
-      <DateSelection />
+      <DateSelection v-model="customDateRange" />
     </div>
 
     <div class="title-container">
@@ -64,18 +64,19 @@
         </el-checkbox-group>
       </span>
     </div>
-    <LineChart :DiseaseType="DiseaseType" :TimePeriod="radio" />
+    <LineChart  :DiseaseType="DiseaseType" :TimePeriod="radio" :customDateRange="customDateRange" />
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import DateSelection from "@/components/date_selection.vue";
+import DateSelection from "@/components/linedate.vue";
 import LineChart from './components/LineChart.vue'; 
 
 const radio = ref(1); // 默认选择当天
 const checkList = ref(["自动诊断疾病数据"]);
 const DiseaseType = ref([]);
+const customDateRange = ref([]); // 自定义日期范围
 </script>
 
 <style scoped>

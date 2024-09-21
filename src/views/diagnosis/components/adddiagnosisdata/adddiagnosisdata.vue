@@ -9,7 +9,7 @@
   >
     <div class="container">
       <div class="title">
-        <h3>职工打卡信息详情</h3>
+        <h3>诊断信息详情</h3>
         <div class="footer">
           <el-button @click="handleCancel">取消</el-button>
           <el-button @click="handleReset">重置</el-button>

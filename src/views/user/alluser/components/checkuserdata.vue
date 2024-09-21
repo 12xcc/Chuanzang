@@ -130,7 +130,7 @@
           style="display: flex; align-items: center"
           prop="WorkStart"
         >
-          <div style="flex: 1;margin-left:-220px">
+          <div style="flex: 1;margin-left:-250px">
              <Dateselection v-model="form.WorkStart" />
           </div>
         </el-form-item>
@@ -373,7 +373,7 @@
         </el-form-item>
 
         <!-- 身高 -->
-        <el-form-item label="身高" prop="Height">
+        <el-form-item label="身高(cm)" prop="Height">
           <el-input
             v-model="form.Height"
             style="width: 200px"
@@ -383,7 +383,7 @@
         </el-form-item>
 
         <!-- 体重 -->
-        <el-form-item label="体重" prop="Weight">
+        <el-form-item label="体重(kg)" prop="Weight">
           <el-input
             v-model="form.Weight"
             style="width: 200px"
@@ -656,7 +656,7 @@ export default {
   right: 0;
   width: 700px;
   background: #ffffff;
-  padding: 3px;
+  padding-bottom: 20px;
   z-index: 100;
   border: 3px solid #fafafa;
 }

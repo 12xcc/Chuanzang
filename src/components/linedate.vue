@@ -9,11 +9,11 @@
         format="YYYY-MM-DD"
         value-format="YYYY-MM-DD HH:ss:mm"
         @change="handleChange"
+        :picker-options="pickerOptions"
       />
     </div>
   </div>
 </template>
-
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
 
@@ -22,17 +22,21 @@ const props = defineProps<{ modelValue: any }>()
 const emit = defineEmits<{ (event: 'update:modelValue', value: any): void }>()
 const internalValue = ref(props.modelValue)
 
-// 监听 internalValue 的变化并发射事件更新父组件数据
+const pickerOptions = {
+  disabledDate(time) {
+    const today = new Date();
+    return time.getTime() < Date.now() - 24 * 60 * 60 * 1000 || time.getTime() > today.getTime() + 7 * 24 * 60 * 60 * 1000;
+  },
+}
+
 watch(internalValue, (newValue) => {
   emit('update:modelValue', newValue)
 })
 
 function handleChange(value: any) {
-  // 触发输入事件以更新父组件
   emit('update:modelValue', value)
 }
 </script>
-
 <style scoped>
 .demo-datetime-picker {
   display: inline;

@@ -169,7 +169,7 @@ export default {
 
 
 
-<style scoped>
+<style  scoped>
 .custom-drawer {
   height: 100%;
 }
@@ -211,24 +211,7 @@ h3 {
   margin-left: -60px;
 }
 
-.title-container {
-  display: flex;
-  margin-left: 0px;
-  margin-bottom: 20px;
-}
 
-.blue-box {
-  width: 6px;
-  height: 22px;
-  background-color: #285ac8;
-  margin-right: 10px;
-}
-
-.title-text {
-  font-size: 14px;
-  font-weight: bold;
-  color: #4a4a4a;
-}
 .BaseInfo {
   margin-top: 30px;
   margin-bottom: 30px;
@@ -242,4 +225,23 @@ p {
   color: #285ac8;
   font-weight: bold;
 }
+.title-container {
+    display: flex;
+    margin-left: 0px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  
+  .blue-box {
+    width: 6px;
+    height: 18px;
+    background-color: #285ac8;
+    margin-right: 10px;
+  }
+  
+  .title-text {
+    font-size: 12px;
+    font-weight: bold;
+    color: #4a4a4a;
+  }
 </style>

@@ -11,6 +11,7 @@ import 'element-plus/theme-chalk/src/index.scss';  // 确保引入的是 SCSS �
 import './styles/index.scss';  // 引入自定义样式
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import '@/styles/global.scss';
+import '@/styles/NextContainer.css';
 
 const app = createApp(App)
 

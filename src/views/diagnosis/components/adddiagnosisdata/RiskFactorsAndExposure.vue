@@ -614,11 +614,9 @@
 <script>
 import { ElMessage } from "element-plus";
 import Dateselection from "@/components/date.vue";
-import Adduserdialog from "../../../../user/alluser/components/adduserdialog.vue";
 export default {
   components: {
     Dateselection,
-    Adduserdialog,
   },
   data() {
     return {
