@@ -99,23 +99,29 @@
 
         <!-- 民族 -->
         <el-form-item label="民族" prop="Ethnicity">
-          <el-radio-group v-model="form.Ethnicity">
+          <el-input  v-model="form.Ethnicity"  style="width: 200px">
+
+            </el-input>
+          <!-- <el-radio-group v-model="form.Ethnicity">
             <el-radio value="汉族">汉族</el-radio>
             <el-radio value="藏族">藏族</el-radio>
             <el-radio value="彝族">彝族</el-radio>
             <el-radio value="其他少数民族">其他少数民族</el-radio>
-          </el-radio-group>
+          </el-radio-group> -->
         </el-form-item>
 
         <!-- 受教育程度 -->
         <el-form-item label="受教育程度" prop="EducationLevel">
-          <el-radio-group v-model="form.EducationLevel">
+          <el-input  v-model="form.EducationLevel" style="width: 200px">
+
+            </el-input>
+          <!-- <el-radio-group v-model="form.EducationLevel">
             <el-radio value="小学及以下">小学及以下</el-radio>
             <el-radio value="初中">初中</el-radio>
             <el-radio value="中专/高中">中专/高中</el-radio>
             <el-radio value="大专/本科">大专/本科</el-radio>
             <el-radio value="硕士及以上">硕士及以上</el-radio>
-          </el-radio-group>
+          </el-radio-group> -->
         </el-form-item>
 
         <!-- 来高原工作时间 -->
@@ -484,142 +490,6 @@ export default {
       },
 
       rules: {
-        Name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        Gender: [{ required: true, message: "请选择性别", trigger: "change" }],
-        IDNumber: [
-          { required: true, message: "请输入身份证号", trigger: "blur" },
-          {
-            pattern: /^[0-9]{17}[0-9Xx]$/,
-            message: "身份证号格式不正确",
-            trigger: "blur",
-          },
-        ],
-        Age: [
-          { required: true, message: "请输入年龄", trigger: "blur" },
-          { pattern: /^[0-9]+$/, message: "年龄必须为数字", trigger: "blur" },
-        ],
-        Ethnicity: [
-          {required: true, message: "请选择民族", trigger: "change"},
-        ],
-        EducationLevel: [
-          {required: true, message: "请选择受教育程度", trigger: "change"},
-        ],
-        WorkStart: [
-          {required: true, message: "请选择来高原工作时间", trigger: "blur"},
-        ],
-        Department: [
-          {required: true, message: "请选择部门/工种", trigger: "change"},
-        ],
-        SpecificOccupation: [
-          {required: true, message: "请选择是否为特定职业", trigger: "change"},
-        ],
-        PhoneNumber: [
-          { required: true, message: "请输入联系电话", trigger: "blur" },
-          {
-            pattern: /^1[3-9]\d{9}$/,
-            message: "联系电话格式不正确",
-            trigger: "blur",
-          },
-        ],
-        OtherPhoneNumber: [
-          { required: false, message: "请输入其他联系电话", trigger: "blur" },
-          {
-            pattern: /^1[3-9]\d{9}$/,
-            message: "联系电话格式不正确",
-            trigger: "blur",
-          },
-        ],
-        EmergencyContactName: [
-          { required: true, message: "请输入紧急联系人姓名", trigger: "blur" },
-        ],
-        EmergencyContactPhoneNumber: [
-          { required: true, message: "请输入紧急联系人电话", trigger: "blur" },
-          {
-            pattern: /^1[3-9]\d{9}$/,
-            message: "紧急联系人电话格式不正确",
-            trigger: "blur",
-          },
-        ],
-        EmergencyContactRelation: [
-          {
-            required: true,
-            message: "请输入与紧急联系人的关系",
-            trigger: "blur",
-          },
-        ],
-        HasMedicalHistory: [
-          {
-            required: true,
-            message: "请选择是否有既往病史",
-            trigger: "change",
-          },
-        ],
-        IsPregnant: [
-          { required: false, message: "请选择是否为孕妇", trigger: "change" },
-        ],
-        PregnancyWeeks: [
-          { required: false, message: "请输入孕周", trigger: "blur" },
-          { pattern: /^[0-9]+$/, message: "孕周必须为数字", trigger: "blur" },
-        ],
-        Height: [
-          { required: false, message: "请输入身高", trigger: "blur" },
-          { pattern: /^[0-9]+$/, message: "身高必须为数字", trigger: "blur" },
-        ],
-        Weight: [
-          { required: false, message: "请输入体重", trigger: "blur" },
-          { pattern: /^[0-9]+$/, message: "体重必须为数字", trigger: "blur" },
-        ],
-        OtherCancerName: [
-          {
-            required: false,
-            message: "请输入其他恶性肿瘤名称",
-            trigger: "blur",
-          },
-        ],
-        OtherDiseasesName: [
-          { required: false, message: "请输入其他疾病名称", trigger: "blur" },
-        ],
-        SmokingHistory: [
-          { required: true, message: "请选择吸烟史", trigger: "blur" },
-        ],
-        AlcoholHistory: [
-          { required: true, message: "请选择饮酒史", trigger: "blur" },
-        ],
-        IsVaccinatedForCOVID: [
-          {
-            required: false,
-            message: "请选择是否接种过 COVID-19 疫苗",
-            trigger: "change",
-          },
-        ],
-        IsVaccinatedForFlu: [
-          {
-            required: false,
-            message: "请选择是否接种过流感疫苗",
-            trigger: "change",
-          },
-        ],
-        IsVaccinatedForPlague: [
-          {
-            required: false,
-            message: "请选择是否接种过鼠疫疫苗",
-            trigger: "change",
-          },
-        ],
-        IsVaccinatedForBCG: [
-          {
-            required: false,
-            message: "请选择是否接种过 BCG 疫苗",
-            trigger: "change",
-          },
-        ],
-        IsVaccinatedForHepatitis: [
-          {
-            required: false,
-            message: "请选择是否接种过乙肝疫苗",
-            trigger: "change",
-          },
-        ],
       },
     };
   },

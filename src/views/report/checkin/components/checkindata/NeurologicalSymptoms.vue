@@ -219,6 +219,10 @@ export default {
         HasHearingLoss: false
       };
     },
+
+    getData() {
+      return this.form; // 返回当前组件的表单数据
+    },
   },
 };
 </script>

@@ -8,8 +8,8 @@
       <el-form :model="form" label-width="70px">
         <el-form-item label="诊断方式">
           <el-radio-group v-model="form.diagnosisMethod">
-            <el-radio label="expert">专家诊断</el-radio>
-            <el-radio label="ai">AI诊断</el-radio>
+            <el-radio value="expert">专家诊断</el-radio>
+            <el-radio value="ai">AI诊断</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>

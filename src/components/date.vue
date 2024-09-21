@@ -5,7 +5,8 @@
         v-model="internalValue"
         type="datetime"
         placeholder="选择日期"
-        format="YYYY/MM/DD HH:mm:ss"
+        format="YYYY-MM-DD"
+        style="width:200px"
       />
     </div>
   </div>
@@ -47,7 +48,7 @@ watch(internalValue, (newValue) => {
   flex-wrap: wrap;
 }
 .demo-datetime-picker .block {
-  padding: 30px 0;
+  /* padding: 30px 0; */
   text-align: center;
   border-right: solid 1px var(--el-border-color);
   flex: 1;

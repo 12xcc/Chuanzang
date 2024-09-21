@@ -13,7 +13,7 @@
       </div>
       <el-form
         :model="form"
-        label-width="150px"
+        label-width="166px"
         class="form-container"
         ref="form"
         :rules="rules"
@@ -83,7 +83,7 @@
             </el-form-item>
           </div>
 
-          <el-form-item label="宿舍面积(平方米)" prop="DormitoryArea">
+          <el-form-item label="宿舍面积(㎡)" prop="DormitoryArea">
             <el-input
               v-model="form.DormitoryArea"
               style="width: 200px"
@@ -92,7 +92,7 @@
               @blur="$refs.form.validateField('DormitoryArea')"
             ></el-input>
           </el-form-item>
-          <el-form-item label="宿舍窗户可打开面积" prop=" WindowOpenArea">
+          <el-form-item label="宿舍窗户可打开面积(㎡)" prop=" WindowOpenArea">
             <el-input
               v-model="form.WindowOpenArea"
               style="width: 200px"

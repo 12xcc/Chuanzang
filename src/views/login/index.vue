@@ -34,7 +34,7 @@
           </div>
           <span v-if="passwordError" class="error-message">{{ passwordError }}</span>
         </div>
-        <button  @click="handleSubmit" type="submit" :disabled="isSubmitDisabled">提交</button>
+        <button  @click="handleSubmit" type="button" :disabled="isSubmitDisabled">提交</button>
         <a href="#" @click.prevent="resetPassword">重置密码</a>
       </form>
     </div>

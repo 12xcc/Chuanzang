@@ -78,17 +78,6 @@ export default {
   methods: {
     toggleTag(field) {
       this.form[field] = !this.form[field];
-      if (!this.form.Dehydration) {
-        this.form.Dehydration = "";
-      }
-      if (!this.form.HasLymphNodeSwelling) {
-        this.form.HasLymphNodeSwellingGroin = false;
-        this.form.HasLymphNodeSwellingArmpit = false;
-        this.form.HasLymphNodeSwellingSubclavian = false;
-        this.form.HasLymphNodeSwellingNeck = false;
-        this.form.HasLymphNodeSwellingElbow = false;
-        this.form.HasLymphNodeSwellingPopliteal = false;
-      }
     },
     showDrawer(user) {
       this.form = { ...user };
@@ -132,6 +121,9 @@ export default {
         HasPalpitation: false,
         HasLowBloodPressure: false,
       };
+    },
+     getData() {
+      return this.form; // 返回当前组件的表单数据
     },
   },
 };

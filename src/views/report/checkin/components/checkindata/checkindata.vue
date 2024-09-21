@@ -2,7 +2,7 @@
   <el-drawer
     :model-value="visible"
     direction="rtl"
-    size="700px"
+    size="800px"
     :with-header="false"
     custom-class="custom-drawer"
     @close="handleCancel"
@@ -29,17 +29,18 @@
             <span class="title-text">个人基本信息</span>
           </div>
           <div class="BaseInfoDetail">
-            <!-- 姓名 -->
+            <!------------------------------- 姓名 --------------------------------------->
             <el-form-item label="姓名" prop="Name">
               <el-input
                 v-model="form.Name"
                 style="width: 200px"
                 placeholder="请输入姓名"
                 @blur="$refs.form.validateField('Name')"
+                clearable
               ></el-input>
             </el-form-item>
 
-            <!-- 性别 -->
+            <!------------------------------- 性别 ----------------------------------------->
             <el-form-item label="性别" prop="Gender">
               <el-radio-group v-model="form.Gender">
                 <el-radio value="男">男</el-radio>
@@ -53,6 +54,7 @@
                 v-model="form.Age"
                 style="width: 200px"
                 placeholder="根据身份证号生成"
+                clearable
               ></el-input>
             </el-form-item>
 
@@ -88,11 +90,14 @@
                 style="width: 200px"
                 @blur="$refs.form.validateField('CheckInDate')"
                 disabled
+                clearable
               ></el-input>
             </el-form-item>
           </div>
         </div>
 
+
+        <!------------------------------------ 症状标签 ------------------------------->
         <div class="select flex gap-2 mb-4">
           <div class="title-container">
             <div class="blue-box"></div>
@@ -165,41 +170,41 @@
 
         <!-- 根据选择的标签显示不同内容 -->
         <div>
-          <div v-if="selectedTag === 'GeneralSymptoms'">
+          <div v-show="selectedTag === 'GeneralSymptoms'">
             <p>查看全身症状</p>
             <GeneralSymptoms ref="GeneralSymptoms" />
           </div>
 
-          <div v-if="selectedTag === 'RespiratorySymptoms'">
+          <div v-show="selectedTag === 'RespiratorySymptoms'">
             <p>查看呼吸系统症状</p>
             <RespiratorySymptoms ref="RespiratorySymptoms" />
           </div>
 
-          <div v-if="selectedTag === 'DigestiveSymptoms'">
+          <div v-show="selectedTag === 'DigestiveSymptoms'">
             <p>查看消化系统症状</p>
           </div>
 
-          <div v-if="selectedTag === 'CirculatorySymptoms'">
+          <div v-show="selectedTag === 'CirculatorySymptoms'">
             <p>查看循环系统症状</p>
             <CirculatorySymptoms ref="CirculatorySymptoms" />
           </div>
 
-          <div v-if="selectedTag === 'NeurologicalSymptoms'">
+          <div v-show="selectedTag === 'NeurologicalSymptoms'">
             <p>查看神经系统症状</p>
             <NeurologicalSymptoms ref="NeurologicalSymptoms"/>
           </div>
 
-          <div v-if="selectedTag === 'LocalSymptoms'">
+          <div v-show="selectedTag === 'LocalSymptoms'">
             <p>查看局部症状</p>
             <DiagnosisLocalSymptoms ref="DiagnosisLocalSymptoms"/>
           </div>
 
-          <div v-if="selectedTag === 'OtherSymptoms'">
+          <div v-show="selectedTag === 'OtherSymptoms'">
             <p>查看其他症状</p>
             <OtherSymptoms ref="OtherSymptoms"/>
           </div>
 
-          <div v-if="selectedTag === 'RiskFactorsAndExposure'">
+          <div v-show="selectedTag === 'RiskFactorsAndExposure'">
             <p>查看危险因素与暴露史</p>
             <RiskFactorsAndExposure ref="RiskFactorsAndExposure"/>
           </div>
@@ -219,6 +224,7 @@ import NeurologicalSymptoms from './NeurologicalSymptoms.vue';
 import DiagnosisLocalSymptoms from './DiagnosisLocalSymptoms.vue';
 import OtherSymptoms from './OtherSymptoms.vue';
 import RiskFactorsAndExposure from './RiskFactorsAndExposure.vue';
+
 export default {
   components: {
     Dateselection,
@@ -238,6 +244,7 @@ export default {
       rules: {},
     };
   },
+  
   methods: {
     toggleTag(field) {
       this.form[field] = !this.form[field];
@@ -268,14 +275,37 @@ export default {
       if (this.$refs.DiagnosisLocalSymptoms) {
         this.$refs.DiagnosisLocalSymptoms.handleReset();
       }
+      if (this.$refs.OtherSymptoms) {
+        this.$refs.OtherSymptoms.handleReset();
+      }
+      if (this.$refs.RiskFactorsAndExposure) {
+        this.$refs.RiskFactorsAndExposure.handleReset();
+      }
     },
+
+    
     handleSubmit() {
       console.log("触发");
       if (this.$refs.form) {
         this.$refs.form.validate((valid) => {
           console.log("Form is valid:", valid);
           if (valid) {
-            console.log("Form data:", this.form);
+            console.log("个人基本信息:", this.form);
+            const GeneralSymptomsData = this.$refs.GeneralSymptoms.getData();
+            const RespiratorySymptomsData =this.$refs.RespiratorySymptoms.getData();
+            const NeurologicalSymptomsData = this.$refs.NeurologicalSymptoms.getData();
+            const CirculatorySymptomsData = this.$refs.CirculatorySymptoms.getData();
+            const DiagnosisLocalSymptomsData = this.$refs.DiagnosisLocalSymptoms.getData();
+            const OtherSymptomsData = this.$refs.OtherSymptoms.getData();
+            const RiskFactorsAndExposureData = this.$refs.RiskFactorsAndExposure.getData();
+            console.log("全身症状:",  GeneralSymptomsData);
+            console.log("呼吸系统症状:",RespiratorySymptomsData);         
+            console.log("循环系统症状:", CirculatorySymptomsData);
+            console.log("神经系统症状:" ,NeurologicalSymptomsData);
+            console.log("局部症状:", DiagnosisLocalSymptomsData);
+            console.log("其他:",OtherSymptomsData);
+            console.log("危险因素与暴露史:", RiskFactorsAndExposureData);
+
             this.visible = false;
             ElMessage({
               message: "提交成功",
@@ -303,6 +333,7 @@ export default {
     },
     getInitialForm() {
       return {
+
       };
     },
   },
@@ -323,7 +354,7 @@ export default {
   position: fixed;
   top: 0;
   right: 0;
-  width: 700px;
+  width: 800px;
   background: #ffffff;
   padding: 3px;
   z-index: 100;

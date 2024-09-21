@@ -26,8 +26,8 @@
       </div>
       <span class="contents">
         <el-checkbox-group v-model="checkList">
-          <el-checkbox label="自动诊断疾病数据" value="自动诊断疾病数据" />
-          <el-checkbox label="医院诊断疾病统计" value="医院诊断疾病统计" />
+           <el-checkbox value="自动诊断疾病数据">自动诊断疾病数据</el-checkbox>
+    <el-checkbox value="医院诊断疾病统计">医院诊断疾病统计</el-checkbox>
         </el-checkbox-group>
       </span>
     </div>

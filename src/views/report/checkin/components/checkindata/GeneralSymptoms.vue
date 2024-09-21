@@ -217,9 +217,9 @@
               style="margin-left: 10px; margin-top: 8px"
             >
               <el-radio-group v-model="form.Dehydration">
-                <el-radio :label="'重度'">重度</el-radio>
-                <el-radio :label="'中度'">中度</el-radio>
-                <el-radio :label="'轻度'">轻度</el-radio>
+                <el-radio :value="'重度'">重度</el-radio>
+                <el-radio :value="'中度'">中度</el-radio>
+                <el-radio :value="'轻度'">轻度</el-radio>
               </el-radio-group>
             </div>
           </div>
@@ -233,7 +233,7 @@
             瘙痒性斑丘疹/水疱
           </el-check-tag>
 
-          <div v-if="form.HasItchyRash">
+          <div v-if="form.HasItchyRash" @change="handleHasItchyRashChange">
             <el-check-tag
               :checked="form.ItchyRashOnFingers"
               type="primary"
@@ -382,9 +382,11 @@ export default {
   methods: {
     toggleTag(field) {
       this.form[field] = !this.form[field];
+      // 失水未被选中时，其子选项清空
       if (field === "HasDehydration" && !this.form[field]) {
         this.form.Dehydration = "";
       }
+      // 淋巴结肿大未被选中时，其子选项全部清空
       if (field === "HasLymphNodeSwelling" && !this.form[field]) {
         this.form.HasLymphNodeSwellingGroin = false;
         this.form.HasLymphNodeSwellingArmpit = false;
@@ -392,6 +394,16 @@ export default {
         this.form.HasLymphNodeSwellingNeck = false;
         this.form.HasLymphNodeSwellingElbow = false;
         this.form.HasLymphNodeSwellingPopliteal = false;
+      }
+      // 瘙痒性斑丘疹/水疱未被选中时，其子选项全部清空
+      if(field === "HasItchyRash" && !this.form[field] ){
+         this.form.ItchyRashOnFingers = false;
+        this.form.ItchyRashOnBackOfHands = false;
+        this.form.ItchyRashOnUpperLimbs = false;
+        this.form.ItchyRashOnLowerLimbs = false;
+        this.form.ItchyRashOnFeet = false;
+        this.form.ItchyRashOnFace = false;
+        this.form.ItchyRashOnOther = false;
       }
     },
     showDrawer(user) {
@@ -447,6 +459,7 @@ export default {
       this.form.HasOtherCancer = false;
       this.form.OtherCancerName = "";
     },
+
     handleReset() {
       this.form = this.getInitialForm();
       this.message = "";
@@ -491,6 +504,9 @@ export default {
         HasWeightLoss: false,
         HasExhaustion: false,
       };
+    },
+    getData() {
+      return this.form; // 返回当前组件的表单数据
     },
   },
 };

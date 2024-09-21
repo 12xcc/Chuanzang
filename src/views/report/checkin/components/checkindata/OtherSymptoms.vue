@@ -59,35 +59,35 @@
             <div class="blue-box"></div>
             <span class="title-text">生活情况</span>
           </div>
-          <el-form-item label="睡眠状况">
+          <el-form-item label="睡眠状况" label-position="left">
             <el-radio-group v-model="form.SleepQuality">
-              <el-radio :label="'好'">好</el-radio>
-              <el-radio :label="'一般'">一般</el-radio>
-              <el-radio :label="'差'">差</el-radio>
+              <el-radio :value="'好'">好</el-radio>
+              <el-radio :value="'一般'">一般</el-radio>
+              <el-radio :value="'差'">差</el-radio>
             </el-radio-group>
           </el-form-item>
 
-          <el-form-item label="营养状况">
+          <el-form-item label="营养状况" label-position="left">
             <el-radio-group v-model="form.NutritionStatus">
-              <el-radio :label="'好'">好</el-radio>
-              <el-radio :label="'一般'">一般</el-radio>
-              <el-radio :label="'差'">差</el-radio>
+              <el-radio :value="'好'">好</el-radio>
+              <el-radio :value="'一般'">一般</el-radio>
+              <el-radio :value="'差'">差</el-radio>
             </el-radio-group>
           </el-form-item>
 
-          <el-form-item label="工作和生活压力">
+          <el-form-item label="工作和生活压力" label-position="left">
             <el-radio-group v-model="form.WorkLifeStress">
-              <el-radio :label="'大'">大</el-radio>
-              <el-radio :label="'一般'">一般</el-radio>
-              <el-radio :label="'小'">小</el-radio>
+              <el-radio :value="'大'">大</el-radio>
+              <el-radio :value="'一般'">一般</el-radio>
+              <el-radio :value="'小'">小</el-radio>
             </el-radio-group>
           </el-form-item>
 
-          <el-form-item label="自我感觉症状的严重程度">
+          <el-form-item label="自我感觉症状的严重程度" label-position="left">
             <el-radio-group v-model="form.SymptomSeverity">
-              <el-radio :label="'轻'">轻</el-radio>
-              <el-radio :label="'中'">中</el-radio>
-              <el-radio :label="'重'">重</el-radio>
+              <el-radio :value="'轻'">轻</el-radio>
+              <el-radio :value="'中'">中</el-radio>
+              <el-radio :value="'重'">重</el-radio>
             </el-radio-group>
           </el-form-item>
         </div>
@@ -208,6 +208,9 @@ export default {
         OtherSymptomsName: "",
       };
     },
+    getData() {
+      return this.form; // 返回当前组件的表单数据
+    },
   },
 };
 </script>
@@ -249,6 +252,11 @@ export default {
   background-color: #285ac8;
   margin-right: 10px;
 }
+.el-form-item {
+  display: flex;
+  margin-left: 20px;
+  /* flex-direction: column; */
+}
 
 .title-text {
   font-size: 12px;
@@ -270,5 +278,6 @@ export default {
 }
 .Condition {
   margin-top: 20px;
+  
 }
 </style>

@@ -2,329 +2,401 @@
   <div class="container">
     <el-form
       :model="form"
-      label-width="300px"
+      label-width="360px"
       class="form-container"
       ref="form"
       :rules="rules"
     >
       <div class="GeneralSymptoms">
+        <!------------------------------- 接触情况 ---------------------------------->
         <div class="Condition">
           <div class="title-container">
             <div class="blue-box"></div>
-            <span class="title-text">发热情况</span>
+            <span class="title-text">接触情况</span>
           </div>
-          <el-form-item label="是否接触过发热或有呼吸道症状的患者：" label-position="left" style="margin-left: 15px;">
+
+          <el-form-item
+            label="是否接触过发热或有呼吸道症状的患者"
+            label-position="left"
+            style="margin-left: 15px"
+          >
             <div>
               <el-radio-group v-model="form.ContactWithFeverPatient">
-                <el-radio :label="'是'">是</el-radio>
-                <el-radio :label="'否'">否</el-radio>
-                <el-radio :label="'不清楚'">不清楚</el-radio>
+                <el-radio :value="'是'">是</el-radio>
+                <el-radio :value="'否'">否</el-radio>
+                <el-radio :value="'不清楚'">不清楚</el-radio>
               </el-radio-group>
             </div>
           </el-form-item>
 
-          <el-form-item label="是否接触过有腹泻症状的患者：" label-position="left" style="margin-left: 15px;">
+          <el-form-item
+            label="是否接触过有腹泻症状的患者"
+            label-position="left"
+            style="margin-left: 15px"
+          >
             <div>
               <el-radio-group v-model="form.ContactWithDiarrheaPatient">
-                <el-radio :label="'是'">是</el-radio>
-                <el-radio :label="'否'">否</el-radio>
-                <el-radio :label="'不清楚'">不清楚</el-radio>
+                <el-radio :value="'是'">是</el-radio>
+                <el-radio :value="'否'">否</el-radio>
+                <el-radio :value="'不清楚'">不清楚</el-radio>
               </el-radio-group>
             </div>
           </el-form-item>
 
-          <el-form-item label="是否接触过有皮疹的患者：" label-position="left" style="margin-left: 15px;">
+          <el-form-item
+            label="是否接触过有皮疹的患者"
+            label-position="left"
+            style="margin-left: 15px"
+          >
             <div>
               <el-radio-group v-model="form.ContactWithRashPatient">
-                <el-radio :label="'是'">是</el-radio>
-                <el-radio :label="'否'">否</el-radio>
-                <el-radio :label="'不清楚'">不清楚</el-radio>
+                <el-radio :value="'是'">是</el-radio>
+                <el-radio :value="'否'">否</el-radio>
+                <el-radio :value="'不清楚'">不清楚</el-radio>
               </el-radio-group>
             </div>
           </el-form-item>
 
-          <el-form-item label="是否接触过诊断为结核病的患者：" label-position="left" style="margin-left: 15px;">
+          <el-form-item
+            label="是否接触过诊断为结核病的患者"
+            label-position="left"
+            style="margin-left: 15px"
+          >
             <div>
               <el-radio-group v-model="form.ContactWithTuberculosisPatient">
-                <el-radio :label="'是'">是</el-radio>
-                <el-radio :label="'否'">否</el-radio>
-                <el-radio :label="'不清楚'">不清楚</el-radio>
+                <el-radio :value="'是'">是</el-radio>
+                <el-radio :value="'否'">否</el-radio>
+                <el-radio :value="'不清楚'">不清楚</el-radio>
               </el-radio-group>
             </div>
+          </el-form-item>
+
+          <!------------------------------- 就餐情况 ---------------------------------->
+          <div class="Condition">
+            <div class="title-container">
+              <div class="blue-box"></div>
+              <span class="title-text">就餐情况(五天内)</span>
+            </div>
+
+            <el-form-item label="" style="display: flex; margin-left: -340px">
+              <el-checkbox v-model="form.IsGroupDining" value="集体堂食就餐"
+                >集体堂食就餐</el-checkbox
+              >
+              <el-checkbox v-model="form.IsDiningOut" value="外出就餐"
+                >外出就餐</el-checkbox
+              >
+              <el-checkbox v-model="form.IsDiningUnclear" value="不清楚"
+                >不清楚</el-checkbox
+              >
+            </el-form-item>
+          </div>
+
+          <div class="Condition">
+            <div class="title-container">
+              <div class="blue-box"></div>
+              <span class="title-text">食物情况(五天内)</span>
+            </div>
+          </div>
+          <el-form-item label="" style="display: flex; margin-left: -340px">
+            <el-checkbox v-model="form.HasDrinkingRawWater" value="饮生水"
+              >饮生水</el-checkbox
+            >
+            <el-checkbox v-model="form.HasEatingRawFood" value="吃生冷食品"
+              >吃生冷食品</el-checkbox
+            >
+            <el-checkbox v-model="form.HasEatingColdCookedFood" value="熟食冷吃"
+              >熟食冷吃</el-checkbox
+            >
+            <el-checkbox v-model="form.HasEatingSeafood" value="海水产品"
+              >海水产品</el-checkbox
+            >
+          </el-form-item>
+
+          <el-form-item label="食物名字" style="margin-left: -270px">
+            <el-input
+              v-model="form.FoodNames"
+              placeholder="请输入食物名字"
+              style="width: 200px"
+              clearable
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="就餐地点" style="margin-left: -270px">
+            <el-input
+              v-model="form.DiningPlace"
+              placeholder="请输入就餐地点"
+              style="width: 200px"
+              clearable
+            ></el-input>
           </el-form-item>
         </div>
 
+        <!------------------------------- 聚集性发病 ---------------------------------->
         <div class="Condition">
           <div class="title-container">
             <div class="blue-box"></div>
-            <span class="title-text">情况</span>
+            <span class="title-text">聚集性发病</span>
           </div>
-          <el-check-tag
-            :checked="form.HasChills"
-            type="primary"
-            @change="toggleTag('HasChills')"
+          <el-form-item
+            label="同一家庭、办公室、车间等集体单位是否有聚集性发病"
+            label-position="left"
+            style="margin-left: 20px; display: block"
           >
-            寒战
-          </el-check-tag>
-          <el-check-tag
-            :checked="form.HasSweating"
-            type="primary"
-            @change="toggleTag('HasSweating')"
-          >
-            大汗
-          </el-check-tag>
-          <el-check-tag
-            :checked="form.HasFatigue"
-            type="primary"
-            @change="toggleTag('HasFatigue')"
-          >
-            乏力
-          </el-check-tag>
-          <el-check-tag
-            :checked="form.HasHeadache"
-            type="primary"
-            @change="toggleTag('HasHeadache')"
-          >
-            头痛
-          </el-check-tag>
-          <el-check-tag
-            :checked="form.HasMusclePain"
-            type="primary"
-            @change="toggleTag('HasMusclePain')"
-          >
-            肌肉酸痛
-          </el-check-tag>
-          <el-check-tag
-            :checked="form.HasJointPain"
-            type="primary"
-            @change="toggleTag('HasJointPain')"
-          >
-            关节酸痛
-          </el-check-tag>
-        </div>
-
-        <el-check-tag
-          :checked="form.HasLymphNodeSwelling"
-          type="primary"
-          @change="toggleTag('HasLymphNodeSwelling')"
-        >
-          淋巴结肿大
-        </el-check-tag>
-
-        <div v-if="form.HasLymphNodeSwelling" class="flex gap-2 mt-4">
-          <el-check-tag
-            :checked="form.HasLymphNodeSwellingGroin"
-            type="primary"
-            @change="toggleTag('HasLymphNodeSwellingGroin')"
-          >
-            腹股沟
-          </el-check-tag>
-          <el-check-tag
-            :checked="form.HasLymphNodeSwellingArmpit"
-            type="primary"
-            @change="toggleTag('HasLymphNodeSwellingArmpit')"
-          >
-            腋下
-          </el-check-tag>
-          <el-check-tag
-            :checked="form.HasLymphNodeSwellingSubclavian"
-            type="primary"
-            @change="toggleTag('HasLymphNodeSwellingSubclavian')"
-          >
-            锁骨下
-          </el-check-tag>
-          <el-check-tag
-            :checked="form.HasLymphNodeSwellingNeck"
-            type="primary"
-            @change="toggleTag('HasLymphNodeSwellingNeck')"
-          >
-            颈部
-          </el-check-tag>
-          <el-check-tag
-            :checked="form.HasLymphNodeSwellingElbow"
-            type="primary"
-            @change="toggleTag('HasLymphNodeSwellingElbow')"
-          >
-            肘
-          </el-check-tag>
-          <el-check-tag
-            :checked="form.HasLymphNodeSwellingPopliteal"
-            type="primary"
-            @change="toggleTag('HasLymphNodeSwellingPopliteal')"
-          >
-            腘窝
-          </el-check-tag>
-        </div>
-
-        <div class="flex gap-2 mt-4">
-          <el-check-tag
-            :checked="form.HasCyanosis"
-            type="primary"
-            @change="toggleTag('HasCyanosis')"
-          >
-            口唇、颜面、四肢及全身皮肤发绀
-          </el-check-tag>
-          <el-check-tag
-            :checked="form.hasSubcutaneousAndMucosalBleedingSpots"
-            type="primary"
-            @change="toggleTag('hasSubcutaneousAndMucosalBleedingSpots')"
-          >
-            皮下及黏膜出血或出血点
-          </el-check-tag>
-          <el-check-tag
-            :checked="form.HasPainfulRedRash"
-            type="primary"
-            @change="toggleTag('HasPainfulRedRash')"
-          >
-            皮肤可见剧痛的红色丘疹
-          </el-check-tag>
-          <el-check-tag
-            :checked="form.HasBloodBlisters"
-            type="primary"
-            @change="toggleTag('HasBloodBlisters')"
-          >
-            皮肤可见周边呈灰黑色、基底坚硬的血性水泡
-          </el-check-tag>
-          <el-check-tag
-            :checked="form.HasSkinUlcer"
-            type="primary"
-            @change="toggleTag('HasSkinUlcer')"
-          >
-            皮肤出现呈灰黑色创面的溃疡
-          </el-check-tag>
-          <el-check-tag
-            :checked="form.HasCongestiveOrPetechialRash"
-            type="primary"
-            @change="toggleTag('HasCongestiveOrPetechialRash')"
-          >
-            皮疹：充血性或点状出血疹
-          </el-check-tag>
-          <el-check-tag
-            :checked="form.HasPressureInsensitiveRash"
-            type="primary"
-            @change="toggleTag('HasPressureInsensitiveRash')"
-          >
-            皮疹：起初压之退色，后期压之不退，多见于四肢、躯干，面部一般没有
-          </el-check-tag>
-
-          <!-- 失水 -->
-          <div class="Dehydration" style="display: flex">
-            <el-check-tag
-              :checked="form.HasDehydration"
-              type="primary"
-              @change="toggleTag('HasDehydration')"
-            >
-              失水
-            </el-check-tag>
-
-            <div
-              v-if="form.HasDehydration"
-              style="margin-left: 10px; margin-top: 8px"
-            >
-              <el-radio-group v-model="form.Dehydration">
-                <el-radio :label="'重度'">重度</el-radio>
-                <el-radio :label="'中度'">中度</el-radio>
-                <el-radio :label="'轻度'">轻度</el-radio>
+            <div>
+              <el-radio-group v-model="form.ContactWithRashPatient">
+                <el-radio :value="'是'">是</el-radio>
+                <el-radio :value="'否'">否</el-radio>
+                <el-radio :value="'不清楚'">不清楚</el-radio>
               </el-radio-group>
             </div>
+          </el-form-item>
+        </div>
+
+        <!------------------------------- 野外活动史 ---------------------------------->
+        <div class="Condition">
+          <div class="title-container">
+            <div class="blue-box"></div>
+            <span class="title-text">野外活动史</span>
+          </div>
+          <el-form-item
+            label="发病前1月内是否在野外/户外住宿或工作"
+            label-position="left"
+            style="margin-left: 20px; display: block"
+          >
+            <el-radio-group
+              v-model="form.OutdoorStayOrWorkWithinMonth"
+              @change="handleOutdoorChange"
+            >
+              <el-radio value="是">是</el-radio>
+              <el-radio value="否">否</el-radio>
+              <el-radio value="不清楚">不清楚</el-radio>
+            </el-radio-group>
+          </el-form-item>
+
+          <el-form-item
+            v-if="form.OutdoorStayOrWorkWithinMonth === '是'"
+            label="野外/户外活动史"
+            label-position="left"
+            style="display: block; margin-left: 20px"
+          >
+            <div>
+              <el-radio-group
+                v-model="form.WildActivityHistory"
+                style=""
+                @change="handleOtherActivityChange"
+              >
+                <el-radio value="种地">种地</el-radio>
+                <el-radio value="割草">割草</el-radio>
+                <el-radio value="打猎">打猎</el-radio>
+                <el-radio value="采茶">采茶</el-radio>
+                <el-radio value="放牧">放牧</el-radio>
+                <el-radio value="采伐">采伐</el-radio>
+                <el-radio value="旅游">旅游</el-radio>
+                <el-radio value="其他">其他</el-radio>
+              </el-radio-group>
+            </div>
+
+            <el-input
+              v-if="form.WildActivityHistory === '其他'"
+              v-model="form.OtherWildActivityName"
+              placeholder="请输入其他活动名称"
+              style="width: 200px; margin-top: 10px"
+            ></el-input>
+          </el-form-item>
+        </div>
+
+        <!------------------------------- 疾病流行区 ---------------------------------->
+        <div class="Condition">
+          <div class="title-container">
+            <div class="blue-box"></div>
+            <span class="title-text">疾病流行区</span>
           </div>
 
-          <!-- 瘙痒性斑丘疹/水疱 -->
-          <el-check-tag
-            :checked="form.HasItchyRash"
-            type="primary"
-            @change="toggleTag('HasItchyRash')"
+          <el-form-item
+            label="是否到过鼠疫流行区"
+            label-position="left"
+            style="margin-left: 20px; display: block"
           >
-            瘙痒性斑丘疹/水疱
-          </el-check-tag>
+            <el-radio-group
+              v-model="form.PlagueArea"
+              @change="clearPlagueLocation"
+            >
+              <el-radio value="是">是</el-radio>
+              <el-radio value="否">否</el-radio>
+              <el-radio value="不清楚">不清楚</el-radio>
+            </el-radio-group>
 
-          <div v-if="form.HasItchyRash">
-            <el-check-tag
-              :checked="form.ItchyRashOnFingers"
-              type="primary"
-              @change="toggleTag('ItchyRashOnFingers')"
+            <el-input
+              v-if="form.PlagueArea === '是'"
+              v-model="form.SpecificPlagueLocation"
+              placeholder="具体地点"
+              style="width: 200px; margin-left: 20px"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item
+            label="是否到过炭疽流行区"
+            label-position="left"
+            style="margin-left: 20px; display: block"
+          >
+            <el-radio-group
+              v-model="form.AnthraxArea"
+              @change="clearAnthraxLocation"
             >
-              手指
-            </el-check-tag>
-            <el-check-tag
-              :checked="form.ItchyRashOnBackOfHands"
-              type="primary"
-              @change="toggleTag('ItchyRashOnBackOfHands')"
+              <el-radio value="是">是</el-radio>
+              <el-radio value="否">否</el-radio>
+              <el-radio value="不清楚">不清楚</el-radio>
+            </el-radio-group>
+            <el-input
+              v-if="form.AnthraxArea === '是'"
+              v-model="form.SpecificAnthraxLocation"
+              placeholder="具体地点"
+              style="width: 200px; margin-left: 20px"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item
+            label="是否到过疟疾流行区"
+            label-position="left"
+            style="margin-left: 20px; display: block"
+          >
+            <el-radio-group
+              v-model="form.MalariaArea"
+              @change="clearMalariaLocation"
             >
-              手背
-            </el-check-tag>
-            <el-check-tag
-              :checked="form.ItchyRashOnUpperLimbs"
-              type="primary"
-              @change="toggleTag('ItchyRashOnUpperLimbs')"
-            >
-              上肢
-            </el-check-tag>
-            <el-check-tag
-              :checked="form.ItchyRashOnLowerLimbs"
-              type="primary"
-              @change="toggleTag('ItchyRashOnLowerLimbs')"
-            >
-              下肢
-            </el-check-tag>
-            <el-check-tag
-              :checked="form.ItchyRashOnFeet"
-              type="primary"
-              @change="toggleTag('ItchyRashOnFeet')"
-            >
-              足背
-            </el-check-tag>
-            <el-check-tag
-              :checked="form.ItchyRashOnFace"
-              type="primary"
-              @change="toggleTag('ItchyRashOnFace')"
-            >
-              面部
-            </el-check-tag>
-            <el-check-tag
-              :checked="form.ItchyRashOnOther"
-              type="primary"
-              @change="toggleTag('ItchyRashOnOther')"
-            >
-              其他
-            </el-check-tag>
+              <el-radio value="是">是</el-radio>
+              <el-radio value="否">否</el-radio>
+              <el-radio value="不清楚">不清楚</el-radio>
+            </el-radio-group>
+
+            <el-input
+              v-if="form.MalariaArea === '是'"
+              v-model="form.SpecificMalariaLocation"
+              placeholder="具体地点"
+              style="width: 200px; margin-left: 20px"
+            ></el-input>
+          </el-form-item>
+        </div>
+
+        <!------------------------------- 动物接触史 ---------------------------------->
+        <div class="Condition">
+          <div class="title-container">
+            <div class="blue-box"></div>
+            <span class="title-text">动物接触史</span>
           </div>
 
-          <!-- 水肿 -->
-          <el-check-tag
-            :checked="form.HasEdema"
-            type="primary"
-            @change="toggleTag('HasEdema')"
+          <el-form-item
+            label="接触过动物制品"
+            label-position="left"
+            style="margin-left: 20px; display: block"
           >
-            水肿
-          </el-check-tag>
+            <el-radio-group
+              v-model="form.ContactWithAnimalProducts"
+              @change="clearContactDate"
+            >
+              <el-radio value="是">是</el-radio>
+              <el-radio value="否">否</el-radio>
+              <el-radio value="不清楚">不清楚</el-radio>
+            </el-radio-group>
+            <el-form-item
+              v-if="form.ContactWithAnimalProducts === '是'"
+              v-model="form.ContactDate"
+              style="width: 200px; margin-left: 20px"
+            >
+              <Dateselection />
+            </el-form-item>
+          </el-form-item>
 
-          <!-- 盗汗 -->
-          <el-check-tag
-            :checked="form.HasNightSweats"
-            type="primary"
-            @change="toggleTag('HasNightSweats')"
+          <el-form-item
+            label="接触过动物"
+            label-position="left"
+            style="margin-left: 20px; display: block"
           >
-            盗汗
-          </el-check-tag>
+            <el-radio-group
+              v-model="form.ContactWithAnimals"
+              @change="clearContactPlace"
+            >
+              <el-radio value="是">是</el-radio>
+              <el-radio value="否">否</el-radio>
+              <el-radio value="不清楚">不清楚</el-radio>
+            </el-radio-group>
+            <el-input
+              v-if="form.ContactWithAnimals === '是'"
+              v-model="form.ContactPlace"
+              placeholder="请输入接触地点"
+              style="width: 200px; margin-left: 20px"
+            >
+            </el-input>
 
-          <!-- 消瘦 -->
-          <el-check-tag
-            :checked="form.HasWeightLoss"
-            type="primary"
-            @change="toggleTag('HasWeightLoss')"
-          >
-            消瘦
-          </el-check-tag>
-
-          <!-- 虚脱/全身无力 -->
-          <el-check-tag
-            :checked="form.HasExhaustion"
-            type="primary"
-            @change="toggleTag('HasExhaustion')"
-          >
-            虚脱/全身无力
-          </el-check-tag>
+            <el-form-item
+              v-if="form.ContactWithAnimals === '是'"
+              label="接触动物名"
+              label-position="left"
+              style="margin-left: 20px; display: block"
+            >
+                <el-checkbox v-model="form.HasContactWithRat" value="'鼠'"
+                  >鼠</el-checkbox
+                >
+                <el-checkbox v-model="form.HasContactWithMarmot" value="'旱獭'"
+                  >旱獭</el-checkbox
+                >
+                <el-checkbox v-model="form.HasContactWithLice" value="'虱'"
+                  >虱</el-checkbox
+                >
+                <el-checkbox v-model="form.HasContactWithFlea" value="'蚤'"
+                  >蚤</el-checkbox
+                >
+                <el-checkbox v-model="form.HasContactWithCat" value="'猫'"
+                  >猫</el-checkbox
+                >
+                <el-checkbox v-model="form.HasContactWithBird" value="'鸟'"
+                  >鸟</el-checkbox
+                >
+                <el-checkbox v-model="form.HasContactWithPig" value="'猪'"
+                  >猪</el-checkbox
+                >
+                <el-checkbox v-model="form.HasContactWithHorse" value="'马'"
+                  >马</el-checkbox
+                >
+                <el-checkbox v-model="form.HasContactWithMule" value="'骡'"
+                  >骡</el-checkbox
+                >
+                <el-checkbox v-model="form.HasContactWithDonkey" value="'驴'"
+                  >驴</el-checkbox
+                >
+                <el-checkbox v-model="form.HasContactWithCow" value="'牛'"
+                  >牛</el-checkbox
+                >
+                <el-checkbox v-model="form.HasContactWithSheep" value="'羊'"
+                  >羊</el-checkbox
+                >
+                <el-checkbox v-model="form.HasContactWithDog" value="'狗'"
+                  >狗</el-checkbox
+                >
+                <el-checkbox v-model="form.HasContactWithRabbit" value="'兔'"
+                  >兔</el-checkbox
+                >
+                <el-checkbox v-model="form.HasContactWithWolf" value="'狼'"
+                  >狼</el-checkbox
+                >
+                <el-checkbox v-model="form.HasContactWithTiger" value="'虎'"
+                  >虎</el-checkbox
+                >
+                <el-checkbox
+                  v-model="form.HasContactWithOtherAnimal"
+                  @change="handleOtherChange"
+                  value="'其他'"
+                  >其他</el-checkbox
+                >
+              <el-form-item v-if="form.HasContactWithOtherAnimal">
+                <el-input
+                  v-model="form.OtherAnimalName"
+                  placeholder="请填写其他动物名称"
+                  style="margin-top:10px"
+                ></el-input>
+              </el-form-item>
+            </el-form-item>
+          </el-form-item>
         </div>
       </div>
     </el-form>
@@ -333,7 +405,7 @@
 
 <script>
 import { ElMessage } from "element-plus";
-import Dateselection from "@/components/date_selection.vue";
+import Dateselection from "@/components/date.vue";
 export default {
   components: {
     Dateselection,
@@ -342,10 +414,60 @@ export default {
     return {
       visible: false, // 控制弹窗显示
       form: {
-        ContactWithFeverPatient: '',
-        ContactWithDiarrheaPatient: '',
-        ContactWithRashPatient: '',
-        ContactWithTuberculosisPatient: '',
+        ContactWithFeverPatient: "", // 与发热患者接触情况
+        ContactWithDiarrheaPatient: "", // 与腹泻患者接触情况
+        ContactWithRashPatient: "", // 与皮疹患者接触情况
+        ContactWithTuberculosisPatient: "", // 与结核病患者接触情况
+
+        IsGroupDining: false, // 5天内是否集体堂食就餐
+        IsDiningOut: false, // 5天内是否外出就餐
+        IsDiningUnclear: false, // 5天内就餐情况不清楚
+
+        HasDrinkingRawWater: false, // 是否饮生水
+        HasEatingRawFood: false, // 是否吃生冷食品
+        HasEatingColdCookedFood: false, // 是否熟食冷吃
+        HasEatingSeafood: false, // 是否吃海水产品
+
+        FoodNames: "", // 食物名字
+        DiningPlace: "", // 就餐地点
+
+        GroupOutbreak: "", // 同一家庭、办公室、车间等集体单位是否有聚集性发病
+        OutdoorStayOrWorkWithinMonth: "", // 发病前1月内是否在野外住宿或工作
+        WildActivityHistory: "", // 野外/户外活动史
+        OtherWildActivityName: "", // 其他活动名称
+
+        PlagueArea: "", // 是否到过鼠疫流行区
+        SpecificPlagueLocation: "", // 具体地点
+
+        AnthraxArea: "", // 是否到过炭疽流行区
+        SpecificAnthraxLocation: "", // 具体地点
+
+        MalariaArea: "", // 是否到过疟疾流行区
+        SpecificMalariaLocation: "", // 具体地点
+
+        ContactWithAnimalProducts: "", // 是否接触过动物制品
+        ContactDate: "", //接触时间
+
+        ContactWithAnimals: "", // 是否接触过动物
+        ContactPlace: "", //  接触地点
+        HasContactWithRat: false,
+        HasContactWithMarmot: false,
+        HasContactWithLice: false,
+        HasContactWithFlea: false,
+        HasContactWithCat: false,
+        HasContactWithBird: false,
+        HasContactWithPig: false,
+        HasContactWithHorse: false,
+        HasContactWithMule: false,
+        HasContactWithDonkey: false,
+        HasContactWithCow: false,
+        HasContactWithSheep: false,
+        HasContactWithDog: false,
+        HasContactWithRabbit: false,
+        HasContactWithWolf: false,
+        HasContactWithTiger: false,
+        HasContactWithOtherAnimal: false, // 是否接触其他动物
+        OtherAnimalName: "",
       },
 
       rules: {},
@@ -354,17 +476,6 @@ export default {
   methods: {
     toggleTag(field) {
       this.form[field] = !this.form[field];
-      if (field === "HasDehydration" && !this.form[field]) {
-        this.form.Dehydration = "";
-      }
-      if (field === "HasLymphNodeSwelling" && !this.form[field]) {
-        this.form.HasLymphNodeSwellingGroin = false;
-        this.form.HasLymphNodeSwellingArmpit = false;
-        this.form.HasLymphNodeSwellingSubclavian = false;
-        this.form.HasLymphNodeSwellingNeck = false;
-        this.form.HasLymphNodeSwellingElbow = false;
-        this.form.HasLymphNodeSwellingPopliteal = false;
-      }
     },
     showDrawer(user) {
       this.form = { ...user };
@@ -396,28 +507,69 @@ export default {
         }
       });
     },
-    handleMedicalHistoryChange() {
-      if (!this.form.HasMedicalHistory) {
-        // 如果选择“无”，清空所有疾病选项
-        this.clearAllDiseases();
+
+    // 是否在野外活动，若否/不清楚，则野外活动史清除
+    handleOutdoorChange() {
+      if (this.form.OutdoorStayOrWorkWithinMonth != "是") {
+        this.form.WildActivityHistory = "";
+        this.form.OtherWildActivityName = "";
       }
     },
-    handleCancerChange() {
-      if (!this.form.HasMalignantTumor) {
-        // 清空癌症相关选项
-        this.clearCancerFields();
+
+    handleOtherActivityChange() {
+      if (this.form.WildActivityHistory != "其他") {
+        // this.WildActivityHistory="";
+        this.form.OtherWildActivityName = "";
       }
     },
-    SpecificOccupationChange() {
-      if (this.form.SpecificOccupation == "否") {
-        this.form.MedicalPersonnelType = "";
+
+    // 疾病流行区
+    clearPlagueLocation() {
+      if (this.form.PlagueArea !== "是") {
+        this.form.SpecificPlagueLocation = ""; // 清空具体地点
       }
     },
-    clearAllDiseases() {},
-    clearCancerFields() {
-      this.form.HasLungCancer = false;
-      this.form.HasOtherCancer = false;
-      this.form.OtherCancerName = "";
+    clearAnthraxLocation() {
+      if (this.form.AnthraxArea !== "是") {
+        this.form.SpecificAnthraxLocation = ""; // 清空具体地点
+      }
+    },
+    clearMalariaLocation() {
+      if (this.form.MalariaArea !== "是") {
+        this.form.SpecificMalariaLocation = ""; // 清空具体地点
+      }
+    },
+    clearContactDate() {
+      if (this.form.ContactWithAnimalProducts !== "是") {
+        this.form.ContactDate = "";
+      }
+    },
+    clearContactPlace() {
+      if (this.form.ContactWithAnimals !== "是") {
+        this.form.ContactPlace = "";
+        this.form.HasContactWithRat = false;
+        this.form.HasContactWithMarmot = false;
+        this.form.HasContactWithLice = false;
+        this.form.HasContactWithFlea = false;
+        this.form.HasContactWithCat = false;
+        this.form.HasContactWithBird = false;
+        this.form.HasContactWithPig = false;
+        this.form.HasContactWithHorse = false;
+        this.form.HasContactWithMule = false;
+        this.form.HasContactWithDonkey = false;
+        this.form.HasContactWithCow = false;
+        this.form.HasContactWithSheep = false;
+        this.form.HasContactWithDog = false;
+        this.form.HasContactWithRabbit = false;
+        this.form.HasContactWithWolf = false;
+        this.form.HasContactWithTiger = false;
+        this.form.HasContactWithOtherAnimal = false; // 是否接触其他动物
+      }
+    },
+    handleOtherChange(){
+      if(!this.form.HasContactWithOtherAnimal){
+          this.form.OtherAnimalName="";
+      }
     },
     handleReset() {
       this.form = this.getInitialForm();
@@ -425,11 +577,65 @@ export default {
     },
     getInitialForm() {
       return {
-        ContactWithFeverPatient: '',
-        ContactWithDiarrheaPatient: '',
-        ContactWithRashPatient: '',
-        ContactWithTuberculosisPatient: ''
+        ContactWithFeverPatient: "", // 与发热患者接触情况
+        ContactWithDiarrheaPatient: "", // 与腹泻患者接触情况
+        ContactWithRashPatient: "", // 与皮疹患者接触情况
+        ContactWithTuberculosisPatient: "", // 与结核病患者接触情况
+
+        IsGroupDining: false, // 5天内是否集体堂食就餐
+        IsDiningOut: false, // 5天内是否外出就餐
+        IsDiningUnclear: false, // 5天内就餐情况不清楚
+
+        HasDrinkingRawWater: false, // 是否饮生水
+        HasEatingRawFood: false, // 是否吃生冷食品
+        HasEatingColdCookedFood: false, // 是否熟食冷吃
+        HasEatingSeafood: false, // 是否吃海水产品
+
+        FoodNames: "", // 食物名字
+        DiningPlace: "", // 就餐地点
+
+        GroupOutbreak: "", // 同一家庭、办公室、车间等集体单位是否有聚集性发病
+        OutdoorStayOrWorkWithinMonth: "", // 发病前1月内是否在野外住宿或工作
+        WildActivityHistory: "", // 野外/户外活动史
+        OtherWildActivityName: "", // 其他活动名称
+
+        PlagueArea: "", // 是否到过鼠疫流行区
+        SpecificPlagueLocation: "", // 具体地点
+
+        AnthraxArea: "", // 是否到过炭疽流行区
+        SpecificAnthraxLocation: "", // 具体地点
+
+        MalariaArea: "", // 是否到过疟疾流行区
+        SpecificMalariaLocation: "", // 具体地点
+
+        ContactWithAnimalProducts: "", // 是否接触过动物制品
+        ContactDate: "", //接触时间
+
+        ContactWithAnimals: "", // 是否接触过动物
+        ContactPlace: "", //  接触地点
+        HasContactWithRat: false,
+        HasContactWithMarmot: false,
+        HasContactWithLice: false,
+        HasContactWithFlea: false,
+        HasContactWithCat: false,
+        HasContactWithBird: false,
+        HasContactWithPig: false,
+        HasContactWithHorse: false,
+        HasContactWithMule: false,
+        HasContactWithDonkey: false,
+        HasContactWithCow: false,
+        HasContactWithSheep: false,
+        HasContactWithDog: false,
+        HasContactWithRabbit: false,
+        HasContactWithWolf: false,
+        HasContactWithTiger: false,
+        HasContactWithOtherAnimal: false, // 是否接触其他动物
+        OtherAnimalName: "",
       };
+    },
+
+    getData() {
+      return this.form; // 返回当前组件的表单数据
     },
   },
 };
@@ -492,14 +698,14 @@ export default {
   margin-left: 20px;
 }
 .Condition {
-  margin-top: 20px;
+  margin-top: 30px;
 }
 .el-form-item {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
 }
 
 .el-radio-group {
-  margin-top: 5px; 
+  margin-top: 5px;
 }
 </style>

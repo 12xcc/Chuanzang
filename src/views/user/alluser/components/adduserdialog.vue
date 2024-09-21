@@ -18,7 +18,7 @@
       </div>
       <el-form
         :model="form"
-        label-width="150px"
+        label-width="160px"
         class="form-container"
         ref="form"
         :rules="rules"
@@ -104,7 +104,7 @@
           style="display: flex; "
           prop="WorkStart"
         >
-          <div style="flex: 1 margin-left:-40px;margin-top:-30px;margin-bottom:-15px">
+          <div style="flex: 1 margin-left:-40px;margin-top:-15px;margin-bottom:-15px">
              <Dateselection v-model="form.WorkStart" />
           </div>
         </el-form-item>
@@ -152,6 +152,13 @@
               <el-radio value="实验室检测人员">实验室检测人员</el-radio>
               <el-radio value="其他">其他</el-radio>
             </el-radio-group>
+             <el-input
+                  v-if="form.MedicalPersonnelType === '其他'"
+                  v-model="form.OtherPositionName"
+                  placeholder="请输入其他类型"
+                  prop="OtherPositionName "
+                  style="width:200px"
+                ></el-input>
           </el-form-item>
         </el-form-item>
 
@@ -341,7 +348,7 @@
         </el-form-item>
 
         <!-- 身高 -->
-        <el-form-item label="身高" prop="Height">
+        <el-form-item label="身高(cm)" prop="Height">
           <el-input
             v-model="form.Height"
             style="width: 200px"
@@ -350,7 +357,7 @@
         </el-form-item>
 
         <!-- 体重 -->
-        <el-form-item label="体重" prop="Weight">
+        <el-form-item label="体重(kg)" prop="Weight">
           <el-input
             v-model="form.Weight"
             style="width: 200px"
@@ -360,19 +367,19 @@
 
         <!-- 疫苗接种情况 -->
         <el-form-item label="疫苗接种情况">
-          <el-checkbox v-model="form.IsVaccinatedForCOVID" label="新冠疫苗"
+          <el-checkbox v-model="form.IsVaccinatedForCOVID" value="新冠疫苗"
             >新冠疫苗</el-checkbox
           >
-          <el-checkbox v-model="form.IsVaccinatedForFlu" label="流感疫苗"
+          <el-checkbox v-model="form.IsVaccinatedForFlu" value="流感疫苗"
             >流感疫苗</el-checkbox
           >
-          <el-checkbox v-model="form.IsVaccinatedForPlague" label="鼠疫疫苗"
+          <el-checkbox v-model="form.IsVaccinatedForPlague" value="鼠疫疫苗"
             >鼠疫疫苗</el-checkbox
           >
-          <el-checkbox v-model="form.IsVaccinatedForBCG" label="卡介苗"
+          <el-checkbox v-model="form.IsVaccinatedForBCG" value="卡介苗"
             >卡介苗</el-checkbox
           >
-          <el-checkbox v-model="form.IsVaccinatedForHepatitis" label="肝炎疫苗"
+          <el-checkbox v-model="form.IsVaccinatedForHepatitis" value="肝炎疫苗"
             >肝炎疫苗</el-checkbox
           >
         </el-form-item>
@@ -406,6 +413,7 @@ export default {
         Department: "", // 部门/工种
         SpecificOccupation: "", // 具体职业
         MedicalPersonnelType: "", // 医护人员类型
+        OtherPositionName: "",   // 其他医护人员类型
         PhoneNumber: "", // 手机号码
         OtherPhoneNumber: "", // 其他电话号码
         EmergencyContactName: "", // 紧急联系人姓名
