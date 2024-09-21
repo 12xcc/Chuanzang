@@ -19,6 +19,8 @@ export default {
       longitude: 94.3668, // 默认经度
       latitude: 29.6524, // 默认纬度
       address: '', // 地址信息
+      map: null, // 保存地图实例
+      marker: null, // 保存标记实例
     };
   },
   methods: {
@@ -27,9 +29,10 @@ export default {
       const fakeLatLng = [this.longitude, this.latitude];
 
       // 初始化地图
-      const map = new AMap.Map(this.$refs.mapContainer, {
+      this.map = new AMap.Map(this.$refs.mapContainer, {
         center: fakeLatLng, // 默认中心点设置为模拟经纬度
         zoom: 13,
+        resizeEnable: true, // 启用自动调整大小
       });
 
       // 自定义定位图标
@@ -40,10 +43,10 @@ export default {
       });
 
       // 添加标记
-      new AMap.Marker({
+      this.marker = new AMap.Marker({
         position: fakeLatLng,
         icon: customIcon,
-        map: map,
+        map: this.map,
       });
 
       // 调用逆地理编码服务
@@ -60,10 +63,22 @@ export default {
           this.address = '无法获取地点信息';
         }
       });
+    },
+
+    // 清理地图资源，防止内存泄露
+    destroyMap() {
+      if (this.map) {
+        this.map.destroy(); // 销毁地图实例
+        this.map = null;
+        this.marker = null;
+      }
     }
   },
   mounted() {
-    this.initializeMap();
+    this.initializeMap(); // 页面加载时立即初始化地图
+  },
+  beforeDestroy() {
+    this.destroyMap(); // 在组件销毁前清理地图
   }
 };
 </script>
@@ -78,7 +93,7 @@ export default {
   font-size: 14px;
   margin-bottom: 10px;
 }
-span{
-    margin-right: 30px;
+span {
+  margin-right: 30px;
 }
 </style>

@@ -22,6 +22,7 @@
         class="form-container"
         ref="form"
         :rules="rules"
+        disabled
       >
         <div class="BaseInfo">
           <div class="title-container">
@@ -42,10 +43,16 @@
 
             <!------------------------------- 性别 ----------------------------------------->
             <el-form-item label="性别" prop="Gender">
-              <el-radio-group v-model="form.Gender">
+               <el-input
+                 v-model="form.Gender"
+                style="width: 200px"
+                placeholder=""
+                clearable
+              ></el-input>
+              <!-- <el-radio-group v-model="form.Gender">
                 <el-radio value="男">男</el-radio>
                 <el-radio value="女">女</el-radio>
-              </el-radio-group>
+              </el-radio-group> -->
             </el-form-item>
 
             <!-- 年龄 -->
@@ -60,17 +67,29 @@
 
             <!-- 民族 -->
             <el-form-item label="民族" prop="Ethnicity">
-              <el-radio-group v-model="form.Ethnicity">
+              <el-input
+                v-model="form.Ethnicity"
+                style="width: 200px"
+                placeholder=""
+                clearable
+              ></el-input>
+              <!-- <el-radio-group v-model="form.Ethnicity">
                 <el-radio value="汉族">汉族</el-radio>
                 <el-radio value="藏族">藏族</el-radio>
                 <el-radio value="彝族">彝族</el-radio>
                 <el-radio value="其他少数民族">其他少数民族</el-radio>
-              </el-radio-group>
+              </el-radio-group> -->
             </el-form-item>
 
             <!-- 部门/工种 -->
             <el-form-item label="部门/工种" prop="Department">
-              <el-radio-group v-model="form.Department">
+            <el-input
+                v-model="form.Department"
+                style="width: 200px"
+                placeholder=""
+                clearable
+              ></el-input>
+              <!-- <el-radio-group v-model="form.Department">
                 <el-radio value="安全部">安全部</el-radio>
                 <el-radio value="财务部">财务部</el-radio>
                 <el-radio value="测量队">测量队</el-radio>
@@ -81,7 +100,7 @@
                 <el-radio value="项目管理层">项目管理层</el-radio>
                 <el-radio value="征拆协调部">征拆协调部</el-radio>
                 <el-radio value="综合管理部">综合管理部</el-radio>
-              </el-radio-group>
+              </el-radio-group> -->
             </el-form-item>
 
             <el-form-item label="打卡时间" prop="CheckInDate">

@@ -7,9 +7,9 @@
         @change="updateChart"
         class="radio-group"
       >
-        <el-radio-button label="最近一周">最近一周</el-radio-button>
-        <el-radio-button label="最近一月">最近一月</el-radio-button>
-        <el-radio-button label="最近一年">最近一年</el-radio-button>
+        <el-radio-button value="最近一周">最近一周</el-radio-button>
+        <el-radio-button value="最近一月">最近一月</el-radio-button>
+        <el-radio-button value="最近一年">最近一年</el-radio-button>
       </el-radio-group>
       <div ref="chartContainer" class="chart"></div>
     </div>

@@ -54,7 +54,7 @@
         <el-table-column prop="DiseaseTypeName" label="疾病类型" width="300" />
         <el-table-column prop="HasSubtype" label="是否包含子类型" width="200">
           <template #default="scope">
-            <el-tag  size="default" :type="scope.row.HasSubtype === '是' ? 'success' : ''" >
+            <el-tag  size="default" :type="scope.row.HasSubtype === '是' ? 'success' : 'primary'" >
               {{ scope.row.HasSubtype }}
             </el-tag>
           </template>
@@ -72,8 +72,6 @@
       />
     </div>
   </div>
-  <AddUserDialog ref="addUserDialog" />
-  <BatchImportDialog ref="batchImportDialog" />
 </template>
 
 <script>
@@ -87,7 +85,7 @@ export default {
   },
   
   mounted() {
-  console.log(this.$refs.batchImportDialog); 
+
   },
   
   data() {
@@ -148,26 +146,10 @@ export default {
   },
 
   methods: {
-    handleUserTypeChange() {
-      this.handleQuery();
-    },
     handleQuery() {
       this.tableData = this.paginatedData;
     },
-    // 添加用户弹窗
-    handleAdd() {
-      this.$refs.addUserDialog.showDrawer(); 
-    },
 
-    handleImport(){
-       console.log(this.$refs.batchImportDialog);
-      this.$refs.batchImportDialog.showDialog(); 
-    },
-   
-
-    handleDownload() {
-      // 逻辑处理
-    },
     
     // 导出表格信息
     handleExport() {

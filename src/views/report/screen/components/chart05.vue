@@ -20,7 +20,6 @@
         <el-table 
           :data="displayedData" 
           :header-cell-style="{height:'15px',background:'#FFFFFF',color: '#333333'}" 
-          v-loading="loading" 
           style="width: 100%; height: 100%;"
           :show-overflow-tooltip="true"
         >
