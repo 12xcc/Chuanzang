@@ -28,7 +28,7 @@ watch(internalValue, (newValue) => {
 })
 
 function handleChange(value: any) {
-  // 触发输入事件以更新父组件
+  // 触发请输入事件以更新父组件
   emit('update:modelValue', value)
 }
 </script>

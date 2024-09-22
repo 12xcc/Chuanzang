@@ -293,7 +293,7 @@
                 <el-checkbox v-model="form.HasOtherCancer" label="其他"
                   >其他</el-checkbox
                 >
-                <!-- 其他恶性肿瘤输入框 -->
+                <!-- 其他恶性肿瘤请输入框 -->
                 <el-input
                   v-if="form.HasOtherCancer"
                   v-model="form.OtherCancerName"

@@ -24,7 +24,7 @@
               :type="passwordFieldType"
               v-model="password"
               id="password"
-              placeholder="输入新密码"
+              placeholder="请输入新密码"
               maxlength="8"
               @input="validateAndFormatPassword"
             />
@@ -42,7 +42,7 @@
               :type="confirmPasswordFieldType"
               v-model="confirmPassword"
               id="confirm-password"
-              placeholder="再次输入新密码"
+              placeholder="再次请输入新密码"
               maxlength="8"
               @input="validateAndFormatConfirmPassword"
             />
@@ -96,7 +96,7 @@ export default {
           ElMessage.error('密码不符合要求');
         }
       } else {
-        confirmPasswordError.value = '两次密码输入不一致';
+        confirmPasswordError.value = '两次密码请输入不一致';
       }
     };
 
@@ -124,7 +124,7 @@ export default {
     const validateAndFormatConfirmPassword = () => {
       confirmPasswordError.value = confirmPassword.value === password.value
         ? ''
-        : '两次密码输入不一致';
+        : '两次密码请输入不一致';
     };
 
     const isSubmitDisabled = ref(true);

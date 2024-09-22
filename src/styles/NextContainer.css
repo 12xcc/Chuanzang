@@ -37,7 +37,7 @@
     background-color: #fff !important; /* 选中状态的圆点颜色 */
   }
   
-  /* 输入框背景色 */
+  /* 请输入框背景色 */
   .NextContainer :deep(.el-input__inner) {
     background-color: #fafafa !important;
   }

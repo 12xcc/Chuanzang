@@ -66,7 +66,7 @@ const searchQuery = ref(''); // 搜索框内容
 const filterData = () => {
   const query = searchQuery.value.trim();
   if (query === '') {
-    displayedData.value = [...data.value]; // 如果输入框为空，显示全部数据
+    displayedData.value = [...data.value]; // 如果请输入框为空，显示全部数据
   } else {
     displayedData.value = data.value.filter(item =>
       item.PhoneNumber.includes(query) // 根据手机号筛选

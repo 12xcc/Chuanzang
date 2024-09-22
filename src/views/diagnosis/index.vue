@@ -126,21 +126,29 @@
       />
     </div>
 
-    <Adddiagnosisdata ref="Adddiagnosisdata" />
+    <!-- <Adddiagnosisdata ref="Adddiagnosisdata" /> -->
+    <Checkdaignosisdata ref="Checkdaignosisdata" />
+       <Checkuser ref="Checkuser" :users="filteredData" :visible="checkUserVisible" />
   </div>
 </template>
 
 <script>
 import { ref, computed, onMounted } from 'vue';
 import Pagination from '@/components/pagination.vue';
-import Adddiagnosisdata from './components/adddiagnosisdata/adddiagnosisdata.vue';
+// import Adddiagnosisdata from './components/adddiagnosisdata/adddiagnosisdata.vue';
+import Checkuser from './components/checkuser.vue'
+import Checkdaignosisdata from './components/checkdaignosisdata/checkdaignosisdata.vue';
+
 export default {
   components: {
     Pagination,
-    Adddiagnosisdata,
+    // Adddiagnosisdata,
+    Checkuser,
+    Checkdaignosisdata,
   },
   data() {
     return {
+      checkUserVisible: false,// 控制 Checkuser 显示状态
       queryParams: {
         choice: '',
         check: '',
@@ -243,6 +251,22 @@ export default {
           AdmissionDate: '2024-03-03',
           DischargeDate: '2024-03-04',
           DeathDate: '',
+        },
+        { 
+          serialNumber: '6',
+          UserType: '铁路职工',
+          Name: '张伟',
+          PhoneNumber: '13800000006',
+          Gender: '男',
+          Age: '32',
+          Department: '工程技术部',
+          DiseaseType: '流感',
+          DiscoveryMethod: 'APP填报',
+          HospitalName: '拉萨医院',
+          DiseaseOutcome: '治愈',
+          AdmissionDate: '2024-03-03',
+          DischargeDate: '2024-03-04',
+          DeathDate: '',
         }
       ],
       showSearch: true,
@@ -278,7 +302,7 @@ export default {
   },
   methods: {
     handleQuery() {
-      this.queryParams.pageNum = 1; // 查询时重置到第一页
+      this.queryParams.pageNum = 1;
     },
     handlePagination(pageNum) {
       this.queryParams.pageNum = pageNum;
@@ -286,10 +310,19 @@ export default {
     handleExport() {
       console.log('导出功能未实现');
     },
-    handleSubmitDiagnosis(){
+    handleSubmitDiagnosis() {
+      if (this.filteredData.length > 0) {
+        this.checkUserVisible = true; // 显示 Checkuser
+        this.$refs.Checkuser.showDialog();
+      } else {
+        console.warn('用户数据为空');
+      }
     },
     handleCheck(row) {
-      this.$refs.Adddiagnosisdata.showDrawer(row);
+      this.$refs.Checkdaignosisdata.showDrawer(row);
+    },
+    handleDownload() {
+      console.log('下载功能未实现');
     }
   }
 };
@@ -297,9 +330,7 @@ export default {
 
 <style scoped>
 
-.usertable {
-  padding: 20px;
-}
+
 .container {
   padding: 10px;
   background-color: #FFFFFF;

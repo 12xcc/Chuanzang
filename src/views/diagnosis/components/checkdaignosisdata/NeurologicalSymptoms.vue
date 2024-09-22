@@ -14,137 +14,136 @@
             <span class="title-text">症状</span>
           </div>
           <el-check-tag
-            :checked="form.HasConjunctivitis"
+            :checked="form.HasDelirium"
             type="primary"
-            @change="toggleTag('HasConjunctivitis')"
+            @change="toggleTag('HasDelirium')"
+            :disabled="allDisabled"
           >
-            结膜炎
+            儋妄
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasConjunctivalCongestion"
+            :checked="form.HasConvulsion"
             type="primary"
-            @change="toggleTag('HasConjunctivalCongestion')"
+            @change="toggleTag('HasConvulsion')"
+            :disabled="allDisabled"
           >
-            眼结膜充血、肿胀疼痛
+            抽搐
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasEyelidEdema"
+            :checked="form.HasDrowsiness"
             type="primary"
-            @change="toggleTag('HasEyelidEdema')"
+            @change="toggleTag('HasDrowsiness')"
+            :disabled="allDisabled"
           >
-            上下眼睑水肿
+            昏睡
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasSmellTasteLoss"
+            :checked="form.HasComa"
             type="primary"
-            @change="toggleTag('HasSmellTasteLoss')"
+            @change="toggleTag('HasComa')"
+            :disabled="allDisabled"
           >
-            嗅觉味觉减退或丧失
+            昏迷
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasFacialRednessOrPallor"
+            :checked="form.HasStiffNeck"
             type="primary"
-            @change="toggleTag('HasFacialRednessOrPallor')"
+            @change="toggleTag('HasStiffNeck')"
+            :disabled="allDisabled"
           >
-            颜面潮红或苍白
+            颈部强直
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasRednessNeckChest"
+            :checked="form.HasRestlessness"
             type="primary"
-            @change="toggleTag('HasRednessNeckChest')"
+            @change="toggleTag('HasRestlessness')"
+            :disabled="allDisabled"
           >
-            潮红（颈部、胸部）
+            烦躁不安
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasLipCyanosis"
+            :checked="form.HasMuscleParalysisNeckShoulder"
             type="primary"
-            @change="toggleTag('HasLipCyanosis')"
+            @change="toggleTag('HasMuscleParalysisNeckShoulder')"
+            :disabled="allDisabled"
           >
-            口唇发绀
+            颈肩部肌肉迟缓性瘫痪
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasSkinPallorOrBruising"
+            :checked="form.HasMuscleParalysisLimbs"
             type="primary"
-            @change="toggleTag('HasSkinPallorOrBruising')"
+            @change="toggleTag('HasMuscleParalysisLimbs')"
+            :disabled="allDisabled"
           >
-            皮肤苍白或带青紫
+            肢体肌肉迟缓性瘫痪
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasGumBleeding"
+            :checked="form.HasSwallowingDifficulty"
             type="primary"
-            @change="toggleTag('HasGumBleeding')"
+            @change="toggleTag('HasSwallowingDifficulty')"
+            :disabled="allDisabled"
           >
-            牙龈出血
+            吞咽困难
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasKidneyPain"
+            :checked="form.HasSpeechDisorder"
             type="primary"
-            @change="toggleTag('HasKidneyPain')"
+            @change="toggleTag('HasSpeechDisorder')"
+            :disabled="allDisabled"
           >
-            肾区疼痛
+            语言障碍
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasLowBackPain"
+            :checked="form.HasConsciousnessDisorder"
             type="primary"
-            @change="toggleTag('HasLowBackPain')"
+            @change="toggleTag('HasConsciousnessDisorder')"
+            :disabled="allDisabled"
           >
-            腰痛
+            意识障碍或惊厥
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasOrbitalPain"
+            :checked="form.HasDizziness"
             type="primary"
-            @change="toggleTag('HasOrbitalPain')"
+            @change="toggleTag('HasDizziness')"
+            :disabled="allDisabled"
           >
-            眼眶痛
+            头晕
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasHepatomegaly"
+            :checked="form.HasTinnitus"
             type="primary"
-            @change="toggleTag('HasHepatomegaly')"
+            @change="toggleTag('HasTinnitus')"
+            :disabled="allDisabled"
           >
-            肝肿大
+            耳鸣
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasSplenomegaly"
+            :checked="form.HasHearingLoss"
             type="primary"
-            @change="toggleTag('HasSplenomegaly')"
+            @change="toggleTag('HasHearingLoss')"
+            :disabled="allDisabled"
           >
-            脾肿大
-          </el-check-tag>
-
-          <el-check-tag
-            :checked="form.HasMucosalBleedingInOralOrNasal"
-            type="primary"
-            @change="toggleTag('HasMucosalBleedingInOralOrNasal')"
-          >
-            口腔、鼻腔等处黏膜有出血点
-          </el-check-tag>
-
-          <el-check-tag
-            :checked="form.HasSkinBleedingPoints"
-            type="primary"
-            @change="toggleTag('HasSkinBleedingPoints')"
-          >
-            腋下/上臂/胸部或其它部位有皮肤出血点
+            听力减退
           </el-check-tag>
         </div>
       </div>
     </el-form>
   </div>
 </template>
+
 
 <script>
 import { ElMessage } from "element-plus";
@@ -155,24 +154,23 @@ export default {
   },
   data() {
     return {
+      allDisabled:true,
       visible: false, // 控制弹窗显示
       form: {
-        HasConjunctivitis: false,
-        HasConjunctivalCongestion: false,
-        HasEyelidEdema: false,
-        HasSmellTasteLoss: false,
-        HasFacialRednessOrPallor: false,
-        HasRednessNeckChest: false,
-        HasLipCyanosis: false,
-        HasSkinPallorOrBruising: false,
-        HasGumBleeding: false,
-        HasKidneyPain: false,
-        HasLowBackPain: false,
-        HasOrbitalPain: false,
-        HasMucosalBleedingInOralOrNasal: false,
-        HasSkinBleedingPoints: false,
-        HasHepatomegaly: false, // BOOLEAN, -- 是否肝肿大
-        HasSplenomegaly: false, // BOOLEAN, -- 是否脾肿大
+         HasDelirium: false,
+        HasConvulsion: false,
+        HasDrowsiness: false,
+        HasComa: false,
+        HasStiffNeck: false,
+        HasRestlessness: false,
+        HasMuscleParalysisNeckShoulder: false,
+        HasMuscleParalysisLimbs: false,
+        HasSwallowingDifficulty: false,
+        HasSpeechDisorder: false,
+        HasConsciousnessDisorder: false,
+        HasDizziness: false,
+        HasTinnitus: false,
+        HasHearingLoss: false
       },
 
       rules: {},
@@ -182,6 +180,7 @@ export default {
     toggleTag(field) {
       this.form[field] = !this.form[field];
     },
+
     showDrawer(user) {
       this.form = { ...user };
       this.visible = true;
@@ -212,28 +211,30 @@ export default {
         }
       });
     },
+
     handleReset() {
       this.form = this.getInitialForm();
       this.message = "";
     },
     getInitialForm() {
       return {
-        HasConjunctivitis: false,
-        HasConjunctivalCongestion: false,
-        HasEyelidEdema: false,
-        HasSmellTasteLoss: false,
-        HasFacialRednessOrPallor: false,
-        HasRednessNeckChest: false,
-        HasLipCyanosis: false,
-        HasSkinPallorOrBruising: false,
-        HasGumBleeding: false,
-        HasKidneyPain: false,
-        HasLowBackPain: false,
-        HasOrbitalPain: false,
-        HasMucosalBleedingInOralOrNasal: false,
-        HasSkinBleedingPoints: false,
+         HasDelirium: false,
+        HasConvulsion: false,
+        HasDrowsiness: false,
+        HasComa: false,
+        HasStiffNeck: false,
+        HasRestlessness: false,
+        HasMuscleParalysisNeckShoulder: false,
+        HasMuscleParalysisLimbs: false,
+        HasSwallowingDifficulty: false,
+        HasSpeechDisorder: false,
+        HasConsciousnessDisorder: false,
+        HasDizziness: false,
+        HasTinnitus: false,
+        HasHearingLoss: false
       };
     },
+
     getData() {
       return this.form; // 返回当前组件的表单数据
     },
@@ -266,24 +267,7 @@ export default {
 .el-dropdown-link:focus {
   outline: none;
 }
-.title-container {
-  display: flex;
-  margin-left: 0px;
-  margin-bottom: 20px;
-}
 
-.blue-box {
-  width: 6px;
-  height: 18px;
-  background-color: #285ac8;
-  margin-right: 10px;
-}
-
-.title-text {
-  font-size: 12px;
-  font-weight: bold;
-  color: #4a4a4a;
-}
 .el-check-tag {
   margin: 10px;
   font-weight: normal;
@@ -300,4 +284,23 @@ export default {
 .Condition {
   margin-top: 20px;
 }
+.title-container {
+    display: flex;
+    margin-left: 0px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  
+  .blue-box {
+    width: 6px;
+    height: 18px;
+    background-color: #285ac8;
+    margin-right: 10px;
+  }
+  
+  .title-text {
+    font-size: 12px;
+    font-weight: bold;
+    color: #4a4a4a;
+  }
 </style>

@@ -17,6 +17,7 @@
             :checked="form.HasConjunctivitis"
             type="primary"
             @change="toggleTag('HasConjunctivitis')"
+            :disabled="allDisabled"
           >
             结膜炎
           </el-check-tag>
@@ -25,6 +26,7 @@
             :checked="form.HasConjunctivalCongestion"
             type="primary"
             @change="toggleTag('HasConjunctivalCongestion')"
+            :disabled="allDisabled"
           >
             眼结膜充血、肿胀疼痛
           </el-check-tag>
@@ -33,6 +35,7 @@
             :checked="form.HasEyelidEdema"
             type="primary"
             @change="toggleTag('HasEyelidEdema')"
+            :disabled="allDisabled"
           >
             上下眼睑水肿
           </el-check-tag>
@@ -41,6 +44,7 @@
             :checked="form.HasSmellTasteLoss"
             type="primary"
             @change="toggleTag('HasSmellTasteLoss')"
+            :disabled="allDisabled"
           >
             嗅觉味觉减退或丧失
           </el-check-tag>
@@ -49,6 +53,7 @@
             :checked="form.HasFacialRednessOrPallor"
             type="primary"
             @change="toggleTag('HasFacialRednessOrPallor')"
+            :disabled="allDisabled"
           >
             颜面潮红或苍白
           </el-check-tag>
@@ -57,6 +62,7 @@
             :checked="form.HasRednessNeckChest"
             type="primary"
             @change="toggleTag('HasRednessNeckChest')"
+            :disabled="allDisabled"
           >
             潮红（颈部、胸部）
           </el-check-tag>
@@ -65,6 +71,7 @@
             :checked="form.HasLipCyanosis"
             type="primary"
             @change="toggleTag('HasLipCyanosis')"
+            :disabled="allDisabled"
           >
             口唇发绀
           </el-check-tag>
@@ -73,6 +80,7 @@
             :checked="form.HasSkinPallorOrBruising"
             type="primary"
             @change="toggleTag('HasSkinPallorOrBruising')"
+            :disabled="allDisabled"
           >
             皮肤苍白或带青紫
           </el-check-tag>
@@ -81,6 +89,7 @@
             :checked="form.HasGumBleeding"
             type="primary"
             @change="toggleTag('HasGumBleeding')"
+            :disabled="allDisabled"
           >
             牙龈出血
           </el-check-tag>
@@ -89,6 +98,7 @@
             :checked="form.HasKidneyPain"
             type="primary"
             @change="toggleTag('HasKidneyPain')"
+            :disabled="allDisabled"
           >
             肾区疼痛
           </el-check-tag>
@@ -97,6 +107,7 @@
             :checked="form.HasLowBackPain"
             type="primary"
             @change="toggleTag('HasLowBackPain')"
+            :disabled="allDisabled"
           >
             腰痛
           </el-check-tag>
@@ -105,6 +116,7 @@
             :checked="form.HasOrbitalPain"
             type="primary"
             @change="toggleTag('HasOrbitalPain')"
+            :disabled="allDisabled"
           >
             眼眶痛
           </el-check-tag>
@@ -113,6 +125,7 @@
             :checked="form.HasHepatomegaly"
             type="primary"
             @change="toggleTag('HasHepatomegaly')"
+            :disabled="allDisabled"
           >
             肝肿大
           </el-check-tag>
@@ -121,6 +134,7 @@
             :checked="form.HasSplenomegaly"
             type="primary"
             @change="toggleTag('HasSplenomegaly')"
+            :disabled="allDisabled"
           >
             脾肿大
           </el-check-tag>
@@ -129,6 +143,7 @@
             :checked="form.HasMucosalBleedingInOralOrNasal"
             type="primary"
             @change="toggleTag('HasMucosalBleedingInOralOrNasal')"
+            :disabled="allDisabled"
           >
             口腔、鼻腔等处黏膜有出血点
           </el-check-tag>
@@ -137,6 +152,7 @@
             :checked="form.HasSkinBleedingPoints"
             type="primary"
             @change="toggleTag('HasSkinBleedingPoints')"
+            :disabled="allDisabled"
           >
             腋下/上臂/胸部或其它部位有皮肤出血点
           </el-check-tag>
@@ -145,6 +161,7 @@
     </el-form>
   </div>
 </template>
+
 
 <script>
 import { ElMessage } from "element-plus";
@@ -155,6 +172,7 @@ export default {
   },
   data() {
     return {
+      allDisabled:true,
       visible: false, // 控制弹窗显示
       form: {
         HasConjunctivitis: false,
