@@ -6,6 +6,7 @@
       class="form-container"
       ref="form"
       :rules="rules"
+      :disabled="allDisabled" :readonly="allReadonly"
     >
       <div class="GeneralSymptoms">
         <div class="Condition">
@@ -17,7 +18,7 @@
             :checked="form.HasArrhythmia"
             type="primary"
             @change="toggleTag('HasArrhythmia')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             心律不齐
           </el-check-tag>
@@ -25,7 +26,7 @@
             :checked="form.HasChestPain"
             type="primary"
             @change="toggleTag('HasChestPain')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             胸痛
           </el-check-tag>
@@ -33,7 +34,7 @@
             :checked="form.HasRapidPulse"
             type="primary"
             @change="toggleTag('HasRapidPulse')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             脉搏细速
           </el-check-tag>
@@ -41,7 +42,7 @@
             :checked="form.HasPalpitation"
             type="primary"
             @change="toggleTag('HasPalpitation')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             心悸
           </el-check-tag>
@@ -60,7 +61,7 @@ export default {
   },
   data() {
     return {
-      allDisabled:true,
+      allDisabled:true,allReadonly:true,
       visible: false, // 控制弹窗显示
       form: {
         HasArrhythmia: false,

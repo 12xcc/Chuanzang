@@ -6,54 +6,57 @@
       class="form-container"
       ref="form"
       :rules="rules"
-      :disabled="allDisabled" :readonly="allReadonly"
     >
       <div class="GeneralSymptoms">
         <div class="Condition">
           <div class="title-container">
             <div class="blue-box"></div>
-            <span class="title-text">症状</span>
+            <span class="title-text">检测报告</span>
           </div>
+
           <el-check-tag
-            :checked="form.HasArrhythmia"
+            :checked="form.HasBloodTest"
             type="primary"
-            @change="toggleTag('HasArrhythmia')"
-            :disabled="allDisabled" :readonly="allReadonly"
+            @change="toggleTag('HasBloodTest')"
           >
-            心律不齐
+            血常规
           </el-check-tag>
+
           <el-check-tag
-            :checked="form.HasChestPain"
+            :checked="form.HasUrineTest"
             type="primary"
-            @change="toggleTag('HasChestPain')"
-            :disabled="allDisabled" :readonly="allReadonly"
+            @change="toggleTag('HasUrineTest')"
           >
-            胸痛
+            尿常规
           </el-check-tag>
+
           <el-check-tag
-            :checked="form.HasRapidPulse"
+            :checked="form.HasStoolTest"
             type="primary"
-            @change="toggleTag('HasRapidPulse')"
-            :disabled="allDisabled" :readonly="allReadonly"
+            @change="toggleTag('HasStoolTest')"
           >
-            脉搏细速
+            粪便常规
           </el-check-tag>
+
           <el-check-tag
-            :checked="form.HasPalpitation"
+            :checked="form.HasImaging"
             type="primary"
-            @change="toggleTag('HasPalpitation')"
-            :disabled="allDisabled" :readonly="allReadonly"
+            @change="toggleTag('HasImaging')"
           >
-            心悸
+            影像学检查
           </el-check-tag>
+
           <el-check-tag
-            :checked="form.HasLowBloodPressure"
+            :checked="form.HasUltrasound"
             type="primary"
-            @change="toggleTag('HasLowBloodPressure')"
-            :disabled="allDisabled" :readonly="allReadonly"
+            @change="toggleTag('HasUltrasound')"
           >
-            低血压
+            B超
           </el-check-tag>
+        </div>
+
+        <div class="DiagnosisExaminations">
+          <DiagnosisExaminations ref="DiagnosisExaminations" />
         </div>
       </div>
     </el-form>
@@ -62,21 +65,21 @@
 
 <script>
 import { ElMessage } from "element-plus";
-import Dateselection from "@/components/date_selection.vue";
+import DiagnosisExaminations from './DiagnosisExaminations .vue'
+
 export default {
   components: {
-    Dateselection,
+    DiagnosisExaminations,
   },
   data() {
     return {
-      allDisabled:true,allReadonly:true,
       visible: false, // 控制弹窗显示
       form: {
-        HasArrhythmia: false,
-        HasChestPain: false,
-        HasRapidPulse: false,
-        HasPalpitation: false,
-        HasLowBloodPressure: false,
+        HasBloodTest: false,
+        HasUrineTest: false,
+        HasStoolTest: false,
+        HasImaging: false,
+        HasUltrasound: false,
       },
 
       rules: {},
@@ -122,21 +125,19 @@ export default {
     },
     getInitialForm() {
       return {
-        HasArrhythmia: false,
-        HasChestPain: false,
-        HasRapidPulse: false,
-        HasPalpitation: false,
-        HasLowBloodPressure: false,
+        HasBloodTest: false,
+        HasUrineTest: false,
+        HasStoolTest: false,
+        HasImaging: false,
+        HasUltrasound: false,
       };
     },
-     getData() {
+    getData() {
       return this.form; // 返回当前组件的表单数据
     },
   },
 };
 </script>
-
-
 
 <style scoped>
 .custom-drawer {

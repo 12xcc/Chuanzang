@@ -10,11 +10,6 @@
     <div class="container">
       <div class="title">
         <h3>职工打卡信息详情</h3>
-        <div class="footer">
-          <el-button @click="handleCancel">取消</el-button>
-          <el-button @click="handleReset">重置</el-button>
-          <el-button type="primary" @click="handleSubmit">提交</el-button>
-        </div>
       </div>
       <el-form
         :model="form"
@@ -375,17 +370,11 @@ export default {
   right: 0;
   width: 800px;
   background: #ffffff;
-  padding: 3px;
+  padding-bottom: 30px;
   z-index: 100;
   border: 3px solid #fafafa;
 }
-.footer {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: -25px;
-  margin-right: 10px;
-  margin-bottom: 20px;
-}
+
 h3 {
   margin-top: 20px;
   font-size: 16px;

@@ -38,8 +38,8 @@
 
             <!------------------------------- 性别 ----------------------------------------->
             <el-form-item label="性别" prop="Gender">
-               <el-input
-                 v-model="form.Gender"
+              <el-input
+                v-model="form.Gender"
                 style="width: 200px"
                 placeholder=""
                 clearable
@@ -78,7 +78,7 @@
 
             <!-- 部门/工种 -->
             <el-form-item label="部门/工种" prop="Department">
-            <el-input
+              <el-input
                 v-model="form.Department"
                 style="width: 200px"
                 placeholder=""
@@ -98,7 +98,7 @@
               </el-radio-group> -->
             </el-form-item>
 
-            <el-form-item label="打卡时间" prop="CheckInDate">
+            <!-- <el-form-item label="打卡时间" prop="CheckInDate">
               <el-input
                 v-model="form.CheckInDate"
                 style="width: 200px"
@@ -106,10 +106,9 @@
                 disabled
                 clearable
               ></el-input>
-            </el-form-item>
+            </el-form-item> -->
           </div>
         </div>
-
 
         <!------------------------------------ 症状标签 ------------------------------->
         <div class="select flex gap-2 mb-4">
@@ -117,7 +116,7 @@
             <div class="blue-box"></div>
             <span class="title-text">点击标签查看症状</span>
           </div>
-            <el-check-tag
+          <el-check-tag
             :checked="selectedTag === 'DiagnosisResults'"
             type="primary"
             @change="selectTag('DiagnosisResults')"
@@ -125,7 +124,14 @@
             诊断信息
           </el-check-tag>
 
-          
+          <el-check-tag
+            :checked="selectedTag === 'DiagnosisPersonalInfo'"
+            type="primary"
+            @change="selectTag('DiagnosisPersonalInfo')"
+          >
+            基本信息
+          </el-check-tag>
+
           <el-check-tag
             :checked="selectedTag === 'GeneralSymptoms'"
             type="primary"
@@ -187,7 +193,7 @@
             type="primary"
             @change="selectTag('RiskFactorsAndExposure')"
           >
-            危险因素与暴露史
+            并发症
           </el-check-tag>
         </div>
 
@@ -196,6 +202,11 @@
           <div v-show="selectedTag === 'DiagnosisResults'">
             <p>查看诊断信息</p>
             <DiagnosisResults ref="DiagnosisResults" />
+          </div>
+
+          <div v-show="selectedTag === 'DiagnosisPersonalInfo'">
+            <p>基本情况</p>
+            <DiagnosisPersonalInfo ref="DiagnosisPersonalInfo" />
           </div>
 
           <div v-show="selectedTag === 'GeneralSymptoms'">
@@ -219,22 +230,22 @@
 
           <div v-show="selectedTag === 'NeurologicalSymptoms'">
             <p>查看神经系统症状</p>
-            <NeurologicalSymptoms ref="NeurologicalSymptoms"/>
+            <NeurologicalSymptoms ref="NeurologicalSymptoms" />
           </div>
 
           <div v-show="selectedTag === 'LocalSymptoms'">
             <p>查看局部症状</p>
-            <DiagnosisLocalSymptoms ref="DiagnosisLocalSymptoms"/>
+            <DiagnosisLocalSymptoms ref="DiagnosisLocalSymptoms" />
           </div>
 
           <div v-show="selectedTag === 'OtherSymptoms'">
             <p>查看其他症状</p>
-            <OtherSymptoms ref="OtherSymptoms"/>
+            <OtherSymptoms ref="OtherSymptoms" />
           </div>
 
           <div v-show="selectedTag === 'RiskFactorsAndExposure'">
-            <p>查看危险因素与暴露史</p>
-            <RiskFactorsAndExposure ref="RiskFactorsAndExposure"/>
+            <p>查看并发症</p>
+            <RiskFactorsAndExposure ref="RiskFactorsAndExposure" />
           </div>
         </div>
       </el-form>
@@ -245,15 +256,15 @@
 <script>
 import { ElMessage } from "element-plus";
 import Dateselection from "@/components/date_selection.vue";
-import DiagnosisResults from './DiagnosisResults.vue';
+import DiagnosisResults from "./DiagnosisResults.vue";
 import GeneralSymptoms from "./GeneralSymptoms.vue";
 import RespiratorySymptoms from "./RespiratorySymptoms.vue";
 import CirculatorySymptoms from "./CirculatorySymptoms.vue";
-import NeurologicalSymptoms from './NeurologicalSymptoms.vue';
-import DiagnosisLocalSymptoms from './DiagnosisLocalSymptoms.vue';
-import OtherSymptoms from './OtherSymptoms.vue';
-import RiskFactorsAndExposure from './RiskFactorsAndExposure.vue';
-
+import NeurologicalSymptoms from "./NeurologicalSymptoms.vue";
+import DiagnosisLocalSymptoms from "./DiagnosisLocalSymptoms.vue";
+import OtherSymptoms from "./OtherSymptoms.vue";
+import RiskFactorsAndExposure from "./RiskFactorsAndExposure.vue";
+import DiagnosisPersonalInfo from "./DiagnosisPersonalInfo.vue";
 
 export default {
   components: {
@@ -265,7 +276,8 @@ export default {
     NeurologicalSymptoms,
     DiagnosisLocalSymptoms,
     OtherSymptoms,
-    RiskFactorsAndExposure
+    RiskFactorsAndExposure,
+    DiagnosisPersonalInfo,
   },
   data() {
     return {
@@ -275,7 +287,7 @@ export default {
       rules: {},
     };
   },
-  
+
   methods: {
     toggleTag(field) {
       this.form[field] = !this.form[field];
@@ -314,8 +326,7 @@ export default {
       }
     },
 
-    
-     async handleSubmit() {
+    async handleSubmit() {
       console.log("触发");
 
       try {
@@ -324,14 +335,19 @@ export default {
         await this.$refs.OtherSymptoms.validate();
 
         // 如果子组件验证通过，继续处理其他数据
-        const DiagnosisResultsData =this.$refs.DiagnosisResults.getData();
+        const DiagnosisResultsData = this.$refs.DiagnosisResults.getData();
         const GeneralSymptomsData = this.$refs.GeneralSymptoms.getData();
-        const RespiratorySymptomsData = this.$refs.RespiratorySymptoms.getData();
-        const NeurologicalSymptomsData = this.$refs.NeurologicalSymptoms.getData();
-        const CirculatorySymptomsData = this.$refs.CirculatorySymptoms.getData();
-        const DiagnosisLocalSymptomsData = this.$refs.DiagnosisLocalSymptoms.getData();
+        const RespiratorySymptomsData =
+          this.$refs.RespiratorySymptoms.getData();
+        const NeurologicalSymptomsData =
+          this.$refs.NeurologicalSymptoms.getData();
+        const CirculatorySymptomsData =
+          this.$refs.CirculatorySymptoms.getData();
+        const DiagnosisLocalSymptomsData =
+          this.$refs.DiagnosisLocalSymptoms.getData();
         const OtherSymptomsData = this.$refs.OtherSymptoms.getData();
-        const RiskFactorsAndExposureData = this.$refs.RiskFactorsAndExposure.getData();
+        const RiskFactorsAndExposureData =
+          this.$refs.RiskFactorsAndExposure.getData();
 
         console.log("诊断信息:", DiagnosisResultsData);
         console.log("全身症状:", GeneralSymptomsData);
@@ -364,16 +380,14 @@ export default {
       this.selectedTag = null;
       this.$refs.GeneralSymptoms.handleReset();
       this.$refs.RespiratorySymptoms.handleReset();
-       this.$refs.NeurologicalSymptoms.handleReset();
-       this.$refs.CirculatorySymptoms.handleReset();
+      this.$refs.NeurologicalSymptoms.handleReset();
+      this.$refs.CirculatorySymptoms.handleReset();
       this.$refs.DiagnosisLocalSymptoms.handleReset();
-         this.$refs.OtherSymptoms.handleReset();
-    this.$refs.RiskFactorsAndExposure.handleReset();
+      this.$refs.OtherSymptoms.handleReset();
+      this.$refs.RiskFactorsAndExposure.handleReset();
     },
     getInitialForm() {
-      return {
-
-      };
+      return {};
     },
   },
 };
@@ -420,24 +434,24 @@ h3 {
 }
 
 .title-container {
-    display: flex;
-    margin-left: 0px;
-    margin-bottom: 20px;
-    margin-top: 20px;
-  }
-  
-  .blue-box {
-    width: 6px;
-    height: 18px;
-    background-color: #285ac8;
-    margin-right: 10px;
-  }
-  
-  .title-text {
-    font-size: 12px;
-    font-weight: bold;
-    color: #4a4a4a;
-  }
+  display: flex;
+  margin-left: 0px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.blue-box {
+  width: 6px;
+  height: 18px;
+  background-color: #285ac8;
+  margin-right: 10px;
+}
+
+.title-text {
+  font-size: 12px;
+  font-weight: bold;
+  color: #4a4a4a;
+}
 
 .BaseInfo {
   margin-bottom: 50px;

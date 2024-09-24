@@ -185,33 +185,41 @@
           </el-check-tag>
 
           <el-check-tag
-            :checked="selectedTag === 'RiskFactorsAndExposure'"
+            :checked="selectedTag === 'DiagnosisComplications'"
             type="primary"
-            @change="selectTag('RiskFactorsAndExposure')"
+            @change="selectTag('DiagnosisComplications')"
           >
-            危险因素与暴露史
+            并发症
+          </el-check-tag>
+
+          <el-check-tag
+            :checked="selectedTag === 'Diagnosistag'"
+            type="primary"
+            @change="selectTag('Diagnosistag')"
+          >
+            上传检测报告
           </el-check-tag>
         </div>
 
         <!-- 根据选择的标签显示不同内容 -->
         <div>
           <div v-show="selectedTag === 'DiagnosisResults'">
-            <p>查看诊断信息</p>
+            <p>诊断信息</p>
             <DiagnosisResults ref="DiagnosisResults" />
           </div>
 
           <div v-show="selectedTag === 'DiagnosisPersonalInfo'">
-            <p>查看基本情况</p>
+            <p>基本情况</p>
             <DiagnosisPersonalInfo ref="DiagnosisPersonalInfo" />
           </div>
 
           <div v-show="selectedTag === 'GeneralSymptoms'">
-            <p>查看全身症状</p>
+            <p>全身症状</p>
             <GeneralSymptoms ref="GeneralSymptoms" />
           </div>
 
           <div v-show="selectedTag === 'RespiratorySymptoms'">
-            <p>查看呼吸系统症状</p>
+            <p>呼吸系统症状</p>
             <RespiratorySymptoms ref="RespiratorySymptoms" />
           </div>
 
@@ -220,28 +228,32 @@
           </div>
 
           <div v-show="selectedTag === 'CirculatorySymptoms'">
-            <p>查看循环系统症状</p>
+            <p>循环系统症状</p>
             <CirculatorySymptoms ref="CirculatorySymptoms" />
           </div>
 
           <div v-show="selectedTag === 'NeurologicalSymptoms'">
-            <p>查看神经系统症状</p>
+            <p>神经系统症状</p>
             <NeurologicalSymptoms ref="NeurologicalSymptoms" />
           </div>
 
           <div v-show="selectedTag === 'LocalSymptoms'">
-            <p>查看局部症状</p>
+            <p>局部症状</p>
             <DiagnosisLocalSymptoms ref="DiagnosisLocalSymptoms" />
           </div>
 
           <div v-show="selectedTag === 'OtherSymptoms'">
-            <p>查看其他症状</p>
+            <p>其他症状</p>
             <OtherSymptoms ref="OtherSymptoms" />
           </div>
 
-          <div v-show="selectedTag === 'RiskFactorsAndExposure'">
-            <p>查看危险因素与暴露史</p>
-            <RiskFactorsAndExposure ref="RiskFactorsAndExposure" />
+          <div v-show="selectedTag === 'DiagnosisComplications'">
+            <p>并发症</p>
+            <DiagnosisComplications ref="DiagnosisComplications" />
+          </div>
+          <div v-show="selectedTag === 'Diagnosistag'">
+            <p>上传检测报告</p>
+            <Diagnosistag ref="Diagnosistag" />
           </div>
         </div>
       </el-form>
@@ -259,9 +271,9 @@ import CirculatorySymptoms from "./CirculatorySymptoms.vue";
 import NeurologicalSymptoms from "./NeurologicalSymptoms.vue";
 import DiagnosisLocalSymptoms from "./DiagnosisLocalSymptoms.vue";
 import OtherSymptoms from "./OtherSymptoms.vue";
-import RiskFactorsAndExposure from "./RiskFactorsAndExposure.vue";
+import DiagnosisComplications from "./DiagnosisComplications.vue";
 import DiagnosisPersonalInfo from "./DiagnosisPersonalInfo.vue";
-
+import Diagnosistag from "./Diagnosistag.vue";
 export default {
   components: {
     Dateselection,
@@ -273,7 +285,8 @@ export default {
     NeurologicalSymptoms,
     DiagnosisLocalSymptoms,
     OtherSymptoms,
-    RiskFactorsAndExposure,
+    DiagnosisComplications,
+    Diagnosistag,
   },
   data() {
     return {
@@ -298,28 +311,6 @@ export default {
     handleCancel() {
       this.visible = false;
       this.handleReset();
-
-      if (this.$refs.GeneralSymptoms) {
-        this.$refs.GeneralSymptoms.handleReset();
-      }
-      if (this.$refs.RespiratorySymptoms) {
-        this.$refs.RespiratorySymptoms.handleReset();
-      }
-      if (this.$refs.CirculatorySymptoms) {
-        this.$refs.CirculatorySymptoms.handleReset();
-      }
-      if (this.$refs.NeurologicalSymptoms) {
-        this.$refs.NeurologicalSymptoms.handleReset();
-      }
-      if (this.$refs.DiagnosisLocalSymptoms) {
-        this.$refs.DiagnosisLocalSymptoms.handleReset();
-      }
-      if (this.$refs.OtherSymptoms) {
-        this.$refs.OtherSymptoms.handleReset();
-      }
-      // if (this.$refs.RiskFactorsAndExposure) {
-      //   this.$refs.RiskFactorsAndExposure.handleReset();
-      // }
     },
 
     async handleSubmit() {
@@ -327,12 +318,22 @@ export default {
 
       try {
         // 调用子组件的 validate 方法
+        // 诊断信息
+        await this.$refs.DiagnosisResults.validate();
+        // 基本信息
+        // 全身症状
         await this.$refs.GeneralSymptoms.validate();
+
+        // 其他
         await this.$refs.OtherSymptoms.validate();
+        // 并发症
+        await this.$refs.DiagnosisComplications.validate();
 
         // 如果子组件验证通过，继续处理其他数据
         const DiagnosisResultsData = this.$refs.DiagnosisResults.getData();
         const GeneralSymptomsData = this.$refs.GeneralSymptoms.getData();
+        const DiagnosisPersonalInfoData =
+          this.$refs.DiagnosisPersonalInfo.getData();
         const RespiratorySymptomsData =
           this.$refs.RespiratorySymptoms.getData();
         const NeurologicalSymptomsData =
@@ -342,17 +343,20 @@ export default {
         const DiagnosisLocalSymptomsData =
           this.$refs.DiagnosisLocalSymptoms.getData();
         const OtherSymptomsData = this.$refs.OtherSymptoms.getData();
-        const RiskFactorsAndExposureData =
-          this.$refs.RiskFactorsAndExposure.getData();
+        const DiagnosisComplicationsData =
+          this.$refs.DiagnosisComplications.getData();
+        const DiagnosistagData = this.$refs.Diagnosistag.getData();
 
         console.log("诊断信息:", DiagnosisResultsData);
+        console.log("基本信息：", DiagnosisPersonalInfoData);
         console.log("全身症状:", GeneralSymptomsData);
         console.log("呼吸系统症状:", RespiratorySymptomsData);
         console.log("循环系统症状:", CirculatorySymptomsData);
         console.log("神经系统症状:", NeurologicalSymptomsData);
         console.log("局部症状:", DiagnosisLocalSymptomsData);
         console.log("其他:", OtherSymptomsData);
-        console.log("危险因素与暴露史:", RiskFactorsAndExposureData);
+        console.log("并发症:", DiagnosisComplicationsData);
+        console.log("检测报告:", DiagnosistagData);
 
         this.visible = false;
         ElMessage({
@@ -374,13 +378,16 @@ export default {
       // this.form = this.getInitialForm();
       this.message = "";
       this.selectedTag = null;
+      this.$refs.DiagnosisResults.handleReset();
       this.$refs.GeneralSymptoms.handleReset();
       this.$refs.RespiratorySymptoms.handleReset();
       this.$refs.NeurologicalSymptoms.handleReset();
       this.$refs.CirculatorySymptoms.handleReset();
       this.$refs.DiagnosisLocalSymptoms.handleReset();
       this.$refs.OtherSymptoms.handleReset();
-      this.$refs.RiskFactorsAndExposure.handleReset();
+      this.$refs.DiagnosisComplications.handleReset();
+      this.$refs.DiagnosisPersonalInfo.handleReset();
+      this.$refs.Diagnosistag.handleReset();
     },
     getInitialForm() {
       return {};

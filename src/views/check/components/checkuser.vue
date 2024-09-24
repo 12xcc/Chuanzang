@@ -63,7 +63,7 @@
       <el-table-column prop="PhoneNumber" label="电话" width="120" />
       <el-table-column label="操作">
         <template #default="{ row }">
-          <el-button @click="selectUser(row)">添加诊断数据</el-button>
+          <el-button @click="selectUser(row)">添加检测信息</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -75,14 +75,14 @@
       暂无数据
     </div>
   </el-drawer>
-  <Adddiagnosisdata ref="Adddiagnosisdata" />
+  <Addcheckdata ref="Addcheckdata" />
 </template>
 
 <script>
-import Adddiagnosisdata from "./adddiagnosisdata/adddiagnosisdata.vue";
+import Addcheckdata from "./addcheckdata/addcheckdata.vue";
 export default {
   components: {
-    Adddiagnosisdata,
+    Addcheckdata,
   },
   props: {
     visible: {
@@ -123,7 +123,7 @@ export default {
     },
     selectUser(row) {
       this.selectedUser = row;
-      this.$refs.Adddiagnosisdata.showDrawer(row);
+      this.$refs.Addcheckdata.showDrawer(row);
     },
     confirmSelection() {
       this.$emit("user-selected", this.selectedUser);

@@ -7,6 +7,7 @@
       ref="form"
       :rules="rules"
       label-position="left"
+      :disabled="allDisabled" :readonly="allReadonly"
     >
       <div class="Symptoms">
         <div class="Condition">
@@ -139,10 +140,10 @@ export default {
   },
   data() {
     return {
-      allDisabled: false,
+      allDisabled:true,allReadonly:true,
       visible: false, // 控制弹窗显示
       form: {
-        Height: null,
+         Height: null,
         Weight: null,
         BloodPressure: '',
         BloodSugarFasting: null,
@@ -159,14 +160,9 @@ export default {
     };
   },
   methods: {
-    handleReset() {
-      console.log("基本信息重置");
-      this.form = this.getInitialForm();
-      this.message = "";
-    },
     getInitialForm() {
       return {
-        Height: null,
+          Height: null,
         Weight: null,
         BloodPressure: '',
         BloodSugarFasting: null,

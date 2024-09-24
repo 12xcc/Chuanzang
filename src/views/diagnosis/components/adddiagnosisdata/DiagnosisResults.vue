@@ -18,7 +18,7 @@
             :checked="form.DiseaseType === '新型冠状病毒感染'"
             type="primary"
             @change="toggleDisease('新型冠状病毒感染')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             新型冠状病毒感染
           </el-check-tag>
@@ -26,7 +26,7 @@
             :checked="form.DiseaseType === '流感'"
             type="primary"
             @change="toggleDisease('流感')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             流感
           </el-check-tag>
@@ -35,7 +35,7 @@
               :checked="form.DiseaseType === '鼠疫'"
               type="primary"
               @change="toggleDisease('鼠疫')"
-              :disabled="allDisabled"
+              :disabled="allDisabled" :readonly="allReadonly"
             >
               鼠疫
             </el-check-tag>
@@ -49,7 +49,7 @@
                 :checked="form.PlagueSubtype === '腺鼠疫'"
                 type="primary"
                 @change="togglePlagueSubtype('腺鼠疫')"
-                :disabled="allDisabled"
+                :disabled="allDisabled" :readonly="allReadonly"
               >
                 腺鼠疫
               </el-check-tag>
@@ -57,7 +57,7 @@
                 :checked="form.PlagueSubtype === '肺鼠疫'"
                 type="primary"
                 @change="togglePlagueSubtype('肺鼠疫')"
-                :disabled="allDisabled"
+                :disabled="allDisabled" :readonly="allReadonly"
               >
                 肺鼠疫
               </el-check-tag>
@@ -65,7 +65,7 @@
                 :checked="form.PlagueSubtype === '败血型鼠疫'"
                 type="primary"
                 @change="togglePlagueSubtype('败血型鼠疫')"
-                :disabled="allDisabled"
+                :disabled="allDisabled" :readonly="allReadonly"
               >
                 败血型鼠疫
               </el-check-tag>
@@ -73,7 +73,7 @@
                 :checked="form.PlagueSubtype === '肠鼠疫'"
                 type="primary"
                 @change="togglePlagueSubtype('肠鼠疫')"
-                :disabled="allDisabled"
+                :disabled="allDisabled" :readonly="allReadonly"
               >
                 肠鼠疫
               </el-check-tag>
@@ -81,7 +81,7 @@
                 :checked="form.PlagueSubtype === '眼鼠疫'"
                 type="primary"
                 @change="togglePlagueSubtype('眼鼠疫')"
-                :disabled="allDisabled"
+                :disabled="allDisabled" :readonly="allReadonly"
               >
                 眼鼠疫
               </el-check-tag>
@@ -89,7 +89,7 @@
                 :checked="form.PlagueSubtype === '皮肤鼠疫'"
                 type="primary"
                 @change="togglePlagueSubtype('皮肤鼠疫')"
-                :disabled="allDisabled"
+                :disabled="allDisabled" :readonly="allReadonly"
               >
                 皮肤鼠疫
               </el-check-tag>
@@ -97,7 +97,7 @@
                 :checked="form.PlagueSubtype === '脑鼠疫'"
                 type="primary"
                 @change="togglePlagueSubtype('脑鼠疫')"
-                :disabled="allDisabled"
+                :disabled="allDisabled" :readonly="allReadonly"
               >
                 脑鼠疫
               </el-check-tag>
@@ -108,7 +108,7 @@
             :checked="form.DiseaseType === '感染性腹泻'"
             type="primary"
             @change="toggleDisease('感染性腹泻')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             感染性腹泻
           </el-check-tag>
@@ -117,7 +117,7 @@
               :checked="form.DiseaseType === '炭疽'"
               type="primary"
               @change="toggleDisease('炭疽')"
-              :disabled="allDisabled"
+              :disabled="allDisabled" :readonly="allReadonly"
             >
               炭疽
             </el-check-tag>
@@ -126,7 +126,7 @@
                 :checked="form.AnthraxSubtype === '皮肤炭疽'"
                 type="primary"
                 @change="toggleAnthraxSubtype('皮肤炭疽')"
-                :disabled="allDisabled"
+                :disabled="allDisabled" :readonly="allReadonly"
               >
                 皮肤炭疽
               </el-check-tag>
@@ -134,7 +134,7 @@
                 :checked="form.AnthraxSubtype === '肠炭疽'"
                 type="primary"
                 @change="toggleAnthraxSubtype('肠炭疽')"
-                :disabled="allDisabled"
+                :disabled="allDisabled" :readonly="allReadonly"
               >
                 肠炭疽
               </el-check-tag>
@@ -142,7 +142,7 @@
                 :checked="form.AnthraxSubtype === '肺炭疽'"
                 type="primary"
                 @change="toggleAnthraxSubtype('肺炭疽')"
-                :disabled="allDisabled"
+                :disabled="allDisabled" :readonly="allReadonly"
               >
                 肺炭疽
               </el-check-tag>
@@ -150,7 +150,7 @@
                 :checked="form.AnthraxSubtype === '脑膜炎型炭疽'"
                 type="primary"
                 @change="toggleAnthraxSubtype('脑膜炎型炭疽')"
-                :disabled="allDisabled"
+                :disabled="allDisabled" :readonly="allReadonly"
               >
                 脑膜炎型炭疽
               </el-check-tag>
@@ -158,7 +158,7 @@
                 :checked="form.AnthraxSubtype === '败血症型炭疽'"
                 type="primary"
                 @change="toggleAnthraxSubtype('败血症型炭疽')"
-                :disabled="allDisabled"
+                :disabled="allDisabled" :readonly="allReadonly"
               >
                 败血症型炭疽
               </el-check-tag>
@@ -168,7 +168,7 @@
             :checked="form.DiseaseType === '结核病'"
             type="primary"
             @change="toggleDisease('结核病')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             结核病
           </el-check-tag>
@@ -176,7 +176,7 @@
             :checked="form.DiseaseType === '登革热（蚊媒传染病）'"
             type="primary"
             @change="toggleDisease('登革热（蚊媒传染病）')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             登革热（蚊媒传染病）
           </el-check-tag>
@@ -184,7 +184,7 @@
             :checked="form.DiseaseType === '疟疾（蚊媒传染病）'"
             type="primary"
             @change="toggleDisease('疟疾（蚊媒传染病）')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             疟疾（蚊媒传染病）
           </el-check-tag>
@@ -192,7 +192,7 @@
             :checked="form.DiseaseType === '森林脑炎（蜱媒传染病）'"
             type="primary"
             @change="toggleDisease('森林脑炎（蜱媒传染病）')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             森林脑炎（蜱媒传染病）
           </el-check-tag>
@@ -202,7 +202,7 @@
             "
             type="primary"
             @change="toggleDisease('发热伴血小板减少综合征（蜱媒传染病）')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             发热伴血小板减少综合征（蜱媒传染病）
           </el-check-tag>
@@ -210,7 +210,7 @@
             :checked="form.DiseaseType === '斑疹伤寒'"
             type="primary"
             @change="toggleDisease('斑疹伤寒')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             斑疹伤寒
           </el-check-tag>
@@ -218,7 +218,7 @@
             :checked="form.DiseaseType === '流行性出血热'"
             type="primary"
             @change="toggleDisease('流行性出血热')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             流行性出血热
           </el-check-tag>
@@ -227,7 +227,7 @@
               :checked="form.DiseaseType === '其他'"
               type="primary"
               @change="toggleDisease('其他')"
-              :disabled="allDisabled"
+              :disabled="allDisabled" :readonly="allReadonly"
             >
               其他
             </el-check-tag>
@@ -236,11 +236,12 @@
                 v-if="form.DiseaseType === '其他'"
                 label="其他疾病"
                 style="margin-left: 20px; padding: 15px 0 15px 0"
+                prop="OtherDiseaseName"
               >
                 <el-input
                   v-model="form.OtherDiseaseName"
                   placeholder="请输入其他疾病名称"
-                  :disabled="allDisabled"
+                  :disabled="allDisabled" :readonly="allReadonly"
                   style=""
                 />
               </el-form-item>
@@ -257,7 +258,7 @@
           <el-radio-group
             v-model="form.DiscoveryMethod"
             @change="toggleDiscoveryMethod"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
             style="margin-left: 20px"
           >
             <el-radio value="APP填报">APP填报</el-radio>
@@ -271,11 +272,12 @@
               v-if="form.DiscoveryMethod === '其他'"
               label="其他途径"
               style="margin-left: 20px; padding: 15px 0 15px 0"
+              prop="OtherDiscoveryMethodName"
             >
               <el-input
                 v-model="form.OtherDiscoveryMethodName"
                 placeholder="请输入其他途径名称"
-                :disabled="allDisabled"
+                :disabled="allDisabled" :readonly="allReadonly"
                 style=""
               />
             </el-form-item>
@@ -291,7 +293,7 @@
           <el-radio-group
             v-model="form.DiseaseOutcome"
             @change="toggleOutcome"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
             style="margin-left: 20px"
           >
             <el-radio value="治愈">治愈</el-radio>
@@ -312,7 +314,7 @@
               <el-input
                 clearable
                 v-model="form.HospitalName"
-                :disabled="allDisabled"
+                :disabled="allDisabled" :readonly="allReadonly"
                 placeholder="请输入确诊医院名称"
               />
             </el-form-item>
@@ -323,7 +325,7 @@
                 v-model="form.AdmissionDate"
                 type="date"
                 placeholder="请选择就诊/入院日期"
-                :disabled="allDisabled"
+                :disabled="allDisabled" :readonly="allReadonly"
               />
             </el-form-item>
 
@@ -333,7 +335,7 @@
                 v-model="form.DischargeDate"
                 type="date"
                 placeholder="请选择出院日期"
-                :disabled="allDisabled"
+                :disabled="allDisabled" :readonly="allReadonly"
               />
             </el-form-item>
 
@@ -343,7 +345,7 @@
                 v-model="form.DeathDate"
                 type="date"
                 placeholder="请选择死亡日期"
-                :disabled="allDisabled"
+                :disabled="allDisabled" :readonly="allReadonly"
               />
             </el-form-item>
 
@@ -353,7 +355,7 @@
                 type="textarea"
                 placeholder="请输入就诊/入院时症状和体征"
                 v-model="form.AdmissionSymptomsAndSigns"
-                :disabled="allDisabled"
+                :disabled="allDisabled" :readonly="allReadonly"
               />
             </el-form-item>
           </div>
@@ -369,7 +371,7 @@
             :checked="form.RegistrationClassification === '新患者'"
             type="primary"
             @change="toggleRegistration('新患者')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             新患者
           </el-check-tag>
@@ -377,7 +379,7 @@
             :checked="form.RegistrationClassification === '复发'"
             type="primary"
             @change="toggleRegistration('复发')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             复发
           </el-check-tag>
@@ -385,7 +387,7 @@
             :checked="form.RegistrationClassification === '返回'"
             type="primary"
             @change="toggleRegistration('返回')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             返回
           </el-check-tag>
@@ -393,7 +395,7 @@
             :checked="form.RegistrationClassification === '治疗失败'"
             type="primary"
             @change="toggleRegistration('治疗失败')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             治疗失败
           </el-check-tag>
@@ -403,7 +405,7 @@
               :checked="form.RegistrationClassification === '其他'"
               type="primary"
               @change="toggleRegistration('其他')"
-              :disabled="allDisabled"
+              :disabled="allDisabled" :readonly="allReadonly"
             >
               其他
             </el-check-tag>
@@ -412,11 +414,12 @@
                 v-if="form.RegistrationClassification === '其他'"
                 label="其他"
                 style="margin-left: 20px; padding: 15px 0 15px 0"
+                prop="OtherRegistrationDetails"
               >
                 <el-input
                   v-model="form.OtherRegistrationDetails"
                   placeholder="请详述"
-                  :disabled="allDisabled"
+                  :disabled="allDisabled" :readonly="allReadonly"
                   style=""
                 />
               </el-form-item>
@@ -437,10 +440,12 @@ export default {
   },
   data() {
     return {
-        allDisabled:false,
+      allDisabled: false,
       visible: false, // 控制弹窗显示
       form: {
         DiseaseType: "", // 确诊疾病
+        PlagueSubtype: "", //鼠疫子类
+        AnthraxSubtype: "", //炭疽子类
         OtherDiseaseName: "", // 其他疾病名称
         DiscoveryMethod: "", // 病例发现途径
         OtherDiscoveryMethodName: "", // 其他途径名称
@@ -454,7 +459,13 @@ export default {
         OtherRegistrationDetails: "", // 登记分类其他详情
       },
 
-      rules: {},
+      rules: {
+        OtherDiseaseName: [{ required: true, message: "请填写其他疾病" }],
+        OtherDiscoveryMethodName: [
+          { required: true, message: "请填写其他途径" },
+        ],
+        OtherRegistrationDetails: [{ required: true, message: "请填写其他" }],
+      },
     };
   },
   methods: {
@@ -463,28 +474,75 @@ export default {
       if (this.form.DiseaseType !== "鼠疫") {
         this.form.PlagueSubtype = ""; // 清空鼠疫子类
       }
+      if (this.form.DiseaseType !== "炭疽") {
+        this.form.AnthraxSubtype = ""; // 清空炭疽子类
+      }
+      if (this.form.DiseaseType !== "其他") {
+        this.form.OtherDiseaseName = ""; // 清空其疾病输入框
+      }
     },
     togglePlagueSubtype(subtype) {
       this.form.PlagueSubtype =
         this.form.PlagueSubtype === subtype ? "" : subtype;
     },
+    toggleAnthraxSubtype(subtype) {
+      this.form.AnthraxSubtype =
+        this.form.AnthraxSubtype === subtype ? "" : subtype;
+    },
     toggleDiscoveryMethod(value) {
       this.form.DiscoveryMethod = value;
-       if (this.form.DiscoveryMethod !== '其他') {
-      this.form.OtherDiscoveryMethodName = ''; // 清空其他途径名称
-    }
+      if (this.form.DiscoveryMethod !== "其他") {
+        this.form.OtherDiscoveryMethodName = ""; // 清空其他途径名称
+      }
     },
 
     toggleOutcome() {
       // this.form.DiseaseOutcome = value;
     },
-    
+
     toggleRegistration(value) {
       this.form.RegistrationClassification = value;
+    },
+    validate() {
+      return new Promise((resolve, reject) => {
+        // 选择了鼠疫，必须选择子选项
+        if (this.form.DiseaseType === "鼠疫") {
+          if (!this.form.PlagueSubtype) {
+            return reject(new Error("请选择鼠疫子类"));
+          }
+        }
+
+        // 选择了炭疽，必须选择子选项
+        if (this.form.DiseaseType === "炭疽") {
+          if (!this.form.AnthraxSubtype) {
+            return reject(new Error("请选择炭疽子类"));
+          }
+        }
+
+        // 选择了其他，必须选择填写
+        if (this.form.DiseaseType === "其他") {
+          if (!this.form.OtherDiseaseName) {
+            return reject(new Error("请填写其他疾病名称"));
+          }
+        }
+
+        // 验证通过
+        this.$refs.form.validate((valid) => {
+          valid
+            ? resolve()
+            : reject(new Error("表单提交失败，请检查必填字段是否未填写"));
+        });
+      });
+    },
+    handleReset() {
+      console.log("诊断结果重置");
+      this.form = this.getInitialForm();
     },
     getInitialForm() {
       return {
         DiseaseType: "", // 确诊疾病
+        PlagueSubtype: "", //鼠疫子类
+        AnthraxSubtype: "", //炭疽子类
         OtherDiseaseName: "", // 其他疾病名称
         DiscoveryMethod: "", // 病例发现途径
         OtherDiscoveryMethodName: "", // 其他途径名称

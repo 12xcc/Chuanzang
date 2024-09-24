@@ -6,6 +6,7 @@
       class="form-container"
       ref="form"
       :rules="rules"
+      :disabled="allDisabled" :readonly="allReadonly"
     >
       <div class="GeneralSymptoms">
         <div class="Condition">
@@ -17,7 +18,7 @@
             :checked="form.HasSuddenOnset"
             type="primary"
             @change="toggleTag('HasSuddenOnset')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             突然发病
           </el-check-tag>
@@ -26,7 +27,7 @@
             :checked="form.HasRapidProgress"
             type="primary"
             @change="toggleTag('HasRapidProgress')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             病情进展迅速
           </el-check-tag>
@@ -35,7 +36,7 @@
             :checked="form.HasPeriodicAttack"
             type="primary"
             @change="toggleTag('HasPeriodicAttack')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             周期性发作
           </el-check-tag>
@@ -44,7 +45,7 @@
             :checked="form.HasForcedPosture"
             type="primary"
             @change="toggleTag('HasForcedPosture')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             强迫体位
           </el-check-tag>
@@ -53,7 +54,7 @@
             :checked="form.HasCalfMusclePain"
             type="primary"
             @change="toggleTag('HasCalfMusclePain')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             腓肠肌疼痛
           </el-check-tag>
@@ -68,7 +69,7 @@
             :checked="form.HasOtherSymptoms"
             type="primary"
             @change="toggleTag('HasOtherSymptoms')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             其他
           </el-check-tag>
@@ -85,6 +86,7 @@
                 clearable
                 size="default"
                 style="margin-left:100px;width: 250px"
+                :disabled="allDisabled" :readonly="allReadonly"
               />
             </el-form-item>
           </div>
@@ -104,7 +106,7 @@ export default {
   },
   data() {
     return {
-      allDisabled:true,
+      allDisabled:true,allReadonly:true,
       visible: false, // 控制弹窗显示
       form: {
         HasSuddenOnset: false,

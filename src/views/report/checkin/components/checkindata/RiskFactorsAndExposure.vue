@@ -6,6 +6,7 @@
       class="form-container"
       ref="form"
       :rules="rules"
+      :disabled="allDisabled" :readonly="allReadonly"
     >
       <div class="GeneralSymptoms">
         <!------------------------------- 接触情况 ---------------------------------->
@@ -622,6 +623,7 @@ export default {
   },
   data() {
     return {
+      allDisabled:true,allReadonly:true,
       visible: false, // 控制弹窗显示
       form: {
         ContactWithFeverPatient: "", // 与发热患者接触情况
@@ -711,28 +713,6 @@ export default {
       this.visible = false;
       this.handleReset();
     },
-    handleSubmit() {
-      console.log("触发");
-      this.$refs.form.validate((valid) => {
-        console.log("Form is valid:", valid);
-        if (valid) {
-          console.log("Form data:", this.form);
-          this.visible = false;
-          ElMessage({
-            message: "提交成功",
-            type: "success",
-          });
-          this.handleReset();
-        } else {
-          console.log("表单验证失败");
-          ElMessage({
-            message: "提交失败",
-            type: "error",
-          });
-          return false;
-        }
-      });
-    },
 
     // 是否在野外活动，若否/不清楚，则野外活动史清除
     handleOutdoorChange() {
@@ -803,6 +783,7 @@ export default {
         this.form.RatContactMethod = "";
       }
     },
+
     handleReset() {
       this.form = this.getInitialForm();
       this.message = "";
@@ -863,6 +844,22 @@ export default {
         HasContactWithTiger: false,
         HasContactWithOtherAnimal: false, // 是否接触其他动物
         OtherAnimalName: "",
+
+        IsHillyOrMountainous: false, // 是否居住在丘陵或山区
+        IsPlain: false, //是否居住在平原
+        IsOtherResidenceType: false, // 是否居住在其他地区
+
+        // 如果这里设置成null，那么这个选项必选
+        HasMosquitoBite: null, // 14天内是否明确被蚊虫叮咬过
+        TickBite: "", //发病前2周内是否被蜱叮咬过
+        FleaBite: "", // 发病是否被跳蚤叮咬过
+        ContactWithRatIn2Months: "", // 发病前2个月内是否接触鼠类
+        RatContactMethod: "", // 接触方式
+        EatenFoodContaminatedByRatFeces: "", //发病前1月内是否吃过被鼠排泄物污染的食物
+        DrunkWaterFromDitchesOrPonds: "", // ENUM('是', '否', '不清楚'), -- 19. 发病前1月内是否在野外喝过沟（塘）水
+        RestedNearRatHoles: "", // ENUM('是', '否', '不清楚'), -- 20. 发病前9天内是否在鼠洞附近坐卧
+        RatOrRatDroppingsAtWorkplace: "", // ENUM('是', '否', '不清楚'), -- 21. 工作场所有无鼠或鼠排泄物
+        ContactWithPatientExcreta: "", // ENUM('是', '否', '不清楚') -- 22. 发病前1月内是否接触过病人排泄物（血、尿、便等）
       };
     },
 

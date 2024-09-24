@@ -280,7 +280,7 @@ export default {
 
       return this.allData.filter(item => {
         // const userTypeMatch = !UserType || item.UserType === this.convertUserType(UserType);
-        const fieldsToSearch = ['Name', 'PhoneNumber', 'Department', 'SpecificOccupation'];
+        const fieldsToSearch = ['Name', 'PhoneNumber', 'Department', 'SpecificOccupation','Age'];
         const textMatch = fieldsToSearch.some(field => {
           const itemFieldValue = item[field]?.toString().toLowerCase() || '';
           return itemFieldValue.includes(lowerCaseCheck);
@@ -300,6 +300,7 @@ export default {
       // return `${this.filteredData.length > 0 ? this.filteredData.length * 48 : 500}px`; // 动态计算表格高度
     }
   },
+
   methods: {
     handleQuery() {
       this.queryParams.pageNum = 1;
@@ -310,6 +311,7 @@ export default {
     handleExport() {
       console.log('导出功能未实现');
     },
+    
     handleSubmitDiagnosis() {
       if (this.filteredData.length > 0) {
         this.checkUserVisible = true; // 显示 Checkuser

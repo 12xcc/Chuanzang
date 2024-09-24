@@ -17,7 +17,7 @@
             :checked="form.HasDelirium"
             type="primary"
             @change="toggleTag('HasDelirium')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             儋妄
           </el-check-tag>
@@ -26,7 +26,7 @@
             :checked="form.HasConvulsion"
             type="primary"
             @change="toggleTag('HasConvulsion')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             抽搐
           </el-check-tag>
@@ -35,7 +35,7 @@
             :checked="form.HasDrowsiness"
             type="primary"
             @change="toggleTag('HasDrowsiness')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             昏睡
           </el-check-tag>
@@ -44,7 +44,7 @@
             :checked="form.HasComa"
             type="primary"
             @change="toggleTag('HasComa')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             昏迷
           </el-check-tag>
@@ -53,7 +53,7 @@
             :checked="form.HasStiffNeck"
             type="primary"
             @change="toggleTag('HasStiffNeck')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             颈部强直
           </el-check-tag>
@@ -62,7 +62,7 @@
             :checked="form.HasRestlessness"
             type="primary"
             @change="toggleTag('HasRestlessness')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             烦躁不安
           </el-check-tag>
@@ -71,7 +71,7 @@
             :checked="form.HasMuscleParalysisNeckShoulder"
             type="primary"
             @change="toggleTag('HasMuscleParalysisNeckShoulder')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             颈肩部肌肉迟缓性瘫痪
           </el-check-tag>
@@ -80,7 +80,7 @@
             :checked="form.HasMuscleParalysisLimbs"
             type="primary"
             @change="toggleTag('HasMuscleParalysisLimbs')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             肢体肌肉迟缓性瘫痪
           </el-check-tag>
@@ -89,7 +89,7 @@
             :checked="form.HasSwallowingDifficulty"
             type="primary"
             @change="toggleTag('HasSwallowingDifficulty')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             吞咽困难
           </el-check-tag>
@@ -98,7 +98,7 @@
             :checked="form.HasSpeechDisorder"
             type="primary"
             @change="toggleTag('HasSpeechDisorder')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             语言障碍
           </el-check-tag>
@@ -107,7 +107,7 @@
             :checked="form.HasConsciousnessDisorder"
             type="primary"
             @change="toggleTag('HasConsciousnessDisorder')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             意识障碍或惊厥
           </el-check-tag>
@@ -116,7 +116,7 @@
             :checked="form.HasDizziness"
             type="primary"
             @change="toggleTag('HasDizziness')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             头晕
           </el-check-tag>
@@ -125,7 +125,7 @@
             :checked="form.HasTinnitus"
             type="primary"
             @change="toggleTag('HasTinnitus')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             耳鸣
           </el-check-tag>
@@ -134,7 +134,7 @@
             :checked="form.HasHearingLoss"
             type="primary"
             @change="toggleTag('HasHearingLoss')"
-            :disabled="allDisabled"
+            :disabled="allDisabled" :readonly="allReadonly"
           >
             听力减退
           </el-check-tag>
@@ -154,7 +154,7 @@ export default {
   },
   data() {
     return {
-      allDisabled:true,
+      allDisabled:true,allReadonly:true,
       visible: false, // 控制弹窗显示
       form: {
          HasDelirium: false,
