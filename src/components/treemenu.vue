@@ -88,6 +88,11 @@
       <img src="../assets/menu_icons/user_feedback.svg" alt="" class="menu-icons" />
       <span>用户反馈</span>
     </el-menu-item>
+
+    <el-menu-item index="/propaganda">
+      <img src="../assets/menu_icons/user_feedback.svg" alt="" class="menu-icons" />
+      <span>宣传材料管理</span>
+    </el-menu-item>
   </el-menu>
 </template>
 
@@ -113,12 +118,6 @@ export default {
       this.$tagsStore.addTag(tag); // 添加标签
       this.$router.push(key);
     },
-    handleAuto() {
-      
-    },
-    handleExAi() {
-      // 专家/AI诊断切换逻辑
-    },
     getTitleByPath(path) {
       const menuMap = {
         '/user/alluser': '所有用户管理',
@@ -134,7 +133,8 @@ export default {
         '/system/auto-weight': '启动自动权重更新',
         '/system/expert-AI': '专家/AI诊断切换',
         '/system/hospital': '医院基础数据管理',
-        '/feedback': '用户反馈'
+        '/feedback': '用户反馈',
+        '/propaganda': '宣传材料管理',
       };
       return menuMap[path] || '未知标题';
     }

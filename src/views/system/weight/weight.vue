@@ -62,7 +62,7 @@
         <el-table-column prop="SubtypeName" label="子类型" min-width="500" />
         <el-table-column fixed="right" label="操作" min-width="260">
           <template #default="scope">
-            <el-button link type="primary" size="large" @click="handleClick">
+            <el-button link type="primary" size="large" @click="handleWeight(scope.row)">
               设置权重
             </el-button>
           </template>
@@ -78,6 +78,7 @@
         @pagination="handlePagination"
       />
     </div>
+    <Weightset ref="Weightset" />
   </div>
 </template>
 
@@ -85,10 +86,11 @@
 import * as XLSX from "xlsx";
 import { ref, computed, onMounted } from 'vue';
 import Pagination from '@/components/pagination.vue';
-
+import Weightset from './components/weightset.vue';
 export default {
   components: {
     Pagination,
+    Weightset,
   },
   
   mounted() {
@@ -180,8 +182,8 @@ export default {
       XLSX.writeFile(wb, "用户信息导出表.xlsx");
     },
 
-    handleClick() {
-      // 逻辑处理
+    handleWeight(disease) {
+        this.$refs.Weightset.showDrawer(disease);
     },
     isActive() {
       // 逻辑处理

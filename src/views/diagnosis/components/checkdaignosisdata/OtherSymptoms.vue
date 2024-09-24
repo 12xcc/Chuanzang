@@ -136,9 +136,13 @@ export default {
       this.form = { ...user };
       this.visible = true;
     },
-    handleCancel() {
-      this.visible = false;
-      this.handleReset();
+    handleAble() {
+      this.allDisabled = false;
+      this.allReadonly = false;
+    },
+    handleCancel(){
+      this.allDisabled = true;
+      this.allReadonly = true;
     },
      validate() {
       return new Promise((resolve, reject) => {

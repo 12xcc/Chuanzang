@@ -21,6 +21,7 @@
           <el-option :key="4" label="特殊职业" :value="4"></el-option>
         </el-select>
       </el-form-item>
+
       <el-form-item label="" prop="check">
         <el-input
           v-model="queryParams.check"
@@ -31,6 +32,19 @@
           style="width: 200px !important; margin-right: -15px"
         />
       </el-form-item>
+
+       <el-form-item prop="date">
+      <el-date-picker
+        v-model="queryParams.date"
+        type="daterange"
+        range-separator="到"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        :size="size"
+        style="width:300px"
+      />
+      </el-form-item>
+
       <el-form-item>
         <el-button
           type="primary"
@@ -140,7 +154,7 @@
         <el-table-column prop="CheckInDate" label="检测日期" min-width="120" />
         <el-table-column fixed="right" label="操作" min-width="260">
           <template #default="scope">
-            <el-button link type="primary" size="large" @click="handleClick"
+            <el-button link type="primary" size="large" @click="handleCheck(scope.row)"
               >查看</el-button
             >
             <el-button link type="primary" size="large">编辑</el-button>
@@ -161,14 +175,17 @@
       :users="filteredData"
       :visible="checkUserVisible"
     />
+    <Checkcheckdata ref="Checkcheckdata" />
   </div>
 </template>
 
 <script>
 import Checkuser from "./components/checkuser.vue";
+import Checkcheckdata from "./components/checkcheckdata/checkchekcdata.vue"
 export default {
   components: {
     Checkuser,
+    Checkcheckdata,
   },
   data() {
     return {
@@ -178,6 +195,7 @@ export default {
         check: "",
         pageNum: 1,
         pageSize: 15,
+        date:"",
       },
       allData: [
         {
@@ -350,7 +368,10 @@ export default {
     handleClick() {
       // 查看用户逻辑
     },
-
+    handleCheck(row) {
+      this.$refs.Checkcheckdata.showDrawer(row);
+    },
+    
     handleSubmitCheck() {
       if (this.filteredData.length > 0) {
         this.checkUserVisible = true; // 显示 Checkuser

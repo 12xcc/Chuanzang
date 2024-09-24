@@ -205,10 +205,6 @@ export default {
       this.form = { ...user };
       this.visible = true;
     },
-    handleCancel() {
-      this.visible = false;
-      this.handleReset();
-    },
     handleSubmit() {
       console.log("触发");
       this.$refs.form.validate((valid) => {
@@ -234,6 +230,14 @@ export default {
     handleReset() {
       this.form = this.getInitialForm();
       this.message = "";
+    },
+    handleAble() {
+      this.allDisabled = false;
+      this.allReadonly = false;
+    },
+    handleCancel(){
+      this.allDisabled = true;
+      this.allReadonly = true;
     },
     getInitialForm() {
       return {

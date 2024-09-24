@@ -1,5 +1,6 @@
 <template>
   <div>
+    <el-form :disabled="allDisabled">
     <div class="title-container">
       <div class="blue-box"></div>
       <span class="title-text">粪便检查报告（请上传jpg或pdf格式）</span>
@@ -8,6 +9,7 @@
       v-model="reports.fecal"
       :specimen-type="'粪便'"
       report-type="fecal"
+
     />
 
     <div class="title-container">
@@ -18,6 +20,7 @@
       v-model="reports.vomit"
       :specimen-type="'呕吐物'"
       report-type="vomit"
+
     />
 
     <div class="title-container">
@@ -28,7 +31,9 @@
       v-model="reports.blood"
       :specimen-type="'血'"
       report-type="blood"
+
     />
+    </el-form>
   </div>
 </template>
 
@@ -41,6 +46,7 @@ export default {
   },
   data() {
     return {
+      allDisabled:true,
       reports: {
         fecal: [],
         vomit: [],
@@ -49,7 +55,12 @@ export default {
     };
   },
   methods: {
-
+    handleAble(){
+      this.allDisabled=false;
+    },
+    handleCancel(){
+      this.allDisabled=true;
+    },
   },
 };
 </script>

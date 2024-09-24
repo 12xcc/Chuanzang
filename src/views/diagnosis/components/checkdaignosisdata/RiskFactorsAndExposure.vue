@@ -386,6 +386,14 @@ export default {
         this.form.OtherComplicationsName = "";
       }
     },
+    handleAble() {
+      this.allDisabled = false;
+      this.allReadonly = false;
+    },
+    handleCancel(){
+      this.allDisabled = true;
+      this.allReadonly = true;
+    },
       validate() {
       return new Promise((resolve, reject) => {
         // 选择了有并发症，必须选择子选项

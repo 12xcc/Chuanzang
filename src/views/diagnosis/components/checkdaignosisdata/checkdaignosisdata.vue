@@ -10,6 +10,13 @@
     <div class="container">
       <div class="title">
         <h3>查看诊断信息详情</h3>
+        <div class="footer">
+          <!-- <el-button v-if="isEditing" @click="handleQuit">取消</el-button> -->
+          <el-button v-if="!isEditing" @click="handleEdit">编辑</el-button>
+          <el-button v-if="isEditing" type="primary" @click="handleSubmit"
+            >提交</el-button
+          >
+        </div>
       </div>
       <el-form
         :model="form"
@@ -17,7 +24,7 @@
         class="form-container"
         ref="form"
         :rules="rules"
-        disabled
+        :disabled="allDisabled"
       >
         <div class="BaseInfo">
           <div class="title-container">
@@ -44,10 +51,6 @@
                 placeholder=""
                 clearable
               ></el-input>
-              <!-- <el-radio-group v-model="form.Gender">
-                <el-radio value="男">男</el-radio>
-                <el-radio value="女">女</el-radio>
-              </el-radio-group> -->
             </el-form-item>
 
             <!-- 年龄 -->
@@ -68,12 +71,6 @@
                 placeholder=""
                 clearable
               ></el-input>
-              <!-- <el-radio-group v-model="form.Ethnicity">
-                <el-radio value="汉族">汉族</el-radio>
-                <el-radio value="藏族">藏族</el-radio>
-                <el-radio value="彝族">彝族</el-radio>
-                <el-radio value="其他少数民族">其他少数民族</el-radio>
-              </el-radio-group> -->
             </el-form-item>
 
             <!-- 部门/工种 -->
@@ -84,29 +81,7 @@
                 placeholder=""
                 clearable
               ></el-input>
-              <!-- <el-radio-group v-model="form.Department">
-                <el-radio value="安全部">安全部</el-radio>
-                <el-radio value="财务部">财务部</el-radio>
-                <el-radio value="测量队">测量队</el-radio>
-                <el-radio value="工程技术部">工程技术部</el-radio>
-                <el-radio value="合约部">合约部</el-radio>
-                <el-radio value="试验室">试验室</el-radio>
-                <el-radio value="物资设备部">物资设备部</el-radio>
-                <el-radio value="项目管理层">项目管理层</el-radio>
-                <el-radio value="征拆协调部">征拆协调部</el-radio>
-                <el-radio value="综合管理部">综合管理部</el-radio>
-              </el-radio-group> -->
             </el-form-item>
-
-            <!-- <el-form-item label="打卡时间" prop="CheckInDate">
-              <el-input
-                v-model="form.CheckInDate"
-                style="width: 200px"
-                @blur="$refs.form.validateField('CheckInDate')"
-                disabled
-                clearable
-              ></el-input>
-            </el-form-item> -->
           </div>
         </div>
 
@@ -195,7 +170,16 @@
           >
             并发症
           </el-check-tag>
+
+          <el-check-tag
+            :checked="selectedTag === 'DiagnosisExaminations'"
+            type="primary"
+            @change="selectTag('DiagnosisExaminations')"
+          >
+            检测报告
+          </el-check-tag>
         </div>
+
 
         <!-- 根据选择的标签显示不同内容 -->
         <div>
@@ -247,6 +231,10 @@
             <p>查看并发症</p>
             <RiskFactorsAndExposure ref="RiskFactorsAndExposure" />
           </div>
+          <div v-show="selectedTag === 'DiagnosisExaminations'">
+            <p>检测报告</p>
+            <DiagnosisExaminations ref="DiagnosisExaminations" />
+          </div>
         </div>
       </el-form>
     </div>
@@ -265,6 +253,7 @@ import DiagnosisLocalSymptoms from "./DiagnosisLocalSymptoms.vue";
 import OtherSymptoms from "./OtherSymptoms.vue";
 import RiskFactorsAndExposure from "./RiskFactorsAndExposure.vue";
 import DiagnosisPersonalInfo from "./DiagnosisPersonalInfo.vue";
+import DiagnosisExaminations from "../adddiagnosisdata/DiagnosisExaminations .vue";
 
 export default {
   components: {
@@ -278,13 +267,27 @@ export default {
     OtherSymptoms,
     RiskFactorsAndExposure,
     DiagnosisPersonalInfo,
+    DiagnosisExaminations,
   },
   data() {
     return {
+      allDisabled: true,
       visible: false, // 控制弹窗显示
       selectedTag: null, // 当前选中的标签
       form: {},
       rules: {},
+      isEditing: false,
+      refs: [
+        "GeneralSymptoms", 
+        "DiagnosisResults", 
+        "RespiratorySymptoms", 
+        "CirculatorySymptoms", 
+        "NeurologicalSymptoms", 
+        "DiagnosisLocalSymptoms", 
+        "OtherSymptoms", 
+        "DiagnosisPersonalInfo", 
+        "RiskFactorsAndExposure", 
+      ],
     };
   },
 
@@ -299,31 +302,32 @@ export default {
       this.form = { ...user };
       this.visible = true;
     },
-    handleCancel() {
+    
+    handleQuit() {
+      this.allDisabled = true;
+      this.isEditing = false; // 退出编辑模式
+      // this.$refs.GeneralSymptoms.handleCancel()
+      this.refs.forEach((ref) => {
+        this.$refs[ref].handleCancel();
+      });
+    },
+
+    handleCancel(){
+      this.allDisabled = true;
+      this.isEditing = false; // 退出编辑模式
+      // this.$refs.GeneralSymptoms.handleCancel()
+      this.refs.forEach((ref) => {
+        this.$refs[ref].handleCancel();
+      });
       this.visible = false;
       this.handleReset();
-
-      if (this.$refs.GeneralSymptoms) {
-        this.$refs.GeneralSymptoms.handleReset();
-      }
-      if (this.$refs.RespiratorySymptoms) {
-        this.$refs.RespiratorySymptoms.handleReset();
-      }
-      if (this.$refs.CirculatorySymptoms) {
-        this.$refs.CirculatorySymptoms.handleReset();
-      }
-      if (this.$refs.NeurologicalSymptoms) {
-        this.$refs.NeurologicalSymptoms.handleReset();
-      }
-      if (this.$refs.DiagnosisLocalSymptoms) {
-        this.$refs.DiagnosisLocalSymptoms.handleReset();
-      }
-      if (this.$refs.OtherSymptoms) {
-        this.$refs.OtherSymptoms.handleReset();
-      }
-      if (this.$refs.RiskFactorsAndExposure) {
-        this.$refs.RiskFactorsAndExposure.handleReset();
-      }
+    },
+    handleEdit() {
+      this.allDisabled = false;
+      this.isEditing = true; // 进入编辑模式
+      this.refs.forEach((ref) => {
+       this.$refs[ref].handleAble();
+      });
     },
 
     async handleSubmit() {
@@ -409,7 +413,7 @@ export default {
   right: 0;
   width: 800px;
   background: #ffffff;
-  padding-bottom: 20px;
+  padding: 3px;
   z-index: 100;
   border: 3px solid #fafafa;
 }

@@ -14,9 +14,9 @@
           @click="selectTag(tag)"
         >
           {{ tag.title }}
-          <template #close>
+          <!-- <template #close>
            <el-icon class="closeicon"><Close /></el-icon>
-          </template>
+          </template> -->
         </el-tag>
       </div>
     </div>

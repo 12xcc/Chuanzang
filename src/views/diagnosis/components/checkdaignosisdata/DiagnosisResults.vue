@@ -482,6 +482,14 @@ export default {
     toggleRegistration(value) {
       this.form.RegistrationClassification = value;
     },
+    handleAble() {
+      this.allDisabled = false;
+      this.allReadonly = false;
+    },
+    handleCancel(){
+      this.allDisabled = true;
+      this.allReadonly = true;
+    },
     getInitialForm() {
       return {
         DiseaseType: "", // 确诊疾病

@@ -160,6 +160,14 @@ export default {
     };
   },
   methods: {
+    handleAble() {
+      this.allDisabled = false;
+      this.allReadonly = false;
+    },
+    handleCancel(){
+      this.allDisabled = true;
+      this.allReadonly = true;
+    },
     getInitialForm() {
       return {
           Height: null,

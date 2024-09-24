@@ -7,6 +7,7 @@
       size="default"
       :inline="true"
       v-show="showSearch"
+      style="display:flex"
     >
 
       <el-form-item label="" prop="choice">
@@ -33,6 +34,17 @@
           @keyup.enter.native="handleQuery"
           style="width:200px !important; margin-right:-15px;"
         />
+      </el-form-item>
+
+      <el-form-item prop="date">
+      <el-date-picker
+        v-model="queryParams.date"
+        type="daterange"
+        range-separator="到"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        style="width:300px"
+      />
       </el-form-item>
 
       <el-form-item>
@@ -153,7 +165,8 @@ export default {
         choice: '',
         check: '',
         pageNum: 1,
-        pageSize: 15
+        pageSize: 15,
+        date:''
       },
       allData: [
         {
@@ -323,6 +336,7 @@ export default {
     handleCheck(row) {
       this.$refs.Checkdaignosisdata.showDrawer(row);
     },
+    
     handleDownload() {
       console.log('下载功能未实现');
     }

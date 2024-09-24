@@ -30,7 +30,7 @@ const expertAI = () =>import('@/views/system/expertAI/expertAI.vue')
 const hospital = () =>import('@/views/system/hospital/hospital.vue')
 
 const feedback = () =>import('@/views/feedback/index.vue')
-
+const propaganda = () => import('@/views/propaganda/index.vue')
 
 // 1.定义路由数据
 const routes=[
@@ -150,6 +150,11 @@ const routes=[
                 path: 'feedback',
                 component: feedback,
                 name: 'feedback'
+            },
+            {
+                path: 'propaganda',
+                component: propaganda,
+                name: 'propaganda'
             }
         ]
     },
