@@ -63,12 +63,14 @@
 <script>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useUserStore } from "@/store/userrole"; // 引入用户角色 store
 import passwordOpen from "../../assets/password_close.png";
 import passwordClose from "../../assets/password_open.png";
 
 export default {
   setup() {
     const router = useRouter();
+    const userStore = useUserStore(); // 实例化 userStore
     const username = ref("");
     const password = ref("");
     const passwordFieldType = ref("password");
@@ -80,17 +82,37 @@ export default {
         passwordFieldType.value === "password" ? "text" : "password";
     };
 
-    const handleSubmit = () => {
-      console.log("点击登录");
-      if (
-        username.value &&
-        password.value &&
-        !usernameError.value &&
-        !passwordError.value
-      ) {
-        router.push("/user/alluser");
-      }
+    const users = {
+      19357907217: { username:"张三", password: "123456", role: "admin" },
+      13330656624: { username:"李四", password: "123456", role: "nurse" },
+      19508191094: { username:"张三", password: "123456", role: "cdc" }
     };
+
+
+const handleSubmit = () => {
+  const user = users[username.value];
+  if (
+    user &&
+    user.password === password.value &&
+    username.value &&
+    password.value &&
+    !usernameError.value &&
+    !passwordError.value
+  ) {
+    const userData = {
+      phoneNumber: username.value,
+      role: user.role,
+      username: username.value,
+    };
+    userStore.login(userData);
+    localStorage.setItem('user', JSON.stringify(userData)); // 保存到 localStorage
+    router.push("/user/alluser");
+  } else {
+    alert("账号或密码错误");
+  }
+};
+
+
 
     const resetPassword = () => {
       password.value = username.value.slice(-6);
@@ -135,6 +157,7 @@ export default {
     };
   },
 };
+
 </script>
 
 <style scoped>
@@ -175,6 +198,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.3);
   z-index: -1;
 }
+
 .title {
   margin-top: 40px;
   font-size: 20px;
@@ -182,6 +206,7 @@ export default {
   color: #ffffff;
   margin-left: -35px;
 }
+
 .login-container {
   background-color: #ffffff;
   padding: 20px;

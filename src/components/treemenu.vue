@@ -8,7 +8,7 @@
     @select="handleSelect"
     unique-opened
   >
-     <el-sub-menu index="1">
+    <el-sub-menu index="1" v-if="userStore.role === 'admin'||userStore.role === 'nurse'||userStore.role === 'cdc'">
       <template #title>
         <img src="../assets/menu_icons/user.svg" alt="" class="menu-icons" />
         <span>用户管理</span>
@@ -23,12 +23,12 @@
       </el-menu-item>
     </el-sub-menu>
 
-    <el-menu-item index="/work-env">
+    <el-menu-item index="/work-env" v-if="userStore.role !== 'cdc'||userStore.role === 'admin'">
       <img src="../assets/menu_icons/work-env.svg" alt="" class="menu-icons" />
       <span>工作环境管理</span>
     </el-menu-item>
 
-    <el-sub-menu index="/report">
+    <el-sub-menu index="/report" v-if="userStore.role === 'admin' || userStore.role === 'cdc'">
       <template #title>
         <img src="../assets/menu_icons/report.svg" alt="" class="menu-icons" />
         <span>统计报表</span>
@@ -44,20 +44,20 @@
       <el-menu-item index="/report/screen">
         <img src="../assets/menu_icons/screen.svg" alt="" class="menu-icons" />
         <span>数据大屏</span>
-      </el-menu-item>  
+      </el-menu-item>
     </el-sub-menu>
 
-    <el-menu-item index="/diagnosis">
+    <el-menu-item index="/diagnosis" v-if="userStore.role === 'admin' || userStore.role === 'nurse'||userStore.role === 'cdc'">
       <img src="../assets/menu_icons/diagnosis.svg" alt="" class="menu-icons" />
       <span>诊断信息管理</span>
     </el-menu-item>
 
-    <el-menu-item index="/check">
+    <el-menu-item index="/check" v-if="userStore.role === 'admin' || userStore.role === 'nurse'||userStore.role === 'cdc'">
       <img src="../assets/menu_icons/check.svg" alt="" class="menu-icons" />
       <span>检查信息管理</span>
     </el-menu-item>
 
-    <el-sub-menu index="/system">
+    <el-sub-menu index="/system" v-if="userStore.role === 'admin'">
       <template #title>
         <img src="../assets/menu_icons/system.svg" alt="" class="menu-icons" />
         <span>系统管理</span>
@@ -84,12 +84,12 @@
       </el-menu-item>
     </el-sub-menu>
 
-    <el-menu-item index="/feedback">
+    <el-menu-item index="/feedback" v-if="userStore.role === 'admin'">
       <img src="../assets/menu_icons/user_feedback.svg" alt="" class="menu-icons" />
       <span>用户反馈</span>
     </el-menu-item>
 
-    <el-menu-item index="/propaganda">
+    <el-menu-item index="/propaganda" v-if="userStore.role === 'admin'||userStore.role === 'cdc'">
       <img src="../assets/menu_icons/user_feedback.svg" alt="" class="menu-icons" />
       <span>宣传材料管理</span>
     </el-menu-item>
@@ -97,15 +97,17 @@
 </template>
 
 <script>
+import { useUserStore } from '@/store/userrole'; // 确保路径正确
 import { ref, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useTagsStore } from '@/store/tags';
 
 export default {
-  name: 'Aside',
+  name: 'TreeMenu',
   data() {
     return {
-      activeIndex: this.$route.path
+      activeIndex: this.$route.path,
+      userStore: useUserStore() // 使用用户 store
     };
   },
   methods: {

@@ -5,6 +5,7 @@ import {createRouter,createWebHashHistory} from 'vue-router'
 // 这个main是自定义的名称，用什么都可以
 import layout from '@/views/main.vue'
 import login from '@/views/login/index.vue'
+import { useUserStore } from '@/store/userrole'; 
 // import dashboard from '@/views/dashboard/index.vue'
 // import user from '@/views/user/index.vue'
 // import alluser from '@/views/user/alluser/alluser.vue'
@@ -164,6 +165,7 @@ const routes=[
     },
 ]
 
+
 // 4.创建router实例
 const router = createRouter({
     // 把路由数据routes传递进去
@@ -172,5 +174,16 @@ const router = createRouter({
     // hash模式 直接更新当前路由和页面内容，不会访问后台
     history: createWebHashHistory()
 })
+
+router.beforeEach((to, from, next) => {
+    const userStore = useUserStore();
+    const isLoggedIn = !!userStore.user;
+
+    if (to.meta.requiresAuth && !isLoggedIn) {
+        next('/login');
+    } else {
+        next();
+    }
+});
 // 5.导出
 export default router

@@ -1,32 +1,47 @@
 <template>
   <el-menu
-        default-active="2"
-        class="aside-container"
-        @open="handleOpen"
-        @close="handleClose"
-      >
-      <p class="logo-lg">系统管理员-张三</p>
-      <TreeMenu/>
-      </el-menu>
+    default-active="2"
+    class="aside-container"
+    @open="handleOpen"
+    @close="handleClose"
+  >
+    <p class="logo-lg">{{ getTitle() }}</p> <!-- 动态显示标题 -->
+    <TreeMenu/>
+  </el-menu>
 </template>
 
 <script setup>
-import TreeMenu from './treemenu.vue'
-const handleClose = () =>{
+import TreeMenu from './treemenu.vue';
+import { useUserStore } from '@/store/userrole'; // 引入用户角色 store
 
-}
-const handleOpen = () =>{
+const userStore = useUserStore(); // 使用用户 store
 
-}
+const handleClose = () => {};
+const handleOpen = () => {};
+
+// 根据角色返回不同的标题
+const getTitle = () => {
+  const userStore = useUserStore();
+  const userName = userStore.username || '张三'; // 默认名为“张三”
+
+  if (userStore.role === 'admin') {
+    return `系统管理员-${userName}`;
+  } else if (userStore.role === 'nurse') {
+    return `专职医护人员-${userName}`; 
+  } else if (userStore.role === 'cdc') {
+    return `疾控中心工作人员-${userName}`;
+  }
+
+  return `用户-${userName}`; // 默认标题
+};
 </script>
 
 <style lang="less" scoped>
-
-.aside-container{
+.aside-container {
   height: 100%;
   width: 210px;
 }
-.logo-lg{
+.logo-lg {
   font-style: normal;
   font-size: 16px;
   text-align: center;
@@ -35,5 +50,4 @@ const handleOpen = () =>{
   color: #333333;
   font-weight: bold;
 }
-
 </style>
