@@ -24,7 +24,7 @@
           :show-overflow-tooltip="true"
         >
           <el-table-column prop="Name" label="姓名" width="60" />
-          <el-table-column prop="Department" label="打卡时间" width="100" />
+          <el-table-column prop="Department" label="部门" width="80" />
           <el-table-column prop="statu"  label="健康状况" width="80">
             <template #default="scope">
               <el-tag :type="scope.row.statu === '健康' ? 'success' : 'danger'">

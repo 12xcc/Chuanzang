@@ -196,6 +196,7 @@
 
           <div v-show="selectedTag === 'DigestiveSymptoms'">
             <p>查看消化系统症状</p>
+            <DigestiveSymptoms ref="DigestiveSymptoms" />
           </div>
 
           <div v-show="selectedTag === 'CirculatorySymptoms'">
@@ -238,6 +239,7 @@ import NeurologicalSymptoms from './NeurologicalSymptoms.vue';
 import DiagnosisLocalSymptoms from './DiagnosisLocalSymptoms.vue';
 import OtherSymptoms from './OtherSymptoms.vue';
 import RiskFactorsAndExposure from './RiskFactorsAndExposure.vue';
+import DigestiveSymptoms from './DigestiveSymptoms.vue';
 
 export default {
   components: {
@@ -248,7 +250,8 @@ export default {
     NeurologicalSymptoms,
     DiagnosisLocalSymptoms,
     OtherSymptoms,
-    RiskFactorsAndExposure
+    RiskFactorsAndExposure,
+    DigestiveSymptoms,
   },
   data() {
     return {

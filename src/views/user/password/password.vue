@@ -10,11 +10,13 @@
             type="text"
             id="username"
             placeholder="······"
-            maxlength="11"
+            maxlength="16"
             @input="validateAndFormatUsername"
             disabled
           />
-          <span v-if="usernameError" class="error-message">{{ usernameError }}</span>
+          <span v-if="usernameError" class="error-message">{{
+            usernameError
+          }}</span>
         </div>
 
         <div class="input-group">
@@ -25,16 +27,27 @@
               v-model="password"
               id="password"
               placeholder="请输入新密码"
-              maxlength="8"
+              maxlength="16"
               @input="validateAndFormatPassword"
             />
-            <span class="eye-icon" @click="togglePasswordVisibility('password')">
-              <img :src="passwordFieldType === 'password' ? passwordClose : passwordOpen">
+            <span
+              class="eye-icon"
+              @click="togglePasswordVisibility('password')"
+            >
+              <img
+                :src="
+                  passwordFieldType === 'password'
+                    ? passwordClose
+                    : passwordOpen
+                "
+              />
             </span>
-            <span v-if="passwordError" class="error-message">{{ passwordError }}</span>
+            <span v-if="passwordError" class="error-message">{{
+              passwordError
+            }}</span>
           </div>
-        </div> 
-        
+        </div>
+
         <div class="input-group">
           <label for="confirm-password">确认密码</label>
           <div class="password-wrapper">
@@ -43,13 +56,21 @@
               v-model="confirmPassword"
               id="confirm-password"
               placeholder="再次请输入新密码"
-              maxlength="8"
+              maxlength="16"
               @input="validateAndFormatConfirmPassword"
             />
             <span class="eye-icon" @click="togglePasswordVisibility('confirm')">
-              <img :src="confirmPasswordFieldType === 'password' ? passwordClose : passwordOpen">
+              <img
+                :src="
+                  confirmPasswordFieldType === 'password'
+                    ? passwordClose
+                    : passwordOpen
+                "
+              />
             </span>
-            <span v-if="confirmPasswordError" class="error-message">{{ confirmPasswordError }}</span>
+            <span v-if="confirmPasswordError" class="error-message">{{
+              confirmPasswordError
+            }}</span>
           </div>
         </div>
 
@@ -60,29 +81,31 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { ElMessage } from 'element-plus';
-import passwordOpen from '@/assets/password_close.png';
-import passwordClose from '@/assets/password_open.png';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { ElMessage } from "element-plus";
+import passwordOpen from "@/assets/password_close.png";
+import passwordClose from "@/assets/password_open.png";
 
 export default {
   setup() {
     const router = useRouter();
-    const username = ref('');
-    const password = ref('');
-    const confirmPassword = ref('');
-    const passwordFieldType = ref('password'); 
-    const confirmPasswordFieldType = ref('password'); 
-    const usernameError = ref('');
-    const passwordError = ref('');
-    const confirmPasswordError = ref('');
+    const username = ref("");
+    const password = ref("");
+    const confirmPassword = ref("");
+    const passwordFieldType = ref("password");
+    const confirmPasswordFieldType = ref("password");
+    const usernameError = ref("");
+    const passwordError = ref("");
+    const confirmPasswordError = ref("");
 
     const togglePasswordVisibility = (type) => {
-      if (type === 'password') {
-        passwordFieldType.value = passwordFieldType.value === 'password' ? 'text' : 'password';
-      } else if (type === 'confirm') {
-        confirmPasswordFieldType.value = confirmPasswordFieldType.value === 'password' ? 'text' : 'password';
+      if (type === "password") {
+        passwordFieldType.value =
+          passwordFieldType.value === "password" ? "text" : "password";
+      } else if (type === "confirm") {
+        confirmPasswordFieldType.value =
+          confirmPasswordFieldType.value === "password" ? "text" : "password";
       }
     };
 
@@ -90,18 +113,18 @@ export default {
       console.log("called");
       if (password.value === confirmPassword.value) {
         if (validatePassword(password.value)) {
-          ElMessage.success('修改密码成功');
-
+          ElMessage.success("修改密码成功");
         } else {
-          ElMessage.error('密码不符合要求');
+          ElMessage.error("密码不符合要求");
         }
       } else {
-        confirmPasswordError.value = '两次密码请输入不一致';
+        confirmPasswordError.value = "两次密码请输入不一致";
       }
     };
 
     const validatePassword = (password) => {
-      const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8}$/;
+      const passwordPattern =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
       return passwordPattern.test(password);
     };
 
@@ -110,26 +133,32 @@ export default {
       if (!phonePattern.test(username.value)) {
         username.value = username.value.slice(0, -1);
       }
-      usernameError.value = username.value.length === 11 && phonePattern.test(username.value)
-        ? ''
-        : '请输入正确的用户名';
+      usernameError.value =
+        username.value.length === 11 && phonePattern.test(username.value)
+          ? ""
+          : "请输入正确的用户名";
     };
 
     const validateAndFormatPassword = () => {
       passwordError.value = validatePassword(password.value)
-        ? ''
-        : '密码必须包含8位字符，包括大小写字母、数字和特殊符号';
+        ? ""
+        : "密码必须为8-16位字符，包括大小写字母、数字和特殊符号";
     };
 
     const validateAndFormatConfirmPassword = () => {
-      confirmPasswordError.value = confirmPassword.value === password.value
-        ? ''
-        : '两次密码请输入不一致';
+      confirmPasswordError.value =
+        confirmPassword.value === password.value ? "" : "两次密码请输入不一致";
     };
 
     const isSubmitDisabled = ref(true);
     const checkFormValidity = () => {
-      isSubmitDisabled.value = !username.value || !password.value || !confirmPassword.value || usernameError.value || passwordError.value || confirmPasswordError.value;
+      isSubmitDisabled.value =
+        !username.value ||
+        !password.value ||
+        !confirmPassword.value ||
+        usernameError.value ||
+        passwordError.value ||
+        confirmPasswordError.value;
     };
 
     return {
@@ -151,7 +180,7 @@ export default {
       isSubmitDisabled,
       checkFormValidity,
     };
-  }
+  },
 };
 </script>
 
@@ -186,11 +215,11 @@ export default {
   margin-bottom: 30px;
   text-align: left;
 }
-#username{
-  background-color: #F4F4F4 !important;
-  color: #A6A6A6;
+#username {
+  background-color: #f4f4f4 !important;
+  color: #a6a6a6;
   font-size: 16px;
-  border: 2px solid #F4F4F4;
+  border: 2px solid #f4f4f4;
 }
 label {
   color: #333333;
@@ -199,14 +228,15 @@ label {
   display: block;
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"],
+input[type="password"] {
   width: 100%;
   height: 50px;
   line-height: 50px;
   padding: 10px;
-  border: 1px solid #FFFFFF;
+  border: 1px solid #ffffff;
   border-radius: 4px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   color: #333333;
   box-sizing: border-box;
   outline: none;
@@ -214,13 +244,13 @@ input[type="text"], input[type="password"] {
 }
 
 input::-webkit-input-placeholder {
-        color: #A6A6A6;
-        font-size: 14px;
+  color: #a6a6a6;
+  font-size: 14px;
 }
 
 input:focus {
-  outline: none; 
-  border: 1px solid #285AC8; 
+  outline: none;
+  border: 1px solid #285ac8;
   /* box-shadow: 1px 10px 20px rgba(56,56,56,0.05); */
 }
 
@@ -236,18 +266,17 @@ input:focus {
   cursor: pointer;
 }
 
-
 button {
   width: 100%;
   height: 50px;
   padding: 10px;
-  background-color: #285AC8;
-  color: #FFFFFF;
+  background-color: #285ac8;
+  color: #ffffff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   margin-top: 10px;
-  box-shadow:0.8px 0.8px 24px 0.8px rgba(40,90,200,0.3);
+  box-shadow: 0.8px 0.8px 24px 0.8px rgba(40, 90, 200, 0.3);
 }
 
 button:hover {
@@ -257,7 +286,7 @@ button:hover {
 a {
   display: block;
   margin-top: 15px;
-  color: #285AC8;
+  color: #285ac8;
   text-decoration: none;
   font-size: 14px;
 }

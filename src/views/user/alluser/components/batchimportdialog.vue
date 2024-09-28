@@ -7,19 +7,24 @@
   >
     <el-upload
       class="upload-demo"
-      drag
-      action="#"
+      action="/systemUser/userManager/addManyUserByExcel"
       :show-file-list="true"
       :file-list="fileList"
-      :before-upload="beforeUpload"
+      :on-change="handleChange"
+      :on-remove="handleRemove"
       :auto-upload="false"
+      multiple
+      drag
     >
-      <i class="el-icon-upload"></i>
+      <img class="el-icon--upload" src="@/assets/excel.png">
       <div class="el-upload__text">
-        拖拽文件到这里，或
-        <em>点击上传</em>
+        拖拽文件到这里或 <em>点击上传</em>
       </div>
-      <el-button slot="tip" type="text" size="default">支持格式：xlsx、csv</el-button>
+      <template #tip>
+        <div class="el-upload__tip">
+          允许格式：.xlsx
+        </div>
+      </template>
     </el-upload>
 
     <template #footer>
@@ -33,6 +38,7 @@
 
 <script>
 import { ElMessage } from 'element-plus';
+import axios from 'axios';
 
 export default {
   name: 'BatchImportDialog',
@@ -40,35 +46,77 @@ export default {
     return {
       dialogVisible: false,
       fileList: [],
+      uploadFailed: false,
     };
   },
   methods: {
     showDialog() {
       this.dialogVisible = true;
+      this.uploadFailed = false; // 重置上传状态
+      this.fileList = []; // 清空文件列表
     },
     handleClose() {
       this.dialogVisible = false;
+      this.fileList = []; // 关闭时清空文件列表
     },
-    handleConfirm() {
-      this.fileList = []; 
-      ElMessage.success('上传成功');
-      this.dialogVisible = false;
+    handleChange(file) {
+      if (file.status === 'finished') {
+        ElMessage.success('文件已添加');
+      }
+      this.fileList.push(file);
     },
-    beforeUpload(file) {
-      this.fileList.push(file); 
-      return false; 
-    }
-  }
+    handleRemove(file) {
+      const index = this.fileList.indexOf(file);
+      if (index > -1) {
+        this.fileList.splice(index, 1); // 从列表中删除文件
+      }
+    },
+    async handleConfirm() {
+      console.log('File list before confirming:', this.fileList);
+      if (this.fileList.length === 0) {
+        ElMessage.warning('请上传文件');
+        return;
+      }
+
+      const formData = new FormData();
+      this.fileList.forEach(file => {
+        formData.append('file', file.raw); // 上传文件
+      });
+
+      try {
+        const response = await axios.post('/systemUser/userManager/addManyUserByExcel', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        ElMessage.success('上传成功');
+        this.$emit('import', response.data); // 传递导入的结果给父组件
+        this.uploadFailed = false; // 上传成功
+      } catch (error) {
+        ElMessage.error('上传失败');
+        this.uploadFailed = true; // 上传失败
+      } finally {
+        this.dialogVisible = false; // 关闭对话框
+        if (this.uploadFailed) {
+          this.fileList = []; // 仅在上传失败时清空文件列表
+        }
+      }
+    },
+  },
 };
 </script>
 
 <style scoped>
-.el-button{
+.el-button {
   margin-left: 20px;
   margin-right: 20px;
 }
 .dialog-footer {
   display: flex;
   justify-content: center;
+}
+.el-icon--upload {
+  width: 120px;
+  height: 50%;
 }
 </style>

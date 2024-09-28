@@ -18,6 +18,17 @@
           style="width:200px !important; margin-right:-15px;"
         />
       </el-form-item>
+      <el-form-item prop="date">
+        <el-date-picker
+          v-model="queryParams.date"
+          type="daterange"
+          range-separator="到"
+          start-placeholder="请选择"
+          end-placeholder="提交日期范围"
+          style="width: 300px"
+        />
+      </el-form-item>
+
       <el-form-item>
         <el-button
           type="primary"
@@ -97,6 +108,7 @@ export default {
     return {
       queryParams: {
         WorkStationName: '',
+        date:[],
         pageNum: 1,
         pageSize: 15
       },
@@ -136,19 +148,34 @@ export default {
     tableHeight() {
       return window.innerHeight - 300;
     },
-    filteredData() {
-      const { WorkStationName } = this.queryParams;
-      const lowerCaseCheck = WorkStationName ? WorkStationName.toLowerCase() : '';
+filteredData() {
+  const { WorkStationName, date } = this.queryParams;
+  const lowerCaseCheck = WorkStationName ? WorkStationName.toLowerCase() : '';
 
-      return this.allData.filter(item => {
-        // 搜索文本匹配
-        const fieldsToSearch = ['WorkStationName'];
-        return fieldsToSearch.some(field => {
-          const itemFieldValue = item[field]?.toString().toLowerCase() || '';
-          return itemFieldValue.includes(lowerCaseCheck);
-        });
-      });
-    },
+  // 如果没有筛选条件，直接返回所有数据
+  if (!WorkStationName && (!date || date.length === 0)) {
+    return this.allData;
+  }
+
+  return this.allData.filter(item => {
+    // 搜索文本匹配
+    const fieldsToSearch = ['WorkStationName'];
+    const textMatch = fieldsToSearch.some(field => {
+      const itemFieldValue = item[field]?.toString().toLowerCase() || '';
+      return itemFieldValue.includes(lowerCaseCheck);
+    });
+
+    const SubmissionTime = new Date(item.SubmissionTime);
+    const dateMatch =
+      Array.isArray(date) &&
+      date.length === 2 &&
+      SubmissionTime >= new Date(date[0]) &&
+      SubmissionTime <= new Date(date[1]);
+
+    return textMatch && dateMatch; // 返回文本匹配和日期匹配的结果
+  });
+},
+
     paginatedData() {
       const start = (this.queryParams.pageNum - 1) * this.queryParams.pageSize;
       const end = start + this.queryParams.pageSize;

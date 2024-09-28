@@ -114,7 +114,6 @@ export default {
         { serialNumber: 5, DiseaseTypeName: '炭疽', HasSubtype: '是', SubtypeName: '皮肤炭疽,肠炭疽,肺炭疽,脑膜炎型炭疽,败血症型炭疽' },
         { serialNumber: 6, DiseaseTypeName: '登革热（蚊媒传染病）', HasSubtype: '否', SubtypeName: '' },
         { serialNumber: 7, DiseaseTypeName: '疟疾（蚊媒传染病）', HasSubtype: '否', SubtypeName: '' },
-        { serialNumber: 8, DiseaseTypeName: '铁路职工', HasSubtype: '否', SubtypeName: '' },
 
 
 
@@ -134,7 +133,7 @@ export default {
       return window.innerHeight - 300;
     },
     filteredData() {
-      const { UserType, check } = this.queryParams;
+      const { check } = this.queryParams;
       const lowerCaseCheck = check ? check.toLowerCase() : '';
 
       return this.allData.filter(item => {
@@ -188,15 +187,7 @@ export default {
     isActive() {
       // 逻辑处理
     },
-    convertUserType(value) {
-      switch (value) {
-        case 1: return '系统管理员';
-        case 2: return '铁路职工';
-        case 3: return '疾控中心工作人员';
-        case 4: return '专职医护';
-        default: return '';
-      }
-    },
+
     handlePagination({ page, limit }) {
       this.queryParams.pageNum = page;
       this.queryParams.pageSize = limit;

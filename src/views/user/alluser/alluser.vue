@@ -103,6 +103,7 @@
         :data="paginatedData"
         style="width: 100%"
         :height="tableHeight"
+        show-overflow-tooltip="true"
       >
         <el-table-column type="selection" width="55" />
         <el-table-column prop="serialNumber" label="序号" width="80" />
@@ -175,6 +176,7 @@
 
 <script>
 import * as XLSX from "xlsx";
+import axios from "axios"; 
 import { ref, computed, onMounted } from "vue";
 import Pagination from "@/components/pagination.vue";
 import AddUserDialog from "./components/adduserdialog.vue";
@@ -201,7 +203,7 @@ export default {
         pageSize: 15,
       },
       allData: [
-        {
+         {
         serialNumber: 1,
           UserType: "铁路职工",
           Name: "张伟",
@@ -397,6 +399,7 @@ export default {
           SpecificOccupation: "是",
           isActive: false,
         },
+
       ], 
       tableData: [],
       showSearch: true,
@@ -509,9 +512,9 @@ export default {
       }
     },
 
-    handlePagination({ pageNum, pageSize }) {
-      this.queryParams.pageNum = pageNum;
-      this.queryParams.pageSize = pageSize;
+     handlePagination({ page, limit }) {
+      this.queryParams.pageNum = page;
+      this.queryParams.pageSize = limit;
       this.handleQuery();
     },
 
@@ -519,7 +522,13 @@ export default {
       const password = ""; // 实际身份证号后六位
       this.$message.success(`初始化密码成功，为身份证后六位${password}`);
     },
+      handleImportData(importedData) {
+      // 假设 importedData 是数组格式
+      this.allData.push(...importedData); // 合并导入的数据
+      this.handleQuery(); // 更新表格
+    },
   },
+
 
   onMounted() {
     this.handleQuery(); 

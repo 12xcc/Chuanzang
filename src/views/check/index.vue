@@ -38,8 +38,8 @@
         v-model="queryParams.date"
         type="daterange"
         range-separator="到"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
+        start-placeholder="请选择"
+        end-placeholder="检测日期范围"
         :size="size"
         style="width:300px"
       />
@@ -94,7 +94,18 @@
         <el-table-column type="selection" width="55" />
         <el-table-column prop="serialNumber" label="序号" width="80" />
         <el-table-column prop="UserType" label="用户类型" width="120" />
-        <el-table-column prop="Name" label="姓名" width="100" />
+         <el-table-column prop="Name" label="姓名" width="100">
+          <template #default="scope">
+            <el-button
+              v-if="isNurse()"
+              type="text"
+              @click="handleCheckuser(scope.row)"
+            >
+              {{ scope.row.Name }}
+            </el-button>
+            <span v-else>{{ scope.row.Name }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="PhoneNumber" label="电话" width="120" />
         <el-table-column prop="Gender" label="性别" width="100" />
         <el-table-column prop="Age" label="年龄" width="100" />
@@ -176,16 +187,20 @@
       :visible="checkUserVisible"
     />
     <Checkcheckdata ref="Checkcheckdata" />
+    <Checkuserdata ref="Checkuserdata" />
   </div>
 </template>
 
 <script>
+import { useUserStore } from "@/store/userrole.js"; // 引入用户角色存储
 import Checkuser from "./components/checkuser.vue";
 import Checkcheckdata from "./components/checkcheckdata/checkchekcdata.vue"
+import Checkuserdata from '../user/alluser/components/checkuserdata.vue';
 export default {
   components: {
     Checkuser,
     Checkcheckdata,
+    Checkuserdata,
   },
   data() {
     return {
@@ -193,6 +208,7 @@ export default {
       queryParams: {
         IsHealth: "",
         check: "",
+        date:[],
         pageNum: 1,
         pageSize: 15,
         date:"",
@@ -317,26 +333,38 @@ export default {
       loading: false,
     };
   },
-
+setup() {
+    const userStore = useUserStore(); // 使用用户角色存储
+    return { userStore };
+  },
   computed: {
     filteredData() {
-      const { check } = this.queryParams;
+      const { check ,date } = this.queryParams;
       const lowerCaseCheck = check ? check.toLowerCase() : "";
-
+   // 如果没有筛选条件，直接返回所有数据
+      if (!check && (!date || date.length === 0)) {
+        return this.allData;
+      }
       return this.allData.filter((item) => {
         // const userTypeMatch = !UserType || item.UserType === this.convertUserType(UserType);
-        const fieldsToSearch = [
-          "Name",
-          "PhoneNumber",
-          "Department",
-          "SpecificOccupation",
-          "Age",
-        ];
-        const textMatch = fieldsToSearch.some((field) => {
-          const itemFieldValue = item[field]?.toString().toLowerCase() || "";
-          return itemFieldValue.includes(lowerCaseCheck);
-        });
-        return textMatch;
+        const fieldsToSearch = ["Name", "PhoneNumber", "Department",""];
+        const textMatch = check
+          ? fieldsToSearch.some((field) => {
+              const itemFieldValue =
+                item[field]?.toString().toLowerCase() || "";
+              return itemFieldValue.includes(lowerCaseCheck);
+            })
+          : true; // 如果没有输入文本，默认匹配为 true
+
+           const CheckInDate = new Date(item.CheckInDate);
+        const dateMatch =
+          Array.isArray(date) && date.length === 2
+            ? CheckInDate >= new Date(date[0]) &&
+              CheckInDate <= new Date(date[1])
+            : true; // 如果没有选择日期，默认匹配为 true
+
+
+        return textMatch && dateMatch;
       });
     },
     paginatedData() {
@@ -368,10 +396,15 @@ export default {
     handleClick() {
       // 查看用户逻辑
     },
+     isNurse() {
+      return this.userStore.isNurse(); // 用户角色存储的 isNurse 方法
+    },
     handleCheck(row) {
       this.$refs.Checkcheckdata.showDrawer(row);
     },
-    
+        handleCheckuser(row){
+this.$refs.Checkuserdata.showDrawer(row);
+    },
     handleSubmitCheck() {
       if (this.filteredData.length > 0) {
         this.checkUserVisible = true; // 显示 Checkuser

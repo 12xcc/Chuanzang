@@ -109,7 +109,7 @@
         <div class="select flex gap-2 mb-4">
           <div class="title-container">
             <div class="blue-box"></div>
-            <span class="title-text">点击标签查看症状</span>
+            <span class="title-text">点击标签添加症状</span>
           </div>
 
           <el-check-tag

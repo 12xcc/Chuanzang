@@ -6,20 +6,23 @@ export const useUserStore = defineStore('user', {
     return {
       user: savedUser ? savedUser.phoneNumber : null,
       role: savedUser ? savedUser.role : null,
-      username: savedUser ? savedUser.username : '', // 恢复用户名
+      username: savedUser ? savedUser.Name : '', // 改为 Name
     };
   },
   actions: {
-    login({ phoneNumber, role, username }) {
-      this.user = phoneNumber;
+    login({ username, role, Name }) {
+      this.user = username;
       this.role = role;
-      this.username = username;
+      this.username = Name;
     },
     logout() {
       this.user = null;
       this.role = null;
       this.username = '';
-      localStorage.removeItem('user'); // 清除 localStorage
+      localStorage.removeItem('user');
     },
-  },
+    isNurse() {
+      return this.role === 'nurse'; // 检查角色
+    },
+  }  
 });

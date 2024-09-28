@@ -83,11 +83,10 @@ export default {
     };
 
     const users = {
-      19357907217: { username:"张三", password: "123456", role: "admin" },
-      13330656624: { username:"李四", password: "123456", role: "nurse" },
-      19508191094: { username:"张三", password: "123456", role: "cdc" }
+      19357907217: { Name:"张三", password: "123456", role: "admin" },
+      13330656624: { Name:"李四", password: "123456", role: "nurse" },
+      19508191094: { Name:"张三", password: "123456", role: "cdc" }
     };
-
 
 const handleSubmit = () => {
   const user = users[username.value];
@@ -102,7 +101,7 @@ const handleSubmit = () => {
     const userData = {
       phoneNumber: username.value,
       role: user.role,
-      username: username.value,
+      Name: user.Name, // 改为 Name
     };
     userStore.login(userData);
     localStorage.setItem('user', JSON.stringify(userData)); // 保存到 localStorage
@@ -111,6 +110,8 @@ const handleSubmit = () => {
     alert("账号或密码错误");
   }
 };
+
+
 
 
 

@@ -11,8 +11,6 @@
       <div class="title">
         <h3>设置疾病权重</h3>
         <div class="footer">
-          <!-- <el-button v-if="isEditing" @click="handleQuit">取消</el-button> -->
-          <!-- <el-button v-if="!isEditing" @click="handleEdit">编辑</el-button> -->
           <el-button type="primary" @click="handleSubmit">提交</el-button>
         </div>
       </div>
@@ -29,203 +27,92 @@
             <div class="blue-box"></div>
             <span class="title-text">疾病名称</span>
           </div>
-          <div class="BaseInfoDetail">
-            <!------------------------------- 姓名 --------------------------------------->
-            <el-form-item label="疾病名称" prop="DiseaseTypeName">
-              <el-input
-                v-model="form.DiseaseTypeName"
-                style="width: 200px"
-                placeholder=""
-                @blur="$refs.form.validateField('DiseaseTypeName')"
-                clearable
-                :disabled="allDisabled"
-                :readonly="allReadonly"
-              ></el-input>
-            </el-form-item>
-          </div>
+          <el-form-item label="疾病名称" prop="DiseaseTypeName">
+            <el-input
+              v-model="form.DiseaseTypeName"
+              style="width: 200px"
+              clearable
+              :disabled="allDisabled"
+              :readonly="allReadonly"
+            ></el-input>
+          </el-form-item>
         </div>
+
         <div class="BaseInfo">
           <div class="title-container">
             <div class="blue-box"></div>
             <span class="title-text">当前权重总分(必须等于100)</span>
           </div>
-          <div class="BaseInfoDetail">
-            <!------------------------------- 姓名 --------------------------------------->
-            <el-form-item label="当前权重总分" prop="WeightScore ">
-              <el-input
-                v-model="form.WeightScore"
-                style="width: 200px"
-                placeholder=""
-                @blur="$refs.form.validateField('WeightScore ')"
-                clearable
-                :disabled="allDisabled"
-                :readonly="allReadonly"
-              ></el-input>
-            </el-form-item>
-          </div>
+          <el-form-item label="当前权重总分" prop="WeightScore">
+            <el-input
+              v-model.number="form.WeightScore"
+              style="width: 200px"
+              clearable
+              :disabled="allDisabled"
+              :readonly="allReadonly"
+            ></el-input>
+          </el-form-item>
         </div>
 
-        <!------------------------------------ 症状标签 ------------------------------->
         <div class="select flex gap-2 mb-4">
-          <div class="title-container">
-            <div class="blue-box"></div>
-            <span class="title-text">全身症状</span>
-          </div>
+          <el-check-tag
+            v-for="tag in tags"
+            :key="tag"
+            :checked="selectedTag === tag"
+            type="primary"
+            @change="selectTag(tag)"
+          >
+            {{ tag }}
+          </el-check-tag>
+        </div>
 
-          <div class="slider-demo-block">
-            <el-tag type="primary"> 口唇、颜面、四肢及全身皮肤发绀 </el-tag>
-            <el-slider
-              class="custom-slider"
-              v-model.number="form.HasCyanosisScore"
-              show-input
+        <div>
+          <div v-show="selectedTag === '全身症状'">
+            <GeneralSymptomsScore
+              ref="GeneralSymptomsScore"
+              @update-weight-score="updateWeightScore"
             />
           </div>
-
-          <div class="slider-demo-block">
-            <el-tag type="primary"> 皮下及黏膜出血或出血点 </el-tag>
-            <el-slider
-              class="custom-slider"
-              v-model.number="form.HasSubcutaneousAndMucosalBleedingSpotsScore"
-              show-input
+          <div v-show="selectedTag === '呼吸系统症状'">
+            <RespiratorySymptomsScore
+              ref="RespiratorySymptomsScore"
+              @update-weight-score="updateWeightScore"
             />
           </div>
-
-          <div class="slider-demo-block">
-            <el-tag type="primary"> 皮肤可见剧痛的红色丘疹 </el-tag>
-            <el-slider
-              class="custom-slider"
-              v-model.number="form.HasPainfulRedRashScore"
-              show-input
+          <div v-show="selectedTag === '消化系统症状'">
+            <DigestiveSymptomsScore
+              ref="DigestiveSymptomsScore"
+              @update-weight-score="updateWeightScore"
             />
           </div>
-
-          <div class="slider-demo-block">
-            <el-tag
-              type="primary"
-            >
-              皮肤可见周边呈灰黑色、基底坚硬的血性水泡
-            </el-tag>
-            <el-slider
-              class="custom-slider"
-              v-model.number="form.HasBloodBlistersScore"
-              show-input
+          <div v-show="selectedTag === '循环系统症状'">
+            <CirculatorySymptomsScore
+              ref="CirculatorySymptomsScore"
+              @update-weight-score="updateWeightScore"
             />
           </div>
-
-          <div class="slider-demo-block">
-            <el-tag
-              type="primary"
-            >
-              皮肤出现呈灰黑色创面的溃疡
-            </el-tag>
-            <el-slider
-              class="custom-slider"
-              v-model.number="form.HasSkinUlcerScore"
-              show-input
+          <div v-show="selectedTag === '神经系统症状'">
+            <NeurologicalSymptomsScore
+              ref="NeurologicalSymptomsScore"
+              @update-weight-score="updateWeightScore"
             />
           </div>
-
-          <div class="slider-demo-block">
-            <el-tag
-              type="primary"
-            >
-              皮疹：充血性或点状出血疹
-            </el-tag>
-            <el-slider
-              class="custom-slider"
-              v-model.number="form.HasCongestiveOrPetechialRashScore"
-              show-input
+          <div v-show="selectedTag === '局部症状'">
+            <LocalSymptomsScore
+              ref="LocalSymptomsScore"
+              @update-weight-score="updateWeightScore"
             />
           </div>
-
-          <div class="slider-demo-block">
-            <el-tag
-              type="primary"
-            >
-              皮疹：起初压之退色，后期压之不退
-            </el-tag>
-            <el-slider
-              class="custom-slider"
-              v-model.number="form.HasPressureInsensitiveRashScore"
-              show-input
+          <div v-show="selectedTag === '其他症状'">
+            <OtherSymptomsScore
+              ref="OtherSymptomsScore"
+              @update-weight-score="updateWeightScore"
             />
           </div>
-
-          <div class="slider-demo-block">
-            <el-tag
-              type="primary"
-            >
-              失水
-            </el-tag>
-            <el-slider
-              class="custom-slider"
-              v-model.number="form.HasDehydrationScore"
-              show-input
-            />
-          </div>
-
-          <div class="slider-demo-block">
-            <el-tag
-              type="primary"
-            >
-              瘙痒性斑丘疹/水疱
-            </el-tag>
-            <el-slider
-              class="custom-slider"
-              v-model.number="form.HasItchyRashScore"
-              show-input
-            />
-          </div>
-
-          <div class="slider-demo-block">
-            <el-tag
-              type="primary"
-            >
-              水肿
-            </el-tag>
-            <el-slider
-              class="custom-slider"
-              v-model.number="form.HasEdemaScore"
-              show-input
-            />
-          </div>
-
-          <div class="slider-demo-block">
-            <el-tag
-              type="primary"
-            >
-              盗汗
-            </el-tag>
-            <el-slider
-              class="custom-slider"
-              v-model.number="form.HasNightSweatsScore"
-              show-input
-            />
-          </div>
-
-          <div class="slider-demo-block">
-            <el-tag
-              type="primary"
-            >
-              消瘦
-            </el-tag>
-            <el-slider
-              class="custom-slider"
-              v-model.number="form.HasWeightLossScore"
-              show-input
-            />
-          </div>
-
-          <div class="slider-demo-block">
-            <el-tag
-              type="primary"
-            >
-              虚脱/全身无力
-            </el-tag>
-            <el-slider
-              class="custom-slider"
-              v-model.number="form.HasExhaustionScore"
-              show-input
+          <div v-show="selectedTag === '危险因素与暴露史'">
+            <RiskFactorsAndExposureScore
+              ref="RiskFactorsAndExposureScore"
+              @update-weight-score="updateWeightScore"
             />
           </div>
         </div>
@@ -236,88 +123,93 @@
 
 <script>
 import { ElMessage } from "element-plus";
-
+import GeneralSymptomsScore from "./GeneralSymptomsScore.vue";
+import RespiratorySymptomsScore from "./RespiratorySymptomsScore.vue";
+import DigestiveSymptomsScore from "./DigestiveSymptomsScore.vue";
+import CirculatorySymptomsScore from "./CirculatorySymptomsScore.vue";
+import NeurologicalSymptomsScore from "./NeurologicalSymptomsScore.vue";
+import LocalSymptomsScore from "./LocalSymptomsScore.vue";
+import OtherSymptomsScore from "./OtherSymptomsScore.vue";
+import RiskFactorsAndExposureScore from "./RiskFactorsAndExposureScore.vue";
 export default {
-  components: {},
+  components: {
+    GeneralSymptomsScore,
+    RespiratorySymptomsScore,
+    DigestiveSymptomsScore,
+    CirculatorySymptomsScore,
+    NeurologicalSymptomsScore,
+    LocalSymptomsScore,
+    OtherSymptomsScore,
+    RiskFactorsAndExposureScore,
+  },
   data() {
     return {
       allDisabled: true,
       allReadonly: true,
-      visible: false, // 控制弹窗显示
-      isEditing: false,
+      visible: false,
+      selectedTag: "全身症状", // 默认选中的标签
       form: {
-        HasCyanosisScore: 0,
-        HasSubcutaneousAndMucosalBleedingSpotsScore: 0,
-        HasPainfulRedRashScore: 0,
-        HasBloodBlistersScore: 10,
-        HasSkinUlcerScore: 0,
-        HasCongestiveOrPetechialRashScore: 0,
-        HasPressureInsensitiveRashScore: 0,
-        HasItchyRashScore: 0,
-        ItchyRashOnFingersScore: 0,
-        ItchyRashOnBackOfHandsScore: 0,
-        ItchyRashOnUpperLimbsScore: 0,
-        ItchyRashOnLowerLimbsScore: 0,
-        ItchyRashOnFeetScore: 0,
-        ItchyRashOnFaceScore: 0,
-        ItchyRashOnOtherScore: 0,
-        HasEdemaScore: 0,
-        HasNightSweatsScore: 0,
-        HasWeightLossScore: 0,
-        HasExhaustionScore: 0,
+        WeightScore: 0,
+        DiseaseTypeName: "",
       },
       rules: {},
+      tags: [
+        "全身症状",
+        "呼吸系统症状",
+        "消化系统症状",
+        "循环系统症状",
+        "神经系统症状",
+        "局部症状",
+        "其他症状",
+        "危险因素与暴露史",
+      ], // 所有可选标签
     };
   },
 
   methods: {
-    toggleTag(field) {
-      this.form[field] = !this.form[field];
+    selectTag(tag) {
+      this.selectedTag = tag;
+      this.updateWeightScore(); // 每次切换标签时更新分数
+    },
+    handleCancel() {
+      this.visible = false;
     },
     showDrawer(user) {
       this.form = { ...user };
       this.visible = true;
     },
-    handleCancel() {
-      this.visible = false;
-      this.handleReset();
-    },
-
-    handleEdit() {
-      this.allDisabled = false;
-      this.isEditing = true; // 进入编辑模式
-    },
     async handleSubmit() {
-      console.log("触发");
-
-      try {
-        this.visible = false;
-        ElMessage({
-          message: "提交成功",
-          type: "success",
-        });
-        this.handleReset();
-      } catch (error) {
-        // 处理验证错误
-        console.error("验证失败:", error.message);
-        ElMessage({
-          message: error.message,
-          type: "error",
-        });
-      }
+      this.visible = false;
+      ElMessage({
+        message: "提交成功",
+        type: "success",
+      });
     },
+    updateWeightScore() {
+      // 更新 WeightScore 为所有子组件的分数总和
+    const components= [
+        "GeneralSymptomsScore",
+        "RespiratorySymptomsScore",
+        "DigestiveSymptomsScore",
+        "CirculatorySymptomsScore",
+        "NeurologicalSymptomsScore",
+        "LocalSymptomsScore",
+        "OtherSymptomsScore",
+        "RiskFactorsAndExposureScore",
+      ]; // 需要累加的子组件
 
-    handleReset() {
-      // this.form = this.getInitialForm();
-      this.message = "";
-      // this.$refs.DiagnosisComplications.handleReset();
-    },
-    getInitialForm() {
-      return {};
+      this.form.WeightScore = components.reduce((total, component) => {
+        const compRef = this.$refs[component];
+        return total + (compRef ? compRef.totalWeightScore : 0);
+      }, 0);
+
+      console.log("Updated WeightScore:", this.form.WeightScore);
     },
   },
 };
 </script>
+
+
 
 
 <style scoped>
@@ -381,11 +273,16 @@ h3 {
 .BaseInfo {
   margin-bottom: 50px;
 }
-.el-tag {
+.el-check-tag {
   margin: 10px;
   font-weight: normal;
 }
 
+.el-check-tag.is-checked {
+  background-color: #333333 !important;
+  color: #ffffff;
+  font-weight: normal;
+}
 .select {
   margin-top: 10px;
   margin-bottom: 20px;
@@ -393,29 +290,6 @@ h3 {
 }
 .el-form-item {
   margin-left: 20px;
-}
-.slider-demo-block {
-  width: 700px;
-  display: flex;
-  align-items: center;
-}
-.slider-demo-block .el-slider {
-  margin-left: 12px;
-}
-.custom-slider .el-input-number {
-  width: 130px !important;
-}
-.el-slider__input {
-  width: 130px;
-}
-.custom-slider {
-  width: 400px;
-}
-.el-slider {
-  --el-slider-button-size: 15px !important;
-}
-.el-slider__runway .show-input {
-  width: 200px !important;
 }
 </style>
 

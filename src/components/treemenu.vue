@@ -8,22 +8,22 @@
     @select="handleSelect"
     unique-opened
   >
-    <el-sub-menu index="1" v-if="userStore.role === 'admin'||userStore.role === 'nurse'||userStore.role === 'cdc'">
+    <el-sub-menu index="1">
       <template #title>
         <img src="../assets/menu_icons/user.svg" alt="" class="menu-icons" />
         <span>用户管理</span>
       </template>
-      <el-menu-item index="/user/alluser">
+      <el-menu-item index="/user/alluser"  v-if="userStore.role === 'admin'" >
         <img src="../assets/menu_icons/all-users.svg" alt="" class="menu-icons" />
         <span>所有用户管理</span>
       </el-menu-item>
-      <el-menu-item index="/user/password">
+      <el-menu-item index="/user/password"  v-if="userStore.role === 'admin'||userStore.role === 'nurse'||userStore.role === 'cdc'" >
         <img src="../assets/menu_icons/password.svg" alt="" class="menu-icons" />
         <span>个人密码修改</span>
       </el-menu-item>
     </el-sub-menu>
 
-    <el-menu-item index="/work-env" v-if="userStore.role !== 'cdc'||userStore.role === 'admin'">
+    <el-menu-item index="/work-env" v-if="userStore.role === 'cdc'||userStore.role === 'admin'">
       <img src="../assets/menu_icons/work-env.svg" alt="" class="menu-icons" />
       <span>工作环境管理</span>
     </el-menu-item>
@@ -70,11 +70,11 @@
         <img src="../assets/menu_icons/weight_management.svg" alt="" class="menu-icons" />
         <span>权重管理</span>
       </el-menu-item>
-      <el-menu-item index="/system/auto-weight" @click="handleAuto">
+      <el-menu-item index="/system/auto-weight">
         <img src="../assets/menu_icons/auto_weight_update.svg" alt="" class="menu-icons" />
         <span>启动自动权重更新</span>
       </el-menu-item>
-      <el-menu-item index="/system/expert-AI" @click="handleExAi">
+      <el-menu-item index="/system/expert-AI" >
         <img src="../assets/menu_icons/ExpertorAI_diagnosis_switching.svg" alt="" class="menu-icons" />
         <span>专家/AI诊断切换</span>
       </el-menu-item>
@@ -89,8 +89,8 @@
       <span>用户反馈</span>
     </el-menu-item>
 
-    <el-menu-item index="/propaganda" v-if="userStore.role === 'admin'||userStore.role === 'cdc'">
-      <img src="../assets/menu_icons/user_feedback.svg" alt="" class="menu-icons" />
+    <el-menu-item index="/propaganda" v-if="userStore.role === 'admin'|| userStore.role === 'cdc'">
+      <img src="../assets/menu_icons/study.svg" alt="" class="menu-icons" />
       <span>宣传材料管理</span>
     </el-menu-item>
   </el-menu>
