@@ -16,7 +16,6 @@
         label-width="100px"
         class="form-container"
         ref="form"
-        :rules="rules"
         disabled
       >
         <div class="BaseInofo">
@@ -24,40 +23,26 @@
             <div class="blue-box"></div>
             <span class="title-text">反馈人姓名</span>
           </div>
-          <el-form-item label="" prop="Name">
+          <el-form-item label="" prop="name">
             <el-input
-              v-model="form.Name"
+              v-model="form.name"
               style="width: 200px;margin-left: -60px;"
               placeholder=""
               clearable
-              @blur="$refs.form.validateField('Name')"
             ></el-input>
           </el-form-item>
-
-          <!-- <el-form-item label="联系电话" prop="PhoneNumber">
-            <el-input
-              v-model="form.PhoneNumber"
-              style="width: 200px"
-              placeholder=""
-              clearable
-              @blur="$refs.form.validateField('PhoneNumber')"
-            ></el-input>
-          </el-form-item> -->
-
-
 
           <div class="BaseInofo">
             <div class="title-container">
               <div class="blue-box"></div>
               <span class="title-text">反馈人联系电话</span>
             </div>
-           <el-form-item label="" prop="PhoneNumber">
+           <el-form-item label="" prop="phoneNumber">
             <el-input
-              v-model="form.PhoneNumber"
+              v-model="form.phoneNumber"
               style="width: 200px;margin-left: -60px;"
               placeholder=""
               clearable
-              @blur="$refs.form.validateField('PhoneNumber')"
             ></el-input>
           </el-form-item>
           </div>
@@ -67,13 +52,12 @@
               <div class="blue-box"></div>
               <span class="title-text">意见标题</span>
             </div>
-            <el-form-item label="" prop="FeedbackTitle">
+            <el-form-item label="" prop="feedbackTitle">
               <el-input
-                v-model="form.FeedbackTitle"
+                v-model="form.feedbackTitle"
                 style="width: 500px; margin-left: -60px"
                 placeholder=""
                 clearable
-                @blur="$refs.form.validateField('FeedbackTitle')"
               ></el-input>
             </el-form-item>
           </div>
@@ -83,14 +67,13 @@
               <div class="blue-box"></div>
               <span class="title-text">意见内容</span>
             </div>
-            <el-form-item label="" prop="FeedbackText">
+            <el-form-item label="" prop="feedbackText">
               <el-input
-                v-model="form.FeedbackText"
+                v-model="form.feedbackText"
                 style="width: 500px; margin-left: -60px"
                 placeholder=""
                 type="textarea"
                 clearable
-                @blur="$refs.form.validateField('FeedbackText')"
                 row="4"
               ></el-input>
             </el-form-item>
@@ -104,6 +87,7 @@
 <script>
 import { ElMessage } from "element-plus";
 import Dateselection from "@/components/date_selection.vue";
+import {fetchFeedbackDataById} from "@/api/feedback/feedback.js"
 export default {
   components: {
     Dateselection,
@@ -112,57 +96,38 @@ export default {
     return {
       visible: false, // 控制弹窗显示
       form: {
-        Name: "",
-        PhoneNumber: "",
-        FeedbackTitle: "",
-        FeedbackText: "",
+        name: "",
+        phoneNumber: "",
+        feedbackTitle: "",
+        feedbackText: "",
       },
-
-      rules: {},
     };
   },
   methods: {
-    showDrawer(user) {
-      this.form = { ...user };
+    showDrawer(feedbackId) {
       this.visible = true;
+      this.fetchFeedbackById(feedbackId);
     },
     handleCancel() {
       this.visible = false;
     },
-    handleSubmit() {
-      console.log("触发");
-      this.$refs.form.validate((valid) => {
-        console.log("Form is valid:", valid);
-        if (valid) {
-          console.log("Form data:", this.form);
-          this.visible = false;
-          ElMessage({
-            message: "提交成功",
-            type: "success",
-          });
-        } else {
-          console.log("表单验证失败");
-          ElMessage({
-            message: "提交失败",
-            type: "error",
-          });
-          return false;
-        }
-      });
-    },
 
-    handleReset() {
-      this.form = this.getInitialForm();
-      this.message = "";
-    },
-    getInitialForm() {
-      return {
-        Name: "",
-        PhoneNumber: "",
-        FeedbackTitle: "",
-        FeedbackText: "",
-      };
-    },
+      async fetchFeedbackById(feedbackId){
+        try{
+            const response = await fetchFeedbackDataById(feedbackId); 
+            
+            if(response.data.code === 1){
+              const data =response.data.data;
+              this.form = data;
+            }else {
+          console.error("获取反馈信息失败:", response.data.msg);
+        }
+
+        }catch(error){
+           console.error("请求出错:", error);
+        }
+      },
+
   },
 };
 </script>

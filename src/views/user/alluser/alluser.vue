@@ -8,6 +8,7 @@
       :inline="true"
       v-show="showSearch"
     >
+      <!-- 用户类型选择 -->
       <el-form-item label="" prop="UserType" size="default">
         <el-select
           v-model="queryParams.UserType"
@@ -17,14 +18,18 @@
           style="width: 200px; margin-right: -15px"
           @change="handleUserTypeChange"
         >
-          <el-option :key="1" label="系统管理员" :value="1"></el-option>
-          <el-option :key="2" label="铁路职工" :value="2"></el-option>
-          <el-option :key="3" label="疾控中心工作人员" :value="3"></el-option>
-          <el-option :key="4" label="专职医护" :value="4"></el-option>
+          <el-option label="系统管理员" value="系统管理员"></el-option>
+          <el-option label="铁路职工" value="铁路职工"></el-option>
+          <el-option
+            label="疾控中心工作人员"
+            value="疾控中心工作人员"
+          ></el-option>
+          <el-option label="专职医护" value="专职医护"></el-option>
         </el-select>
       </el-form-item>
 
-      <el-form-item label="" prop="choice">
+      <!-- 字段选择 -->
+      <el-form-item label="" prop="choice" size="default">
         <el-select
           v-model="queryParams.choice"
           placeholder="请选择字段"
@@ -32,17 +37,18 @@
           size="default"
           style="width: 200px; margin-right: -15px"
         >
-          <el-option :key="1" label="姓名" :value="1"></el-option>
-          <el-option :key="2" label="电话" :value="2"></el-option>
-          <el-option :key="3" label="部门/工种" :value="3"></el-option>
-          <el-option :key="4" label="特殊职业" :value="4"></el-option>
+          <el-option label="姓名" :value="'name'"></el-option>
+          <el-option label="电话" :value="'phoneNumber'"></el-option>
+          <el-option label="部门/工种" :value="'department'"></el-option>
+          <el-option label="特殊职业" :value="'specificOccupation'"></el-option>
         </el-select>
       </el-form-item>
 
-      <el-form-item label="" prop="check">
+      <!-- 搜索框 -->
+      <el-form-item label="" prop="check" size="default">
         <el-input
           v-model="queryParams.check"
-          placeholder="请输入文本"
+          placeholder="请输入搜索内容"
           clearable
           size="default"
           @keyup.enter.native="handleQuery"
@@ -50,6 +56,7 @@
         />
       </el-form-item>
 
+      <!-- 操作按钮 -->
       <el-form-item>
         <el-button
           type="primary"
@@ -100,10 +107,10 @@
           color: '#333333',
         }"
         v-loading="loading"
-        :data="paginatedData"
+        :data="allData"
         style="width: 100%"
         :height="tableHeight"
-        show-overflow-tooltip="true"
+        :show-overflow-tooltip="true"
       >
         <el-table-column type="selection" width="55" />
         <el-table-column prop="serialNumber" label="序号" width="80" />
@@ -131,11 +138,17 @@
               link
               type="primary"
               size="large"
-              @click="handleClick(scope.row)"
+              @click="handleClick(scope.row.userId)"
             >
               查看
             </el-button>
-            <el-button link type="primary" size="large" @click="handleClickEdit(scope.row)">编辑</el-button>
+            <el-button
+              link
+              type="primary"
+              size="large"
+              @click="handleClickEdit(scope.row.userId)"
+              >编辑</el-button
+            >
             <el-button
               link
               :type="scope.row.isActive ? 'primary' : 'danger'"
@@ -168,21 +181,25 @@
       />
     </div>
   </div>
-  <AddUserDialog ref="AddUserDialog" @add-user="handleAddUser" />
+  <AddUserDialog ref="AddUserDialog" @add-user="handleAdd" />
   <BatchImportDialog ref="batchImportDialog" @import="handleImportData" />
   <Checkuserdata ref="Checkuserdata" />
-  <Editdata ref="Editdata" />
+  <Editdata ref="Editdata" @update-success="handleQuery" />
 </template>
-
 <script>
 import * as XLSX from "xlsx";
-import axios from "axios"; 
 import { ref, computed, onMounted } from "vue";
 import Pagination from "@/components/pagination.vue";
 import AddUserDialog from "./components/adduserdialog.vue";
 import BatchImportDialog from "./components/batchimportdialog.vue";
 import Checkuserdata from "./components/checkuserdata.vue";
-import Editdata from './components/editdata.vue'
+import Editdata from "./components/editdata.vue";
+import {
+  fetchUserData,
+  toggleUserStatus,
+  initializeUserPassword,
+  exportUserData,
+} from "@/api/user/alluser.js"; // 导入封装的 API
 
 export default {
   components: {
@@ -197,344 +214,221 @@ export default {
     return {
       queryParams: {
         UserType: "",
-        choice: "",
-        check: "",
+        choice: "", // 选择的字段
+        check: "", // 搜索关键词
         pageNum: 1,
         pageSize: 15,
       },
-      allData: [
-         {
-        serialNumber: 1,
-          UserType: "铁路职工",
-          Name: "张伟",
-          PhoneNumber: "13800000001",
-          Gender: "男",
-          Age: "44",
-          Ethnicity: "汉族",
-          EducationLevel: "大专/本科",
-          WorkOnPlateauStartDate: "2010-08-15",
-          Department: "工程技术部",
-          SpecificOccupation: "否",
-          isActive: true,
-        },
-        {
-          serialNumber: 2,
-          UserType: "铁路职工",
-          Name: "李四",
-          PhoneNumber: "13800000002",
-          Gender: "男",
-          Age: "38",
-          Ethnicity: "汉族",
-          EducationLevel: "大专/本科",
-          WorkOnPlateauStartDate: "2012-04-20",
-          Department: "技术部",
-          SpecificOccupation: "是",
-          isActive: true,
-        },
-        {
-          serialNumber: 3,
-          UserType: "系统管理员",
-          Name: "王芳",
-          PhoneNumber: "13900000003",
-          Gender: "女",
-          Age: "32",
-          Ethnicity: "汉族",
-          EducationLevel: "硕士及以上",
-          WorkOnPlateauStartDate: "2015-09-10",
-          Department: "人力资源部",
-          SpecificOccupation: "否",
-          isActive: true,
-        },
-        {
-          serialNumber: 4,
-          UserType: "疾控中心工作人员",
-          Name: "赵强",
-          PhoneNumber: "13700000004",
-          Gender: "男",
-          Age: "45",
-          Ethnicity: "汉族",
-          EducationLevel: "大专/本科",
-          WorkOnPlateauStartDate: "2018-03-25",
-          Department: "公共卫生部",
-          SpecificOccupation: "是",
-          isActive: false,
-        },
-        {
-          serialNumber: 5,
-          UserType: "专职医护",
-          Name: "孙婷",
-          PhoneNumber: "13600000005",
-          Gender: "女",
-          Age: "29",
-          Ethnicity: "汉族",
-          EducationLevel: "大专/本科",
-          WorkOnPlateauStartDate: "2020-01-30",
-          Department: "急诊科",
-          SpecificOccupation: "否",
-          isActive: true,
-        },
-        {
-          serialNumber: 6,
-          UserType: "铁路职工",
-          Name: "刘洋",
-          PhoneNumber: "13500000006",
-          Gender: "男",
-          Age: "40",
-          Ethnicity: "汉族",
-          EducationLevel: "大专/本科",
-          WorkOnPlateauStartDate: "2011-12-01",
-          Department: "运输部",
-          SpecificOccupation: "是",
-          isActive: false,
-        },
-        {
-          serialNumber: 7,
-          UserType: "系统管理员",
-          Name: "陈刚",
-          PhoneNumber: "13400000007",
-          Gender: "男",
-          Age: "50",
-          Ethnicity: "汉族",
-          EducationLevel: "硕士及以上",
-          WorkOnPlateauStartDate: "2012-11-20",
-          Department: "信息技术部",
-          SpecificOccupation: "否",
-          isActive: true,
-        },
-        {
-          serialNumber: 8,
-          UserType: "专职医护",
-          Name: "杨美",
-          PhoneNumber: "13300000008",
-          Gender: "女",
-          Age: "34",
-          Ethnicity: "汉族",
-          EducationLevel: "大专/本科",
-          WorkOnPlateauStartDate: "2017-07-10",
-          Department: "内科",
-          SpecificOccupation: "是",
-          isActive: false,
-        },
-        {
-          serialNumber: 9,
-          UserType: "疾控中心工作人员",
-          Name: "吴军",
-          PhoneNumber: "13200000009",
-          Gender: "男",
-          Age: "42",
-          Ethnicity: "汉族",
-          EducationLevel: "大专/本科",
-          WorkOnPlateauStartDate: "2014-05-15",
-          Department: "流行病部",
-          SpecificOccupation: "否",
-          isActive: true,
-        },
-        {
-          serialNumber: 10,
-          UserType: "铁路职工",
-          Name: "陈梅",
-          PhoneNumber: "13100000010",
-          Gender: "女",
-          Age: "37",
-          Ethnicity: "汉族",
-          EducationLevel: "大专/本科",
-          WorkOnPlateauStartDate: "2016-08-25",
-          Department: "维修部",
-          SpecificOccupation: "是",
-          isActive: false,
-        },
-        {
-          serialNumber: 11,
-          UserType: "系统管理员",
-          Name: "刘星",
-          PhoneNumber: "13900000011",
-          Gender: "女",
-          Age: "28",
-          Ethnicity: "汉族",
-          EducationLevel: "硕士及以上",
-          WorkOnPlateauStartDate: "2019-06-10",
-          Department: "技术支持部",
-          SpecificOccupation: "否",
-          isActive: true,
-        },
-        {
-          serialNumber: 12,
-          UserType: "铁路职工",
-          Name: "王强",
-          PhoneNumber: "13800000012",
-          Gender: "男",
-          Age: "36",
-          Ethnicity: "汉族",
-          EducationLevel: "本科",
-          WorkOnPlateauStartDate: "2014-11-20",
-          Department: "运营部",
-          SpecificOccupation: "是",
-          isActive: false,
-        },
-        {
-          serialNumber: 13,
-          UserType: "专职医护",
-          Name: "马丽",
-          PhoneNumber: "13600000013",
-          Gender: "女",
-          Age: "30",
-          Ethnicity: "汉族",
-          EducationLevel: "大专",
-          WorkOnPlateauStartDate: "2021-02-15",
-          Department: "妇产科",
-          SpecificOccupation: "否",
-          isActive: true,
-        },
-        {
-          serialNumber: 14,
-          UserType: "疾控中心工作人员",
-          Name: "刘伟",
-          PhoneNumber: "13700000014",
-          Gender: "男",
-          Age: "40",
-          Ethnicity: "汉族",
-          EducationLevel: "硕士",
-          WorkOnPlateauStartDate: "2017-04-10",
-          Department: "疾病控制部",
-          SpecificOccupation: "是",
-          isActive: false,
-        },
-
-      ], 
-      tableData: [],
+      allData: [],
+      total: 0,
       showSearch: true,
       loading: false,
     };
   },
 
   computed: {
-    total() {
-      return this.filteredData.length;
-    },
     tableHeight() {
       return window.innerHeight - 300;
-    },
-    filteredData() {
-      const { UserType, check } = this.queryParams;
-      const lowerCaseCheck = check ? check.toLowerCase() : "";
-
-      return this.allData.filter((item) => {
-        const userTypeMatch =
-          !UserType || item.UserType === this.convertUserType(UserType);
-        const fieldsToSearch = [
-          "Name",
-          "PhoneNumber",
-          "Department",
-          "SpecificOccupation",
-        ];
-        const textMatch = fieldsToSearch.some((field) => {
-          const itemFieldValue = item[field]?.toString().toLowerCase() || "";
-          return itemFieldValue.includes(lowerCaseCheck);
-        });
-        return userTypeMatch && textMatch;
-      });
-    },
-    paginatedData() {
-      const start = (this.queryParams.pageNum - 1) * this.queryParams.pageSize;
-      const end = start + this.queryParams.pageSize;
-      return this.filteredData.slice(start, end);
     },
   },
 
   methods: {
-    handleUserTypeChange() {
-      this.handleQuery();
+    // 获取用户列表
+    async fetchUserData() {
+      // console.log("Fetching user data...");
+      this.loading = true;
+      try {
+        const params = {
+          userType: this.queryParams.UserType || "",
+          pageNo: this.queryParams.pageNum || 1,
+          pageSize: this.queryParams.pageSize || 15,
+        };
+
+        if (this.queryParams.choice && this.queryParams.check) {
+          params[this.queryParams.choice] = this.queryParams.check;
+        }
+
+        // 封装的api
+        const response = await fetchUserData(params);
+
+        if (response.data.code === 1) {
+          this.allData = response.data.data.records.map((item, index) => ({
+            serialNumber:
+              (this.queryParams.pageNum - 1) * this.queryParams.pageSize +
+              index +
+              1,
+            UserType: item.userType,
+            Name: item.name,
+            PhoneNumber: item.phoneNumber,
+            Gender: item.gender,
+            Age: item.age,
+            Ethnicity: item.ethnicity,
+            EducationLevel: item.educationLevel,
+
+            // 日期格式转换
+            WorkOnPlateauStartDate: item.workOnPlateauStartDate
+              ? `${item.workOnPlateauStartDate[0]}-${String(
+                  item.workOnPlateauStartDate[1]
+                ).padStart(2, "0")}-${String(
+                  item.workOnPlateauStartDate[2]
+                ).padStart(2, "0")}`
+              : "",
+
+            Department: item.department,
+            SpecificOccupation: item.specificOccupation,
+            isActive: item.isActived,
+            userId: item.userId,
+          }));
+          this.total = response.data.data.total;
+        } else {
+          this.$message.error(
+            "获取用户数据失败，请重试！" + response.data.message
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        this.$message.error("获取用户数据失败，请重试！");
+      } finally {
+        this.loading = false;
+      }
     },
 
-    handleQuery() {
-      this.tableData = this.paginatedData;
-    },
-
+    // 添加用户
     handleAdd() {
       this.$refs.AddUserDialog.showDrawer();
     },
 
+    // 批量导入
     handleImport() {
       this.$refs.batchImportDialog.showDialog();
     },
 
+    // 下载导入模板
     handleDownload() {
-      // 逻辑处理
+      const link = document.createElement("a");
+      link.href = "/template.xlsx"; // 指向 public 目录下的文件
+      link.download = "用户信息导入模板.xlsx"; // 下载时的文件名
+      document.body.appendChild(link); // 将链接添加到文档中
+      link.click(); // 触发点击事件下载文件
+      document.body.removeChild(link); // 下载后移除链接
+      this.$message({
+        message: "下载成功",
+        type: "success",
+      });
     },
 
-    handleExport() {
-        const data = this.allData.map((item) => ({
-        序号: item.serialNumber,
-        用户类型: item.UserType,
-        姓名: item.Name,
-        电话: item.PhoneNumber,
-        性别: item.Gender,
-        年龄: item.Age,
-        民族: item.Ethnicity,
-        学历: item.EducationLevel,
-        高原工作时间: item.WorkOnPlateauStartDate,
-        部门工种: item.Department,
-        特殊职业: item.SpecificOccupation,
-      }));
-
-      const ws = XLSX.utils.json_to_sheet(data);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "用户信息导出表");
-      XLSX.writeFile(wb, "用户信息导出表.xlsx");
-    },
-
-    handleClick(row) {
-      this.$refs.Checkuserdata.showDrawer(row);
-      console.log("触发", row);
-    },
-    handleClickEdit(row) {
-      this.$refs.Editdata.showDrawer(row);
-      console.log("触发", row);
-    },
-
-    toggleStatus(row) {
-      row.isActive = !row.isActive;
-      this.handleQuery(); 
-    },
-
-    convertUserType(value) {
-      switch (value) {
-        case 1:
-          return "系统管理员";
-        case 2:
-          return "铁路职工";
-        case 3:
-          return "疾控中心工作人员";
-        case 4:
-          return "专职医护";
-        default:
-          return "";
+    // 导出用户信息
+    async handleExport() {
+      try {
+        const response = await exportUserData(); 
+        if (response.status === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "用户信息导出表.xlsx");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          this.$message({
+            message: "导出成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            message: "导出失败，请重试",
+            type: "error",
+          });
+        }
+      } catch (error) {
+        console.error("导出出错:", error);
+        this.$message({
+          message: "导出出错，请重试",
+          type: "error",
+        });
       }
     },
 
-     handlePagination({ page, limit }) {
-      this.queryParams.pageNum = page;
-      this.queryParams.pageSize = limit;
-      this.handleQuery();
+    // 查看用户
+    handleClick(userId) {
+      this.$refs.Checkuserdata.showDrawer(userId);
     },
 
-    initializePassword(row) {
-      const password = ""; // 实际身份证号后六位
-      this.$message.success(`初始化密码成功，为身份证后六位${password}`);
+    // 编辑用户
+    handleClickEdit(userId) {
+      this.$refs.Editdata.showDrawer(userId);
     },
-      handleImportData(importedData) {
-      // 假设 importedData 是数组格式
-      this.allData.push(...importedData); // 合并导入的数据
-      this.handleQuery(); // 更新表格
+
+    // 切换用户状态
+    toggleStatus(row) {
+      this.$confirm("您确定要切换用户状态吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      }).then(async () => {
+        try {
+          const response = await toggleUserStatus(row.userId);
+          if (response.data.code === 1) {
+            row.isActive = !row.isActive;
+            this.fetchUserData();
+          } else {
+            this.$message.error("切换状态失败：" + response.data.message);
+          }
+        } catch (error) {
+          console.error("Error toggling status:", error);
+          this.$message.error("切换状态失败，请重试！");
+        }
+      });
+    },
+
+    // 分页
+    handlePagination({ page, limit }) {
+      this.queryParams.pageNum = page;
+      this.queryParams.pageSize = limit;
+      this.fetchUserData();
+    },
+
+    // 初始化密码
+    async initializePassword(row) {
+      try {
+        const response = await initializeUserPassword(row.userId);
+        if (response.data.code === 1) {
+          this.$message.success(`初始化密码成功，为身份证后六位`);
+        } else {
+          this.$message.error("初始化密码失败：" + response.data.message);
+        }
+      } catch (error) {
+        console.error("Error initializing password:", error);
+        this.$message.error("初始化密码失败，请重试！");
+      }
+    },
+
+    // 处理批量导入的数据
+    handleImportData(importedData) {
+      // this.allData.push(importedData);
+      // this.fetchUserData();
+    },
+
+    // 用户类型变化时触发查询
+    handleUserTypeChange() {
+      this.queryParams.pageNum = 1; // 重置为第一页
+      this.fetchUserData();
+    },
+
+    // 搜索查询
+    handleQuery() {
+      this.queryParams.pageNum = 1;
+      this.fetchUserData();
     },
   },
 
-
-  onMounted() {
-    this.handleQuery(); 
+  mounted() {
+    // console.log("Component mounted");
+    this.fetchUserData();
   },
 };
 </script>
+
+
 
 <style scoped>
 .custom-button {
@@ -552,7 +446,7 @@ export default {
 
 .container {
   padding: 10px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border-radius: 5px;
 }
 

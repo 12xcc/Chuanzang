@@ -7,7 +7,7 @@
       ref="form"
       :rules="rules"
       :disabled="allDisabled"
-      :readonly="allReadonly"
+       
     >
       <div class="GeneralSymptoms">
         <div class="Condition">
@@ -68,7 +68,7 @@
             type="primary"
             @change="toggleTag('HasChills')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             寒战
           </el-check-tag>
@@ -77,7 +77,7 @@
             type="primary"
             @change="toggleTag('HasSweating')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             大汗
           </el-check-tag>
@@ -86,7 +86,7 @@
             type="primary"
             @change="toggleTag('HasFatigue')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             乏力
           </el-check-tag>
@@ -95,7 +95,7 @@
             type="primary"
             @change="toggleTag('HasHeadache')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             头痛
           </el-check-tag>
@@ -104,7 +104,7 @@
             type="primary"
             @change="toggleTag('HasMusclePain')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             肌肉酸痛
           </el-check-tag>
@@ -113,7 +113,7 @@
             type="primary"
             @change="toggleTag('HasJointPain')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             关节酸痛
           </el-check-tag>
@@ -125,7 +125,7 @@
           @change="toggleTag('HasLymphNodeSwelling')"
           prop="HasLymphNodeSwelling"
           :disabled="allDisabled"
-          :readonly="allReadonly"
+           
         >
           淋巴结肿大
         </el-check-tag>
@@ -141,7 +141,7 @@
             type="primary"
             @change="toggleTag('HasLymphNodeSwellingGroin')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             腹股沟
           </el-check-tag>
@@ -150,7 +150,7 @@
             type="primary"
             @change="toggleTag('HasLymphNodeSwellingArmpit')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             腋下
           </el-check-tag>
@@ -159,7 +159,7 @@
             type="primary"
             @change="toggleTag('HasLymphNodeSwellingSubclavian')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             锁骨下
           </el-check-tag>
@@ -168,7 +168,7 @@
             type="primary"
             @change="toggleTag('HasLymphNodeSwellingNeck')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             颈部
           </el-check-tag>
@@ -177,7 +177,7 @@
             type="primary"
             @change="toggleTag('HasLymphNodeSwellingElbow')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             肘
           </el-check-tag>
@@ -186,7 +186,7 @@
             type="primary"
             @change="toggleTag('HasLymphNodeSwellingPopliteal')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             腘窝
           </el-check-tag>
@@ -198,7 +198,7 @@
             type="primary"
             @change="toggleTag('HasCyanosis')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             口唇、颜面、四肢及全身皮肤发绀
           </el-check-tag>
@@ -207,7 +207,7 @@
             type="primary"
             @change="toggleTag('HasSubcutaneousAndMucosalBleedingSpots')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             皮下及黏膜出血或出血点
           </el-check-tag>
@@ -216,7 +216,7 @@
             type="primary"
             @change="toggleTag('HasSevereAnemia')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             严重贫血
           </el-check-tag>
@@ -225,7 +225,7 @@
             type="primary"
             @change="toggleTag('HasPainfulRedRash')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             皮肤可见剧痛的红色丘疹
           </el-check-tag>
@@ -234,7 +234,7 @@
             type="primary"
             @change="toggleTag('HasBloodBlisters')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             皮肤可见周边呈灰黑色、基底坚硬的血性水泡
           </el-check-tag>
@@ -243,7 +243,7 @@
             type="primary"
             @change="toggleTag('HasSkinUlcer')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             皮肤出现呈灰黑色创面的溃疡
           </el-check-tag>
@@ -252,7 +252,7 @@
             type="primary"
             @change="toggleTag('HasSubcutaneousAndMucosalBleedingCavity')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             皮下及粘膜出血腔道出血
           </el-check-tag>
@@ -261,7 +261,7 @@
             type="primary"
             @change="toggleTag('HasCongestiveOrPetechialRash')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             皮疹：充血性或点状出血疹
           </el-check-tag>
@@ -270,7 +270,7 @@
             type="primary"
             @change="toggleTag('HasPressureInsensitiveRash')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             皮疹：起初压之退色，后期压之不退，多见于四肢、躯干，面部一般没有
           </el-check-tag>
@@ -283,7 +283,7 @@
               @change="toggleTag('HasDehydration')"
               prop="HasDehydration"
               :disabled="allDisabled"
-              :readonly="allReadonly"
+               
             >
               失水
             </el-check-tag>
@@ -313,7 +313,7 @@
             style="display: block; width: 154px"
             prop="HasItchyRash"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             瘙痒性斑丘疹/水疱
           </el-check-tag>
@@ -329,7 +329,7 @@
               type="primary"
               @change="toggleTag('ItchyRashOnFingers')"
               :disabled="allDisabled"
-              :readonly="allReadonly"
+               
             >
               手指
             </el-check-tag>
@@ -338,7 +338,7 @@
               type="primary"
               @change="toggleTag('ItchyRashOnBackOfHands')"
               :disabled="allDisabled"
-              :readonly="allReadonly"
+               
             >
               手背
             </el-check-tag>
@@ -347,7 +347,7 @@
               type="primary"
               @change="toggleTag('ItchyRashOnUpperLimbs')"
               :disabled="allDisabled"
-              :readonly="allReadonly"
+               
             >
               上肢
             </el-check-tag>
@@ -356,7 +356,7 @@
               type="primary"
               @change="toggleTag('ItchyRashOnLowerLimbs')"
               :disabled="allDisabled"
-              :readonly="allReadonly"
+               
             >
               下肢
             </el-check-tag>
@@ -365,7 +365,7 @@
               type="primary"
               @change="toggleTag('ItchyRashOnFeet')"
               :disabled="allDisabled"
-              :readonly="allReadonly"
+               
             >
               足背
             </el-check-tag>
@@ -374,7 +374,7 @@
               type="primary"
               @change="toggleTag('ItchyRashOnFace')"
               :disabled="allDisabled"
-              :readonly="allReadonly"
+               
             >
               面部
             </el-check-tag>
@@ -383,7 +383,7 @@
               type="primary"
               @change="toggleTag('ItchyRashOnOther')"
               :disabled="allDisabled"
-              :readonly="allReadonly"
+               
             >
               其他
             </el-check-tag>
@@ -395,7 +395,7 @@
             type="primary"
             @change="toggleTag('HasEdema')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             水肿
           </el-check-tag>
@@ -406,7 +406,7 @@
             type="primary"
             @change="toggleTag('HasNightSweats')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             盗汗
           </el-check-tag>
@@ -417,7 +417,7 @@
             type="primary"
             @change="toggleTag('HasWeightLoss')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             消瘦
           </el-check-tag>
@@ -428,7 +428,7 @@
             type="primary"
             @change="toggleTag('HasExhaustion')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             虚脱/全身无力
           </el-check-tag>
@@ -437,7 +437,7 @@
             type="primary"
             @change="toggleTag('HasWhiteBloodCells')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             白细胞明显增高
           </el-check-tag>
@@ -448,7 +448,7 @@
               type="primary"
               @change="toggleTag('HasBloodPressureDrop')"
               :disabled="allDisabled"
-              :readonly="allReadonly"
+               
             >
               血压下降
             </el-check-tag>
@@ -476,7 +476,7 @@
             type="primary"
             @change="toggleTag('HasShockSyndrome')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             休克症候群
           </el-check-tag>
@@ -486,7 +486,7 @@
             type="primary"
             @change="toggleTag('HasHighIntracranialPressures')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             颅压高
           </el-check-tag>
@@ -496,7 +496,7 @@
             type="primary"
             @change="toggleTag('HasTurbidCerebrospinalFluid')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             脑脊液浊浑
           </el-check-tag>
@@ -508,7 +508,7 @@
               @change="toggleTag('HasBleeding')"
               prop="HasBleeding"
               :disabled="allDisabled"
-              :readonly="allReadonly"
+               
             >
               出血
             </el-check-tag>
@@ -550,7 +550,7 @@
             type="primary"
             @change="toggleTag('HasPlasmaLeakage')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             血浆渗漏表现
           </el-check-tag>
@@ -560,7 +560,7 @@
             type="primary"
             @change="toggleTag('HasOtherOrganDamage')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             其他重要脏器损伤
           </el-check-tag>
@@ -570,7 +570,7 @@
             type="primary"
             @change="toggleTag('HasKernigSign')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             Kernig征
           </el-check-tag>
@@ -579,7 +579,7 @@
             type="primary"
             @change="toggleTag('HasBrudzinskiSign')"
             :disabled="allDisabled"
-            :readonly="allReadonly"
+             
           >
             Brudzinski征
           </el-check-tag>
@@ -599,7 +599,7 @@ export default {
   data() {
     return {
       allDisabled: true,
-      allReadonly: true,
+       
       visible: false, // 控制弹窗显示
       form: {
         HasFever: null,
@@ -771,11 +771,11 @@ export default {
     },
     handleAble() {
       this.allDisabled = false;
-      this.allReadonly = false;
+       
     },
     handleCancel(){
       this.allDisabled = true;
-      this.allReadonly = true;
+       
     },
     getInitialForm() {
       return {

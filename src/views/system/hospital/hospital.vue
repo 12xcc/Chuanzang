@@ -54,24 +54,25 @@
       <el-table 
         :header-cell-style="{height:'40px',background:'#f5f7fa',color: '#333333'}" 
         v-loading="loading" 
-        :data="tableData" 
+        :data="allData" 
         style="width: 100%;"
         :height="tableHeight"
+        :show-overflow-tooltip="true"
       >
         <el-table-column 
           type="selection" 
           width="55" 
         />
-        <el-table-column prop="HospitalID" label="序号" width="80" />
+        <el-table-column prop="serialNumber" label="序号" width="80" />
         <el-table-column prop="HospitalName" label="医院名" width="300" />
         <el-table-column prop="HospitalPhoneNumber" label="联系电话" width="200" />
         <el-table-column prop="Address" label="地址" min-width="500" />
         <el-table-column fixed="right" label="操作" min-width="260">
           <template #default="scope">
-            <el-button link type="primary" size="large" @click="handleClick(scope.row)">
+            <el-button link type="primary" size="large" @click="handleClick(scope.row.HospitalID)">
               修改
             </el-button>
-            <el-button link type="primary" size="large" @click="handleDelete(scope.row)">
+            <el-button link type="danger" size="large" @click="handleDelete(scope.row)">
               删除
             </el-button>
           </template>
@@ -88,17 +89,21 @@
       />
     </div>
 
-
     <!-- 医院信息弹窗 -->
-    <Hospitaldata ref="Hospitaldata" />
+    <Hospitaldata ref="Hospitaldata" @update-success="handleQuery" />
   </div>
 </template>
 
 <script>
-import * as XLSX from "xlsx";
 import { ref, computed, onMounted } from 'vue';
 import Pagination from '@/components/pagination.vue';
 import Hospitaldata from './components/hospitaldata.vue';
+import {
+  fetchHospitalData,
+  exportHospitalData,
+  getExcelHospitalTemplate, 
+} from '@/api/system/hospital.js'; 
+import { ElMessage } from 'element-plus';
 
 export default {
   components: {
@@ -109,89 +114,141 @@ export default {
   data() {
     return {
       queryParams: {
-        UserType: '',
-        choice: '',
         check: '',
         pageNum: 1,
         pageSize: 15
       },
-      allData: [
-        { HospitalID: 1, HospitalName: '医院1', HospitalPhoneNumber: '028-******', Address: '成都市十陵' },
-        { HospitalID: 2, HospitalName: '医院2', HospitalPhoneNumber: '028-******', Address: '成都市十陵' },
-        { HospitalID: 3, HospitalName: '医院3', HospitalPhoneNumber: '028-******', Address: '成都市十陵' },
-        { HospitalID: 4, HospitalName: '医院4', HospitalPhoneNumber: '028-******', Address: '成都市十陵' },
-        { HospitalID: 5, HospitalName: '医院5', HospitalPhoneNumber: '028-******', Address: '成都市十陵' },
-      ],
-      tableData: [],
+      allData: [],
       showSearch: true,
       loading: false,
+      total: 0,
     };
   },
 
   computed: {
-    total() {
-      return this.filteredData.length;
-    },
     tableHeight() {
       return window.innerHeight - 300;
     },
-    filteredData() {
-      const { UserType, check } = this.queryParams;
-      const lowerCaseCheck = check ? check.toLowerCase() : '';
-
-      return this.allData.filter(item => {
-        const userTypeMatch = !UserType || item.UserType === this.convertUserType(UserType);
-        const fieldsToSearch = ['HospitalName'];
-        const textMatch = fieldsToSearch.some(field => {
-          const itemFieldValue = item[field]?.toString().toLowerCase() || '';
-          return itemFieldValue.includes(lowerCaseCheck);
-        });
-        return userTypeMatch && textMatch;
-      });
-    },
-    paginatedData() {
-      const start = (this.queryParams.pageNum - 1) * this.queryParams.pageSize;
-      const end = start + this.queryParams.pageSize;
-      return this.filteredData.slice(start, end);
-    }
   },
 
   methods: {
-    handleUserTypeChange() {
-      this.handleQuery();
+    async handleQuery() {
+      this.loading = true;
+      try {
+        const params = {
+          hospitalName: this.queryParams.check || "",
+          pageNo: this.queryParams.pageNum || 1,
+          pageSize: this.queryParams.pageSize || 15,
+        };
+
+        // console.log('请求参数:', params); // 调试请求参数
+        const response = await fetchHospitalData(params);
+        // console.log('响应:', response); // 调试响应内容
+
+        if (response.data.code === 1) {
+          this.allData = response.data.data.records.map((item, index) => ({
+            serialNumber:
+              (this.queryParams.pageNum - 1) * this.queryParams.pageSize +
+              index +
+              1,
+            HospitalID: item.hospitalId,
+            HospitalName: item.hospitalName,
+            HospitalPhoneNumber: item.hospitalPhoneNumber,
+            Address: item.address,
+          }));
+
+          this.total = response.data.data.total;
+        } else {
+          ElMessage.error("获取医院数据失败，请重试！" + response.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching hospital data:", error);
+        ElMessage.error("获取医院数据失败，请重试！");
+      } finally {
+        this.loading = false;
+      }
     },
-    handleQuery() {
-      this.tableData = this.paginatedData;
-    },
-    handleAdd() {
-      this.$refs.addUserDialog.showDrawer(); 
-    },
+
+
+    // 批量导入
     handleImport() {
-      this.$refs.batchImportDialog.showDialog(); 
+
     },
-    handleDownload() {
-      // 逻辑处理
+
+    // 下载导入模板
+    async handleDownload() {
+      try {
+        const response = await getExcelHospitalTemplate(); 
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "医院基础信息导入模板.xlsx");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        ElMessage({
+          message: "下载成功",
+          type: "success",
+        });
+      } catch (error) {
+        console.error("下载出错:", error);
+        ElMessage({
+          message: "下载出错，请重试",
+          type: "error",
+        });
+      }
     },
-    handleExport() {
-      const data = this.allData.map(item => ({
-        // 可以添加更多字段
-      }));
-      const ws = XLSX.utils.json_to_sheet(data);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "医院基础信息导出表");
-      XLSX.writeFile(wb, "医院基础信息导出表.xlsx");
+
+    // 导出医院信息
+    async handleExport() {
+      try {
+        const response = await exportHospitalData(); 
+        if (response.status === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "医院信息导出表.xlsx");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          ElMessage({
+            message: "导出成功",
+            type: "success",
+          });
+        } else {
+          ElMessage({
+            message: "导出失败，请重试",
+            type: "error",
+          });
+        }
+      } catch (error) {
+        console.error("导出出错:", error);
+        ElMessage({
+          message: "导出出错，请重试",
+          type: "error",
+        });
+      }
     },
-    handleClick(row) {
-      this.$refs.Hospitaldata.showDrawer(row);
+
+    // 查看医院详情
+    handleClick(HospitalID) {
+      this.$refs.Hospitaldata.showDrawer(HospitalID);
     },
+
+    // 删除医院
     handleDelete(row) {
-      // 删除逻辑
     },
+
+    // 分页
     handlePagination({ page, limit }) {
       this.queryParams.pageNum = page;
       this.queryParams.pageSize = limit;
       this.handleQuery();
-    }
+    },
+
+    // 处理批量导入的数据
+    async handleImportData(importedData) {
+    },
   },
 
   mounted() {
@@ -209,5 +266,18 @@ export default {
 
 .custom-button {
   margin-right:10px;
+}
+
+.usertable {
+  margin-top: 20px;
+}
+
+.el-table th,
+.el-table td {
+  text-align: center;
+}
+
+.el-form-item {
+  margin-bottom: 10px;
 }
 </style>

@@ -40,7 +40,7 @@
                 placeholder="请输入姓名"
                 @blur="$refs.form.validateField('Name')"
                 clearable
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               ></el-input>
             </el-form-item>
 
@@ -51,7 +51,7 @@
                 style="width: 200px"
                 placeholder=""
                 clearable
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               ></el-input>
               <!-- <el-radio-group v-model="form.Gender">
                 <el-radio value="男">男</el-radio>
@@ -66,7 +66,7 @@
                 style="width: 200px"
                 placeholder="根据身份证号生成"
                 clearable
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               ></el-input>
             </el-form-item>
 
@@ -77,7 +77,7 @@
                 style="width: 200px"
                 placeholder=""
                 clearable
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               ></el-input>
               <!-- <el-radio-group v-model="form.Ethnicity">
                 <el-radio value="汉族">汉族</el-radio>
@@ -94,7 +94,7 @@
                 style="width: 200px"
                 placeholder=""
                 clearable
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               ></el-input>
               <!-- <el-radio-group v-model="form.Department">
                 <el-radio value="安全部">安全部</el-radio>
@@ -171,7 +171,7 @@ export default {
   },
   data() {
     return {
-    allDisabled:true,allReadonly:true,
+    allDisabled:true, 
       visible: false, // 控制弹窗显示
       isEditing: false,
       form: {

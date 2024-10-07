@@ -1,9 +1,9 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import { resolve } from 'path'
-import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import { resolve } from 'path';
+import AutoImport from 'unplugin-auto-import/vite';
+import Components from 'unplugin-vue-components/vite';
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -29,4 +29,14 @@ export default defineConfig({
       },
     },
   },
-})
+  server: {
+    proxy: {
+      '/admin': {
+        target: 'http://43.138.213.55:8080', // 后端服务的地址
+        changeOrigin: true, // 支持虚拟托管
+        logLevel: 'debug', // 添加日志级别
+        // rewrite: (path) => path.replace(/^\/admin/, ''), // 重写路径
+      },
+    },
+  },
+});

@@ -6,7 +6,7 @@
       class="form-container"
       ref="form"
       :rules="rules"
-      :disabled="allDisabled" :readonly="allReadonly"
+      :disabled="allDisabled"  
     >
       <div class="GeneralSymptoms">
         <div class="Condition">
@@ -18,7 +18,7 @@
             :checked="form.HasSuddenOnset"
             type="primary"
             @change="toggleTag('HasSuddenOnset')"
-            :disabled="allDisabled" :readonly="allReadonly"
+            :disabled="allDisabled"  
           >
             突然发病
           </el-check-tag>
@@ -27,7 +27,7 @@
             :checked="form.HasRapidProgress"
             type="primary"
             @change="toggleTag('HasRapidProgress')"
-            :disabled="allDisabled" :readonly="allReadonly"
+            :disabled="allDisabled"  
           >
             病情进展迅速
           </el-check-tag>
@@ -36,7 +36,7 @@
             :checked="form.HasPeriodicAttack"
             type="primary"
             @change="toggleTag('HasPeriodicAttack')"
-            :disabled="allDisabled" :readonly="allReadonly"
+            :disabled="allDisabled"  
           >
             周期性发作
           </el-check-tag>
@@ -45,7 +45,7 @@
             :checked="form.HasForcedPosture"
             type="primary"
             @change="toggleTag('HasForcedPosture')"
-            :disabled="allDisabled" :readonly="allReadonly"
+            :disabled="allDisabled"  
           >
             强迫体位
           </el-check-tag>
@@ -54,7 +54,7 @@
             :checked="form.HasCalfMusclePain"
             type="primary"
             @change="toggleTag('HasCalfMusclePain')"
-            :disabled="allDisabled" :readonly="allReadonly"
+            :disabled="allDisabled"  
           >
             腓肠肌疼痛
           </el-check-tag>
@@ -69,7 +69,7 @@
             :checked="form.HasOtherSymptoms"
             type="primary"
             @change="toggleTag('HasOtherSymptoms')"
-            :disabled="allDisabled" :readonly="allReadonly"
+            :disabled="allDisabled"  
           >
             其他
           </el-check-tag>
@@ -86,7 +86,7 @@
                 clearable
                 size="default"
                 style="margin-left:100px;width: 250px"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               />
             </el-form-item>
           </div>
@@ -106,7 +106,7 @@ export default {
   },
   data() {
     return {
-      allDisabled:true,allReadonly:true,
+      allDisabled:true, 
       visible: false, // 控制弹窗显示
       form: {
         HasSuddenOnset: false,
@@ -138,11 +138,11 @@ export default {
     },
     handleAble() {
       this.allDisabled = false;
-      this.allReadonly = false;
+       
     },
     handleCancel(){
       this.allDisabled = true;
-      this.allReadonly = true;
+       
     },
      validate() {
       return new Promise((resolve, reject) => {

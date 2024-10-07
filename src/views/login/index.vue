@@ -64,6 +64,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/userrole"; // 引入用户角色 store
+import { ElMessage } from 'element-plus'; 
 import passwordOpen from "../../assets/password_close.png";
 import passwordClose from "../../assets/password_open.png";
 
@@ -82,6 +83,7 @@ export default {
         passwordFieldType.value === "password" ? "text" : "password";
     };
 
+    // 用户数组
     const users = {
       19357907217: { Name:"张三", password: "123456", role: "admin" },
       13330656624: { Name:"李四", password: "123456", role: "nurse" },
@@ -101,19 +103,16 @@ const handleSubmit = () => {
     const userData = {
       phoneNumber: username.value,
       role: user.role,
-      Name: user.Name, // 改为 Name
+      Name: user.Name, 
     };
     userStore.login(userData);
     localStorage.setItem('user', JSON.stringify(userData)); // 保存到 localStorage
     router.push("/user/alluser");
+    ElMessage.success("登录成功");
   } else {
-    alert("账号或密码错误");
+     ElMessage.error("账号或密码错误");
   }
 };
-
-
-
-
 
     const resetPassword = () => {
       password.value = username.value.slice(-6);
@@ -137,7 +136,7 @@ const handleSubmit = () => {
         password.value = password.value.slice(0, -1); // 删除最后一个无效字符
       }
       passwordError.value =
-        password.value.length === 6 && passwordPattern.test(password.value)
+        password.value.length === 16 && passwordPattern.test(password.value)
           ? ""
           : "";
     };
@@ -162,10 +161,6 @@ const handleSubmit = () => {
 </script>
 
 <style scoped>
-* {
-  font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    "Roboto", "Helvetica Neue", "Arial", sans-serif;
-}
 
 .login-wrapper {
   position: relative;

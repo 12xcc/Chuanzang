@@ -40,7 +40,6 @@
         range-separator="到"
         start-placeholder="请选择"
         end-placeholder="检测日期范围"
-        :size="size"
         style="width:300px"
       />
       </el-form-item>
@@ -79,6 +78,8 @@
       </el-form-item>
     </el-form>
 
+
+    <!-- 表格部分 -->
     <div class="usertable">
       <el-table
         :header-cell-style="{
@@ -90,6 +91,7 @@
         :data="paginatedData"
         style="width: 100%"
         :height="tableHeight"
+        show-overflow-tooltip="true"
       >
         <el-table-column type="selection" width="55" />
         <el-table-column prop="serialNumber" label="序号" width="80" />

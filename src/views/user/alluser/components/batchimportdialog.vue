@@ -35,10 +35,9 @@
     </template>
   </el-dialog>
 </template>
-
 <script>
 import { ElMessage } from 'element-plus';
-import axios from 'axios';
+import { importUsersByExcel } from '@/api/user/alluser.js';
 
 export default {
   name: 'BatchImportDialog',
@@ -50,29 +49,38 @@ export default {
     };
   },
   methods: {
+    // 控制弹窗显示
     showDialog() {
       this.dialogVisible = true;
       this.uploadFailed = false; // 重置上传状态
       this.fileList = []; // 清空文件列表
     },
+    
+    // 关闭弹窗
     handleClose() {
       this.dialogVisible = false;
       this.fileList = []; // 关闭时清空文件列表
     },
+
+    // 添加文件
     handleChange(file) {
       if (file.status === 'finished') {
         ElMessage.success('文件已添加');
       }
       this.fileList.push(file);
     },
+
+    // 删除文件
     handleRemove(file) {
       const index = this.fileList.indexOf(file);
       if (index > -1) {
         this.fileList.splice(index, 1); // 从列表中删除文件
       }
     },
+
+    // 提交 调用批量上传用户api
     async handleConfirm() {
-      console.log('File list before confirming:', this.fileList);
+      // console.log('File list before confirming:', this.fileList);
       if (this.fileList.length === 0) {
         ElMessage.warning('请上传文件');
         return;
@@ -84,13 +92,8 @@ export default {
       });
 
       try {
-        const response = await axios.post('/systemUser/userManager/addManyUserByExcel', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+        const response = await importUsersByExcel(formData);
         ElMessage.success('上传成功');
-        this.$emit('import', response.data); // 传递导入的结果给父组件
         this.uploadFailed = false; // 上传成功
       } catch (error) {
         ElMessage.error('上传失败');

@@ -88,6 +88,7 @@
         :data="paginatedData"
         style="width: 100%"
         :height="tableHeight"
+        show-overflow-tooltip="true"
       >
         <el-table-column type="selection" width="55" />
         <el-table-column prop="serialNumber" label="序号" width="80" height="48" />

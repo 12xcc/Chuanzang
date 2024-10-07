@@ -20,103 +20,91 @@
             <el-radio :value="1">腹泻 <3次/天</el-radio>
             <el-radio :value="2">腹泻 ≥3 次/天</el-radio>
           </el-radio-group>
-          
-            <div class="NextContainer">
-        <div v-if="form.arrheaFrequencyGEThreeTimesPerDay" style="padding:15px 0 15px 0">
-        
-          <el-form-item label="腹泻次数" style="">
-            <el-input-number
-              v-model="form.DiarrheaTimesPerDay"
-              :min="0"
-              placeholder="腹泻次数"
-            /> &nbsp;&nbsp;&nbsp;次/天
-          </el-form-item>
 
-          <div style="margin-left:10px;display:block">
-          <el-check-tag
-            :checked="form.HasStoolType1"
-            @change="handleStoolTypeChange(1)"
-            type="primary"
-            :disabled="allDisabled"
-             
-          >
-            粪便性状1
-          </el-check-tag>
+          <div class="NextContainer">
+            <div
+              v-if="form.arrheaFrequencyGEThreeTimesPerDay"
+              style="padding: 15px 0 15px 0"
+            >
+              <el-form-item label="腹泻次数" style="">
+                <el-input-number
+                  v-model="form.DiarrheaTimesPerDay"
+                  :min="0"
+                  placeholder="腹泻次数"
+                />
+                &nbsp;&nbsp;&nbsp;次/天
+              </el-form-item>
 
-          <el-check-tag
-            :checked="form.HasStoolType2"
-            @change="handleStoolTypeChange(2)"
-            type="primary"
-            :disabled="allDisabled"
-             
-          >
-            粪便性状2
-          </el-check-tag>
+              <el-form-item label="粪便性状" style="">
+                <el-radio-group
+                  v-model="form.HasStoolType1"
+                  type="primary"
+                  :disabled="allDisabled"
+                   
+                >
+                  <el-radio value="水样">水样</el-radio>
+                  <el-radio value="米泔样">米泔样</el-radio>
+                  <el-radio value="洗肉水样">洗肉水样</el-radio>
+                  <el-radio value="大块黏膜">大块黏膜</el-radio>
+                  <el-radio value="脓血">脓血</el-radio>
+                  <el-radio value="黑便">黑便</el-radio>
+                </el-radio-group>
+              </el-form-item>
+
+              <el-form-item label="腹泻方式" style="margin-top: 20px">
+                <el-radio-group v-model="form.DiarrheaMode">
+                  <el-radio value="里急后重">里急后重</el-radio>
+                  <el-radio value="通畅">通畅</el-radio>
+                  <el-radio value="失禁">失禁</el-radio>
+                  <el-radio value="绞痛">绞痛</el-radio>
+                </el-radio-group>
+              </el-form-item>
+
+              <el-form-item label="粪便量" style="margin-top: 20px">
+                <el-radio-group v-model="form.StoolAmount">
+                  <el-radio value="多">多</el-radio>
+                  <el-radio value="少">少</el-radio>
+                </el-radio-group>
+              </el-form-item>
+
+              <el-form-item label="粪便气味" style="margin-top: 20px">
+                <el-radio-group v-model="form.StoolOdor">
+                  <el-radio value="恶臭">恶臭</el-radio>
+                  <el-radio value="无恶臭">无恶臭</el-radio>
+                </el-radio-group>
+              </el-form-item>
             </div>
-
-          <div v-if="form.HasStoolType1" style="margin-left:40px">
-            <el-radio-group v-model="form.StoolType1Detail" :disabled="allDisabled">
-              <el-radio value="水样">水样</el-radio>
-              <el-radio value="米泔样">米泔样</el-radio>
-              <el-radio value="洗肉水样">洗肉水样</el-radio>
-            </el-radio-group>
           </div>
 
-          <div v-if="form.HasStoolType2" style="margin-left:40px">
-            <el-radio-group v-model="form.StoolType2Detail" :disabled="allDisabled">
-              <el-radio value="大块黏膜">大块黏膜</el-radio>
-              <el-radio value="脓血">脓血</el-radio>
-              <el-radio value="黑便">黑便</el-radio>
-            </el-radio-group>
-          </div>
+          <div class="Condition">
+            <div class="title-container">
+              <div class="blue-box"></div>
+              <span class="title-text">呕吐情况</span>
+            </div>
+            <el-check-tag
+              :checked="form.HasVomiting"
+              @change="toggleTag('HasVomiting')"
+              type="primary"
+              :disabled="allDisabled"
+               
+            >
+              呕吐
+            </el-check-tag>
 
-          <el-form-item label="腹泻方式" style="margin-top:20px">
-            <el-radio-group v-model="form.DiarrheaMode">
-              <el-radio value="里急后重">里急后重</el-radio>
-              <el-radio value="通畅">通畅</el-radio>
-              <el-radio value="失禁">失禁</el-radio>
-              <el-radio value="绞痛">绞痛</el-radio>
-            </el-radio-group>
-          </el-form-item>
-
-          <el-form-item label="粪便量" style="margin-top:20px">
-            <el-radio-group v-model="form.StoolAmount">
-              <el-radio value="多">多</el-radio>
-              <el-radio value="少">少</el-radio>
-            </el-radio-group>
-          </el-form-item>
-
-          <el-form-item label="粪便气味" style="margin-top:20px">
-            <el-radio-group v-model="form.StoolOdor">
-              <el-radio value="恶臭">恶臭</el-radio>
-              <el-radio value="无恶臭">无恶臭</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          </div>
-        </div>
-        
-        <div class="Condition">
-          <div class="title-container">
-            <div class="blue-box"></div>
-            <span class="title-text">呕吐情况</span>
-          </div>
-          <el-check-tag
-            :checked="form.HasVomiting"
-            @change="toggleTag('HasVomiting')"
-            type="primary"
-            :disabled="allDisabled"
-             
-          >
-            呕吐
-          </el-check-tag>
-
-          <div class="NextContainer" v-if="form.HasVomiting" style="padding:15px 0 15px 0;">
-            <el-radio-group v-model="form.VomitingMode" style="margin-left:20px">
-              <el-radio value="喷射状">喷射状</el-radio>
-              <el-radio value="先泻后吐">先泻后吐</el-radio>
-              <el-radio value="先吐后泻">先吐后泻</el-radio>
-            </el-radio-group>
-          </div>
+            <div
+              class="NextContainer"
+              v-if="form.HasVomiting"
+              style="padding: 15px 0 15px 0"
+            >
+              <el-radio-group
+                v-model="form.VomitingMode"
+                style="margin-left: 20px"
+              >
+                <el-radio value="喷射状">喷射状</el-radio>
+                <el-radio value="先泻后吐">先泻后吐</el-radio>
+                <el-radio value="先吐后泻">先吐后泻</el-radio>
+              </el-radio-group>
+            </div>
           </div>
         </div>
 
@@ -208,7 +196,7 @@ import { ElMessage } from "element-plus";
 export default {
   data() {
     return {
-      allDisabled: true,
+      allDisabled: false,
        
       form: {
         arrheaFrequencyGEThreeTimesPerDay: "",
@@ -235,24 +223,39 @@ export default {
     };
   },
   methods: {
-    handleStoolTypeChange(type) {
-  if (type === 1) {
-    this.form.HasStoolType1 = !this.form.HasStoolType1;
-    if (this.form.HasStoolType1) {
-      this.form.HasStoolType2 = false; // 选择粪便性状1时，取消选择性状2
-      this.form.StoolType2Detail = ""; // 清空性状2详情
-    }
-  } else {
-    this.form.HasStoolType2 = !this.form.HasStoolType2;
-    if (this.form.HasStoolType2) {
-      this.form.HasStoolType1 = false; // 选择粪便性状2时，取消选择性状1
-      this.form.StoolType1Detail = ""; // 清空性状1详情
-    }
-  }
-},
 
     toggleTag(field) {
       this.form[field] = !this.form[field];
+    },
+    handleReset() {
+      this.form = this.getInitialForm();
+      this.message = "";
+    },
+    getInitialForm() {
+      return {
+         arrheaFrequencyGEThreeTimesPerDay: "",
+        DiarrheaTimesPerDay: "",
+        HasStoolType1: false,
+        StoolType1Detail: "",
+        HasStoolType2: false,
+        StoolType2Detail: "",
+        DiarrheaMode: "",
+        StoolAmount: "",
+        StoolOdor: "",
+        HasVomiting: false,
+        VomitingMode: "",
+        HasNausea: false,
+        HasAppetiteLoss: false,
+        HasAbdominalDistension: false,
+        HasAbdominalPain: false,
+        HasBorborygmus: false,
+        HasUpperAbdominalDiscomfort: false,
+        HasConstipation: false,
+        HasOliguriaOrAnuria: false,
+      };
+    },
+    getData() {
+      return this.form; // 返回当前组件的表单数据
     },
   },
 };
@@ -323,15 +326,14 @@ export default {
 .NextContainer {
   width: 500px;
 }
-  /* 单选框选中状态 */
-  .NextContainer :deep(.el-radio.is-checked .el-radio__inner) {
-    background-color: #285AC8 !important; /* 选中背景色，默认蓝色 */
-    border-color: #285AC8 !important; /* 选中边框色 */
-  }
-  
-  /* 确保选中状态的圆点颜色 */
-  .NextContainer :deep(.el-radio.is-checked .el-radio__inner::before) {
-    background-color: #fff !important; /* 选中状态的圆点颜色 */
-  }
-  
+/* 单选框选中状态 */
+.NextContainer :deep(.el-radio.is-checked .el-radio__inner) {
+  background-color: #285ac8 !important; /* 选中背景色，默认蓝色 */
+  border-color: #285ac8 !important; /* 选中边框色 */
+}
+
+/* 确保选中状态的圆点颜色 */
+.NextContainer :deep(.el-radio.is-checked .el-radio__inner::before) {
+  background-color: #fff !important; /* 选中状态的圆点颜色 */
+}
 </style>

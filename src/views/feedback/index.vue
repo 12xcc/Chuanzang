@@ -8,14 +8,34 @@
       :inline="true"
       v-show="showSearch"
     >
-      <el-form-item label="" prop="check" size="default">
+      <el-form-item label="姓名" prop="namecheck" size="default">
         <el-input
-          v-model="queryParams.check"
-          placeholder="请输入姓名/联系电话/意见标题 "
+          v-model="queryParams.namecheck"
+          placeholder="请输入姓名"
           clearable
           size="default"
           @keyup.enter.native="handleQuery"
-          style="width:300px !important; margin-right:-15px;"
+          style="width: 200px !important; margin-right: -15px"
+        />
+      </el-form-item>
+      <el-form-item label="联系电话" prop="phoneNumbercheck" size="default">
+        <el-input
+          v-model="queryParams.phoneNumbercheck"
+          placeholder="请输入联系电话"
+          clearable
+          size="default"
+          @keyup.enter.native="handleQuery"
+          style="width: 200px !important; margin-right: -15px"
+        />
+      </el-form-item>
+      <el-form-item label="意见标题" prop="titlecheck" size="default">
+        <el-input
+          v-model="queryParams.titlecheck"
+          placeholder="请输入意见标题"
+          clearable
+          size="default"
+          @keyup.enter.native="handleQuery"
+          style="width: 200px !important; margin-right: -15px"
         />
       </el-form-item>
       <el-form-item>
@@ -25,7 +45,7 @@
           @click="handleQuery"
           plain
           size="default"
-          style="margin-left:5px;"
+          style="margin-left: 5px"
         >搜索</el-button>
         <el-button
           type="primary"
@@ -38,34 +58,40 @@
 
     <!-- 表格部分 -->
     <div class="usertable">
-      <el-table 
-        :header-cell-style="{height:'40px',background:'#f5f7fa',color: '#333333'}" 
-        v-loading="loading" 
-        :data="paginatedData" 
-        style="width: 100%;"
+      <el-table
+        :header-cell-style="{
+          height: '40px',
+          background: '#f5f7fa',
+          color: '#333333',
+        }"
+        v-loading="loading"
+        :data="allData"
+        style="width: 100%"
         :height="tableHeight"
-        :show-overflow-tooltip="true" 
+        :show-overflow-tooltip="true"
+        :default-sort="{ prop: 'feedbackId', order: '' }" 
       >
-        <el-table-column 
-          type="selection" 
-          width="55"
-        />
-        <el-table-column prop="FeedbackID" label="序号" width="80" />
-        <el-table-column prop="Name" label="姓名" width="150" />
-        <el-table-column prop="PhoneNumber" label="联系电话" width="120" />
-        <el-table-column prop="FeedbackTitle" label="意见标题" width="160" />
-        <el-table-column prop="FeedbackText" label="反馈意见" width="240" />
-        <el-table-column prop="FeedbackDate" label="提交日期" width="120" />
-        <el-table-column fixed="right" label="操作" min-width="260">
+        <el-table-column type="selection" width="55" />
+        <el-table-column prop="serialNumber" label="序号" width="80" sortable />
+        <el-table-column prop="name" label="姓名" width="100" />
+        <el-table-column prop="phoneNumber" label="联系电话" width="160" />
+        <el-table-column prop="feedbackTitle" label="意见标题" width="200" />
+        <el-table-column prop="feedbackText" label="反馈意见" width="240" />
+        <el-table-column prop="feedbackDate" label="提交日期" width="200" />
+        <el-table-column fixed="right" label="操作" min-width="100">
           <template #default="scope">
-            <el-button link type="primary" size="large" @click="handleClick(scope.row)">
+            <el-button
+              link
+              type="primary"
+              size="large"
+              @click="handleClick(scope.row.feedbackId)"
+            >
               查看
             </el-button>
           </template>
         </el-table-column>
       </el-table>
 
-      <!-- 分页组件 -->
       <pagination
         v-show="total > 0"
         :total="total"
@@ -75,181 +101,151 @@
       />
     </div>
   </div>
-  <Feedbackdata ref="Feedbackdata"/>
+  <Feedbackdata ref="Feedbackdata" />
 </template>
 
 <script>
-import * as XLSX from "xlsx";
-import { ref, computed, onMounted } from 'vue';
-import Pagination from '@/components/pagination.vue';
-import Feedbackdata from './components/feedbackdata.vue';
+import Pagination from "@/components/pagination.vue";
+import Feedbackdata from "./components/feedbackdata.vue";
+import { fetchFeedbackData , exportFeedbackData  } from "@/api/feedback/feedback.js";
 
 export default {
   components: {
     Pagination,
     Feedbackdata,
   },
-  
-  mounted() {
-  console.log(this.$refs.batchImportDialog); 
-  },
-  
+
   data() {
     return {
       queryParams: {
-        UserType: '',
-        choice: '',
-        check: '',
+        namecheck: "",
+        phoneNumbercheck: "",
+        titlecheck: "",
         pageNum: 1,
-        pageSize: 15
+        pageSize: 15,
       },
-      allData: [
-        {
-          FeedbackID: '1',
-          Name: '张伟',
-          PhoneNumber: '13800000001',
-          FeedbackTitle: '系统功能改进建议',
-          FeedbackText: '建议增加用户自定义筛选条件的功能，方便更精准地筛选传染病相关数据。',
-          FeedbackDate: '2025-01-01',
-        },
-        {
-          FeedbackID: '2',
-          Name: '李强',
-          PhoneNumber: '13800033301',
-          FeedbackTitle: '系统操作界面优化',
-          FeedbackText: '当前操作界面布局有些复杂，希望能简化用户操作流程，提高操作的便捷性。',
-          FeedbackDate: '2025-01-04',
-        },
-        {
-          FeedbackID: '3',
-          Name: '李娜',
-          PhoneNumber: '13800024001',
-          FeedbackTitle: '系统稳定性建议',
-          FeedbackText: '系统在高峰时段偶尔出现崩溃现象，建议优化系统的稳定性，避免因高负荷造成的服务中断。',
-          FeedbackDate: '2025-01-05',
-        },
-      ],
-      
-      tableData: [],
+      allData: [],
+      total: 0,
       showSearch: true,
       loading: false,
     };
   },
 
   computed: {
-    total() {
-      return this.filteredData.length;
-    },
     tableHeight() {
       return window.innerHeight - 300;
     },
-    filteredData() {
-      const { check } = this.queryParams;
-      const lowerCaseCheck = check ? check.toLowerCase() : '';
-
-      return this.allData.filter(item => {
-        const fieldsToSearch = ['Name', 'PhoneNumber', 'FeedbackTitle'];
-        const textMatch = fieldsToSearch.some(field => {
-          const itemFieldValue = item[field]?.toString().toLowerCase() || '';
-          return itemFieldValue.includes(lowerCaseCheck);
-        });
-        return  textMatch;
-      });
-    },
-    paginatedData() {
-      const start = (this.queryParams.pageNum - 1) * this.queryParams.pageSize;
-      const end = start + this.queryParams.pageSize;
-      return this.filteredData.slice(start, end);
-    }
   },
 
   methods: {
-    handleUserTypeChange() {
-      this.handleQuery();
-    },
-    handleQuery() {
-      this.tableData = this.paginatedData;
-    },
-    // 添加用户弹窗
-    handleAdd() {
-      this.$refs.addUserDialog.showDrawer(); 
+
+     // 格式化反馈日期
+    formatDate(feedbackDate) {
+      const [year, month, day, hour, minute, second] = feedbackDate;
+      return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:${String(second).padStart(2, '0')}`;
     },
 
-    handleImport(){
-       console.log(this.$refs.batchImportDialog);
-      this.$refs.batchImportDialog.showDialog(); 
-    },
-   
+    // 获取反馈信息列表api
+    async handleQuery() {
+      this.loading = true; 
+      try {
+        const params = {
+          feedbackTitle: this.queryParams.titlecheck || "", 
+          name: this.queryParams.namecheck || "",
+          phoneNumber: this.queryParams.phoneNumbercheck || "",
+          pageNo: this.queryParams.pageNum,
+          pageSize: this.queryParams.pageSize,
+        };
+        const response = await fetchFeedbackData(params); 
 
-    handleDownload() {
-      // 逻辑处理
-    },
-    
-    // 导出表格信息
-    handleExport() {
-      // 获取表格数据
-      const data = this.allData.map(item => ({
-        序号: item.serialNumber,
-        用户类型: item.UserType,
-        姓名: item.Name,
-        电话: item.PhoneNumber,
-        性别: item.Gender,
-        年龄: item.Age,
-        民族: item.Ethnicity,
-        学历: item.EducationLevel,
-        高原工作时间: item.WorkOnPlateauStartDate,
-        部门工种: item.Department,
-        特殊职业: item.SpecificOccupation,
-      }));
-
-      // 创建工作表
-      const ws = XLSX.utils.json_to_sheet(data);
-
-      // 创建工作簿
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "用户信息导出表");
-
-      // 导出 Excel 文件
-      XLSX.writeFile(wb, "用户信息导出表.xlsx");
-    },
-
-    handleClick(row) {
-      this.$refs.Feedbackdata.showDrawer(row)
-    },
-    isActive() {
-      // 逻辑处理
-    },
-    convertUserType(value) {
-      switch (value) {
-        case 1: return '系统管理员';
-        case 2: return '铁路职工';
-        case 3: return '疾控中心工作人员';
-        case 4: return '专职医护';
-        default: return '';
+        if (response.data.code === 1) {
+          // 格式化反馈日期
+          this.allData = response.data.data.records.map((item,index) => ({
+            ...item,
+             serialNumber:
+              (this.queryParams.pageNum - 1) * this.queryParams.pageSize +
+              index +
+              1,
+            feedbackDate: this.formatDate(item.feedbackDate), // 格式化日期
+          }));
+          this.total = response.data.data.total;
+        } else {
+          this.$message.error(
+            "获取用户数据失败，请重试！" + response.data.message
+          );
+        }
+      } catch (error) {
+        console.error(
+          "Error fetching data:",
+          error.response ? error.response.data : error.message
+        );
+        this.$message.error(
+          "获取用户数据失败，请重试！" +
+            (error.response ? error.response.data.message : error.message)
+        );
+      } finally {
+        this.loading = false;
       }
     },
+
+
+    // 导出表格信息
+    async handleExport() {
+      try{
+        const response = await exportFeedbackData();
+        if(response.status === 200 ){
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "反馈信息导出表.xlsx");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          this.$message({
+            message: "导出成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            message: "导出失败，请重试",
+            type: "error",
+          });
+        }
+      }catch(error){
+        console.error("导出出错:", error);
+        this.$message({
+          message: "导出出错，请重试",
+          type: "error",
+        });
+      }
+    },
+
+    // 查看反馈信息
+    handleClick(feedbackId) {
+      this.$refs.Feedbackdata.showDrawer(feedbackId);
+    },
+
     handlePagination({ page, limit }) {
       this.queryParams.pageNum = page;
       this.queryParams.pageSize = limit;
       this.handleQuery();
-    }
+    },
   },
 
   mounted() {
     this.handleQuery();
-  }
+  },
 };
 </script>
-
 
 <style scoped>
 .container {
   padding: 10px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border-radius: 5px;
 }
 
 .custom-button {
-  margin-right:10px;
+  margin-right: 10px;
 }
 </style>

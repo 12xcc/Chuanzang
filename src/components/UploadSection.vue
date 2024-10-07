@@ -28,7 +28,7 @@
           <span class="el-upload-list__item-actions">
             <span
               class="el-upload-list__item-preview"
-              @click="handlePictureCardPreview(file)"
+              @click="() => handlePictureCardPreview(file)"
             >
               <el-icon><ZoomIn /></el-icon>
             </span>
@@ -51,7 +51,21 @@
     </div>
 
     <el-dialog v-model="dialogVisible" class="custom-dialog" :modal="true">
-      <img class="dialog-image" :src="dialogImageUrl" alt="Preview Image" />
+      <template #title>
+        <span>{{ currentFileName }}</span>
+      </template>
+      <img 
+        v-if="!isPdf" 
+        class="dialog-image" 
+        :src="dialogImageUrl" 
+        alt="Preview Image" 
+      />
+      <iframe 
+        v-if="isPdf" 
+        :src="dialogImageUrl" 
+        class="pdf-preview" 
+        frameborder="0" 
+      ></iframe>
     </el-dialog>
   </div>
 </template>
@@ -60,7 +74,6 @@
 import { ref } from 'vue'
 import { Delete, Plus, ZoomIn } from '@element-plus/icons-vue'
 import type { UploadFile, UploadProps } from 'element-plus'
-import { ElMessage } from 'element-plus'
 
 const props = defineProps({
   'report-type': {
@@ -73,34 +86,25 @@ const props = defineProps({
   },
 });
 
-const dialogImageUrl = ref('')
-const dialogVisible = ref(false)
-const disabled = ref(false)
-const files = ref<UploadFile[]>([]); // 存储文件列表
+const dialogImageUrl = ref('');
+const dialogVisible = ref(false);
+const disabled = ref(false);
+const files = ref<UploadFile[]>([]);
+const isPdf = ref(false); // 新增变量判断是否为PDF
+const currentFileName = ref(''); // 新增变量存储当前文件名
 
 const handleRemove: UploadProps['onRemove'] = (file, fileList) => {
   const index = fileList.indexOf(file);
   if (index !== -1) {
-    fileList.splice(index, 1); // 删除文件
+    fileList.splice(index, 1);
   }
 }
 
 const handlePictureCardPreview = (file: UploadFile) => {
   dialogImageUrl.value = file.url || URL.createObjectURL(file.raw);
+  isPdf.value = file.raw && file.raw.type === 'application/pdf'; // 判断是否为PDF
+  currentFileName.value = file.name; // 获取当前文件名
   dialogVisible.value = true;
-}
-
-// 方法: 上传文件信息到后端
-const uploadFilesToBackend = () => {
-  files.value.forEach(file => {
-    const formData = new FormData();
-    formData.append('specimenType', props['specimen-type']);
-    formData.append('fileType', file.raw.type === 'application/pdf' ? 'pdf' : 'jpeg');
-    formData.append('fileName', file.name);
-    formData.append('filePath', file.url || URL.createObjectURL(file.raw));
-
-    // 这里可以添加你的上传逻辑，例如 Axios 请求
-  });
 }
 </script>
 
@@ -127,12 +131,12 @@ const uploadFilesToBackend = () => {
 }
 
 .file-names {
-    margin-top: 10px; /* 调整文件名与上传框之间的间距 */
+    margin-top: 10px; 
 }
 
 .file-name {
-    text-align: left; /* 文件名居中 */
-    font-size: 14px; /* 文件名字体大小 */
+    text-align: left; 
+    font-size: 14px; 
 }
 
 .custom-dialog {
@@ -148,5 +152,10 @@ const uploadFilesToBackend = () => {
     max-width: 100%; 
     max-height: 100%; 
     object-fit: contain; 
+}
+
+.pdf-preview {
+    width: 100%; 
+    height: 500px; /* 你可以根据需要调整高度 */
 }
 </style>

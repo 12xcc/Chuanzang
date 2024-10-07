@@ -7,7 +7,7 @@
       ref="form"
       :rules="rules"
       label-position="left"
-      :disabled="allDisabled" :readonly="allReadonly"
+      :disabled="allDisabled"  
     >
       <div class="Symptoms">
         <div class="Condition">
@@ -140,7 +140,7 @@ export default {
   },
   data() {
     return {
-      allDisabled:true,allReadonly:true,
+      allDisabled:true, 
       visible: false, // 控制弹窗显示
       form: {
          Height: null,
@@ -162,11 +162,11 @@ export default {
   methods: {
     handleAble() {
       this.allDisabled = false;
-      this.allReadonly = false;
+       
     },
     handleCancel(){
       this.allDisabled = true;
-      this.allReadonly = true;
+       
     },
     getInitialForm() {
       return {

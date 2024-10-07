@@ -8,7 +8,7 @@
       :inline="true"
       v-show="showSearch"
     >
-       <el-form-item label="疾病类型名" prop="check" size="default">
+      <el-form-item label="疾病类型名" prop="check" size="default">
         <el-input
           v-model="queryParams.check"
           placeholder="请输入文本"
@@ -42,7 +42,7 @@
       <el-table 
         :header-cell-style="{height:'40px',background:'#f5f7fa',color: '#333333'}" 
         v-loading="loading" 
-        :data="paginatedData" 
+        :data="allData" 
         style="width: 100%;"
         :height="tableHeight"
       >
@@ -54,7 +54,7 @@
         <el-table-column prop="DiseaseTypeName" label="疾病类型" width="300" />
         <el-table-column prop="HasSubtype" label="是否包含子类型" width="200">
           <template #default="scope">
-            <el-tag  size="default" :type="scope.row.HasSubtype === '是' ? 'success' : 'primary'" >
+            <el-tag size="default" :type="scope.row.HasSubtype === '是' ? 'success' : 'primary'">
               {{ scope.row.HasSubtype }}
             </el-tag>
           </template>
@@ -84,119 +84,99 @@
 
 <script>
 import * as XLSX from "xlsx";
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import Pagination from '@/components/pagination.vue';
 import Weightset from './components/weightset.vue';
+import { fetchDiseaseData } from '@/api/system/disdata.js'; // 引入疾病数据接口
+
 export default {
   components: {
     Pagination,
     Weightset,
   },
-  
-  mounted() {
-  console.log(this.$refs.batchImportDialog); 
-  },
-  
+
   data() {
     return {
       queryParams: {
-        UserType: '',
-        choice: '',
         check: '',
         pageNum: 1,
         pageSize: 15
       },
-      allData: [
-        { serialNumber: 1, DiseaseTypeName: '新型冠状病毒感染', HasSubtype: '否', SubtypeName: '' },
-        { serialNumber: 2, DiseaseTypeName: '流感', HasSubtype: '否', SubtypeName: '' },
-        { serialNumber: 3, DiseaseTypeName: '鼠疫', HasSubtype: '是', SubtypeName: '腺鼠疫,肺鼠疫,败血型鼠疫,肠鼠疫,眼鼠疫,皮肤鼠疫,脑鼠疫' },
-        { serialNumber: 4, DiseaseTypeName: '感染性腹泻', HasSubtype: '否', SubtypeName: '' },
-        { serialNumber: 5, DiseaseTypeName: '炭疽', HasSubtype: '是', SubtypeName: '皮肤炭疽,肠炭疽,肺炭疽,脑膜炎型炭疽,败血症型炭疽' },
-        { serialNumber: 6, DiseaseTypeName: '登革热（蚊媒传染病）', HasSubtype: '否', SubtypeName: '' },
-        { serialNumber: 7, DiseaseTypeName: '疟疾（蚊媒传染病）', HasSubtype: '否', SubtypeName: '' },
-
-
-
-       
-      ],
-      tableData: [],
+      allData: [],
       showSearch: true,
       loading: false,
+      total:0,
     };
   },
 
   computed: {
-    total() {
-      return this.filteredData.length;
-    },
     tableHeight() {
       return window.innerHeight - 300;
     },
-    filteredData() {
-      const { check } = this.queryParams;
-      const lowerCaseCheck = check ? check.toLowerCase() : '';
-
-      return this.allData.filter(item => {
-        const userTypeMatch = !UserType || item.UserType === this.convertUserType(UserType);
-        const fieldsToSearch = ['DiseaseTypeName'];
-        const textMatch = fieldsToSearch.some(field => {
-          const itemFieldValue = item[field]?.toString().toLowerCase() || '';
-          return itemFieldValue.includes(lowerCaseCheck);
-        });
-        return userTypeMatch && textMatch;
-      });
-    },
-    paginatedData() {
-      const start = (this.queryParams.pageNum - 1) * this.queryParams.pageSize;
-      const end = start + this.queryParams.pageSize;
-      return this.filteredData.slice(start, end);
-    }
   },
 
   methods: {
-    handleQuery() {
-      this.tableData = this.paginatedData;
+
+    // 获取疾病列表
+    async handleQuery() {
+      this.loading = true; 
+      try {
+        const params = {
+          pageNo: this.queryParams.pageNum,
+          pageSize: this.queryParams.pageSize,
+          text: this.queryParams.check || "",
+        };
+
+        const response = await fetchDiseaseData(params);
+        if (response.data.code === 1) {
+          const records = response.data.data.records || [];
+          this.allData = records.map((item, index) => ({
+            serialNumber: (this.queryParams.pageNum - 1) * this.queryParams.pageSize + index + 1,
+            DiseaseTypeName: item.diseaseTypeName,
+            HasSubtype: item.hasSubtype ? '是' : '否',
+            SubtypeName: item.subDiseaseList ? item.subDiseaseList.map(sub => sub.subtypeName).join(', ') : '',
+          }));
+          this.total = response.data.data.total || 0; 
+        } else {
+          this.$message.error("获取疾病数据失败，请重试！" + response.data.msg);
+        }
+      } catch (error) {
+        console.error("获取疾病数据出错:", error);
+        this.$message.error("获取疾病数据失败，请重试！");
+      } finally {
+        this.loading = false; 
+      }
     },
-    // 添加用户弹窗
 
-    
-    // 导出表格信息
+
+    // 导出文件
     handleExport() {
-      // 获取表格数据
-     const data = this.allData.map(item => ({
-      序号: item.serialNumber,
-      疾病类型: item.DiseaseTypeName,
-      是否包含子类型: item.HasSubtype,
-      子类型: item.SubtypeName,
-    }));
+      const data = this.allData.map(item => ({
+        序号: item.serialNumber,
+        疾病类型: item.DiseaseTypeName,
+        是否包含子类型: item.HasSubtype,
+        子类型: item.SubtypeName,
+      }));
 
-      // 创建工作表
       const ws = XLSX.utils.json_to_sheet(data);
-
-      // 创建工作簿
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "用户信息导出表");
-
-      // 导出 Excel 文件
-      XLSX.writeFile(wb, "用户信息导出表.xlsx");
+      XLSX.utils.book_append_sheet(wb, ws, "疾病数据导出表");
+      XLSX.writeFile(wb, "疾病数据导出表.xlsx");
     },
 
     handleWeight(disease) {
-        this.$refs.Weightset.showDrawer(disease);
-    },
-    isActive() {
-      // 逻辑处理
+      this.$refs.Weightset.showDrawer(disease);
     },
 
     handlePagination({ page, limit }) {
       this.queryParams.pageNum = page;
       this.queryParams.pageSize = limit;
-      this.handleQuery();
+      this.handleQuery(); 
     }
   },
 
   mounted() {
-    this.handleQuery();
+    this.handleQuery(); 
   }
 };
 </script>

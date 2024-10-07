@@ -225,6 +225,7 @@
 
           <div v-show="selectedTag === 'DigestiveSymptoms'">
             <p>查看消化系统症状</p>
+            <DigestiveSymptoms ref="DigestiveSymptoms" />
           </div>
 
           <div v-show="selectedTag === 'CirculatorySymptoms'">
@@ -274,6 +275,7 @@ import OtherSymptoms from "./OtherSymptoms.vue";
 import DiagnosisComplications from "./DiagnosisComplications.vue";
 import DiagnosisPersonalInfo from "./DiagnosisPersonalInfo.vue";
 import Diagnosistag from "./Diagnosistag.vue";
+import DigestiveSymptoms from '../adddiagnosisdata/DigestiveSymptoms.vue';
 export default {
   components: {
     Dateselection,
@@ -287,6 +289,7 @@ export default {
     OtherSymptoms,
     DiagnosisComplications,
     Diagnosistag,
+    DigestiveSymptoms,
   },
   data() {
     return {
@@ -346,7 +349,7 @@ export default {
         const DiagnosisComplicationsData =
           this.$refs.DiagnosisComplications.getData();
         const DiagnosistagData = this.$refs.Diagnosistag.getData();
-
+        const DigestiveSymptomsData = this.$refs.DigestiveSymptoms.getData();
         console.log("诊断信息:", DiagnosisResultsData);
         console.log("基本信息：", DiagnosisPersonalInfoData);
         console.log("全身症状:", GeneralSymptomsData);
@@ -357,6 +360,8 @@ export default {
         console.log("其他:", OtherSymptomsData);
         console.log("并发症:", DiagnosisComplicationsData);
         console.log("检测报告:", DiagnosistagData);
+        console.log("消化系统症状:", DigestiveSymptomsData);
+  
 
         this.visible = false;
         ElMessage({
@@ -388,6 +393,8 @@ export default {
       this.$refs.DiagnosisComplications.handleReset();
       this.$refs.DiagnosisPersonalInfo.handleReset();
       this.$refs.Diagnosistag.handleReset();
+      this.$refs.DigestiveSymptoms.handleReset();
+      
     },
     getInitialForm() {
       return {};

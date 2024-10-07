@@ -6,7 +6,7 @@
       class="form-container"
       ref="form"
       :rules="rules"
-      :disabled="allDisabled" :readonly="allReadonly"
+      :disabled="allDisabled"  
     >
       <div class="GeneralSymptoms">
         <div class="Condition">
@@ -18,7 +18,7 @@
             :checked="form.HasArrhythmia"
             type="primary"
             @change="toggleTag('HasArrhythmia')"
-            :disabled="allDisabled" :readonly="allReadonly"
+            :disabled="allDisabled"  
           >
             心律不齐
           </el-check-tag>
@@ -26,7 +26,7 @@
             :checked="form.HasChestPain"
             type="primary"
             @change="toggleTag('HasChestPain')"
-            :disabled="allDisabled" :readonly="allReadonly"
+            :disabled="allDisabled"  
           >
             胸痛
           </el-check-tag>
@@ -34,7 +34,7 @@
             :checked="form.HasRapidPulse"
             type="primary"
             @change="toggleTag('HasRapidPulse')"
-            :disabled="allDisabled" :readonly="allReadonly"
+            :disabled="allDisabled"  
           >
             脉搏细速
           </el-check-tag>
@@ -42,7 +42,7 @@
             :checked="form.HasPalpitation"
             type="primary"
             @change="toggleTag('HasPalpitation')"
-            :disabled="allDisabled" :readonly="allReadonly"
+            :disabled="allDisabled"  
           >
             心悸
           </el-check-tag>
@@ -61,7 +61,7 @@ export default {
   },
   data() {
     return {
-      allDisabled:true,allReadonly:true,
+      allDisabled:true, 
       visible: false, // 控制弹窗显示
       form: {
         HasArrhythmia: false,
@@ -83,11 +83,11 @@ export default {
     },
     handleAble() {
       this.allDisabled = false;
-      this.allReadonly = false;
+       
     },
     handleCancel(){
       this.allDisabled = true;
-      this.allReadonly = true;
+       
     },
     handleSubmit() {
       console.log("触发");

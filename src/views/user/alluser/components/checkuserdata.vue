@@ -18,7 +18,7 @@
       </div>
       <el-form
         :model="form"
-        label-width="150px"
+        label-width="155px"
         class="form-container"
         ref="form"
         :rules="rules"
@@ -26,20 +26,19 @@
       >
         <!-- 用户类型 -->
         <el-form-item label="用户类型" prop="UserType" size="default">
-        <el-select
-          v-model="form.UserType"
-          placeholder="请选择用户类型"
-          clearable
-          size="default"
-          style="width: 200px"
-          @change="handleUserTypeChange"
-        >
-          <el-option :key="1" label="系统管理员" :value="1"></el-option>
-          <el-option :key="2" label="铁路职工" :value="2"></el-option>
-          <el-option :key="3" label="疾控中心工作人员" :value="3"></el-option>
-          <el-option :key="4" label="专职医护" :value="4"></el-option>
-        </el-select>
-      </el-form-item>
+          <el-select
+            v-model="form.UserType"
+            placeholder="请选择用户类型"
+            clearable
+            size="default"
+            style="width: 200px"
+          >
+            <el-option :key="1" label="系统管理员" :value="1"></el-option>
+            <el-option :key="2" label="铁路职工" :value="2"></el-option>
+            <el-option :key="3" label="疾控中心工作人员" :value="3"></el-option>
+            <el-option :key="4" label="专职医护" :value="4"></el-option>
+          </el-select>
+        </el-form-item>
 
         <!-- 姓名 -->
         <el-form-item label="姓名" prop="Name">
@@ -54,9 +53,7 @@
 
         <!-- 性别 -->
         <el-form-item label="性别" prop="Gender">
-            <el-input v-model="form.Gender"  style="width: 200px">
-
-            </el-input>
+          <el-input v-model="form.Gender" style="width: 200px"> </el-input>
         </el-form-item>
 
         <!-- 是否为孕妇 -->
@@ -66,15 +63,17 @@
           prop="IsPregnant"
         >
           <el-radio-group v-model="form.IsPregnant">
-            <el-radio value="是">是</el-radio>
-            <el-radio value="否">否</el-radio>
+            <el-radio :value="true">是</el-radio>
+            <el-radio :value="false">否</el-radio>
           </el-radio-group>
-          <el-input
-            v-if="form.IsPregnant === '是'"
-            v-model="form.PregnancyWeeks"
-            placeholder="孕周"
-            style="width: 150px; margin-left: 30px"
-          ></el-input>
+          <el-form-item v-if="form.IsPregnant === true" label="孕周">
+            <el-input
+              
+              v-model="form.PregnancyWeeks"
+              placeholder="孕周"
+              style="width: 100px"
+            ></el-input>
+          </el-form-item>
         </el-form-item>
 
         <!-- 身份证号 -->
@@ -83,7 +82,7 @@
             v-model="form.IDNumber"
             style="width: 200px"
             clearable
-            placeholder="请输入身份证号"
+            placeholder="身份证号"
           ></el-input>
         </el-form-item>
 
@@ -92,46 +91,35 @@
           <el-input
             v-model="form.Age"
             style="width: 200px"
-            placeholder="根据身份证号生成"
+            placeholder=""
             clearable
           ></el-input>
         </el-form-item>
 
         <!-- 民族 -->
         <el-form-item label="民族" prop="Ethnicity">
-          <el-input  v-model="form.Ethnicity"  style="width: 200px">
-
-            </el-input>
-          <!-- <el-radio-group v-model="form.Ethnicity">
-            <el-radio value="汉族">汉族</el-radio>
-            <el-radio value="藏族">藏族</el-radio>
-            <el-radio value="彝族">彝族</el-radio>
-            <el-radio value="其他少数民族">其他少数民族</el-radio>
-          </el-radio-group> -->
+          <el-input v-model="form.Ethnicity" style="width: 200px"> </el-input>
         </el-form-item>
 
         <!-- 受教育程度 -->
         <el-form-item label="受教育程度" prop="EducationLevel">
-          <el-input  v-model="form.EducationLevel" style="width: 200px">
-
-            </el-input>
-          <!-- <el-radio-group v-model="form.EducationLevel">
-            <el-radio value="小学及以下">小学及以下</el-radio>
-            <el-radio value="初中">初中</el-radio>
-            <el-radio value="中专/高中">中专/高中</el-radio>
-            <el-radio value="大专/本科">大专/本科</el-radio>
-            <el-radio value="硕士及以上">硕士及以上</el-radio>
-          </el-radio-group> -->
+          <el-input v-model="form.EducationLevel" style="width: 200px">
+          </el-input>
         </el-form-item>
 
         <!-- 来高原工作时间 -->
         <el-form-item
           label="来高原工作时间"
           style="display: flex; align-items: center"
-          prop="WorkStart"
+          prop="WorkOnPlateauStartDate"
         >
-          <div style="flex: 1;margin-left:-250px">
-             <Dateselection v-model="form.WorkStart" />
+          <div style="flex: 1">
+            <el-date-picker
+              type="date"
+              placeholder=""
+              v-model="form.WorkOnPlateauStartDate"
+              style="width: 200px"
+            />
           </div>
         </el-form-item>
 
@@ -155,7 +143,6 @@
         <el-form-item label="是否为特定职业人群" prop="SpecificOccupation">
           <el-radio-group
             v-model="form.SpecificOccupation"
-            @change="SpecificOccupationChange"
           >
             <el-radio value="否">否</el-radio>
             <el-radio value="医务人员">医务人员</el-radio>
@@ -165,20 +152,27 @@
             >
             <el-radio value="家禽、家畜养殖人员">家禽、家畜养殖人员</el-radio>
           </el-radio-group>
-          <el-form-item
-            v-if="form.SpecificOccupation === '医务人员'"
-            label="医务人员具体工作性质"
-            class="yiwu"
-            prop="MedicalPersonnelType"
-          >
-            <el-radio-group v-model="form.MedicalPersonnelType">
-              <el-radio value="医生">医生</el-radio>
-              <el-radio value="护士">护士</el-radio>
-              <el-radio value="疾控现场工作人员">疾控现场工作人员</el-radio>
-              <el-radio value="实验室检测人员">实验室检测人员</el-radio>
-              <el-radio value="其他">其他</el-radio>
-            </el-radio-group>
-          </el-form-item>
+        </el-form-item>
+        <el-form-item
+          v-if="form.SpecificOccupation === '医务人员'"
+          label="医务人员具体工作性质"
+          prop="MedicalPersonnelType"
+        >
+          <el-radio-group v-model="form.MedicalPersonnelType">
+            <el-radio value="医生">医生</el-radio>
+            <el-radio value="护士">护士</el-radio>
+            <el-radio value="疾控现场工作人员">疾控现场工作人员</el-radio>
+            <el-radio value="实验室检测人员">实验室检测人员</el-radio>
+            <el-radio value="其他">其他</el-radio>
+          </el-radio-group>
+        </el-form-item>
+
+        <el-form-item
+          v-if="form.MedicalPersonnelType === '其他'"
+          label="其他工作性质名称"
+          prop="OtherPositionName"
+        >
+          <el-input v-model="form.OtherPositionName" style="width: 200px" />
         </el-form-item>
 
         <!-- 联系电话 -->
@@ -186,7 +180,7 @@
           <el-input
             style="width: 200px"
             v-model="form.PhoneNumber"
-            placeholder="手机"
+            placeholder="无"
             clearable
           ></el-input>
         </el-form-item>
@@ -196,7 +190,7 @@
           <el-input
             style="width: 200px"
             v-model="form.OtherPhoneNumber"
-            placeholder="其他联系电话"
+            placeholder="无"
             clearable
           ></el-input>
         </el-form-item>
@@ -206,7 +200,7 @@
           <el-input
             style="width: 200px"
             v-model="form.EmergencyContactName"
-            placeholder="姓名"
+            placeholder="无"
             clearable
           ></el-input>
         </el-form-item>
@@ -216,7 +210,7 @@
           <el-input
             style="width: 200px"
             v-model="form.EmergencyContactPhoneNumber"
-            placeholder="联系电话"
+            placeholder="无"
             clearable
           ></el-input>
         </el-form-item>
@@ -226,7 +220,7 @@
           <el-input
             style="width: 200px"
             v-model="form.EmergencyContactRelation"
-            placeholder="关系"
+            placeholder="无"
             clearable
           ></el-input>
         </el-form-item>
@@ -235,7 +229,6 @@
         <el-form-item label="既往病史和基本情况" prop="HasMedicalHistory">
           <el-radio-group
             v-model="form.HasMedicalHistory"
-            @change="handleMedicalHistoryChange"
           >
             <el-radio :value="true">有</el-radio>
             <el-radio :value="false">无</el-radio>
@@ -280,7 +273,6 @@
             <el-form-item>
               <el-checkbox
                 v-model="form.HasMalignantTumor"
-                @change="handleCancerChange"
                 label="恶性肿瘤"
               >
                 恶性肿瘤
@@ -348,8 +340,8 @@
         </el-form-item>
 
         <!-- 吸烟史 -->
-        <el-form-item label="吸烟史" prop="SmokingHistory">
-          <el-radio-group v-model="form.SmokingHistory">
+        <el-form-item label="吸烟史" prop="SmokingStatus">
+          <el-radio-group v-model="form.SmokingStatus">
             <el-radio value="现在吸">现在吸</el-radio>
             <el-radio value="以前吸">以前吸</el-radio>
             <el-radio value="从不吸">从不吸</el-radio>
@@ -357,8 +349,8 @@
         </el-form-item>
 
         <!-- 饮酒史 -->
-        <el-form-item label="饮酒史" prop="AlcoholHistory">
-          <el-radio-group v-model="form.AlcoholHistory">
+        <el-form-item label="饮酒史" prop="DrinkingStatus">
+          <el-radio-group v-model="form.DrinkingStatus">
             <el-radio value="不喝酒">不喝酒</el-radio>
             <el-radio value="偶尔喝酒（小于3次/周）"
               >偶尔喝酒（小于3次/周）</el-radio
@@ -418,6 +410,8 @@
 <script>
 import { ElMessage } from "element-plus";
 import Dateselection from "@/components/date.vue";
+import { fetchUserInfoById } from "@/api/user/alluser.js"; // 引入封装好的接口方法
+
 export default {
   components: {
     Dateselection,
@@ -426,30 +420,29 @@ export default {
     return {
       visible: false, // 控制弹窗显示
       form: {
-        UserType: "", // 用户类型
-        Name: "", // 姓名
-        Gender: "", // 性别
-        IsPregnant: "", // 是否怀孕
-        PregnancyWeeks: "", // 怀孕周数
-        IDNumber: "", // 身份证号
-        Age: "", // 年龄
-        Ethnicity: "", // 民族
-        EducationLevel: "", // 文化程度
-        WorkStartYear: "", // 工作开始年份
-        WorkStartMonth: "", // 工作开始月份
-        WorkStartDay: "", // 工作开始日期
-        Department: "", // 部门/工种
-        SpecificOccupation: "", // 具体职业
-        MedicalPersonnelType: "", // 医护人员类型
-        PhoneNumber: "", // 手机号码
-        OtherPhoneNumber: "", // 其他电话号码
-        EmergencyContactName: "", // 紧急联系人姓名
-        EmergencyContactPhoneNumber: "", // 紧急联系人电话
-        EmergencyContactRelation: "", // 紧急联系人关系
+        UserType: null, // 用户类型
+        Name: null, // 姓名
+        Gender: null, // 性别
+        IsPregnant: false, // 是否怀孕
+        PregnancyWeeks: null, // 怀孕周数
+        IDNumber: null, // 身份证号
+        Age: null, // 年龄
+        Ethnicity: null, // 民族
+        EducationLevel: null, // 文化程度
+        WorkOnPlateauStartDate: null, //高原工作时间
+        Department: null, // 部门/工种
+        SpecificOccupation: null, // 具体职业
+        MedicalPersonnelType: null, // 医护人员类型
+        OtherPositionName: null, //其他名称
+        PhoneNumber: null, // 手机号码
+        OtherPhoneNumber: null, // 其他电话号码
+        EmergencyContactName: null, // 紧急联系人姓名
+        EmergencyContactPhoneNumber: null, // 紧急联系人电话
+        EmergencyContactRelation: null, // 紧急联系人关系
 
         // 既往病史字段
-        HasMedicalHistoryRadio: "", // 是否有既往病史（“有”或“无”）
-        HasMedicalHistory: null, // 既往病史疾病选项
+        HasMedicalHistoryRadio: null, // 是否有既往病史（“有”或“无”）
+        HasMedicalHistory: false, // 既往病史疾病选项
         HasHypertension: false, // 高血压
         HasDiabetes: false, // 糖尿病
         HasHyperlipidemia: false, // 高脂血症
@@ -461,10 +454,9 @@ export default {
         HasCOPD: false, // 慢性阻塞性肺疾病
         HasPepticUlcer: false, // 消化性溃疡
         HasMalignantTumor: false, // 恶性肿瘤
-        // CancerType: [], // 恶性肿瘤子选项（肺癌和其他）
         HasLungCancer: false, // 肺癌
         HasOtherCancer: false, // 其他癌症
-        OtherCancerName: "", // 其他恶性肿瘤名称
+        OtherCancerName: null, // 其他恶性肿瘤名称
         HasSevereMentalDisorders: false, // 严重精神障碍
         HasTuberculosis: false, // 结核病
         HasHepatitis: false, // 肝炎
@@ -476,12 +468,12 @@ export default {
         IsPostpartumInSixWeeks: false, // 产后6周以内
         HasDustExposure: false, // 粉尘接触史
         HasOtherDiseases: false, // 有其他疾病
-        OtherDiseasesName: "", // 其他疾病名称
+        OtherDiseasesName: null, // 其他疾病名称
 
-        SmokingHistory: "", // 吸烟史
-        AlcoholHistory: "", // 饮酒史
-        Height: "", // 身高
-        Weight: "", // 体重
+        SmokingStatus: null, // 吸烟史
+        DrinkingStatus: null, // 饮酒史
+        Height: null, // 身高
+        Weight: null, // 体重
         IsVaccinatedForCOVID: false,
         IsVaccinatedForFlu: false,
         IsVaccinatedForPlague: false,
@@ -489,19 +481,90 @@ export default {
         IsVaccinatedForHepatitis: false,
       },
 
-      rules: {
-      },
+      rules: {},
     };
   },
   methods: {
-    showDrawer(user) {
-      this.form = {...user}
+    showDrawer(userId) {
       this.visible = true;
+      this.fetchUserInfo(userId);
     },
+
+    // 根据id获取用户信息
+    async fetchUserInfo(userId) {
+      try {
+        
+        const response = await fetchUserInfoById(userId); 
+
+        if (response.data.code === 1) {
+          const data = response.data.data;
+
+          // 映射数据到表单中
+          this.form.UserType = data.userType; // 用户类型
+          this.form.Name = data.name; // 姓名
+          this.form.Age = data.age; // 年龄
+          this.form.Gender = data.gender; // 性别
+          this.form.IsPregnant = data.isPregnant; // 是否怀孕
+          this.form.PregnancyWeeks = data.pregnancyWeeks; // 怀孕周数
+          this.form.IDNumber = data.idNumber; // 身份证号
+          this.form.Ethnicity = data.ethnicity; // 民族
+          this.form.EducationLevel = data.educationLevel; // 文化程度
+          this.form.Department = data.department; // 部门/工种
+          this.form.SpecificOccupation = data.specificOccupation; // 具体职业
+          this.form.MedicalPersonnelType = data.medicalPersonnelType; // 医务人员具体工作性质
+          this.form.OtherPositionName = data.otherPositionName;
+          this.form.PhoneNumber = data.phoneNumber; // 手机号码
+          this.form.OtherPhoneNumber = data.otherPhoneNumber; // 其他电话号码
+          this.form.EmergencyContactName = data.emergencyContactName; // 紧急联系人姓名
+          this.form.EmergencyContactPhoneNumber = data.emergencyContactPhoneNumber; // 紧急联系人电话
+          this.form.EmergencyContactRelation = data.emergencyContactRelation; // 紧急联系人关系
+          this.form.Height = data.height; // 身高
+          this.form.Weight = data.weight; // 体重
+
+          // 格式化 WorkOnPlateauStartDate
+          if (data.workOnPlateauStartDate && data.workOnPlateauStartDate.length === 3) {
+            const [year, month, day] = data.workOnPlateauStartDate;
+            this.form.WorkOnPlateauStartDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+          } else {
+            this.form.WorkOnPlateauStartDate = ""; 
+          }
+
+          // 既往病史映射
+          this.form.HasMedicalHistory = data.hasMedicalHistory;
+          this.form.HasHypertension = data.hasHypertension;
+          this.form.HasDiabetes = data.hasDiabetes;
+          this.form.HasHyperlipidemia = data.hasHyperlipidemia;
+          this.form.HasHyperuricemia = data.hasHyperuricemia;
+          this.form.HasCoronaryHeartDisease = data.hasCoronaryHeartDisease;
+          this.form.HasStroke = data.hasStroke;
+          this.form.HasAsthma = data.hasAsthma;
+          this.form.HasCOPD = data.hasCOPD;
+          this.form.HasMalignantTumor = data.hasMalignantTumor;
+          this.form.HasLungCancer = data.hasLungCancer;
+          this.form.HasOtherCancer = data.hasOtherCancer;
+          this.form.HasOtherDiseases = data.hasOtherDiseases;
+          this.form.OtherDiseasesName = data.otherDiseasesName; // 其他疾病名称
+
+          this.form.IsVaccinatedForCOVID = data.isVaccinatedForCOVID;
+          this.form.IsVaccinatedForFlu = data.isVaccinatedForFlu;
+          this.form.IsVaccinatedForPlague = data.isVaccinatedForPlague;
+          this.form.IsVaccinatedForBCG = data.isVaccinatedForBCG;
+          this.form.IsVaccinatedForHepatitis = data.isVaccinatedForHepatitis;
+
+          this.form.SmokingStatus = data.smokingStatus; // 吸烟史
+          this.form.DrinkingStatus = data.drinkingStatus; // 饮酒史
+        } else {
+          console.error("获取用户信息失败:", response.data.msg);
+        }
+      } catch (error) {
+        console.error("请求出错:", error);
+      }
+    },
+
     handleCancel() {
       this.visible = false;
-      this.handleReset();
     },
+
     handleSubmit() {
       console.log("触发");
       this.$refs.form.validate((valid) => {
@@ -513,7 +576,6 @@ export default {
             message: "提交成功",
             type: "success",
           });
-          this.handleReset();
         } else {
           console.log("表单验证失败");
           ElMessage({
@@ -524,121 +586,10 @@ export default {
         }
       });
     },
-    handleMedicalHistoryChange() {
-      if (!this.form.HasMedicalHistory) {
-        // 如果选择“无”，清空所有疾病选项
-        this.clearAllDiseases();
-      }
-    },
-    handleCancerChange() {
-      if (!this.form.HasMalignantTumor) {
-        // 清空癌症相关选项
-        this.clearCancerFields();
-      }
-    },
-    SpecificOccupationChange() {
-      if (this.form.SpecificOccupation == "否") {
-        this.form.MedicalPersonnelType = "";
-      }
-    },
-    clearAllDiseases() {
-      this.form.HasHypertension = false;
-      this.form.HasDiabetes = false;
-      this.form.HasHyperlipidemia = false;
-      this.form.HasHyperuricemia = false;
-      this.form.HasCoronaryHeartDisease = false;
-      this.form.HasStroke = false;
-      this.form.HasOtherCardiovascularDiseases = false;
-      this.form.HasAsthma = false;
-      this.form.HasCOPD = false;
-      this.form.HasPepticUlcer = false;
-      this.form.HasMalignantTumor = false;
-      this.clearCancerFields();
-      this.form.HasSevereMentalDisorders = false;
-      this.form.HasTuberculosis = false;
-      this.form.HasHepatitis = false;
-      this.form.HasOccupationalDisease = false;
-      this.form.HasChronicKidneyDisease = false;
-      this.form.HasChronicLiverDisease = false;
-      this.form.HasImmunodeficiency = false;
-      this.form.HasTyphus = false;
-      this.form.IsPostpartumInSixWeeks = false;
-      this.form.HasDustExposure = false;
-      this.form.HasOtherDiseases = false;
-    },
-    clearCancerFields() {
-      this.form.HasLungCancer = false;
-      this.form.HasOtherCancer = false;
-      this.form.OtherCancerName = "";
-    },
-    handleReset() {
-      this.form = this.getInitialForm();
-      this.message="";
-    },
-    getInitialForm() {
-      return {
-        UserType: "",
-        Name: "",
-        Gender: "",
-        IsPregnant: "",
-        PregnancyWeeks: "",
-        IDNumber: "",
-        Age: "",
-        Ethnicity: "",
-        EducationLevel: "",
-        WorkStartYear: "",
-        WorkStartMonth: "",
-        WorkStartDay: "",
-        WorkStart: "",
-        Department: "",
-        SpecificOccupation: "",
-        MedicalPersonnelType: "",
-        PhoneNumber: "",
-        OtherPhoneNumber: "",
-        EmergencyContactName: "",
-        EmergencyContactPhoneNumber: "",
-        EmergencyContactRelation: "",
-        HasMedicalHistory: null,
-        HasHypertension: false,
-        HasDiabetes: false,
-        HasHyperlipidemia: false,
-        HasHyperuricemia: false,
-        HasCoronaryHeartDisease: false,
-        HasStroke: false,
-        HasOtherCardiovascularDiseases: false,
-        HasAsthma: false,
-        HasCOPD: false,
-        HasPepticUlcer: false,
-        HasMalignantTumor: false,
-        HasLungCancer: false,
-        HasOtherCancer: false,
-        OtherCancerName: "",
-        HasSevereMentalDisorders: false,
-        HasTuberculosis: false,
-        HasHepatitis: false,
-        HasOccupationalDisease: false,
-        HasChronicKidneyDisease: false,
-        HasChronicLiverDisease: false,
-        HasImmunodeficiency: false,
-        HasTyphus: false,
-        IsPostpartumInSixWeeks: false,
-        HasDustExposure: false,
-        HasOtherDiseases: false,
-        OtherDiseasesName: "",
-        SmokingHistory: "",
-        AlcoholHistory: "",
-        Height: "",
-        Weight: "",
-        IsVaccinatedForCOVID: false,
-        IsVaccinatedForFlu: false,
-        IsVaccinatedForPlague: false,
-        IsVaccinatedForBCG: false,
-        IsVaccinatedForHepatitis: false,
-      };
-    },
   },
 };
 </script>
+
 
 
 

@@ -6,7 +6,7 @@
       class="form-container"
       ref="form"
       :rules="rules"
-      :disabled="allDisabled" :readonly="allReadonly"
+      :disabled="allDisabled"  
     >
       <div class="GeneralSymptoms">
         <!------------------------------- 接触情况 ---------------------------------->
@@ -623,7 +623,7 @@ export default {
   },
   data() {
     return {
-      allDisabled:true,allReadonly:true,
+      allDisabled:true, 
       visible: false, // 控制弹窗显示
       form: {
         ContactWithFeverPatient: "", // 与发热患者接触情况

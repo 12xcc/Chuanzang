@@ -23,7 +23,18 @@
           <el-option :key="4" label="专职医护" :value="4"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item>
+        <el-button
+          type="primary"
+          class="custom-button"
+          @click="handleAdd"
+          size="default"
+          style="margin-left: 5px"
+          >添加宣传材料</el-button
+        >
+    </el-form-item>
     </el-form>
+
 
     <!-- 表格部分 -->
     <div class="usertable">
@@ -62,7 +73,7 @@
               link
               type="primary"
               size="large"
-              @click="handleClickEdit(scope.row)"
+              @click="handleClick(scope.row)"
               >编辑</el-button
             >
             <el-button
@@ -86,6 +97,8 @@
         v-model:page-size="queryParams.pageSize"
         @pagination="handlePagination"
       />
+      <Checkmaterials ref="Checkmaterials" :form="queryParams" />
+      <Addmaterials ref="Addmaterials" />
     </div>
   </div>
 </template>
@@ -94,10 +107,14 @@
 import * as XLSX from "xlsx";
 import { ref, computed, onMounted } from "vue";
 import Pagination from "@/components/pagination.vue";
+import Checkmaterials from './components/checkmaterials.vue';
+import Addmaterials from './components/addmaterials.vue';
 
 export default {
   components: {
     Pagination,
+    Checkmaterials,
+    Addmaterials,
   },
 
   data() {
@@ -148,7 +165,7 @@ export default {
         },
         {
           SequenceNumber: "5",
-          MaterialType: "网页链接",
+          MaterialType: "链接",
           Title: "标题5",
           FilePath: "",
           Link: "http://localhost:5173/#/propaganda",
@@ -189,6 +206,7 @@ export default {
         return userTypeMatch && textMatch;
       });
     },
+
     paginatedData() {
       const start = (this.queryParams.pageNum - 1) * this.queryParams.pageSize;
       const end = start + this.queryParams.pageSize;
@@ -200,14 +218,19 @@ export default {
     handleUserTypeChange() {
       this.handleQuery();
     },
-
+    handleClick(row){
+      this.$refs.Checkmaterials.showDrawer(row);
+    },
     handleQuery() {
       this.tableData = this.paginatedData;
     },
     handleDownload() {
       // 逻辑处理
     },
-
+    
+    handleAdd(){
+      this.$refs.Addmaterials.showDrawer();
+    },
     toggleStatus(row) {
       row.isActive = !row.isActive;
       this.handleQuery();

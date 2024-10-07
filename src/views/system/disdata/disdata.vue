@@ -8,14 +8,14 @@
       :inline="true"
       v-show="showSearch"
     >
-       <el-form-item label="疾病类型名" prop="check" size="default">
+      <el-form-item label="疾病类型名" prop="check" size="default">
         <el-input
           v-model="queryParams.check"
           placeholder="请输入文本"
           clearable
           size="default"
           @keyup.enter.native="handleQuery"
-          style="width:200px !important; margin-right:-15px;"
+          style="width: 200px !important; margin-right: -15px"
         />
       </el-form-item>
 
@@ -26,35 +26,42 @@
           @click="handleQuery"
           plain
           size="default"
-          style="margin-left:5px;"
-        >搜索</el-button>
+          style="margin-left: 5px"
+          >搜索</el-button
+        >
         <el-button
           type="primary"
           class="custom-button"
           @click="handleExport"
           size="default"
-        >导出</el-button>
+          >导出</el-button
+        >
       </el-form-item>
     </el-form>
 
     <!-- 表格部分 -->
     <div class="usertable">
-      <el-table 
-        :header-cell-style="{height:'40px',background:'#f5f7fa',color: '#333333'}" 
-        v-loading="loading" 
-        :data="paginatedData" 
-        style="width: 100%;"
+      <el-table
+        :header-cell-style="{
+          height: '40px',
+          background: '#f5f7fa',
+          color: '#333333',
+        }"
+        v-loading="loading"
+        :data="allData"
+        style="width: 100%"
         :height="tableHeight"
+        :show-overflow-tooltip="true"
       >
-        <el-table-column 
-          type="selection" 
-          width="55" 
-        />
+        <el-table-column type="selection" width="55" />
         <el-table-column prop="serialNumber" label="序号" width="80" />
         <el-table-column prop="DiseaseTypeName" label="疾病类型" width="300" />
         <el-table-column prop="HasSubtype" label="是否包含子类型" width="200">
           <template #default="scope">
-            <el-tag  size="default" :type="scope.row.HasSubtype === '是' ? 'success' : 'primary'" >
+            <el-tag
+              size="default"
+              :type="scope.row.HasSubtype === '是' ? 'success' : 'primary'"
+            >
               {{ scope.row.HasSubtype }}
             </el-tag>
           </template>
@@ -76,139 +83,129 @@
 
 <script>
 import * as XLSX from "xlsx";
-import { ref, computed, onMounted } from 'vue';
-import Pagination from '@/components/pagination.vue';
+import { ref, computed, onMounted } from "vue";
+import Pagination from "@/components/pagination.vue";
+import {
+  fetchDiseaseData,
+  exportDiseaseBasicData,
+} from "@/api/system/disdata.js";
 
 export default {
   components: {
     Pagination,
   },
-  
-  mounted() {
 
-  },
-  
   data() {
     return {
       queryParams: {
-        UserType: '',
-        choice: '',
-        check: '',
+        check: "",
         pageNum: 1,
-        pageSize: 15
+        pageSize: 15,
       },
-      allData: [
-        { serialNumber: 1, DiseaseTypeName: '新型冠状病毒感染', HasSubtype: '否', SubtypeName: '' },
-        { serialNumber: 2, DiseaseTypeName: '流感', HasSubtype: '否', SubtypeName: '' },
-        { serialNumber: 3, DiseaseTypeName: '鼠疫', HasSubtype: '是', SubtypeName: '腺鼠疫,肺鼠疫,败血型鼠疫,肠鼠疫,眼鼠疫,皮肤鼠疫,脑鼠疫' },
-        { serialNumber: 4, DiseaseTypeName: '感染性腹泻', HasSubtype: '否', SubtypeName: '' },
-        { serialNumber: 5, DiseaseTypeName: '炭疽', HasSubtype: '是', SubtypeName: '皮肤炭疽,肠炭疽,肺炭疽,脑膜炎型炭疽,败血症型炭疽' },
-        { serialNumber: 6, DiseaseTypeName: '登革热（蚊媒传染病）', HasSubtype: '否', SubtypeName: '' },
-        { serialNumber: 7, DiseaseTypeName: '疟疾（蚊媒传染病）', HasSubtype: '否', SubtypeName: '' },
-        // { serialNumber: 8, DiseaseTypeName: '铁路职工', HasSubtype: '否', SubtypeName: '' },
-
-
-
-       
-      ],
-      tableData: [],
+      allData: [],
       showSearch: true,
       loading: false,
+      total: 0,
     };
   },
 
   computed: {
-    total() {
-      return this.filteredData.length;
-    },
     tableHeight() {
-      return window.innerHeight - 300;
+      return window.innerHeight - 300; // 计算表格高度
     },
-    filteredData() {
-      const { UserType, check } = this.queryParams;
-      const lowerCaseCheck = check ? check.toLowerCase() : '';
-
-      return this.allData.filter(item => {
-        const userTypeMatch = !UserType || item.UserType === this.convertUserType(UserType);
-        const fieldsToSearch = ['DiseaseTypeName','SubtypeName'];
-        const textMatch = fieldsToSearch.some(field => {
-          const itemFieldValue = item[field]?.toString().toLowerCase() || '';
-          return itemFieldValue.includes(lowerCaseCheck);
-        });
-        return userTypeMatch && textMatch;
-      });
-    },
-    paginatedData() {
-      const start = (this.queryParams.pageNum - 1) * this.queryParams.pageSize;
-      const end = start + this.queryParams.pageSize;
-      return this.filteredData.slice(start, end);
-    }
   },
 
   methods: {
-    handleQuery() {
-      this.tableData = this.paginatedData;
-    },
+    async handleQuery() {
+      this.loading = true;
+      try {
+        const params = {
+          pageNo: this.queryParams.pageNum,
+          pageSize: this.queryParams.pageSize,
+          text: this.queryParams.check,
+        };
 
-    
-    // 导出表格信息
-    handleExport() {
-      // 获取表格数据
-     const data = this.allData.map(item => ({
-      序号: item.serialNumber,
-      疾病类型: item.DiseaseTypeName,
-      是否包含子类型: item.HasSubtype,
-      子类型: item.SubtypeName,
-    }));
+        const response = await fetchDiseaseData(params);
+        // console.log("API 响应:", response);
 
-      // 创建工作表
-      const ws = XLSX.utils.json_to_sheet(data);
-
-      // 创建工作簿
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "疾病数据基础管理");
-
-      // 导出 Excel 文件
-      XLSX.writeFile(wb, "疾病数据导出表.xlsx");
-    },
-
-    handleClick() {
-      // 逻辑处理
-    },
-    isActive() {
-      // 逻辑处理
-    },
-    convertUserType(value) {
-      switch (value) {
-        case 1: return '系统管理员';
-        case 2: return '铁路职工';
-        case 3: return '疾控中心工作人员';
-        case 4: return '专职医护';
-        default: return '';
+        if (response.data.code === 1) {
+          const records = response.data.data.records || []; // 使用空数组，如果为 null
+          this.allData = records.map((item, index) => ({
+            serialNumber:
+              (this.queryParams.pageNum - 1) * this.queryParams.pageSize +
+              index +
+              1,
+            DiseaseTypeName: item.diseaseTypeName,
+            HasSubtype: item.hasSubtype ? "是" : "否",
+            SubtypeName: item.subDiseaseList
+              ? item.subDiseaseList.map((sub) => sub.subtypeName).join(", ")
+              : "", // 检查 subDiseaseList 是否为 null
+          }));
+          this.total = response.data.data.total || 0; // 如果 total 缺失，默认设置为 0
+        } else {
+          this.$message.error("获取疾病数据失败，请重试！" + response.data.msg);
+        }
+      } catch (error) {
+        console.error("获取疾病数据出错:", error);
+        this.$message.error("获取疾病数据失败，请重试！");
+      } finally {
+        this.loading = false;
       }
     },
+
+    // 导出表格信息
+    async handleExport() {
+      try {
+        const response = await exportDiseaseBasicData(); 
+        if (response.status === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "疾病基础信息导出表.xlsx");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          this.$message({
+            message: "导出成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            message: "导出失败，请重试",
+            type: "error",
+          });
+        }
+      } catch (error) {
+        console.error("导出出错:", error);
+        this.$message({
+          message: "导出出错，请重试",
+          type: "error",
+        });
+      }
+    },
+
+
     handlePagination({ page, limit }) {
       this.queryParams.pageNum = page;
       this.queryParams.pageSize = limit;
-      this.handleQuery();
-    }
+      this.handleQuery(); // 更新查询数据
+    },
   },
 
   mounted() {
-    this.handleQuery();
-  }
+    this.handleQuery(); // 初始查询
+  },
 };
 </script>
-
 
 <style scoped>
 .container {
   padding: 10px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border-radius: 5px;
 }
 
 .custom-button {
-  margin-right:10px;
+  margin-right: 10px;
 }
 </style>

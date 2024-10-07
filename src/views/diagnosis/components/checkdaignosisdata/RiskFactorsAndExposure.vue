@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form :model="form" label-width="160px" ref="form" label-position="left" :rules="rules" :disabled="allDisabled" :readonly="allReadonly">
+    <el-form :model="form" label-width="160px" ref="form" label-position="left" :rules="rules" :disabled="allDisabled"  >
       <div class="Symptoms">
         <div class="Condition">
           <div class="title-container">
@@ -28,7 +28,7 @@
                 :checked="form.HasViralPneumonia"
                 type="primary"
                 @change="toggleTag('HasViralPneumonia')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 病毒性肺炎
               </el-check-tag>
@@ -36,7 +36,7 @@
                 :checked="form.HasBacterialPneumonia"
                 type="primary"
                 @change="toggleTag('HasBacterialPneumonia')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 细菌性肺炎
               </el-check-tag>
@@ -44,7 +44,7 @@
                 :checked="form.HasFungalPneumonia"
                 type="primary"
                 @change="toggleTag('HasFungalPneumonia')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 真菌性肺炎
               </el-check-tag>
@@ -52,7 +52,7 @@
                 :checked="form.HasRespiratoryFailure"
                 type="primary"
                 @change="toggleTag('HasRespiratoryFailure')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 呼吸衰竭
               </el-check-tag>
@@ -60,7 +60,7 @@
                 :checked="form.HasARDS"
                 type="primary"
                 @change="toggleTag('HasARDS')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 急性呼吸窘迫综合征(ARDS)
               </el-check-tag>
@@ -68,7 +68,7 @@
                 :checked="form.HasDIC"
                 type="primary"
                 @change="toggleTag('HasDIC')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 弥散性血管内凝血（DIC）
               </el-check-tag>
@@ -76,7 +76,7 @@
                 :checked="form.HasToxicShock"
                 type="primary"
                 @change="toggleTag('HasToxicShock')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 感染中毒性休克
               </el-check-tag>
@@ -84,7 +84,7 @@
                 :checked="form.HasMeningitis"
                 type="primary"
                 @change="toggleTag('HasMeningitis')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 脑膜炎
               </el-check-tag>
@@ -92,7 +92,7 @@
                 :checked="form.HasEncephalitis"
                 type="primary"
                 @change="toggleTag('HasEncephalitis')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 脑炎
               </el-check-tag>
@@ -100,7 +100,7 @@
                 :checked="form.HasBacteremia"
                 type="primary"
                 @change="toggleTag('HasBacteremia')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 菌血症
               </el-check-tag>
@@ -108,7 +108,7 @@
                 :checked="form.HasMyocarditis"
                 type="primary"
                 @change="toggleTag('HasMyocarditis')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 心肌炎
               </el-check-tag>
@@ -116,7 +116,7 @@
                 :checked="form.HasAcuteLungInjury"
                 type="primary"
                 @change="toggleTag('HasAcuteLungInjury')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 急性肺损伤/ARDS
               </el-check-tag>
@@ -124,7 +124,7 @@
                 :checked="form.HasAcuteKidneyInjury"
                 type="primary"
                 @change="toggleTag('HasAcuteKidneyInjury')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 急性肾损伤
               </el-check-tag>
@@ -132,7 +132,7 @@
                 :checked="form.HasEpilepsy"
                 type="primary"
                 @change="toggleTag('HasEpilepsy')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 癫痫
               </el-check-tag>
@@ -140,7 +140,7 @@
                 :checked="form.HasToxicHepatitis"
                 type="primary"
                 @change="toggleTag('HasToxicHepatitis')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 中毒性肝炎
               </el-check-tag>
@@ -148,7 +148,7 @@
                 :checked="form.HasFluidOverload"
                 type="primary"
                 @change="toggleTag('HasFluidOverload')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 输液过量
               </el-check-tag>
@@ -156,7 +156,7 @@
                 :checked="form.HasSuperinfection"
                 type="primary"
                 @change="toggleTag('HasSuperinfection')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 二重感染
               </el-check-tag>
@@ -164,7 +164,7 @@
                 :checked="form.HasHypoxemia"
                 type="primary"
                 @change="toggleTag('HasHypoxemia')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 低氧血症
               </el-check-tag>
@@ -172,7 +172,7 @@
                 :checked="form.HasSepticShock"
                 type="primary"
                 @change="toggleTag('HasSepticShock')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 脓毒症休克
               </el-check-tag>
@@ -180,7 +180,7 @@
                 :checked="form.HasMetabolicAcidosis"
                 type="primary"
                 @change="toggleTag('HasMetabolicAcidosis')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 代谢性酸中毒
               </el-check-tag>
@@ -188,7 +188,7 @@
                 :checked="form.HasElectrolyteImbalance"
                 type="primary"
                 @change="toggleTag('HasElectrolyteImbalance')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 电解质及酸碱失衡
               </el-check-tag>
@@ -196,7 +196,7 @@
                 :checked="form.HasHemolysis"
                 type="primary"
                 @change="toggleTag('HasHemolysis')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 急性血管内溶血
               </el-check-tag>
@@ -204,7 +204,7 @@
                 :checked="form.HasGastrointestinalBleeding"
                 type="primary"
                 @change="toggleTag('HasGastrointestinalBleeding')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 消化道出血
               </el-check-tag>
@@ -212,7 +212,7 @@
                 :checked="form.HasCoagulationDisorder"
                 type="primary"
                 @change="toggleTag('HasCoagulationDisorder')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 凝血功能障碍
               </el-check-tag>
@@ -220,7 +220,7 @@
                 :checked="form.HasMultipleOrganFailure"
                 type="primary"
                 @change="toggleTag('HasMultipleOrganFailure')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 多器官功能衰竭
               </el-check-tag>
@@ -228,7 +228,7 @@
                 :checked="form.HasAnemia"
                 type="primary"
                 @change="toggleTag('HasAnemia')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 贫血
               </el-check-tag>
@@ -236,7 +236,7 @@
                 :checked="form.HasHepatosplenomegaly"
                 type="primary"
                 @change="toggleTag('HasHepatosplenomegaly')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 肝脾肿大
               </el-check-tag>
@@ -244,7 +244,7 @@
                 :checked="form.HasBrainEdema"
                 type="primary"
                 @change="toggleTag('HasBrainEdema')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 脑水肿
               </el-check-tag>
@@ -252,7 +252,7 @@
                 :checked="form.HasHUS"
                 type="primary"
                 @change="toggleTag('HasHUS')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 溶血性尿毒综合征
               </el-check-tag>
@@ -260,7 +260,7 @@
                 :checked="form.HasHematemesis"
                 type="primary"
                 @change="toggleTag('HasHematemesis')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 呕血
               </el-check-tag>
@@ -268,7 +268,7 @@
                 :checked="form.HasMelena"
                 type="primary"
                 @change="toggleTag('HasMelena')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 便血
               </el-check-tag>
@@ -276,7 +276,7 @@
                 :checked="form.HasHemoptysis"
                 type="primary"
                 @change="toggleTag('HasHemoptysis')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 咯血
               </el-check-tag>
@@ -284,7 +284,7 @@
                 :checked="form.HasAbdominalHemorrhage"
                 type="primary"
                 @change="toggleTag('HasAbdominalHemorrhage')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 腹腔出血
               </el-check-tag>
@@ -292,7 +292,7 @@
                 :checked="form.HasHypovolemicShock"
                 type="primary"
                 @change="toggleTag('HasHypovolemicShock')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 低血容量休克
               </el-check-tag>
@@ -301,7 +301,7 @@
                 :checked="form.OtherComplications"
                 type="primary"
                 @change="toggleTag('OtherComplications')"
-                :disabled="allDisabled" :readonly="allReadonly"
+                :disabled="allDisabled"  
               >
                 其他
               </el-check-tag>
@@ -332,7 +332,7 @@
 export default {
   data() {
     return {
-      allDisabled:true,allReadonly:true,
+      allDisabled:true, 
       form: {
         HasComplications: false,
         HasViralPneumonia: false,
@@ -388,11 +388,11 @@ export default {
     },
     handleAble() {
       this.allDisabled = false;
-      this.allReadonly = false;
+       
     },
     handleCancel(){
       this.allDisabled = true;
-      this.allReadonly = true;
+       
     },
       validate() {
       return new Promise((resolve, reject) => {

@@ -41,7 +41,7 @@
           ></el-input>
         </el-form-item>
 
-         <el-form-item label="医院地址" prop="Address">
+        <el-form-item label="医院地址" prop="Address">
           <el-input
             v-model="form.Address"
             style="width: 200px"
@@ -56,11 +56,14 @@
 
 <script>
 import { ElMessage } from "element-plus";
+import { fetchHospitalDataById,editHospitalDataById } from "@/api/system/hospital.js"; 
+
 export default {
   components: {
   },
   data() {
     return {
+      currentHospitalId :"",
       visible: false, // 控制弹窗显示
       form: {
         HospitalName: '',
@@ -69,43 +72,100 @@ export default {
       },
 
       rules: {
+        HospitalName: [{ required: true, message: '请输入医院名称', trigger: 'blur' }],
+        HospitalPhoneNumber: [{ required: true, message: '请输入联系电话', trigger: 'blur' }],
+        Address: [{ required: true, message: '请输入医院地址', trigger: 'blur' }],
       },
     };
   },
   methods: {
-    showDrawer(user) {
-      this.form = {...user}
-      this.visible = true;
+
+    // 根据id获取医院信息
+    async getHospitalDataById(hospitalId) {
+      try {
+        const response = await fetchHospitalDataById(hospitalId);
+        if (response.data.code === 1) {
+          // 将后端数据映射到表单
+          this.form = {
+            HospitalName: response.data.data.hospitalName,
+            HospitalPhoneNumber: response.data.data.hospitalPhoneNumber,
+            Address: response.data.data.address,
+          };
+        } else {
+          console.error("获取医院信息失败:", response.data.msg);
+          ElMessage({
+            message: `获取医院信息失败: ${response.data.msg}`,
+            type: "error",
+          });
+        }
+      } catch (error) {
+        console.error("请求出错:", error);
+        ElMessage({
+          message: "请求出错",
+          type: "error",
+        });
+      }
     },
+
+
+    showDrawer(hospitalId) {
+      this.currentHospitalId = hospitalId;
+      this.visible = true;
+      this.getHospitalDataById(hospitalId); 
+    },
+
     handleCancel() {
       this.visible = false;
     },
-    handleSubmit() {
-      console.log("触发");
-      this.$refs.form.validate((valid) => {
-        console.log("Form is valid:", valid);
+
+     handleSubmit() {
+      this.$refs.form.validate(async (valid) => {
         if (valid) {
-          console.log("Form data:", this.form);
-          this.visible = false;
-          ElMessage({
-            message: "提交成功",
-            type: "success",
-          });
+          try {
+            const params = {
+               hospitalId: this.currentHospitalId,
+               hospitalName: this.form.HospitalName,
+               hospitalPhoneNumber:this.form.HospitalPhoneNumber,
+               address:this.form.Address,
+            };
+
+            const response = await editHospitalDataById(params); 
+
+            if (response.data.code === 1) {
+              ElMessage({
+                message: "提交成功",
+                type: "success",
+              });
+              this.visible = false;
+               this.$emit('update-success'); 
+            } else {
+              ElMessage({
+                message: "提交失败：" + response.data.msg,
+                type: "error",
+              });
+            }
+          } catch (error) {
+            console.error("提交出错:", error);
+            ElMessage({
+              message: "提交出错，请重试",
+              type: "error",
+            });
+          }
         } else {
           console.log("表单验证失败");
           ElMessage({
-            message: "提交失败",
+            message: "提交失败，表单验证未通过",
             type: "error",
           });
-          return false;
         }
       });
     },
-   
+
     handleReset() {
       this.form = this.getInitialForm();
-      this.message="";
+      this.message = "";
     },
+
     getInitialForm() {
       return {
         HospitalName: '',
@@ -116,8 +176,6 @@ export default {
   },
 };
 </script>
-
-
 
 <style scoped>
 .custom-drawer {

@@ -205,6 +205,7 @@
 
           <div v-show="selectedTag === 'DigestiveSymptoms'">
             <p>查看消化系统症状</p>
+            <DigestiveSymptoms ref="DigestiveSymptoms" />
           </div>
 
           <div v-show="selectedTag === 'CirculatorySymptoms'">
@@ -254,7 +255,7 @@ import OtherSymptoms from "./OtherSymptoms.vue";
 import RiskFactorsAndExposure from "./RiskFactorsAndExposure.vue";
 import DiagnosisPersonalInfo from "./DiagnosisPersonalInfo.vue";
 import DiagnosisExaminations from "../adddiagnosisdata/DiagnosisExaminations .vue";
-
+import DigestiveSymptoms from '../checkdaignosisdata/DigestiveSymptoms.vue';
 export default {
   components: {
     Dateselection,
@@ -268,6 +269,7 @@ export default {
     RiskFactorsAndExposure,
     DiagnosisPersonalInfo,
     DiagnosisExaminations,
+    DigestiveSymptoms,
   },
   data() {
     return {

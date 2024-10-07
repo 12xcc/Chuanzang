@@ -33,7 +33,7 @@
               style="width: 200px"
               clearable
               :disabled="allDisabled"
-              :readonly="allReadonly"
+               
             ></el-input>
           </el-form-item>
         </div>
@@ -49,7 +49,7 @@
               style="width: 200px"
               clearable
               :disabled="allDisabled"
-              :readonly="allReadonly"
+               
             ></el-input>
           </el-form-item>
         </div>
@@ -145,7 +145,7 @@ export default {
   data() {
     return {
       allDisabled: true,
-      allReadonly: true,
+       
       visible: false,
       selectedTag: "全身症状", // 默认选中的标签
       form: {
