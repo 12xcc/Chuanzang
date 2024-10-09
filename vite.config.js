@@ -37,6 +37,16 @@ export default defineConfig({
         logLevel: 'debug', // 添加日志级别
         // rewrite: (path) => path.replace(/^\/admin/, ''), // 重写路径
       },
+      '/cdcStaff': {
+        target: 'http://43.138.213.55:8080', // 后端服务的地址
+        changeOrigin: true,
+        logLevel: 'debug',
+      },
+      '/nurse': {
+        target: 'http://43.138.213.55:8080', // 后端服务的地址
+        changeOrigin: true,
+        logLevel: 'debug',
+      },
     },
   },
 });

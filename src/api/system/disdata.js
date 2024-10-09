@@ -3,7 +3,7 @@ import axiosInstance from "@/utils/axiosInstance.js";
 // 分页查询疾病基础信息
 export const fetchDiseaseData = async (params) => {
   const response = await axiosInstance.post(
-    "/systemDiseaseData/pageSelectDiseaseType",
+    "/admin/systemDiseaseData/pageSelectDiseaseType",
     params,
     {
       headers: {
@@ -17,7 +17,7 @@ export const fetchDiseaseData = async (params) => {
 // 导出疾病基础数据接口
 export const exportDiseaseBasicData = async () => {
   const response = await axiosInstance.get(
-    "/systemDiseaseData/getExcelDiseaseBasicDataExportTable",
+    "/admin/systemDiseaseData/getExcelDiseaseBasicDataExportTable",
     {
       responseType: 'blob', 
     }

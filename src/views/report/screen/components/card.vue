@@ -17,6 +17,7 @@
 </template>
 
 <script>
+/* 为方便演示，暂时不用接口调用成功的代码*/
 import { onMounted } from 'vue';
 import { CountUp } from 'countup.js';
 import allusernumber from '@/assets/screenimgs/allusernumber.svg';
@@ -116,4 +117,6 @@ img {
     font-weight: bold;
     color: #333333;
 }
+
 </style>
+

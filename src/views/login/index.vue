@@ -71,7 +71,7 @@ import passwordClose from "../../assets/password_open.png";
 export default {
   setup() {
     const router = useRouter();
-    const userStore = useUserStore(); // 实例化 userStore
+    const userStore = useUserStore(); 
     const username = ref("");
     const password = ref("");
     const passwordFieldType = ref("password");
@@ -87,7 +87,7 @@ export default {
     const users = {
       19357907217: { Name:"张三", password: "123456", role: "admin" },
       13330656624: { Name:"李四", password: "123456", role: "nurse" },
-      19508191094: { Name:"张三", password: "123456", role: "cdcStaff" }
+      19508191094: { Name:"张三", password: "123456", role: "cdc" }
     };
 
 const handleSubmit = () => {
@@ -305,4 +305,5 @@ a:hover {
   font-size: 12px;
   margin-top: 5px;
 }
+
 </style>

@@ -34,11 +34,11 @@
       <el-form-item prop="date">
         <el-date-picker
           v-model="queryParams.date"
-          type="daterange"
+          type="monthrange"
           range-separator="到"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          value-format="yyyy-MM"
+          start-placeholder="提交时间月份"
+          end-placeholder=""
+          value-format="YYYY-MM"
           style="width: 300px"
         />
       </el-form-item>
@@ -75,7 +75,7 @@
         :data="allData"
         style="width: 100%"
         :height="tableHeight"
-        show-overflow-tooltip="true"
+        :show-overflow-tooltip="true"
       >
         <el-table-column type="selection" width="55" />
         <el-table-column
@@ -117,7 +117,7 @@
               link
               type="primary"
               size="large"
-              @click="handleClick(scope.row)"
+              @click="handleClick(scope.row.environmentId)"
             >
               查看
             </el-button>
@@ -143,7 +143,7 @@ import * as XLSX from "xlsx";
 import { ref, computed, onMounted } from "vue";
 import Pagination from "@/components/pagination.vue";
 import Envdata from "./components/envdata.vue";
-import { fetchWorkenvData } from "@/api/workenv/workenv.js";
+import { fetchWorkenvData,exportWorkenvData } from "@/api/workenv/workenv.js";
 
 export default {
   components: {
@@ -174,18 +174,31 @@ export default {
   },
 
   methods: {
-
-     // 格式化提交时间
+    // 格式化提交时间
     formatDate(submissionTime) {
       const [year, month, day, hour, minute, second] = submissionTime;
-      return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:${String(second).padStart(2, '0')}`;
+      return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(
+        2,
+        "0"
+      )} ${String(hour).padStart(2, "0")}:${String(minute).padStart(
+        2,
+        "0"
+      )}:${String(second).padStart(2, "0")}`;
     },
 
     async handleQuery() {
   this.loading = true;
-  
+
   try {
-    const [beginYearMonth, endYearMonth] = this.queryParams.date;
+    // 检查 this.queryParams.date 是否存在且是数组
+    let beginYearMonth = "";
+    let endYearMonth = "";
+
+    if (Array.isArray(this.queryParams.date) && this.queryParams.date.length === 2) {
+      [beginYearMonth, endYearMonth] = this.queryParams.date;
+    }
+
+    // 设置请求参数
     const params = {
       beginYearMonth: beginYearMonth || "",
       endYearMonth: endYearMonth || "",
@@ -193,20 +206,23 @@ export default {
       pageSize: this.queryParams.pageSize || 15,
       workStationName: this.queryParams.WorkStationName || "",
     };
+    
     const response = await fetchWorkenvData(params);
 
     if (response.data.code === 1) {
-      // 格式化反馈日期并映射后端字段
       this.allData = response.data.data.records.map((item, index) => ({
         serialNumber:
-          (this.queryParams.pageNum - 1) * this.queryParams.pageSize + index + 1,  // 保持serialNumber不变
-        Name: item.name,  // 后端的name字段映射到表格中的Name列
-        WorkStationName: item.workStationName,  // workStationName映射
-        WorkStationAltitude: item.workStationAltitude,  // workStationAltitude映射
-        AvgMonthlyPressure: item.avgMonthlyPressure,  // avgMonthlyPressure映射
-        MaxTemperature: item.maxTemperature,  // maxTemperature映射
-        MinTemperature: item.minTemperature,  // minTemperature映射
-        submissionTime: this.formatDate(item.submissionTime),  // 格式化submissionTime
+          (this.queryParams.pageNum - 1) * this.queryParams.pageSize +
+          index +
+          1,
+        Name: item.name,
+        WorkStationName: item.workStationName,
+        WorkStationAltitude: item.workStationAltitude,
+        AvgMonthlyPressure: item.avgMonthlyPressure,
+        MaxTemperature: item.maxTemperature,
+        MinTemperature: item.minTemperature,
+        SubmissionTime: this.formatDate(item.submissionTime),
+        environmentId: item.environmentId,
       }));
       this.total = response.data.data.total;
     } else {
@@ -228,12 +244,39 @@ export default {
   }
 },
 
-    // 导出表格信息
-    handleExport() {},
-
-    handleClick(row) {
-      this.$refs.Envdata.showDrawer(row);
-      console.log("触发", row);
+      // 导出表格信息
+    async handleExport() {
+      try {
+        const response = await exportWorkenvData(); 
+        if (response.status === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "工作环境信息导出表.xlsx");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          this.$message({
+            message: "导出成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            message: "导出失败，请重试",
+            type: "error",
+          });
+        }
+      } catch (error) {
+        console.error("导出出错:", error);
+        this.$message({
+          message: "导出出错，请重试",
+          type: "error",
+        });
+      }
+    },
+    handleClick(environmentId) {
+      this.$refs.Envdata.showDrawer(environmentId);
+      // console.log("触发", row);
       // this.$router.push({ name: "userdata", params: { id: serialNumber } });
     },
 

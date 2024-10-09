@@ -8,22 +8,40 @@
       :inline="true"
       v-show="showSearch"
     >
-      <el-form-item label="" prop="MaterialType" size="default">
+      <el-form-item label="" prop="diseaseTypeName" size="default">
         <el-select
-          v-model="queryParams.MaterialType"
+          v-model="queryParams.diseaseTypeName"
           placeholder="请选择疾病类型"
           clearable
           size="default"
           style="width: 200px; margin-right: -15px"
-          @change="handleMaterialTypeChange"
         >
-          <el-option :key="1" label="新型冠状病毒感染" :value="1"></el-option>
-          <el-option :key="2" label="铁路职工" :value="2"></el-option>
-          <el-option :key="3" label="疾控中心工作人员" :value="3"></el-option>
-          <el-option :key="4" label="专职医护" :value="4"></el-option>
+          <el-option value="新型冠状病毒感染" label="新型冠状病毒感染"></el-option>
+          <el-option value="流感" label="流感"></el-option>
+          <el-option value="鼠疫" label="鼠疫"></el-option>
+          <el-option value="感染性腹泻" label="感染性腹泻"></el-option>
+          <el-option value="炭疽" label="炭疽"></el-option>
+          <el-option value="结核病" label="结核病"></el-option>
+          <el-option value="登革热（蚊媒传染病）" label="登革热（蚊媒传染病）"></el-option>
+          <el-option value="疟疾（蚊媒传染病）" label="疟疾（蚊媒传染病）"></el-option>
+          <el-option value="森林脑炎（蜱媒传染病）" label="森林脑炎（蜱媒传染病）"></el-option>
+          <el-option value="发热伴血小板减少综合征（蜱媒传染病）" label="发热伴血小板减少综合征（蜱媒传染病）"></el-option>
+          <el-option value="斑疹伤寒" label="斑疹伤寒"></el-option>
+          <el-option value="流行性出血热" label="流行性出血热"></el-option>
+          <el-option value="其他" label="其他"></el-option>
         </el-select>
       </el-form-item>
+
       <el-form-item>
+        <el-button
+          type="primary"
+          class="custom-button"
+          @click="handleQuery"
+          plain
+          size="default"
+          style="margin-left: 5px"
+          >搜索</el-button
+        >
         <el-button
           type="primary"
           class="custom-button"
@@ -32,9 +50,8 @@
           style="margin-left: 5px"
           >添加宣传材料</el-button
         >
-    </el-form-item>
+      </el-form-item>
     </el-form>
-
 
     <!-- 表格部分 -->
     <div class="usertable">
@@ -45,11 +62,11 @@
           color: '#333333',
         }"
         v-loading="loading"
-        :data="paginatedData"
+        :data="allData"
         style="width: 100%"
         :height="tableHeight"
-        show-overflow-tooltip="true"
-        :default-sort="{ prop: 'LearningNumber', order: '' }" 
+        :show-overflow-tooltip="true"
+        :default-sort="{ prop: 'LearningNumber', order: '' }"
       >
         <el-table-column type="selection" width="55" />
         <el-table-column prop="SequenceNumber" label="序号" width="80" />
@@ -58,7 +75,12 @@
         <el-table-column prop="FilePath" label="文件路径" width="160" />
         <el-table-column prop="Link" label="网页链接" width="160" />
         <el-table-column prop="PublishDate" label="发布日期" width="150" />
-        <el-table-column prop="LearningNumber" label="学习总次数" width="140" sortable />
+        <el-table-column
+          prop="LearningNumber"
+          label="学习总次数"
+          width="140"
+          sortable
+        />
         <el-table-column fixed="right" label="操作" min-width="260">
           <template #default="scope">
             <el-button
@@ -78,13 +100,12 @@
             >
             <el-button
               link
-              :type="scope.row.isActive ? 'primary' : 'danger'"
+              :type="scope.row.isDeleted ? 'danger' : 'primary'"
               size="large"
               @click="toggleStatus(scope.row)"
             >
-              {{ scope.row.isActive ? "可用" : "已禁用" }}
+              {{ scope.row.isDeleted ? "已禁用" : "启用" }}
             </el-button>
-            <template v-if="scope.row.isActive"> </template>
           </template>
         </el-table-column>
       </el-table>
@@ -104,11 +125,11 @@
 </template>
 
 <script>
-import * as XLSX from "xlsx";
-import { ref, computed, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import Pagination from "@/components/pagination.vue";
-import Checkmaterials from './components/checkmaterials.vue';
-import Addmaterials from './components/addmaterials.vue';
+import Checkmaterials from "./components/checkmaterials.vue";
+import Addmaterials from "./components/addmaterials.vue";
+import { pageSelectDiseaseLearningMaterials, startOrStopMaterial } from "@/api/propaganda/propaganda.js";
 
 export default {
   components: {
@@ -120,130 +141,118 @@ export default {
   data() {
     return {
       queryParams: {
-        UserType: "",
-        choice: "",
-        check: "",
+        diseaseTypeName: "", 
         pageNum: 1,
         pageSize: 15,
       },
-      allData: [
-        {
-          SequenceNumber: "1",
-          MaterialType: "图片",
-          Title: "标题1",
-          FilePath: "http://localhost:5173/#/propaganda",
-          Link: "",
-          PublishDate: "2024-03-20 20:22",
-          LearningNumber: 1000,
-        },
-        {
-          SequenceNumber: "2",
-          MaterialType: "文章",
-          Title: "标题2",
-          FilePath: "http://localhost:5173/#/propaganda",
-          Link: "",
-          PublishDate: "2024-03-20 20:22",
-          LearningNumber: 10,
-        },
-        {
-          SequenceNumber: "3",
-          MaterialType: "图片",
-          Title: "标题3",
-          FilePath: "http://localhost:5173/#/propaganda",
-          Link: "",
-          PublishDate: "2024-03-20 20:22",
-          LearningNumber: 100,
-        },
-        {
-          SequenceNumber: "4",
-          MaterialType: "视频",
-          Title: "标题4",
-          FilePath: "http://localhost:5173/#/propaganda",
-          Link: "",
-          PublishDate: "2024-03-20 20:22",
-          LearningNumber: 219,
-        },
-        {
-          SequenceNumber: "5",
-          MaterialType: "链接",
-          Title: "标题5",
-          FilePath: "",
-          Link: "http://localhost:5173/#/propaganda",
-          PublishDate: "2024-03-20 20:22",
-          LearningNumber: 91,
-        },
-      ],
-     tableData: [],
-      showSearch: true,
+      allData: [],
       loading: false,
+      total: 0,
+      showSearch:true,
     };
   },
 
   computed: {
-    total() {
-      return this.filteredData.length;
-    },
     tableHeight() {
       return window.innerHeight - 300;
-    },
-    filteredData() {
-      const { UserType, check } = this.queryParams;
-      const lowerCaseCheck = check ? check.toLowerCase() : "";
-
-      return this.allData.filter((item) => {
-        const userTypeMatch =
-          !UserType || item.UserType === this.convertUserType(UserType);
-        const fieldsToSearch = [
-          "Name",
-          "PhoneNumber",
-          "Department",
-          "SpecificOccupation",
-        ];
-        const textMatch = fieldsToSearch.some((field) => {
-          const itemFieldValue = item[field]?.toString().toLowerCase() || "";
-          return itemFieldValue.includes(lowerCaseCheck);
-        });
-        return userTypeMatch && textMatch;
-      });
-    },
-
-    paginatedData() {
-      const start = (this.queryParams.pageNum - 1) * this.queryParams.pageSize;
-      const end = start + this.queryParams.pageSize;
-      return this.filteredData.slice(start, end);
     },
   },
 
   methods: {
-    handleUserTypeChange() {
-      this.handleQuery();
-    },
-    handleClick(row){
+    handleClick(row) {
       this.$refs.Checkmaterials.showDrawer(row);
     },
-    handleQuery() {
-      this.tableData = this.paginatedData;
-    },
-    handleDownload() {
-      // 逻辑处理
-    },
-    
-    handleAdd(){
-      this.$refs.Addmaterials.showDrawer();
-    },
-    toggleStatus(row) {
-      row.isActive = !row.isActive;
-      this.handleQuery();
+
+    async handleQuery() {
+      this.loading = true;
+      try {
+        const params = {
+          diseaseTypeName: this.queryParams.diseaseTypeName || "", 
+          pageNo: this.queryParams.pageNum || 1,
+          pageSize: this.queryParams.pageSize || 15,
+        };
+
+        const response = await pageSelectDiseaseLearningMaterials(params);
+
+        if (response.data.code === 1) {
+          this.allData = response.data.data.records.map((item, index) => ({
+            SequenceNumber:
+              (this.queryParams.pageNum - 1) * this.queryParams.pageSize +
+              index +
+              1,
+            MaterialType: this.queryParams.diseaseTypeName || "未知类型",
+            Title: item.title || "-",
+            FilePath: item.filePath || "-",
+            Link: item.link || "-",
+            PublishDate: item.publishDate
+              ? `${item.publishDate[0]}-${String(item.publishDate[1]).padStart(
+                  2,
+                  "0"
+                )}-${String(item.publishDate[2]).padStart(2, "0")} ${String(
+                  item.publishDate[3]
+                ).padStart(2, "0")}:${String(item.publishDate[4]).padStart(
+                  2,
+                  "0"
+                )}:${String(item.publishDate[5]).padStart(2, "0")}`
+              : "无发布日期",
+            LearningNumber: item.studyCount || 0,
+            isDeleted: item.isDeleted,
+            materialId: item.materialId,
+          }));
+          this.total = response.data.data.total;
+        } else {
+          this.$message.error(
+            "获取宣传材料数据失败，请重试！" + response.data.message
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        this.$message.error("获取宣传材料数据失败，请重试！");
+      } finally {
+        this.loading = false;
+      }
     },
 
-     handlePagination({ page, limit }) {
+    handleAdd() {
+      this.$refs.Addmaterials.showDrawer();
+    },
+
+    toggleStatus(row) {
+      this.$confirm("您确定要切换材料状态吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          try {
+            const newStatus = !row.isDeleted;
+            const response = await startOrStopMaterial(row.materialId, newStatus);
+
+            if (response.data.code === 1) {
+              row.isDeleted = newStatus;
+              this.handleQuery();
+              this.$message.success(`宣传材料已${newStatus ? "禁用" : "启用"}！`);
+            } else {
+              this.$message.error("切换状态失败：" + response.data.message);
+            }
+          } catch (error) {
+            console.error("Error toggling status:", error);
+            this.$message.error("切换状态失败，请重试！");
+          }
+        })
+        .catch(() => {
+          this.$message.info("已取消状态切换");
+        });
+    },
+
+    handlePagination({ page, limit }) {
       this.queryParams.pageNum = page;
       this.queryParams.pageSize = limit;
       this.handleQuery();
-    }
+    },
   },
 
-  onMounted() {
+  mounted() {
     this.handleQuery();
   },
 };

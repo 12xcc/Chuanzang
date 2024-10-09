@@ -30,7 +30,6 @@
               style="width: 200px"
               placeholder="工务段海拔高度"
               clearable
-              @blur="$refs.form.validateField('WorkStationAltitude')"
             ></el-input>
           </el-form-item>
 
@@ -40,7 +39,6 @@
               style="width: 200px"
               placeholder="工务段所在名称"
               clearable
-              @blur="$refs.form.validateField('WorkStationName')"
             ></el-input>
           </el-form-item>
 
@@ -51,7 +49,6 @@
                 style="width: 80px"
                 placeholder="宿舍幢数"
                 clearable
-                @blur="$refs.form.validateField('DormitoryBuildingNumber')"
               ></el-input>
             </el-form-item>
             <el-form-item
@@ -64,7 +61,6 @@
                 style="width: 80px"
                 placeholder="宿舍室数"
                 clearable
-                @blur="$refs.form.validateField('DormitoryRoomNumber')"
               ></el-input>
             </el-form-item>
 
@@ -78,7 +74,6 @@
                 style="width: 80px"
                 placeholder="宿舍同居人数"
                 clearable
-                @blur="$refs.form.validateField('DormitoryOccupants ')"
               ></el-input>
             </el-form-item>
           </div>
@@ -89,7 +84,6 @@
               style="width: 200px"
               placeholder="宿舍面积"
               clearable
-              @blur="$refs.form.validateField('DormitoryArea')"
             ></el-input>
           </el-form-item>
           <el-form-item label="宿舍窗户可打开面积(㎡)" prop=" WindowOpenArea">
@@ -98,7 +92,6 @@
               style="width: 200px"
               placeholder="宿舍窗户可打开面积"
               clearable
-              @blur="$refs.form.validateField(' WindowOpenArea')"
             ></el-input>
           </el-form-item>
 
@@ -114,9 +107,9 @@
               size="default"
               style="width: 200px"
             >
-              <el-option :key="1" label="不开窗通风" :value="1"></el-option>
-              <el-option :key="2" label="不定时开窗通风" :value="2"></el-option>
-              <el-option :key="3" label="每日开窗通风" :value="3"></el-option>
+              <el-option value="不开窗通风" label="不开窗通风" ></el-option>
+              <el-option value="不定时开窗通风"  label="不定时开窗通风" ></el-option>
+              <el-option value="每日开窗通风" label="每日开窗通风"></el-option>
             </el-select>
           </el-form-item>
         </div>
@@ -136,7 +129,6 @@
                 placeholder="请输入"
                 size="small"
                 class="Monthsocial"
-                @blur="$refs.form.validateField('AvgWorkRoomPeople')"
               />
               人处于同一房间/空间，大约和
               <el-input
@@ -144,7 +136,6 @@
                 placeholder="请输入"
                 size="small"
                 class="Monthsocial"
-                @blur="$refs.form.validateField('AvgWorkFaceToFace')"
               />
               人进行了面对面语言交流（1米以内），大约和
               <el-input
@@ -152,7 +143,6 @@
                 placeholder="请输入"
                 size="small"
                 class="Monthsocial"
-                @blur="$refs.form.validateField('AvgWorkPhysicalContact')"
               />
               人进行了肢体接触（如握手）。
             </p>
@@ -169,7 +159,6 @@
                 placeholder="请输入"
                 size="small"
                 class="Monthsocial"
-                @blur="$refs.form.validateField('AvgBreakfastRoomPeople')"
               />
               人处于同一房间/空间，大约和
               <el-input
@@ -177,7 +166,6 @@
                 placeholder="请输入"
                 size="small"
                 class="Monthsocial"
-                @blur="$refs.form.validateField('AvgBreakfastFaceToFace')"
               />
               人进行了面对面语言交流（1米以内），大约和
               <el-input
@@ -185,7 +173,6 @@
                 placeholder="请输入"
                 size="small"
                 class="Monthsocial"
-                @blur="$refs.form.validateField('AvgBreakfastPhysicalContact')"
               />
               人进行了肢体接触（如握手）。
             </p>
@@ -202,7 +189,6 @@
                 placeholder="请输入"
                 size="small"
                 class="Monthsocial"
-                @blur="$refs.form.validateField('AvgLunchRoomPeople')"
               />
               人处于同一房间/空间，大约和
               <el-input
@@ -210,7 +196,6 @@
                 placeholder="请输入"
                 size="small"
                 class="Monthsocial"
-                @blur="$refs.form.validateField('AvgLunchFaceToFace')"
               />
               人进行了面对面语言交流（1米以内），大约和
               <el-input
@@ -218,7 +203,6 @@
                 placeholder="请输入"
                 size="small"
                 class="Monthsocial"
-                @blur="$refs.form.validateField('AvgLunchPhysicalContact')"
               />
               人进行了肢体接触（如握手）。
             </p>
@@ -235,7 +219,6 @@
                 placeholder="请输入"
                 size="small"
                 class="Monthsocial"
-                @blur="$refs.form.validateField('AvgDinnerRoomPeople')"
               />
               人处于同一房间/空间，大约和
               <el-input
@@ -243,7 +226,6 @@
                 placeholder="请输入"
                 size="small"
                 class="Monthsocial"
-                @blur="$refs.form.validateField('AvgDinnerFaceToFace')"
               />
               人进行了面对面语言交流（1米以内），大约和
               <el-input
@@ -251,7 +233,6 @@
                 placeholder="请输入"
                 size="small"
                 class="Monthsocial"
-                @blur="$refs.form.validateField('AvgDinnerPhysicalContact')"
               />
               人进行了肢体接触（如握手）。
             </p>
@@ -267,7 +248,6 @@
                 placeholder="请输入"
                 size="small"
                 class="Monthsocial"
-                @blur="$refs.form.validateField('CollectiveActivitiesCount')"
               />
               次集体性活动（如开会），每次平均大约和
               <el-input
@@ -275,7 +255,6 @@
                 placeholder="请输入"
                 size="small"
                 class="Monthsocial"
-                @blur="$refs.form.validateField('AvgActivityRoomPeople')"
               />
               人处于同一房间/空间，大约和
               <el-input
@@ -283,7 +262,6 @@
                 placeholder="请输入"
                 size="small"
                 class="Monthsocial"
-                @blur="$refs.form.validateField('AvgActivityFaceToFace')"
               />
               人进行了语言交流（1米以内），大约和
               <el-input
@@ -291,7 +269,6 @@
                 placeholder="请输入"
                 size="small"
                 class="Monthsocial"
-                @blur="$refs.form.validateField('AvgActivityPhysicalContact')"
               />
               人进行了肢体接触（如握手）。
             </p>
@@ -303,13 +280,12 @@
             <div class="blue-box"></div>
             <span class="title-text">本月气温气压情况</span>
           </div>
-           <el-form-item label="当月平均气压(kPa)" prop="AvgMonthlyPressure">
+          <el-form-item label="当月平均气压(kPa)" prop="AvgMonthlyPressure">
             <el-input
               v-model="form.AvgMonthlyPressure"
               style="width: 200px"
               placeholder="当月平均气压"
               clearable
-              @blur="$refs.form.validateField('AvgMonthlyPressure')"
             ></el-input>
           </el-form-item>
 
@@ -319,7 +295,6 @@
               style="width: 200px"
               placeholder="当月平均气压"
               clearable
-              @blur="$refs.form.validateField('MaxTemperature')"
             ></el-input>
           </el-form-item>
 
@@ -329,10 +304,8 @@
               style="width: 200px"
               placeholder="当月平均气压"
               clearable
-              @blur="$refs.form.validateField('MinTemperature')"
             ></el-input>
           </el-form-item>
-
         </div>
       </el-form>
     </div>
@@ -342,6 +315,7 @@
 <script>
 import { ElMessage } from "element-plus";
 import Dateselection from "@/components/date_selection.vue";
+import { checkWorkenvDataById } from "@/api/workenv/workenv.js";
 export default {
   components: {
     Dateselection,
@@ -388,77 +362,67 @@ export default {
     };
   },
   methods: {
-    showDrawer(user) {
-      this.form = { ...user };
+    showDrawer(environmentId) {
       this.visible = true;
+      this.getWorkenvById(environmentId);
     },
+    // 根据id获取工作环境信息
+    async getWorkenvById(environmentId) {
+      try {
+        const response = await checkWorkenvDataById(environmentId);
+        if (response.data.code === 1) {
+          const data = response.data.data;
+
+          // 将后端返回的数据映射到表单数据 (form) 中
+          this.form.WorkStationAltitude = data.workStationAltitude || "";
+          this.form.WorkStationName = data.workStationName || "";
+          this.form.DormitoryBuildingNumber =
+            data.dormitoryBuildingNumber || "";
+          this.form.DormitoryRoomNumber = data.dormitoryRoomNumber || "";
+          this.form.DormitoryOccupants = data.dormitoryOccupants || "";
+          this.form.DormitoryArea = data.dormitoryArea || "";
+          this.form.WindowOpenArea = data.windowOpenArea || "";
+          this.form.VentilationCondition = data.ventilationCondition || "";
+          this.form.AvgWorkRoomPeople = data.avgWorkRoomPeople || "";
+          this.form.AvgWorkFaceToFace = data.avgWorkFaceToFace || "";
+          this.form.AvgWorkPhysicalContact = data.avgWorkPhysicalContact || "";
+
+          this.form.AvgBreakfastRoomPeople = data.avgBreakfastRoomPeople || "";
+          this.form.AvgBreakfastFaceToFace = data.avgBreakfastFaceToFace || "";
+          this.form.AvgBreakfastPhysicalContact =
+            data.avgBreakfastPhysicalContact || "";
+
+          this.form.AvgLunchRoomPeople = data.avgLunchRoomPeople || "";
+          this.form.AvgLunchFaceToFace = data.avgLunchFaceToFace || "";
+          this.form.AvgLunchPhysicalContact =
+            data.avgLunchPhysicalContact || "";
+
+          this.form.AvgDinnerRoomPeople = data.avgDinnerRoomPeople || "";
+          this.form.AvgDinnerFaceToFace = data.avgDinnerFaceToFace || "";
+          this.form.AvgDinnerPhysicalContact =
+            data.avgDinnerPhysicalContact || "";
+
+          this.form.CollectiveActivitiesCount =
+            data.collectiveActivitiesCount || "";
+          this.form.AvgActivityRoomPeople = data.avgActivityRoomPeople || "";
+          this.form.AvgActivityFaceToFace = data.avgActivityFaceToFace || "";
+          this.form.AvgActivityPhysicalContact =
+            data.avgActivityPhysicalContact || "";
+
+          this.form.AvgMonthlyPressure = data.avgMonthlyPressure || "";
+          this.form.MaxTemperature = data.maxTemperature || "";
+          this.form.MinTemperature = data.minTemperature || "";
+        } else {
+          console.error("获取用户信息失败:", response.data.msg);
+        }
+      } catch (error) {
+        console.error("请求出错:", error);
+      }
+    },
+
+
     handleCancel() {
       this.visible = false;
-      this.handleReset();
-    },
-    handleSubmit() {
-      console.log("触发");
-      this.$refs.form.validate((valid) => {
-        console.log("Form is valid:", valid);
-        if (valid) {
-          console.log("Form data:", this.form);
-          this.visible = false;
-          ElMessage({
-            message: "提交成功",
-            type: "success",
-          });
-          this.handleReset();
-        } else {
-          console.log("表单验证失败");
-          ElMessage({
-            message: "提交失败",
-            type: "error",
-          });
-          return false;
-        }
-      });
-    },
-
-    handleReset() {
-      this.form = this.getInitialForm();
-      this.message = "";
-    },
-    getInitialForm() {
-      return {
-        WorkStationAltitude: "",
-        WorkStationName: "",
-        DormitoryBuildingNumber: "",
-        DormitoryRoomNumber: "",
-        DormitoryOccupants: "",
-        DormitoryArea: "",
-        WindowOpenArea: "",
-        VentilationCondition: "",
-
-        AvgWorkRoomPeople: "",
-        AvgWorkFaceToFace: "",
-        AvgWorkPhysicalContact: "",
-
-        AvgBreakfastRoomPeople: "",
-        AvgBreakfastFaceToFace: "",
-        AvgBreakfastPhysicalContact: "",
-
-        AvgLunchRoomPeople: "",
-        AvgLunchFaceToFace: "",
-        AvgLunchPhysicalContact: "",
-
-        AvgDinnerRoomPeople: "",
-        AvgDinnerFaceToFace: "",
-        AvgDinnerPhysicalContact: "",
-
-        CollectiveActivitiesCoun: "",
-        AvgActivityRoomPeople: "",
-        AvgActivityFaceToFace: "",
-        AvgActivityPhysicalContact: "",
-
-        AvgMonthlyPressure: "",
-        MaxTemperature: "",
-        MinTemperature: "",
-      };
     },
   },
 };
@@ -485,24 +449,24 @@ export default {
   border: 3px solid #fafafa;
 }
 .title-container {
-    display: flex;
-    margin-left: 0px;
-    margin-bottom: 20px;
-    margin-top: 20px;
-  }
-  
-  .blue-box {
-    width: 6px;
-    height: 18px;
-    background-color: #285ac8;
-    margin-right: 10px;
-  }
-  
-  .title-text {
-    font-size: 12px;
-    font-weight: bold;
-    color: #4a4a4a;
-  }
+  display: flex;
+  margin-left: 0px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.blue-box {
+  width: 6px;
+  height: 18px;
+  background-color: #285ac8;
+  margin-right: 10px;
+}
+
+.title-text {
+  font-size: 12px;
+  font-weight: bold;
+  color: #4a4a4a;
+}
 h3 {
   margin-top: 20px;
   font-size: 16px;

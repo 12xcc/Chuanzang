@@ -1,4 +1,4 @@
-<template>
+<template> 
   <div class="container">
     <div class="chart-container">
       <div class="chart-title">疾病人数统计图</div>
@@ -8,6 +8,97 @@
 </template>
 
 <script setup>
+// import * as echarts from 'echarts/core';
+// import { GridComponent, TooltipComponent } from 'echarts/components';
+// import { BarChart } from 'echarts/charts';
+// import { CanvasRenderer } from 'echarts/renderers';
+// import { ref, onMounted } from 'vue';
+// import { getDiseaseDataToday } from '@/api/report/screen.js'; // 导入接口
+
+// echarts.use([GridComponent, BarChart, CanvasRenderer, TooltipComponent]);
+// const chart = ref(null);
+
+// onMounted(async () => {
+//   const myChart = echarts.init(chart.value);
+
+//   try {
+//     // 调用接口获取数据
+//     const response = await getDiseaseDataToday();
+//     if (response.data.code === 1) {
+//       const data = response.data.data;
+
+//       // 提取疾病名称和患病人数
+//       const xAxisData = data.map(item => item.diagnosisDiseaseTypeName);
+//       const seriesData = data.map(item => item.count);
+
+//       // 更新图表配置
+//       const option = {
+//         color: ['#D43030'],
+//         grid: {
+//           top: '25%',
+//           bottom: '5%',
+//         },
+//         xAxis: {
+//           type: 'category',
+//           data: xAxisData,
+//           axisLabel: {
+//             show: false
+//           },
+//           axisLine: { show: false },
+//           axisTick: { show: false },
+//           splitLine: { show: false }
+//         },
+//         yAxis: {
+//           type: 'value',
+//           axisLine: { show: false },
+//           axisTick: { show: false },
+//           splitLine: { show: false }
+//         },
+//         tooltip: {
+//           trigger: 'item', 
+//           formatter: function(params) {
+//               return `${params.name}  ${params.value}人`;
+//           },
+//           backgroundColor: '#FFFFFF',  
+//           borderColor: '#FFFFFF',      
+//           borderWidth: 1,           
+//           padding: [10, 10],         
+//           textStyle: {
+//             color: '#333333',        
+//             fontSize: 14,          
+//             },
+//             extraCssText: 'border-radius: 4px;'  
+//         },
+//         series: [
+//           {
+//             data: seriesData,
+//             type: 'bar',
+//             barWidth: '40%',
+//             itemStyle: {
+//               borderRadius: [3, 3, 0, 0]
+//             },
+//             showBackground: true,
+//             backgroundStyle: {
+//               color: '#F4F4F4'
+//             }
+//           }
+//         ]
+//       };
+
+//       myChart.setOption(option);
+//     } else {
+//       console.error("获取疾病数据失败:", response.data.msg);
+//     }
+//   } catch (error) {
+//     console.error("请求出错:", error);
+//   }
+
+//   window.addEventListener('resize', () => {
+//     myChart.resize();
+//   });
+// });
+
+
 import * as echarts from 'echarts/core';
 import { GridComponent, TooltipComponent } from 'echarts/components';
 import { BarChart } from 'echarts/charts';

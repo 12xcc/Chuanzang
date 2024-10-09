@@ -3,7 +3,7 @@ import axiosInstance from "@/utils/axiosInstance.js";
 // 获取反馈信息列表
 export const fetchFeedbackData = async (params) => {
   const response = await axiosInstance.post(
-    "/feedBackManager/pageSelectFeedBack",
+    "/admin/feedBackManager/pageSelectFeedBack",
     params
   );
   return response;
@@ -12,7 +12,7 @@ export const fetchFeedbackData = async (params) => {
 // 根据userId查看反馈信息
 export const fetchFeedbackDataById = async (feedbackId) => {
   const response = await axiosInstance.get(
-    `/feedBackManager/getUserFeedBack/${feedbackId} `
+    `/admin/feedBackManager/getUserFeedBack/${feedbackId} `
   );
   return response;
 };
@@ -20,7 +20,7 @@ export const fetchFeedbackDataById = async (feedbackId) => {
 // 导出反馈信息表
 export const exportFeedbackData = async () => {
   const response = await axiosInstance.get(
-    "/feedBackManager/getExcelUserFeedbackInformationExportTable",
+    "/admin/feedBackManager/getExcelUserFeedbackInformationExportTable",
     { responseType: "blob" }
   );
 

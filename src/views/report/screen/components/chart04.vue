@@ -16,123 +16,128 @@
   </div>
 </template>
 
-
 <script>
 import * as echarts from "echarts";
 import dayjs from "dayjs";
+import { getCheckInDailyNumber } from "@/api/report/screen.js"; // 导入接口
 
 export default {
   data() {
     return {
       chartInstance: null,
-      //   默认显示最近一周
-      timeRange: "最近一周",
+      timeRange: "最近一周", // 默认显示最近一周
     };
   },
   mounted() {
     this.chartInstance = echarts.init(this.$refs.chartContainer);
-    this.updateChart();
+    this.updateChart(); // 初始化时更新图表
   },
   methods: {
-    updateChart() {
-      let xAxisData = [];
-      let seriesData = [];
-
+    async updateChart() {
+      let dateList = [];
       const today = dayjs();
+
+      // 根据选中的时间范围生成 dateList
       if (this.timeRange === "最近一周") {
-        // 显示最近7天的日期
-        for (let i = 6; i >= 0; i--) {
-          xAxisData.push(today.subtract(i, "day").format("M.D"));
-          seriesData.push(Math.floor(Math.random() * 2000));
-        }
+        dateList = [today.subtract(7, 'day').format("YYYY-MM-DD"), today.format("YYYY-MM-DD")];
       } else if (this.timeRange === "最近一月") {
-        // 以5天为一个单位显示最近30天的数据
-        for (let i = 5; i >= 0; i--) {
-          const startDay = today.subtract(i * 5, "day").subtract(5, "day");
-          const endDay = today.subtract(i * 5, "day");
-          xAxisData.push(`${startDay.format("M.D")}-${endDay.format("M.D")}`);
-          seriesData.push(Math.floor(Math.random() * 2000));
-        }
+        dateList = [today.subtract(30, 'day').format("YYYY-MM-DD"), today.format("YYYY-MM-DD")];
       } else if (this.timeRange === "最近一年") {
-        // 显示最近12个月的数据
-        for (let i = 11; i >= 0; i--) {
-          xAxisData.push(today.subtract(i, "month").format("YYYY.M"));
-          seriesData.push(Math.floor(Math.random() * 2000));
-        }
+        dateList = [today.subtract(1, 'year').format("YYYY-MM-DD"), today.format("YYYY-MM-DD")];
       }
 
-      const option = {
-        color: ["#285AC8"],
-        grid: {
-          top: "10%",
-          bottom: "15%",
-          left: "15%",
-          right: "3%",
-        },
-        tooltip: {
-          trigger: "axis", // 确保提示框在坐标轴上触发
-          axisPointer: {
-            type: "line", // 显示虚线
-            lineStyle: {
-              type: "dashed",
-              color: "#285AC8",
+      // 获取接口数据
+      try {
+        const response = await getCheckInDailyNumber(dateList);
+        if (response.data.code === 1) {
+          let xAxisData = [];
+          let seriesData = [];
+
+          // 清空数据以防叠加
+          xAxisData = [];
+          seriesData = [];
+
+          // 遍历每个时间段的数据
+          response.data.data.forEach((item) => {
+            item.list.forEach((dataPoint) => {
+              const diseaseTypeName = dataPoint.diseaseTypeName;
+              const count = dataPoint.count;
+
+              // 如果疾病类型已经在 xAxisData 中，更新对应的 seriesData
+              const existingIndex = xAxisData.indexOf(diseaseTypeName);
+              if (existingIndex > -1) {
+                seriesData[existingIndex] += count;
+              } else {
+                xAxisData.push(diseaseTypeName); // 添加新的疾病类型
+                seriesData.push(count); // 添加对应的打卡数
+              }
+            });
+          });
+
+          // 更新图表
+          const option = {
+            color: ["#285AC8"],
+            grid: {
+              top: "10%",
+              bottom: "15%",
+              left: "15%",
+              right: "3%",
             },
-          },
-          formatter: function (params) {
-            console.log("Formatter params:", params); // 调试输出
-            if (params.length > 0) {
-              const date = params[0].name; // 获取数据点的名称
-              const value = params[0].value; // 获取数据点的值
-              return `${date}   ${value}人`; // 格式化提示框内容
-            }
-            return "";
-          },
-          backgroundColor: "#FFFFFF",
-          borderWidth: 1,
-          textStyle: {
-            color: "#333333",
-          },
-        },
-        xAxis: {
-          type: "category",
-          data: xAxisData,
-          axisLabel: {
-            show: true,
-          },
-          axisLine: { show: false },
-          axisTick: { show: false },
-          splitLine: { show: false },
-        },
-        yAxis: {
-          type: "value",
-          axisLabel: {
-            show: true,
-          },
-          axisLine: { show: false },
-          axisTick: { show: false },
-          splitLine: { show: false },
-        },
-        series: [
-          {
-            data: seriesData,
-            type: "line",
-            smooth: true,
-            markLine: {
-              data: [{ xAxis: dayjs().format("M.D") }], // 当前日期的虚线
-              lineStyle: {
-                type: "dashed",
-                color: "#285AC8",
+            tooltip: {
+              trigger: "item", 
+              formatter: function (params) {
+                const diseaseName = params.name;
+                const count = params.value;
+                return `${diseaseName}: ${count} 人`; 
+              },
+              backgroundColor: "#FFFFFF",
+              borderColor:"#FFFFFF",
+              textStyle: {
+                color: "#333333",
               },
             },
-            itemStyle: {
-              color: "#285AC8", // 圆点颜色
+            xAxis: {
+              type: "category",
+              data: xAxisData, // 更新横坐标数据
+              axisLabel: {
+                show: false, // 隐藏横坐标
+              },
+              axisLine: { show: false },
+              axisTick: { show: false },
+              splitLine: { show: false },
             },
-            symbolSize: 10, // 圆点大小
-          },
-        ],
-      };
+            yAxis: {
+              type: "value",
+              axisLabel: {
+                show: true,
+              },
+              axisLine: { show: false },
+              axisTick: { show: false },
+              splitLine: { show: false },
+            },
+            series: [
+              {
+                data: seriesData, // 更新数据
+                type: "line",
+                smooth: true,
+                symbolSize: 10,
+                itemStyle: {
+                  color: "#285AC8",
+                },
+                lineStyle: {
+                  width: 3,
+                },
+              },
+            ],
+          };
 
-      this.chartInstance.setOption(option);
+          this.chartInstance.setOption(option); 
+        } else {
+          console.error("获取数据失败:", response.data.msg);
+        }
+      } catch (error) {
+        console.error("请求出错:", error);
+      }
     },
   },
 };

@@ -22,7 +22,7 @@ const handleOpen = () => {};
 // 根据角色返回不同的标题
 const getTitle = () => {
   const userStore = useUserStore();
-  const userName = userStore.username || '张三'; // 默认名为“张三”
+  const userName = userStore.username || ''; 
 
   if (userStore.role === 'admin') {
     return `系统管理员-${userName}`;
