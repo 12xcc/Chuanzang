@@ -9,7 +9,7 @@
   >
     <div class="container">
       <div class="title">
-        <h3>查看诊断信息详情</h3>
+        <h3>查看/编辑诊断信息详情</h3>
         <div class="footer">
           <!-- <el-button v-if="isEditing" @click="handleQuit">取消</el-button> -->
           <el-button v-if="!isEditing" @click="handleEdit">编辑</el-button>

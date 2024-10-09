@@ -19,9 +19,9 @@ export const useTagsStore = defineStore('tags', {
       // 通过路径删除标签
       this.tagsList = this.tagsList.filter(tag => tag.path !== path);
 
-      // 如果删除后没有标签，则确保所有用户管理标签存在
+      // 如果删除后没有标签，则确保个人密码修改标签存在
       if (this.tagsList.length === 0) {
-        this.addTag({ title: '所有用户管理', path: '/user/alluser' }); // 需要替换为所有用户管理的路径
+        this.addTag({ title: '个人密码修改', path: '/user/password' }); 
       }
     },
 

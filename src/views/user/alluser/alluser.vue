@@ -358,27 +358,32 @@ export default {
       this.$refs.Editdata.showDrawer(userId);
     },
 
-    // 切换用户状态
-    toggleStatus(row) {
-      this.$confirm("您确定要切换用户状态吗？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      }).then(async () => {
-        try {
-          const response = await toggleUserStatus(row.userId);
-          if (response.data.code === 1) {
-            row.isActive = !row.isActive;
-            this.fetchUserData();
-          } else {
-            this.$message.error("切换状态失败：" + response.data.message);
-          }
-        } catch (error) {
-          console.error("Error toggling status:", error);
-          this.$message.error("切换状态失败，请重试！");
+// 切换用户状态
+toggleStatus(row) {
+  this.$confirm("您确定要切换用户状态吗？", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(async () => {
+      try {
+        const response = await toggleUserStatus(row.userId);
+        if (response.data.code === 1) {
+          row.isActive = !row.isActive;
+          this.fetchUserData();
+        } else {
+          this.$message.error("切换状态失败：" + response.data.message);
         }
-      });
-    },
+      } catch (error) {
+        console.error("Error toggling status:", error);
+        this.$message.error("切换状态失败，请重试！");
+      }
+    })
+    .catch(() => {
+      // 处理取消操作
+      // this.$message.info("已取消状态切换");
+    });
+},
 
     // 分页
     handlePagination({ page, limit }) {

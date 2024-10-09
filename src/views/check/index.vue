@@ -168,9 +168,8 @@
         <el-table-column fixed="right" label="操作" min-width="260">
           <template #default="scope">
             <el-button link type="primary" size="large" @click="handleCheck(scope.row)"
-              >查看</el-button
+              >查看 / 编辑</el-button
             >
-            <el-button link type="primary" size="large">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>

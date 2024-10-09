@@ -9,7 +9,7 @@
   >
     <div class="container">
       <div class="title">
-        <h3>添加检测信息</h3>
+        <h3>查看/编辑检测信息</h3>
          <div class="footer">
           <!-- <el-button v-if="isEditing" @click="handleQuit">取消</el-button> -->
           <el-button v-if="!isEditing" @click="handleEdit">编辑</el-button>

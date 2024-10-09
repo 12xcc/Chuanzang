@@ -56,7 +56,7 @@ export default {
         if (previousTag) {
           this.$router.push(previousTag.path);
         } else {
-          this.$router.push('/user/alluser');
+          this.$router.push('/user/password');
         }
       }
     },

@@ -17,18 +17,18 @@
         <img src="../assets/menu_icons/all-users.svg" alt="" class="menu-icons" />
         <span>所有用户管理</span>
       </el-menu-item>
-      <el-menu-item index="/user/password"  v-if="userStore.role === 'admin'||userStore.role === 'nurse'||userStore.role === 'cdc'" >
+      <el-menu-item index="/user/password"  v-if="userStore.role === 'admin'||userStore.role === 'nurse'||userStore.role === 'cdcStaff'" >
         <img src="../assets/menu_icons/password.svg" alt="" class="menu-icons" />
         <span>个人密码修改</span>
       </el-menu-item>
     </el-sub-menu>
 
-    <el-menu-item index="/work-env" v-if="userStore.role === 'cdc'||userStore.role === 'admin'">
+    <el-menu-item index="/work-env" v-if="userStore.role === 'cdcStaff'||userStore.role === 'admin'">
       <img src="../assets/menu_icons/work-env.svg" alt="" class="menu-icons" />
       <span>工作环境管理</span>
     </el-menu-item>
 
-    <el-sub-menu index="/report" v-if="userStore.role === 'admin' || userStore.role === 'cdc'">
+    <el-sub-menu index="/report" v-if="userStore.role === 'admin' || userStore.role === 'cdcStaff'">
       <template #title>
         <img src="../assets/menu_icons/report.svg" alt="" class="menu-icons" />
         <span>统计报表</span>
@@ -47,12 +47,12 @@
       </el-menu-item>
     </el-sub-menu>
 
-    <el-menu-item index="/diagnosis" v-if="userStore.role === 'admin' || userStore.role === 'nurse'||userStore.role === 'cdc'">
+    <el-menu-item index="/diagnosis" v-if="userStore.role === 'admin' || userStore.role === 'nurse'||userStore.role === 'cdcStaff'">
       <img src="../assets/menu_icons/diagnosis.svg" alt="" class="menu-icons" />
       <span>诊断信息管理</span>
     </el-menu-item>
 
-    <el-menu-item index="/check" v-if="userStore.role === 'admin' || userStore.role === 'nurse'||userStore.role === 'cdc'">
+    <el-menu-item index="/check" v-if="userStore.role === 'admin' || userStore.role === 'nurse'||userStore.role === 'cdcStaff'">
       <img src="../assets/menu_icons/check.svg" alt="" class="menu-icons" />
       <span>检查信息管理</span>
     </el-menu-item>
@@ -89,7 +89,7 @@
       <span>用户反馈</span>
     </el-menu-item>
 
-    <el-menu-item index="/propaganda" v-if="userStore.role === 'admin'|| userStore.role === 'cdc'">
+    <el-menu-item index="/propaganda" v-if="userStore.role === 'admin'|| userStore.role === 'cdcStaff'">
       <img src="../assets/menu_icons/study.svg" alt="" class="menu-icons" />
       <span>宣传材料管理</span>
     </el-menu-item>

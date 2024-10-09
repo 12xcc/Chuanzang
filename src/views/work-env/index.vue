@@ -18,13 +18,27 @@
           style="width: 200px !important; margin-right: -15px"
         />
       </el-form-item>
-      <el-form-item prop="date">
+      <!-- 格式：YYYY-MM-DD -->
+      <!-- <el-form-item prop="date">
         <el-date-picker
           v-model="queryParams.date"
           type="daterange"
           range-separator="到"
           start-placeholder="请选择"
           end-placeholder="提交日期范围"
+          style="width: 300px"
+        />
+      </el-form-item> -->
+
+      <!-- 格式：YYYY-MM -->
+      <el-form-item prop="date">
+        <el-date-picker
+          v-model="queryParams.date"
+          type="daterange"
+          range-separator="到"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          value-format="yyyy-MM"
           style="width: 300px"
         />
       </el-form-item>
@@ -58,7 +72,7 @@
           color: '#333333',
         }"
         v-loading="loading"
-        :data="paginatedData"
+        :data="allData"
         style="width: 100%"
         :height="tableHeight"
         show-overflow-tooltip="true"
@@ -121,8 +135,6 @@
       />
     </div>
   </div>
-  <AddUserDialog ref="addUserDialog" />
-  <BatchImportDialog ref="batchImportDialog" />
   <Envdata ref="Envdata" />
 </template>
 
@@ -131,6 +143,7 @@ import * as XLSX from "xlsx";
 import { ref, computed, onMounted } from "vue";
 import Pagination from "@/components/pagination.vue";
 import Envdata from "./components/envdata.vue";
+import { fetchWorkenvData } from "@/api/workenv/workenv.js";
 
 export default {
   components: {
@@ -146,289 +159,77 @@ export default {
         pageNum: 1,
         pageSize: 15,
       },
-      allData: [
-        {
-          serialNumber: "1",
-          Name: "张伟",
-          WorkStationName: "西藏林芝",
-          WorkStationAltitude: "4400",
-          AvgMonthlyPressure: "65.9",
-          MaxTemperature: "12",
-          MinTemperature: "10",
-          SubmissionTime: "2024-08-15",
-        },
-        {
-          serialNumber: "2",
-          Name: "李娜",
-          WorkStationName: "四川成都",
-          WorkStationAltitude: "500",
-          AvgMonthlyPressure: "78.2",
-          MaxTemperature: "30",
-          MinTemperature: "20",
-          SubmissionTime: "2024-08-16",
-        },
-        {
-          serialNumber: "3",
-          Name: "王强",
-          WorkStationName: "四川成都",
-          WorkStationAltitude: "1100",
-          AvgMonthlyPressure: "85.4",
-          MaxTemperature: "28",
-          MinTemperature: "18",
-          SubmissionTime: "2024-08-17",
-        },
-        {
-          serialNumber: "4",
-          Name: "赵敏",
-          WorkStationName: "四川成都",
-          WorkStationAltitude: "1890",
-          AvgMonthlyPressure: "70.3",
-          MaxTemperature: "25",
-          MinTemperature: "15",
-          SubmissionTime: "2024-08-18",
-        },
-        {
-          serialNumber: "5",
-          Name: "孙涛",
-          WorkStationName: "西藏林芝",
-          WorkStationAltitude: "400",
-          AvgMonthlyPressure: "77.8",
-          MaxTemperature: "32",
-          MinTemperature: "22",
-          SubmissionTime: "2024-08-19",
-        },
-        {
-          serialNumber: "6",
-          Name: "周华",
-          WorkStationName: "四川成都",
-          WorkStationAltitude: "60",
-          AvgMonthlyPressure: "80.1",
-          MaxTemperature: "34",
-          MinTemperature: "24",
-          SubmissionTime: "2024-08-20",
-        },
-        {
-          serialNumber: "7",
-          Name: "吴刚",
-          WorkStationName: "四川成都",
-          WorkStationAltitude: "200",
-          AvgMonthlyPressure: "82.5",
-          MaxTemperature: "29",
-          MinTemperature: "21",
-          SubmissionTime: "2024-08-21",
-        },
-        {
-          serialNumber: "8",
-          Name: "郑丽",
-          WorkStationName: "四川成都",
-          WorkStationAltitude: "30",
-          AvgMonthlyPressure: "76.6",
-          MaxTemperature: "35",
-          MinTemperature: "25",
-          SubmissionTime: "2024-08-22",
-        },
-        {
-          serialNumber: "9",
-          Name: "冯飞",
-          WorkStationName: "西藏日喀则",
-          WorkStationAltitude: "40",
-          AvgMonthlyPressure: "74.2",
-          MaxTemperature: "33",
-          MinTemperature: "23",
-          SubmissionTime: "2024-08-23",
-        },
-        {
-          serialNumber: "10",
-          Name: "蔡艳",
-          WorkStationName: "四川成都",
-          WorkStationAltitude: "15",
-          AvgMonthlyPressure: "78.7",
-          MaxTemperature: "31",
-          MinTemperature: "21",
-          SubmissionTime: "2024-08-24",
-        },
-        {
-          serialNumber: "11",
-          Name: "张伟",
-          WorkStationName: "西藏林芝",
-          WorkStationAltitude: "4400",
-          AvgMonthlyPressure: "65.9",
-          MaxTemperature: "12",
-          MinTemperature: "10",
-          SubmissionTime: "2024-08-15",
-        },
-        {
-          serialNumber: "12",
-          Name: "李娜",
-          WorkStationName: "四川成都",
-          WorkStationAltitude: "500",
-          AvgMonthlyPressure: "78.2",
-          MaxTemperature: "30",
-          MinTemperature: "20",
-          SubmissionTime: "2024-08-16",
-        },
-        {
-          serialNumber: "13",
-          Name: "王强",
-          WorkStationName: "四川成都",
-          WorkStationAltitude: "1100",
-          AvgMonthlyPressure: "85.4",
-          MaxTemperature: "28",
-          MinTemperature: "18",
-          SubmissionTime: "2024-08-17",
-        },
-        {
-          serialNumber: "14",
-          Name: "赵敏",
-          WorkStationName: "四川成都",
-          WorkStationAltitude: "1890",
-          AvgMonthlyPressure: "70.3",
-          MaxTemperature: "25",
-          MinTemperature: "15",
-          SubmissionTime: "2024-08-18",
-        },
-        {
-          serialNumber: "15",
-          Name: "孙涛",
-          WorkStationName: "四川成都",
-          WorkStationAltitude: "400",
-          AvgMonthlyPressure: "77.8",
-          MaxTemperature: "32",
-          MinTemperature: "22",
-          SubmissionTime: "2024-08-19",
-        },
-        {
-          serialNumber: "16",
-          Name: "周华",
-          WorkStationName: "四川成都",
-          WorkStationAltitude: "60",
-          AvgMonthlyPressure: "80.1",
-          MaxTemperature: "34",
-          MinTemperature: "24",
-          SubmissionTime: "2024-08-20",
-        },
-        {
-          serialNumber: "17",
-          Name: "吴刚",
-          WorkStationName: "四川成都",
-          WorkStationAltitude: "200",
-          AvgMonthlyPressure: "82.5",
-          MaxTemperature: "29",
-          MinTemperature: "21",
-          SubmissionTime: "2024-08-21",
-        },
-        {
-          serialNumber: "18",
-          Name: "郑丽",
-          WorkStationName: "西藏日喀则",
-          WorkStationAltitude: "30",
-          AvgMonthlyPressure: "76.6",
-          MaxTemperature: "35",
-          MinTemperature: "25",
-          SubmissionTime: "2024-08-22",
-        },
-        {
-          serialNumber: "19",
-          Name: "冯飞",
-          WorkStationName: "西藏林芝",
-          WorkStationAltitude: "40",
-          AvgMonthlyPressure: "74.2",
-          MaxTemperature: "33",
-          MinTemperature: "23",
-          SubmissionTime: "2024-08-23",
-        },
-        {
-          serialNumber: "20",
-          Name: "蔡艳",
-          WorkStationName: "四川成都",
-          WorkStationAltitude: "15",
-          AvgMonthlyPressure: "78.7",
-          MaxTemperature: "31",
-          MinTemperature: "21",
-          SubmissionTime: "2024-08-24",
-        },
-      ],
+      allData: [],
       tableData: [],
+      total: 0,
       showSearch: true,
       loading: false,
     };
   },
 
   computed: {
-    total() {
-      return this.filteredData.length;
-    },
     tableHeight() {
       return window.innerHeight - 300;
-    },
-    filteredData() {
-      const { WorkStationName, date } = this.queryParams;
-      const lowerCaseCheck = WorkStationName
-        ? WorkStationName.toLowerCase()
-        : "";
-
-      // 如果没有筛选条件，直接返回所有数据
-      if (!WorkStationName && (!date || date.length === 0)) {
-        return this.allData;
-      }
-
-      return this.allData.filter((item) => {
-        // 搜索文本匹配
-        const fieldsToSearch = ["WorkStationName"];
-        const textMatch = WorkStationName
-          ? fieldsToSearch.some((field) => {
-              const itemFieldValue =
-                item[field]?.toString().toLowerCase() || "";
-              return itemFieldValue.includes(lowerCaseCheck);
-            })
-          : true; // 如果没有输入文本，默认匹配为 true
-
-        const SubmissionTime = new Date(item.SubmissionTime);
-        const dateMatch =
-          Array.isArray(date) && date.length === 2
-            ? SubmissionTime >= new Date(date[0]) &&
-              SubmissionTime <= new Date(date[1])
-            : true;
-
-        return textMatch && dateMatch; // 返回文本匹配和日期匹配的结果
-      });
-    },
-
-    paginatedData() {
-      const start = (this.queryParams.pageNum - 1) * this.queryParams.pageSize;
-      const end = start + this.queryParams.pageSize;
-      return this.filteredData.slice(start, end);
     },
   },
 
   methods: {
-    handleQuery() {
-      this.tableData = this.paginatedData;
+
+     // 格式化提交时间
+    formatDate(submissionTime) {
+      const [year, month, day, hour, minute, second] = submissionTime;
+      return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:${String(second).padStart(2, '0')}`;
     },
+
+    async handleQuery() {
+  this.loading = true;
+  
+  try {
+    const [beginYearMonth, endYearMonth] = this.queryParams.date;
+    const params = {
+      beginYearMonth: beginYearMonth || "",
+      endYearMonth: endYearMonth || "",
+      pageNo: this.queryParams.pageNum || 1,
+      pageSize: this.queryParams.pageSize || 15,
+      workStationName: this.queryParams.WorkStationName || "",
+    };
+    const response = await fetchWorkenvData(params);
+
+    if (response.data.code === 1) {
+      // 格式化反馈日期并映射后端字段
+      this.allData = response.data.data.records.map((item, index) => ({
+        serialNumber:
+          (this.queryParams.pageNum - 1) * this.queryParams.pageSize + index + 1,  // 保持serialNumber不变
+        Name: item.name,  // 后端的name字段映射到表格中的Name列
+        WorkStationName: item.workStationName,  // workStationName映射
+        WorkStationAltitude: item.workStationAltitude,  // workStationAltitude映射
+        AvgMonthlyPressure: item.avgMonthlyPressure,  // avgMonthlyPressure映射
+        MaxTemperature: item.maxTemperature,  // maxTemperature映射
+        MinTemperature: item.minTemperature,  // minTemperature映射
+        submissionTime: this.formatDate(item.submissionTime),  // 格式化submissionTime
+      }));
+      this.total = response.data.data.total;
+    } else {
+      this.$message.error(
+        "获取用户数据失败，请重试！" + response.data.message
+      );
+    }
+  } catch (error) {
+    console.error(
+      "Error fetching data:",
+      error.response ? error.response.data : error.message
+    );
+    this.$message.error(
+      "获取用户数据失败，请重试！" +
+        (error.response ? error.response.data.message : error.message)
+    );
+  } finally {
+    this.loading = false;
+  }
+},
 
     // 导出表格信息
-    handleExport() {
-      const data = this.allData.map((item) => ({
-        序号: item.serialNumber,
-        姓名: item.Name,
-        工务段名称: item.WorkStationName,
-        海拔高度: item.WorkStationAltitude,
-        当月平均气压: item.AvgMonthlyPressure,
-        当月最高气温: item.MaxTemperature,
-        当月最低气温: item.MinTemperature,
-        提交时间: item.SubmissionTime,
-      }));
-
-      // 创建工作表
-      const ws = XLSX.utils.json_to_sheet(data);
-
-      // 创建工作簿
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "工作环境基本信息导出表");
-
-      // 导出 Excel 文件
-      XLSX.writeFile(wb, "工作环境基本信息导出表.xlsx");
-    },
+    handleExport() {},
 
     handleClick(row) {
       this.$refs.Envdata.showDrawer(row);
