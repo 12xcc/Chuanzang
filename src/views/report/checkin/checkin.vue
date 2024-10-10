@@ -17,8 +17,8 @@
           style="width: 140px; margin-right: -15px"
           @change="handleQuery"
         >
-          <el-option :key="1" label="是" :value="1"></el-option>
-          <el-option :key="2" label="否" :value="2"></el-option>
+          <el-option value="true" label="是"></el-option>
+          <el-option value="false" label="否"></el-option>
         </el-select>
       </el-form-item>
 
@@ -30,10 +30,10 @@
           size="default"
           style="width: 180px; margin-right: -15px"
         >
-          <el-option :key="1" label="姓名" :value="1"></el-option>
-          <el-option :key="2" label="电话" :value="2"></el-option>
-          <el-option :key="3" label="部门/工种" :value="3"></el-option>
-          <el-option :key="4" label="特殊职业" :value="4"></el-option>
+          <el-option label="姓名" :value="'name'"></el-option>
+          <el-option label="电话" :value="'phoneNumber'"></el-option>
+          <el-option label="部门/工种" :value="'department'"></el-option>
+          <el-option label="特殊职业" :value="'specificOccupation'"></el-option>
         </el-select>
       </el-form-item>
 
@@ -79,7 +79,7 @@
         <el-button
           type="warning"
           class="custom-button"
-          @click="handleDownload"
+          @click="handleExportAI"
           size="default"
           >含AI数据导出</el-button
         >
@@ -95,9 +95,10 @@
           color: '#333333',
         }"
         v-loading="loading"
-        :data="paginatedData"
+        :data="allData"
         style="width: 100%"
         :height="tableHeight"
+        :show-overflow-tooltip="true"
       >
         <el-table-column type="selection" width="55" />
         <el-table-column
@@ -124,8 +125,14 @@
         <el-table-column
           prop="DiseaseTypeName"
           label="最有可能疾病"
-          min-width="120"
-        />
+          min-width="160"
+        >
+          <template #default="scope">
+            <el-tag type="danger">
+              {{ scope.row.DiseaseTypeName }}
+            </el-tag>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作" min-width="260">
           <template #default="scope">
             <el-button
@@ -142,7 +149,7 @@
               link
               type="primary"
               size="large"
-              @click="handleClickPosition(scope.row)"
+              @click="handleClickPosition(scope.row.statusId)"
               >查看位置</el-button
             >
           </template>
@@ -165,10 +172,14 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from "vue";
 import Pagination from "@/components/pagination.vue";
 import Checkindata from "./components/checkindata/checkindata.vue";
 import Checkinposition from "./components//checkinposition/checkinposition.vue";
+import {
+  pageSelectCheckin,
+  getEmployeeCheckInExcelAI,
+  getEmployeeCheckInExcel,
+} from "@/api/report/checkin.js";
 export default {
   components: {
     Pagination,
@@ -178,207 +189,170 @@ export default {
   data() {
     return {
       queryParams: {
-        IsHealth: "",
+        IsHealth: null,
         check: "",
         date: [],
         pageNum: 1,
         pageSize: 15,
       },
-      allData: [
-        {
-          serialNumber: "1",
-          UserType: "铁路职工",
-          Name: "张伟",
-          PhoneNumber: "13800000001",
-          Gender: "男",
-          Age: "44",
-          Department: "工程技术部",
-          IsHealth: "是",
-          LocationName: "西藏林芝",
-          CheckInDate: "2024-03-03",
-          DiseaseTypeName: "正常",
-        },
-        {
-          serialNumber: "2",
-          UserType: "铁路职工",
-          Name: "李强",
-          PhoneNumber: "13800000122",
-          Gender: "男",
-          Age: "35",
-          Department: "测量队",
-          IsHealth: "是",
-          LocationName: "四川甘孜",
-          CheckInDate: "2024-04-15",
-          DiseaseTypeName: "正常",
-        },
-        {
-          serialNumber: "3",
-          UserType: "铁路职工",
-          Name: "王丽",
-          PhoneNumber: "13800000003",
-          Gender: "女",
-          Age: "28",
-          Department: "测量队",
-          IsHealth: "否",
-          LocationName: "四川雅安",
-          CheckInDate: "2024-05-10",
-          DiseaseTypeName: "炭疽",
-        },
-        {
-          serialNumber: "4",
-          UserType: "铁路职工",
-          Name: "赵鹏",
-          PhoneNumber: "13800340004",
-          Gender: "男",
-          Age: "39",
-          Department: "工程技术部",
-          IsHealth: "是",
-          LocationName: "四川康定",
-          CheckInDate: "2024-02-20",
-          DiseaseTypeName: "正常",
-        },
-        {
-          serialNumber: "5",
-          UserType: "铁路职工",
-          Name: "陈梅",
-          PhoneNumber: "13800000005",
-          Gender: "女",
-          Age: "41",
-          Department: "合约部",
-          IsHealth: "是",
-          LocationName: "西藏昌都",
-          CheckInDate: "2024-06-01",
-          DiseaseTypeName: "正常",
-        },
-        {
-          serialNumber: "6",
-          UserType: "铁路职工",
-          Name: "刘洋",
-          PhoneNumber: "13800000006",
-          Gender: "男",
-          Age: "32",
-          Department: "工程技术部",
-          IsHealth: "否",
-          LocationName: "西藏那曲",
-          CheckInDate: "2024-07-18",
-          DiseaseTypeName: "鼠疫",
-        },
-        {
-          serialNumber: "4",
-          UserType: "铁路职工",
-          Name: "赵鹏",
-          PhoneNumber: "13800340004",
-          Gender: "男",
-          Age: "39",
-          Department: "工程技术部",
-          IsHealth: "是",
-          LocationName: "四川康定",
-          CheckInDate: "2024-02-20",
-          DiseaseTypeName: "正常",
-        },
-        {
-          serialNumber: "5",
-          UserType: "铁路职工",
-          Name: "陈梅",
-          PhoneNumber: "13800000005",
-          Gender: "女",
-          Age: "41",
-          Department: "合约部",
-          IsHealth: "是",
-          LocationName: "西藏昌都",
-          CheckInDate: "2024-06-01",
-          DiseaseTypeName: "正常",
-        },
-      ],
+      allData: [],
       showSearch: true,
       loading: false,
+      total: 0,
     };
   },
   computed: {
     tableHeight() {
       return window.innerHeight - 300;
     },
-
-    filteredData() {
-      const { IsHealth, check, date } = this.queryParams;
-      const lowerCaseCheck = check ? check.toLowerCase() : "";
-
-      // 如果没有筛选条件，直接返回所有数据
-      if (!IsHealth && !check && (!date || date.length === 0)) {
-        return this.allData;
-      }
-
-      return this.allData.filter((item) => {
-        const IsHealthMatch =
-          !IsHealth || item.IsHealth === this.convertIsHealth(IsHealth);
-
-        const fieldsToSearch = ["Name", "PhoneNumber", "Department"];
-        const textMatch = check
-          ? fieldsToSearch.some((field) => {
-              const itemFieldValue =
-                item[field]?.toString().toLowerCase() || "";
-              return itemFieldValue.includes(lowerCaseCheck);
-            })
-          : true; // 如果没有输入文本，默认匹配为 true
-
-        const CheckInDate = new Date(item.CheckInDate);
-        const dateMatch =
-          Array.isArray(date) && date.length === 2
-            ? CheckInDate >= new Date(date[0]) &&
-              CheckInDate <= new Date(date[1])
-            : true; // 如果没有选择日期，默认匹配为 true
-
-        return IsHealthMatch && textMatch && dateMatch;
-      });
-    },
-
-    paginatedData() {
-      const start = (this.queryParams.pageNum - 1) * this.queryParams.pageSize;
-      const end = start + this.queryParams.pageSize;
-      return this.filteredData.slice(start, end);
-    },
-    total() {
-      return this.filteredData.length;
-    },
   },
   methods: {
-    handleQuery() {
-      this.tableData = this.paginatedData;
+    async handleQuery() {
+      this.loading = true;
+      try {
+        // 检查 this.queryParams.date 是否存在且是数组
+        let checkInDateBegin = "";
+        let checkInDateEnd = "";
+
+        if (
+          Array.isArray(this.queryParams.date) &&
+          this.queryParams.date.length === 2
+        ) {
+          [checkInDateBegin, checkInDateEnd] = this.queryParams.date;
+        }
+
+        const params = {
+          checkInDateBegin: checkInDateBegin || "",
+          checkInDateEnd: checkInDateEnd || "",
+          pageNo: this.queryParams.pageNum || 1,
+          pageSize: this.queryParams.pageSize || 15,
+          isHealth: this.queryParams.IsHealth || "",
+        };
+
+        if (this.queryParams.choice && this.queryParams.check) {
+          params[this.queryParams.choice] = this.queryParams.check;
+        }
+
+        // 封装的api
+        const response = await pageSelectCheckin(params);
+
+        if (response.data.code === 1) {
+          this.allData = response.data.data.records.map((item, index) => ({
+            serialNumber:
+              (this.queryParams.pageNum - 1) * this.queryParams.pageSize +
+              index +
+              1,
+            userId: item.userId,
+            statusId:item.statusId,
+            UserType: item.userType,
+            Name: item.name,
+            PhoneNumber: item.phoneNumber,
+            Gender: item.gender,
+            Age: item.age,
+            Department: item.department,
+            IsHealth: item.isHealth ? "是" : "否",
+            LocationName: item.locationName,
+            CheckInDate: item.checkInDate
+              ? `${item.checkInDate[0]}-${String(item.checkInDate[1]).padStart(
+                  2,
+                  "0"
+                )}-${String(item.checkInDate[2]).padStart(2, "0")}`
+              : "",
+            DiseaseTypeName: item.diseaseTypeName,
+          }));
+          this.total = response.data.data.total;
+        } else {
+          this.$message.error(
+            "获取用户数据失败，请重试！" + response.data.message
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        this.$message.error("获取用户数据失败，请重试！");
+      } finally {
+        this.loading = false;
+      }
     },
-    handleAdd() {
-      // 添加用户
+    // 职工打卡信息导出表
+    async handleExport() {
+      try {
+        this.$message({
+          message: "正在导出，请稍候...",
+          type: "warning",
+        });
+        const response = await getEmployeeCheckInExcel();
+        if (response.status === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "职工打卡信息导出表.xlsx");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          this.$message({
+            message: "导出成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            message: "导出失败，请重试",
+            type: "error",
+          });
+        }
+      } catch (error) {
+        console.error("导出出错:", error);
+        this.$message({
+          message: "导出出错，请重试",
+          type: "error",
+        });
+      }
     },
-    handleImport() {
-      // 批量导入
-    },
-    handleDownload() {
-      // 下载导入模板
-    },
-    handleExport() {
-      // 导出
+
+    // 职工打卡信息导出表(AI)
+    async handleExportAI() {
+      try {
+        this.$message({
+          message: "正在导出，请稍候...",
+          type: "warning",
+        });
+        const response = await getEmployeeCheckInExcelAI();
+        if (response.status === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "职工打卡信息导出表(AI).xlsx");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          this.$message({
+            message: "导出成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            message: "导出失败，请重试",
+            type: "error",
+          });
+        }
+      } catch (error) {
+        console.error("导出出错:", error);
+        this.$message({
+          message: "导出出错，请重试",
+          type: "error",
+        });
+      }
     },
     handleClick(row) {
       this.$refs.Checkindata.showDrawer(row);
-      console.log("触发", row);
-      // this.$router.push({ name: "userdata", params: { id: serialNumber } });
+      // console.log("触发", row);
     },
-    handleClickPosition(row) {
-      this.$refs.Checkinposition.showDrawer(row);
+    handleClickPosition(statusId) {
+      this.$refs.Checkinposition.showDrawer(statusId);
     },
     handlePagination({ page, limit }) {
       this.queryParams.pageNum = page;
       this.queryParams.pageSize = limit;
-      this.handleQuery(); // 更新分页数据
-    },
-    convertIsHealth(value) {
-      switch (value) {
-        case 1:
-          return "是";
-        case 2:
-          return "否";
-        default:
-          return "";
-      }
+      this.handleQuery();
     },
   },
   mounted() {

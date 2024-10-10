@@ -12,7 +12,6 @@
 </template>
 
 <script setup>
-// import { defineEmits } from 'vue';
 
 const props = defineProps({
   total: Number,
@@ -30,7 +29,7 @@ const handleSizeChange = (size) => {
 
 // 处理当前页面变化事件
 const handlePageChange = (page) => {
-  console.log(`Page changed to: ${page}`);
+  // console.log(`Page changed to: ${page}`);
   emit('pagination', { page, limit: props.pageSize });
 };
 </script>

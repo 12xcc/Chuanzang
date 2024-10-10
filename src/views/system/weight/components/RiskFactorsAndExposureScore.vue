@@ -29,6 +29,12 @@
 
 <script>
 export default {
+    props: {
+    symptomsData: {
+      type: Array,
+      required: true, 
+    },
+  },
   data() {
     return {
       form: {
@@ -40,6 +46,7 @@ export default {
         HasEatingRawFood: 0, // 吃生冷食品
         HasEatingColdCookedFood: 0, // 熟食冷吃
         HasEatingSeafood: 0, // 吃海水产品
+        GroupOutbreak:0,
         OutdoorStayOrWorkWithinMonth: 0, // 发病前1月内在野外住宿或工作
         OtherWildActivityName: '', // 其他户外活动方式名称
         IsHillyOrMountainous: 0, // 是否居住在丘陵或山区
@@ -64,6 +71,7 @@ export default {
         { label: "吃生冷食品", model: "HasEatingRawFood" },
         { label: "熟食冷吃", model: "HasEatingColdCookedFood" },
         { label: "吃海水产品", model: "HasEatingSeafood" },
+        {label:"同一家庭、办公室、车间等集体单位是否有聚集性发病" ,model:"GroupOutbreak"},
         { label: "发病前1月内在野外住宿或工作", model: "OutdoorStayOrWorkWithinMonth" },
         { label: "居住在丘陵或山区", model: "IsHillyOrMountainous" },
         { label: "居住在平原", model: "IsPlain" },
@@ -80,26 +88,40 @@ export default {
     };
   },
 
+watch: {
+  symptomsData: {
+    immediate: true,
+    handler(newData) {
+      newData.forEach((item) => {
+        const fieldName = item.symptomFieldName; 
+        if (this.form.hasOwnProperty(fieldName)) {
+          this.form[fieldName] = item.weightScore; // 直接将 weightScore 映射到 form 中
+        }
+      });
+      this.updateWeightScore(); 
+    },
+  },
+},
+
+
+
   methods: {
+    // 更新总分数，并传递给父组件
     updateWeightScore() {
-      const totalScore = this.totalWeightScore;
-      this.$emit('update-weight-score', totalScore);
+      const totalScore = Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
+      this.$emit("update-weight-score", totalScore);  
     },
   },
 
   computed: {
+    // 计算总分
     totalWeightScore() {
-      const scores = Object.values(this.form).map(score => Number(score));
-      const total = scores.reduce((acc, score) => acc + score, 0);
-
-      console.log("Individual Scores:", scores);
-      console.log("Total Weight Score:", total);
-
-      return total;
+      return Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
     },
   },
 };
 </script>
+
 
 <style scoped>
 .custom-drawer {

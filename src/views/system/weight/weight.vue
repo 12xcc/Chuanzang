@@ -87,8 +87,8 @@ import * as XLSX from "xlsx";
 import { ref, computed } from 'vue';
 import Pagination from '@/components/pagination.vue';
 import Weightset from './components/weightset.vue';
-import { fetchDiseaseData } from '@/api/system/disdata.js'; // 引入疾病数据接口
-
+import { fetchDiseaseData } from '@/api/system/disdata.js'; 
+import {getExcelInitialWeightScoringTableForInfectiousDiseases } from '@/api/system/weight.js'; 
 export default {
   components: {
     Pagination,
@@ -116,7 +116,7 @@ export default {
   },
 
   methods: {
-
+      
     // 获取疾病列表
     async handleQuery() {
       this.loading = true; 
@@ -148,20 +148,35 @@ export default {
       }
     },
 
-
-    // 导出文件
-    handleExport() {
-      const data = this.allData.map(item => ({
-        序号: item.serialNumber,
-        疾病类型: item.DiseaseTypeName,
-        是否包含子类型: item.HasSubtype,
-        子类型: item.SubtypeName,
-      }));
-
-      const ws = XLSX.utils.json_to_sheet(data);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "疾病数据导出表");
-      XLSX.writeFile(wb, "疾病数据导出表.xlsx");
+    // 导出初始权重打分导出表
+    async handleExport() {
+      try {
+        const response = await getExcelInitialWeightScoringTableForInfectiousDiseases();
+        if (response.status === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "初始权重打分导出表.xlsx");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          this.$message({
+            message: "导出成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            message: "导出失败，请重试",
+            type: "error",
+          });
+        }
+      } catch (error) {
+        console.error("导出出错:", error);
+        this.$message({
+          message: "导出出错，请重试",
+          type: "error",
+        });
+      }
     },
 
     handleWeight(disease) {
@@ -180,7 +195,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 .container {

@@ -182,7 +182,7 @@
     </div>
   </div>
   <AddUserDialog ref="AddUserDialog" @add-user="handleAdd" />
-  <BatchImportDialog ref="batchImportDialog" @import="handleImportData" />
+  <BatchImportDialog ref="batchImportDialog" @import="handleImportData" @update-success="handleQuery"/>
   <Checkuserdata ref="Checkuserdata" />
   <Editdata ref="Editdata" @update-success="handleQuery" />
 </template>

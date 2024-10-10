@@ -29,6 +29,12 @@
 
 <script>
 export default {
+  props: {
+    symptomsData: {
+      type: Array,
+      required: true, 
+    },
+  },
   data() {
     return {
       form: {
@@ -48,23 +54,34 @@ export default {
       ],
     };
   },
+watch: {
+  symptomsData: {
+    immediate: true,
+    handler(newData) {
+      newData.forEach((item) => {
+        const fieldName = item.symptomFieldName;
+        if (this.form.hasOwnProperty(fieldName)) {
+          this.form[fieldName] = item.weightScore; // 直接将 weightScore 映射到 form 中
+        }
+      });
+      this.updateWeightScore(); 
+    },
+  },
+},
+
 
   methods: {
+    // 更新总分数，并传递给父组件
     updateWeightScore() {
-      const totalScore = this.totalWeightScore;
-      this.$emit('update-weight-score', totalScore);
+      const totalScore = Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
+      this.$emit("update-weight-score", totalScore);  
     },
   },
 
   computed: {
+    // 计算总分
     totalWeightScore() {
-      const scores = Object.values(this.form).map(score => Number(score));
-      const total = scores.reduce((acc, score) => acc + score, 0);
-
-      console.log("Individual Scores:", scores);
-      console.log("Total Weight Score:", total);
-
-      return total;
+      return Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
     },
   },
 };

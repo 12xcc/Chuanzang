@@ -53,3 +53,17 @@ export const editHospitalDataById = async (params) => {
   );
   return response;
 };
+
+// 导入医院信息
+export const putHospitalDataByExcel = async (formData) => {
+  const response = await axiosInstance.post(
+    "/admin/systemHospitalManager/putHospitalDataByExcel",
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response;
+};

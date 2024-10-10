@@ -1,10 +1,5 @@
 <template>
-  <el-dialog
-    v-model="dialogVisible"
-    title="批量导入"
-    width="500px"
-    right
-  >
+  <el-dialog v-model="dialogVisible" title="批量导入" width="500px" right>
     <el-upload
       class="upload-demo"
       action="/systemUser/userManager/addManyUserByExcel"
@@ -16,14 +11,10 @@
       multiple
       drag
     >
-      <img class="el-icon--upload" src="@/assets/excel.png">
-      <div class="el-upload__text">
-        拖拽文件到这里或 <em>点击上传</em>
-      </div>
+      <img class="el-icon--upload" src="@/assets/excel.png" />
+      <div class="el-upload__text">拖拽文件到这里或 <em>点击上传</em></div>
       <template #tip>
-        <div class="el-upload__tip">
-          允许格式：.xlsx
-        </div>
+        <div class="el-upload__tip">允许格式：.xlsx</div>
       </template>
     </el-upload>
 
@@ -36,11 +27,11 @@
   </el-dialog>
 </template>
 <script>
-import { ElMessage } from 'element-plus';
-import { importUsersByExcel } from '@/api/user/alluser.js';
+import { ElMessage } from "element-plus";
+import { putHospitalDataByExcel } from "@/api/system/hospital.js";
 
 export default {
-  name: 'BatchImportDialog',
+  name: "BatchImportDialog",
   data() {
     return {
       dialogVisible: false,
@@ -55,7 +46,7 @@ export default {
       this.uploadFailed = false; // 重置上传状态
       this.fileList = []; // 清空文件列表
     },
-    
+
     // 关闭弹窗
     handleClose() {
       this.dialogVisible = false;
@@ -64,8 +55,8 @@ export default {
 
     // 添加文件
     handleChange(file) {
-      if (file.status === 'finished') {
-        ElMessage.success('文件已添加');
+      if (file.status === "finished") {
+        ElMessage.success("文件已添加");
       }
       this.fileList.push(file);
     },
@@ -78,8 +69,7 @@ export default {
       }
     },
 
-    // 提交 调用批量上传用户api
-        // 批量上传医院信息
+    // 批量上传医院信息
     async handleConfirm() {
       if (this.fileList.length === 0) {
         ElMessage.warning("请上传文件");
@@ -92,7 +82,7 @@ export default {
       });
 
       try {
-        const response = await importUsersByExcel(formData);
+        const response = await putHospitalDataByExcel(formData);
         if (response.data.code === 1) {
           ElMessage.success("上传成功");
           this.uploadFailed = false; // 上传成功

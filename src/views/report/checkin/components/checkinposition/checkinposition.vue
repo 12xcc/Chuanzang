@@ -124,7 +124,7 @@
 
 <script>
 import NormalMap from './map.vue'
-
+import {selectCheckinInfoById} from '@/api/report/checkin.js'
 export default {
   components: {
     NormalMap,
@@ -137,17 +137,43 @@ export default {
     };
   },
   methods: {
-    showDrawer(user) {
-      this.form = { ...user };
+    showDrawer(statusId) {
+      this.fetchCheckinPosition(statusId) 
       this.visible = true;
     },
     handleCancel() {
       this.visible = false;
     },
+     // 根据id获取用户打卡位置信息
+    async fetchCheckinPosition(statusId) {
+      try {
+        
+        const response = await selectCheckinInfoById(statusId); 
 
-    getInitialForm() {
-      return {
-      };
+        if (response.data.code === 1) {
+          const data = response.data.data;
+
+          // 映射数据到表单中
+          this.form.UserType = data.userType; // 用户类型
+          this.form.Name = data.name; // 姓名
+          this.form.Age = data.age; // 年龄
+          this.form.Gender = data.gender; // 性别
+          this.form.Ethnicity = data.ethnicity; // 民族
+          this.form.Department = data.department; // 部门/工种
+
+          // 格式化 WorkOnPlateauStartDate
+          if (data.checkinDate && data.checkinDate.length === 3) {
+            const [year, month, day] = data.checkinDate;
+            this.form.CheckinDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+          } else {
+            this.form.CheckinDate = ""; 
+          }
+        } else {
+          console.error("获取用户信息失败:", response.data.msg);
+        }
+      } catch (error) {
+        console.error("请求出错:", error);
+      }
     },
   },
 };

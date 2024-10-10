@@ -29,12 +29,19 @@
 
 <script>
 export default {
+    props: {
+    symptomsData: {
+      type: Array,
+      required: true, 
+    },
+  },
   data() {
+
     return {
       form: {
-        arrheaFrequencyGEThreeTimesPerDay: 0, //腹泻，>=3天
-        StoolType1DetailScore: 0, //稀便或水样便或米泔样或洗肉水样（粪便性状1）
-        StoolType2DetailScore: 0, //大块黏膜样或脓血样或黑便样（粪便性状2）
+        IsDiarrheaFrequencyGEThreeTimesPerDay: 0, //腹泻，>=3天
+       HasStoolType1: 0, //稀便或水样便或米泔样或洗肉水样（粪便性状1）
+       HasStoolType2: 0, //大块黏膜样或脓血样或黑便样（粪便性状2）
         HasVomiting: 0, // 是否呕吐
         HasNausea: 0, // 是否恶心
         HasAppetiteLoss: 0, // 是否食欲减退
@@ -47,9 +54,9 @@ export default {
       },
       rules: {},
       scoreLabels: [
-        { label: "腹泻，>=3天", model: "arrheaFrequencyGEThreeTimesPerDay" },
-        { label: "稀便或水样便或米泔样或洗肉水样（粪便性状1）", model: "StoolType1DetailScore" },
-        { label: "大块黏膜样或脓血样或黑便样（粪便性状2）", model: "StoolType2DetailScore" },
+        { label: "腹泻，>=3天", model: "IsDiarrheaFrequencyGEThreeTimesPerDay" },
+        { label: "稀便或水样便或米泔样或洗肉水样（粪便性状1）", model: "HasStoolType1" },
+        { label: "大块黏膜样或脓血样或黑便样（粪便性状2）", model: "HasStoolType2" },
         { label: "是否呕吐", model: "HasVomiting" },
         { label: "是否恶心", model: "HasNausea" },
         { label: "是否食欲减退", model: "HasAppetiteLoss" },
@@ -63,22 +70,34 @@ export default {
     };
   },
 
+watch: {
+  symptomsData: {
+    immediate: true,
+    handler(newData) {
+      newData.forEach((item) => {
+        const fieldName = item.symptomFieldName;
+        if (this.form.hasOwnProperty(fieldName)) {
+          this.form[fieldName] = item.weightScore; // 直接将 weightScore 映射到 form 中
+        }
+      });
+      this.updateWeightScore(); 
+    },
+  },
+},
+
+
   methods: {
+    // 更新总分数，并传递给父组件
     updateWeightScore() {
-      const totalScore = this.totalWeightScore;
-      this.$emit('update-weight-score', totalScore);
+      const totalScore = Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
+      this.$emit("update-weight-score", totalScore);  
     },
   },
 
   computed: {
+    // 计算总分
     totalWeightScore() {
-      const scores = Object.values(this.form).map(score => Number(score));
-      const total = scores.reduce((acc, score) => acc + score, 0);
-
-      console.log("Individual Scores:", scores);
-      console.log("Total Weight Score:", total);
-
-      return total;
+      return Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
     },
   },
 };

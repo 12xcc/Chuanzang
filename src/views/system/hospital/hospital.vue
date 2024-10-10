@@ -91,6 +91,8 @@
 
     <!-- 医院信息弹窗 -->
     <Hospitaldata ref="Hospitaldata" @update-success="handleQuery" />
+    <!-- 批量导入 -->
+    <BatchImport ref="BatchImport" @update-success="handleQuery" />
   </div>
 </template>
 
@@ -98,6 +100,7 @@
 import { ref, computed, onMounted } from 'vue';
 import Pagination from '@/components/pagination.vue';
 import Hospitaldata from './components/hospitaldata.vue';
+import BatchImport from './components/batchImport.vue'
 import {
   fetchHospitalData,
   exportHospitalData,
@@ -109,6 +112,7 @@ export default {
   components: {
     Pagination,
     Hospitaldata,
+    BatchImport,
   },
   
   data() {
@@ -172,7 +176,7 @@ export default {
 
     // 批量导入
     handleImport() {
-
+      this.$refs.BatchImport.showDialog();
     },
 
     // 下载导入模板

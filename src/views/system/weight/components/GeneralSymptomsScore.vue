@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <el-form
-      :model="form"
+      :model="symptoms"
       label-width="140px"
       class="form-container"
       ref="form"
@@ -13,11 +13,15 @@
           <span class="title-text">全身症状权重表</span>
         </div>
 
-        <div class="slider-demo-block" v-for="(score, index) in scoreLabels" :key="index">
+        <div
+          class="slider-demo-block"
+          v-for="(score, index) in scoreLabels"
+          :key="index"
+        >
           <el-tag type="primary">{{ score.label }}</el-tag>
           <el-slider
             class="custom-slider"
-            v-model.number="form[score.model]"
+            v-model.number="symptoms[score.model].weightScore"
             show-input
             @change="updateWeightScore"
           />
@@ -29,71 +33,115 @@
 
 <script>
 export default {
+  props: {
+    symptomsData: {
+      type: Array,
+      required: true, // 父组件传入的症状数据
+    },
+  },
   data() {
     return {
-      form: {
-        HasCyanosisScore: 0,
-        HasSubcutaneousAndMucosalBleedingSpotsScore: 0,
-        HasPainfulRedRashScore: 0,
-        HasBloodBlistersScore: 0,
-        HasSkinUlcerScore: 0,
-        HasCongestiveOrPetechialRashScore: 0,
-        HasPressureInsensitiveRashScore: 0,
-        HasItchyRashScore: 0,
-        HasEdemaScore: 0,
-        HasNightSweatsScore: 0,
-        HasWeightLossScore: 0,
-        HasExhaustionScore: 0,
+      symptoms: {
+        HasFever: { weightScore: 0, symptomWeightingId: null },
+        HasChills: { weightScore: 0, symptomWeightingId: null },
+        HasSweating: { weightScore: 0, symptomWeightingId: null },
+        HasFatigue: { weightScore: 0, symptomWeightingId: null },
+        HasHeadache: { weightScore: 0, symptomWeightingId: null },
+        HasMusclePain: { weightScore: 0, symptomWeightingId: null },
+        HasJointPain:{ weightScore: 0, symptomWeightingId: null },
+        HasLymphNodeSwelling: { weightScore: 0, symptomWeightingId: null },
+        HasCyanosis: { weightScore: 0, symptomWeightingId: null },
+        HasSubcutaneousAndMucosalBleedingSpots: {
+          weightScore: 0,
+          symptomWeightingId: null,
+        },
+        HasPainfulRedRash: { weightScore: 0, symptomWeightingId: null },
+        HasBloodBlisters: { weightScore: 0, symptomWeightingId: null },
+        HasSkinUlcer: { weightScore: 0, symptomWeightingId: null },
+        HasCongestiveOrPetechialRash: {
+          weightScore: 0,
+          symptomWeightingId: null,
+        },
+        HasPressureInsensitiveRash: {
+          weightScore: 0,
+          symptomWeightingId: null,
+        },
+        HasDehydration: { weightScore: 0, symptomWeightingId: null },
+        HasItchyRash: { weightScore: 0, symptomWeightingId: null },
+        HasEdema: { weightScore: 0, symptomWeightingId: null },
+        HasNightSweats: { weightScore: 0, symptomWeightingId: null },
+        HasWeightLoss: { weightScore: 0, symptomWeightingId: null },
+        HasExhaustion: { weightScore: 0, symptomWeightingId: null },
       },
-      rules: {},
+
+      rules: {}, // 表单验证规则
       scoreLabels: [
-        { label: "口唇、颜面、四肢及全身皮肤发绀", model: "HasCyanosisScore" },
-        { label: "皮下及黏膜出血或出血点", model: "HasSubcutaneousAndMucosalBleedingSpotsScore" },
-        { label: "皮肤可见剧痛的红色丘疹", model: "HasPainfulRedRashScore" },
-        { label: "皮肤可见周边呈灰黑色、基底坚硬的血性水泡", model: "HasBloodBlistersScore" },
-        { label: "皮肤出现呈灰黑色创面的溃疡", model: "HasSkinUlcerScore" },
-        { label: "皮疹：充血性或点状出血疹", model: "HasCongestiveOrPetechialRashScore" },
-        { label: "皮疹：起初压之退色，后期压之不退", model: "HasPressureInsensitiveRashScore" },
-        { label: "失水", model: "HasDehydrationScore" },
-        { label: "瘙痒性斑丘疹/水疱", model: "HasItchyRashScore" },
-        { label: "水肿", model: "HasEdemaScore" },
-        { label: "盗汗", model: "HasNightSweatsScore" },
-        { label: "消瘦", model: "HasWeightLossScore" },
-        { label: "虚脱/全身无力", model: "HasExhaustionScore" },
+        { label: "发热", model: "HasFever" },
+        { label: "寒战", model: "HasChills" },
+        { label: "大汗", model: "HasSweating" },
+        { label: "乏力", model: "HasFatigue" },
+        { label: "头痛", model: "HasHeadache" },
+        { label: "肌肉酸痛", model: "HasMusclePain" },
+        {label:"关节酸痛" , model:"HasJointPain"},
+        { label: "淋巴结肿大", model: "HasLymphNodeSwelling" },
+        { label: "发绀", model: "HasCyanosis" },
+        {
+          label: "皮下及黏膜出血",
+          model: "HasSubcutaneousAndMucosalBleedingSpots",
+        },
+        { label: "红色丘疹", model: "HasPainfulRedRash" },
+        { label: "血性水泡", model: "HasBloodBlisters" },
+        { label: "溃疡", model: "HasSkinUlcer" },
+        { label: "点状出血疹", model: "HasCongestiveOrPetechialRash" },
+        { label: "压之不退", model: "HasPressureInsensitiveRash" },
+        { label: "脱水", model: "HasDehydration" },
+        { label: "瘙痒性丘疹", model: "HasItchyRash" },
+        { label: "水肿", model: "HasEdema" },
+        { label: "盗汗", model: "HasNightSweats" },
+        { label: "消瘦", model: "HasWeightLoss" },
+        { label: "虚脱", model: "HasExhaustion" },
       ],
     };
   },
-
-  methods: {
-    updateWeightScore() {
-      const totalScore = this.totalWeightScore;
-      this.$emit('update-weight-score', totalScore);
-    },
-  },
-
-  computed: {
-    totalWeightScore() {
-              return Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
-
-    //   const scores = Object.values(this.form).map(score => Number(score));
-    //   const total = scores.reduce((acc, score) => acc + score, 0);
-
-    //   console.log("Individual Scores:", scores);
-    //   console.log("Total Weight Score:", total);
-
-      return total;
-    },
-  },
-   watch: {
-    form: {
-      handler() {
-        this.$emit('update-weight-score', this.totalWeightScore);
+  watch: {
+    symptomsData: {
+      immediate: true,
+      handler(newData) {
+        newData.forEach((item) => {
+          const fieldName = item.symptomFieldName;
+          if (this.symptoms.hasOwnProperty(fieldName)) {
+            this.symptoms[fieldName].weightScore = item.weightScore;
+            this.symptoms[fieldName].symptomWeightingId =
+              item.symptomWeightingId;
+          }
+        });
+        this.updateWeightScore();
       },
-      deep: true,
+    },
+  },
+  methods: {
+    // 更新总分
+    updateWeightScore() {
+      const totalScore = Object.values(this.symptoms).reduce(
+        (acc, symptom) => acc + Number(symptom.weightScore),
+        0
+      );
+      this.$emit("update-weight-score", totalScore);
+    },
+  },
+  computed: {
+    // 计算总分
+    totalWeightScore() {
+      return Object.values(this.symptoms).reduce(
+        (acc, symptom) => acc + Number(symptom.weightScore),
+        0
+      );
     },
   },
 };
 </script>
+
+
 
 <style scoped>
 .custom-drawer {

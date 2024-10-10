@@ -29,58 +29,76 @@
 
 <script>
 export default {
-  data() {
-    return {
-      form: {
-        HasCoughScore: 0,
-        HasSputumScore: 0,
-        HasBloodySputumScore: 0,
-        HasHemoptysisScore: 0,
-        HasSoreThroatScore: 0,
-        HasDryThroatScore: 0,
-        HasNasalCongestionScore: 0,
-        HasRunnyNoseScore: 0,
-        HasChestTightnessScore: 0,
-        hasShortnessOfBreathScore: 0,
-        HasBreathingDifficultyScore: 0,
-        HasHoarsenessScore: 0,
-        HasBronchitisScore: 0,
-      },
-      rules: {},
-      scoreLabels: [
-        { label: "咳嗽", model: "HasCoughScore" },
-        { label: "咳痰", model: "HasSputumScore" },
-        { label: "血痰", model: "HasBloodySputumScore" },
-        { label: "咳血", model: "HasHemoptysisScore" },
-        { label: "咽痛", model: "HasSoreThroatScore" },
-        { label: "咽干", model: "HasDryThroatScore" },
-        { label: "鼻塞", model: "HasNasalCongestionScore" },
-        { label: "流涕", model: "HasRunnyNoseScore" },
-        { label: "胸闷", model: "HasChestTightnessScore" },
-        { label: "气促", model: "hasShortnessOfBreathScore" },
-        { label: "呼吸困难", model: "HasBreathingDifficultyScore" },
-        { label: "声音嘶哑", model: "HasHoarsenessScore" },
-        { label: "支气管炎或支气管肺炎", model: "HasBronchitisScore" },
-      ],
-    };
+  props: {
+    symptomsData: {
+      type: Array,
+      required: true, 
+    },
   },
+data() {
+  return {
+    form: {
+      HasCough: 0,
+      HasSputum: 0,
+      HasBloodySputum: 0,
+      HasHemoptysis: 0,
+      HasSoreThroat: 0,
+      HasDryThroat: 0,
+      HasNasalCongestion: 0,
+      HasRunnyNose: 0,
+      HasChestTightness: 0,
+      HasShortnessOfBreath: 0,
+      HasBreathingDifficulty: 0,
+      HasHoarseness: 0,
+      HasBronchitis: 0,
+    },
+    rules: {},  // 表单验证规则
+    scoreLabels: [
+      { label: "咳嗽", model: "HasCough" },
+      { label: "咳痰", model: "HasSputum" },
+      { label: "血痰", model: "HasBloodySputum" },
+      { label: "咳血", model: "HasHemoptysis" },
+      { label: "咽痛", model: "HasSoreThroat" },
+      { label: "咽干", model: "HasDryThroat" },
+      { label: "鼻塞", model: "HasNasalCongestion" },
+      { label: "流涕", model: "HasRunnyNose" },
+      { label: "胸闷", model: "HasChestTightness" },
+      { label: "气促", model: "HasShortnessOfBreath" },
+      { label: "呼吸困难", model: "HasBreathingDifficulty" },
+      { label: "声音嘶哑", model: "HasHoarseness" },
+      { label: "支气管炎或支气管肺炎", model: "HasBronchitis" },
+    ],
+  };
+},
+
+watch: {
+  symptomsData: {
+    immediate: true,
+    handler(newData) {
+      newData.forEach((item) => {
+        const fieldName = item.symptomFieldName; 
+        if (this.form.hasOwnProperty(fieldName)) {
+          this.form[fieldName] = item.weightScore; // 直接将 weightScore 映射到 form 中
+        }
+      });
+      this.updateWeightScore(); 
+    },
+  },
+},
+
 
   methods: {
+    // 更新总分数，并传递给父组件
     updateWeightScore() {
-      const totalScore = this.totalWeightScore;
-      this.$emit('update-weight-score', totalScore);
+      const totalScore = Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
+      this.$emit("update-weight-score", totalScore);  
     },
   },
 
   computed: {
+    // 计算总分
     totalWeightScore() {
-      const scores = Object.values(this.form).map(score => Number(score));
-      const total = scores.reduce((acc, score) => acc + score, 0);
-
-      console.log("Individual Scores:", scores);
-      console.log("Total Weight Score:", total);
-
-      return total;
+      return Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
     },
   },
 };
