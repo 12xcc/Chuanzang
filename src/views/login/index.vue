@@ -46,7 +46,6 @@
           <button
             @click="handleSubmit"
             type="button"
-            :disabled="isSubmitDisabled"
           >
             提交
           </button>

@@ -16,16 +16,31 @@
           size="default"
           style="width: 200px; margin-right: -15px"
         >
-          <el-option value="新型冠状病毒感染" label="新型冠状病毒感染"></el-option>
+          <el-option
+            value="新型冠状病毒感染"
+            label="新型冠状病毒感染"
+          ></el-option>
           <el-option value="流感" label="流感"></el-option>
           <el-option value="鼠疫" label="鼠疫"></el-option>
           <el-option value="感染性腹泻" label="感染性腹泻"></el-option>
           <el-option value="炭疽" label="炭疽"></el-option>
           <el-option value="结核病" label="结核病"></el-option>
-          <el-option value="登革热（蚊媒传染病）" label="登革热（蚊媒传染病）"></el-option>
-          <el-option value="疟疾（蚊媒传染病）" label="疟疾（蚊媒传染病）"></el-option>
-          <el-option value="森林脑炎（蜱媒传染病）" label="森林脑炎（蜱媒传染病）"></el-option>
-          <el-option value="发热伴血小板减少综合征（蜱媒传染病）" label="发热伴血小板减少综合征（蜱媒传染病）"></el-option>
+          <el-option
+            value="登革热（蚊媒传染病）"
+            label="登革热（蚊媒传染病）"
+          ></el-option>
+          <el-option
+            value="疟疾（蚊媒传染病）"
+            label="疟疾（蚊媒传染病）"
+          ></el-option>
+          <el-option
+            value="森林脑炎（蜱媒传染病）"
+            label="森林脑炎（蜱媒传染病）"
+          ></el-option>
+          <el-option
+            value="发热伴血小板减少综合征（蜱媒传染病）"
+            label="发热伴血小板减少综合征（蜱媒传染病）"
+          ></el-option>
           <el-option value="斑疹伤寒" label="斑疹伤寒"></el-option>
           <el-option value="流行性出血热" label="流行性出血热"></el-option>
           <el-option value="其他" label="其他"></el-option>
@@ -87,24 +102,17 @@
               link
               type="primary"
               size="large"
-              @click="handleClick(scope.row)"
+              @click="handleClick(scope.row.materialId)"
             >
-              查看
+              查看 / 编辑
             </el-button>
-            <el-button
-              link
-              type="primary"
-              size="large"
-              @click="handleClick(scope.row)"
-              >编辑</el-button
-            >
             <el-button
               link
               :type="scope.row.isDeleted ? 'danger' : 'primary'"
               size="large"
               @click="toggleStatus(scope.row)"
             >
-              {{ scope.row.isDeleted ? "已禁用" : "启用" }}
+              {{ scope.row.isDeleted ? "已禁用" : "已启用" }}
             </el-button>
           </template>
         </el-table-column>
@@ -129,7 +137,10 @@ import { ref, onMounted } from "vue";
 import Pagination from "@/components/pagination.vue";
 import Checkmaterials from "./components/checkmaterials.vue";
 import Addmaterials from "./components/addmaterials.vue";
-import { pageSelectDiseaseLearningMaterials, startOrStopMaterial } from "@/api/propaganda/propaganda.js";
+import {
+  pageSelectDiseaseLearningMaterials,
+  startOrStopMaterial,
+} from "@/api/propaganda/propaganda.js";
 
 export default {
   components: {
@@ -141,14 +152,14 @@ export default {
   data() {
     return {
       queryParams: {
-        diseaseTypeName: "", 
+        diseaseTypeName: "",
         pageNum: 1,
         pageSize: 15,
       },
       allData: [],
       loading: false,
       total: 0,
-      showSearch:true,
+      showSearch: true,
     };
   },
 
@@ -159,15 +170,16 @@ export default {
   },
 
   methods: {
-    handleClick(row) {
-      this.$refs.Checkmaterials.showDrawer(row);
+    handleClick(materialId) {
+      this.$refs.Checkmaterials.showDrawer(materialId);
     },
 
+    // 获取宣传材料列表
     async handleQuery() {
       this.loading = true;
       try {
         const params = {
-          diseaseTypeName: this.queryParams.diseaseTypeName || "", 
+          diseaseTypeName: this.queryParams.diseaseTypeName || "",
           pageNo: this.queryParams.pageNum || 1,
           pageSize: this.queryParams.pageSize || 15,
         };
@@ -217,6 +229,7 @@ export default {
       this.$refs.Addmaterials.showDrawer();
     },
 
+    // 切换宣传材料状态
     toggleStatus(row) {
       this.$confirm("您确定要切换材料状态吗？", "提示", {
         confirmButtonText: "确定",
@@ -226,12 +239,17 @@ export default {
         .then(async () => {
           try {
             const newStatus = !row.isDeleted;
-            const response = await startOrStopMaterial(row.materialId, newStatus);
+            const response = await startOrStopMaterial(
+              row.materialId,
+              newStatus
+            );
 
             if (response.data.code === 1) {
               row.isDeleted = newStatus;
               this.handleQuery();
-              this.$message.success(`宣传材料已${newStatus ? "禁用" : "启用"}！`);
+              this.$message.success(
+                `宣传材料已${newStatus ? "禁用" : "启用"}！`
+              );
             } else {
               this.$message.error("切换状态失败：" + response.data.message);
             }
