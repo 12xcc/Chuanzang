@@ -36,7 +36,7 @@ export default {
   props: {
     symptomsData: {
       type: Array,
-      required: true, // 父组件传入的症状数据
+      required: true,
     },
   },
   data() {
@@ -48,7 +48,7 @@ export default {
         HasFatigue: { weightScore: 0, symptomWeightingId: null },
         HasHeadache: { weightScore: 0, symptomWeightingId: null },
         HasMusclePain: { weightScore: 0, symptomWeightingId: null },
-        HasJointPain:{ weightScore: 0, symptomWeightingId: null },
+        HasJointPain: { weightScore: 0, symptomWeightingId: null },
         HasLymphNodeSwelling: { weightScore: 0, symptomWeightingId: null },
         HasCyanosis: { weightScore: 0, symptomWeightingId: null },
         HasSubcutaneousAndMucosalBleedingSpots: {
@@ -82,7 +82,7 @@ export default {
         { label: "乏力", model: "HasFatigue" },
         { label: "头痛", model: "HasHeadache" },
         { label: "肌肉酸痛", model: "HasMusclePain" },
-        {label:"关节酸痛" , model:"HasJointPain"},
+        { label: "关节酸痛", model: "HasJointPain" },
         { label: "淋巴结肿大", model: "HasLymphNodeSwelling" },
         { label: "发绀", model: "HasCyanosis" },
         {

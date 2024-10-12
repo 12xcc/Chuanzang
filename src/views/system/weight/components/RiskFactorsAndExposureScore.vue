@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <el-form
-      :model="form"
+      :model="symptoms"
       label-width="140px"
       class="form-container"
       ref="form"
@@ -13,11 +13,15 @@
           <span class="title-text">危险因素与暴露史权重表</span>
         </div>
 
-        <div class="slider-demo-block" v-for="(score, index) in riskLabels" :key="index">
+        <div
+          class="slider-demo-block"
+          v-for="(score, index) in scoreLabels"
+          :key="index"
+        >
           <el-tag type="primary">{{ score.label }}</el-tag>
           <el-slider
             class="custom-slider"
-            v-model.number="form[score.model]"
+            v-model.number="symptoms[score.model].weightScore"
             show-input
             @change="updateWeightScore"
           />
@@ -29,40 +33,45 @@
 
 <script>
 export default {
-    props: {
+  props: {
     symptomsData: {
       type: Array,
-      required: true, 
+      required: true,
     },
   },
   data() {
     return {
-      form: {
-        ContactWithFeverPatient: 0, // 接触过发热患者
-        ContactWithDiarrheaPatient: 0, // 接触过腹泻患者
-        ContactWithRashPatient: 0, // 接触过皮疹患者
-        ContactWithTuberculosisPatient: 0, // 接触过结核病患者
-        HasDrinkingRawWater: 0, // 饮生水
-        HasEatingRawFood: 0, // 吃生冷食品
-        HasEatingColdCookedFood: 0, // 熟食冷吃
-        HasEatingSeafood: 0, // 吃海水产品
-        GroupOutbreak:0,
-        OutdoorStayOrWorkWithinMonth: 0, // 发病前1月内在野外住宿或工作
-        OtherWildActivityName: '', // 其他户外活动方式名称
-        IsHillyOrMountainous: 0, // 是否居住在丘陵或山区
-        IsPlain: 0, // 是否居住在平原
-        HasMosquitoBite: 0, // 14天内是否明确被蚊虫叮咬过
-        TickBite: 0, // 发病前2周内是否被蜱叮咬过
-        FleaBite: 0, // 发病是否被跳蚤叮咬过
-        ContactWithRatIn2Months: 0, // 发病前2个月内是否接触鼠类
-        EatenFoodContaminatedByRatFeces: 0, // 发病前1月内是否吃过被鼠排泄物污染的食物
-        DrunkWaterFromDitchesOrPonds: 0, // 发病前1月内是否在野外喝过沟（塘）水
-        RestedNearRatHoles: 0, // 发病前9天内是否在鼠洞附近坐卧
-        RatOrRatDroppingsAtWorkplace: 0, // 工作场所有无鼠或鼠排泄物
-        ContactWithPatientExcreta: 0, // 发病前1月内是否接触过病人排泄物
+      symptoms: {
+        ContactWithFeverPatient: { weightScore: 0, symptomWeightingId: null }, 
+        ContactWithDiarrheaPatient: { weightScore: 0, symptomWeightingId: null },
+        ContactWithRashPatient: { weightScore: 0, symptomWeightingId: null },
+        ContactWithTuberculosisPatient: { weightScore: 0, symptomWeightingId: null },
+        HasDrinkingRawWater: { weightScore: 0, symptomWeightingId: null }, 
+        HasEatingRawFood: { weightScore: 0, symptomWeightingId: null }, 
+        HasEatingColdCookedFood: { weightScore: 0, symptomWeightingId: null },
+        HasEatingSeafood: { weightScore: 0, symptomWeightingId: null }, 
+        GroupOutbreak: { weightScore: 0, symptomWeightingId: null },
+        OutdoorStayOrWorkWithinMonth: { weightScore: 0, symptomWeightingId: null },
+          PlagueArea: { weightScore: 0, symptomWeightingId: null },
+    AnthraxArea: { weightScore: 0, symptomWeightingId: null },
+    MalariaArea: { weightScore: 0, symptomWeightingId: null },
+    ContactWithAnimalProducts: { weightScore: 0, symptomWeightingId: null },
+    ContactWithAnimals : { weightScore: 0, symptomWeightingId: null },
+
+        IsHillyOrMountainous: { weightScore: 0, symptomWeightingId: null }, 
+        IsPlain: { weightScore: 0, symptomWeightingId: null },
+        HasMosquitoBite: { weightScore: 0, symptomWeightingId: null },
+        TickBite: { weightScore: 0, symptomWeightingId: null }, 
+        FleaBite: { weightScore: 0, symptomWeightingId: null }, 
+        ContactWithRatIn2Months: { weightScore: 0, symptomWeightingId: null },
+        EatenFoodContaminatedByRatFeces: { weightScore: 0, symptomWeightingId: null },
+        DrunkWaterFromDitchesOrPonds: { weightScore: 0, symptomWeightingId: null }, 
+        RestedNearRatHoles: { weightScore: 0, symptomWeightingId: null }, 
+        RatOrRatDroppingsAtWorkplace: { weightScore: 0, symptomWeightingId: null },
+        ContactWithPatientExcreta: { weightScore: 0, symptomWeightingId: null },
       },
       rules: {},
-      riskLabels: [
+      scoreLabels: [
         { label: "接触过发热患者", model: "ContactWithFeverPatient" },
         { label: "接触过腹泻患者", model: "ContactWithDiarrheaPatient" },
         { label: "接触过皮疹患者", model: "ContactWithRashPatient" },
@@ -71,8 +80,13 @@ export default {
         { label: "吃生冷食品", model: "HasEatingRawFood" },
         { label: "熟食冷吃", model: "HasEatingColdCookedFood" },
         { label: "吃海水产品", model: "HasEatingSeafood" },
-        {label:"同一家庭、办公室、车间等集体单位是否有聚集性发病" ,model:"GroupOutbreak"},
+        { label: "同一家庭、办公室、车间等集体单位是否有聚集性发病", model: "GroupOutbreak" },
         { label: "发病前1月内在野外住宿或工作", model: "OutdoorStayOrWorkWithinMonth" },
+        {label :"到过鼠疫流行区",model:"PlagueArea"},
+        { label: "到过炭疽流行区", model: "AnthraxArea" },
+        { label: "到过疟疾流行区", model: "MalariaArea" },
+        { label: "接触过动物制品", model: "ContactWithAnimalProducts" },
+        { label: "接触过动物", model: "ContactWithAnimals" },
         { label: "居住在丘陵或山区", model: "IsHillyOrMountainous" },
         { label: "居住在平原", model: "IsPlain" },
         { label: "14天内被蚊虫叮咬过", model: "HasMosquitoBite" },
@@ -87,36 +101,38 @@ export default {
       ],
     };
   },
-
-watch: {
-  symptomsData: {
-    immediate: true,
-    handler(newData) {
-      newData.forEach((item) => {
-        const fieldName = item.symptomFieldName; 
-        if (this.form.hasOwnProperty(fieldName)) {
-          this.form[fieldName] = item.weightScore; // 直接将 weightScore 映射到 form 中
-        }
-      });
-      this.updateWeightScore(); 
+  watch: {
+    symptomsData: {
+      immediate: true,
+      handler(newData) {
+        newData.forEach((item) => {
+          const fieldName = item.symptomFieldName;
+          if (this.symptoms.hasOwnProperty(fieldName)) {
+            this.symptoms[fieldName].weightScore = item.weightScore;
+            this.symptoms[fieldName].symptomWeightingId = item.symptomWeightingId;
+          }
+        });
+        this.updateWeightScore();
+      },
     },
   },
-},
-
-
-
   methods: {
-    // 更新总分数，并传递给父组件
+    // 更新总分
     updateWeightScore() {
-      const totalScore = Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
-      this.$emit("update-weight-score", totalScore);  
+      const totalScore = Object.values(this.symptoms).reduce(
+        (acc, symptom) => acc + Number(symptom.weightScore),
+        0
+      );
+      this.$emit("update-weight-score", totalScore);
     },
   },
-
   computed: {
     // 计算总分
     totalWeightScore() {
-      return Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
+      return Object.values(this.symptoms).reduce(
+        (acc, symptom) => acc + Number(symptom.weightScore),
+        0
+      );
     },
   },
 };

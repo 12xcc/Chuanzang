@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <el-form
-      :model="form"
+      :model="symptoms"
       label-width="140px"
       class="form-container"
       ref="form"
@@ -17,7 +17,7 @@
           <el-tag type="primary">{{ score.label }}</el-tag>
           <el-slider
             class="custom-slider"
-            v-model.number="form[score.model]"
+            v-model.number="symptoms[score.model].weightScore"
             show-input
             @change="updateWeightScore"
           />
@@ -37,17 +37,17 @@ export default {
   },
   data() {
     return {
-      form: {
-        HasSuddenOnset: 0, // 是否突然发病
-        HasRapidProgress: 0, // 是否病情进展迅速
-        HasPeriodicAttack: 0, // 是否周期性发作
-        HasForcedPosture: 0, // 是否有强迫体位
-        HasCalfMusclePain: 0, // 是否有腓肠肌疼痛
-        SleepQuality: 0, // 睡眠状况差
-        NutritionStatus: 0, // 营养状况差
-        WorkLifeStress: 0, // 工作和生活压力大
-        SymptomSeverity: 0, // 自我感觉症状重
-        HasOtherSymptoms: 0, // 其他症状
+      symptoms: {
+        HasSuddenOnset: { weightScore: 0, symptomWeightingId: null }, // 是否突然发病
+        HasRapidProgress: { weightScore: 0, symptomWeightingId: null }, // 是否病情进展迅速
+        HasPeriodicAttack: { weightScore: 0, symptomWeightingId: null }, // 是否周期性发作
+        HasForcedPosture: { weightScore: 0, symptomWeightingId: null }, // 是否有强迫体位
+        HasCalfMusclePain: { weightScore: 0, symptomWeightingId: null },// 是否有腓肠肌疼痛
+        SleepQuality:  { weightScore: 0, symptomWeightingId: null }, // 睡眠状况差
+        NutritionStatus: { weightScore: 0, symptomWeightingId: null }, // 营养状况差
+        WorkLifeStress:  { weightScore: 0, symptomWeightingId: null }, // 工作和生活压力大
+        SymptomSeverity: { weightScore: 0, symptomWeightingId: null },// 自我感觉症状重
+        HasOtherSymptoms: { weightScore: 0, symptomWeightingId: null }, // 其他症状
       },
       rules: {},
       scoreLabels: [
@@ -65,34 +65,39 @@ export default {
     };
   },
 
-watch: {
-  symptomsData: {
-    immediate: true,
-    handler(newData) {
-      newData.forEach((item) => {
-        const fieldName = item.symptomFieldName; 
-        if (this.form.hasOwnProperty(fieldName)) {
-          this.form[fieldName] = item.weightScore; // 直接将 weightScore 映射到 form 中
-        }
-      });
-      this.updateWeightScore(); 
+  watch: {
+    symptomsData: {
+      immediate: true,
+      handler(newData) {
+        newData.forEach((item) => {
+          const fieldName = item.symptomFieldName;
+          if (this.symptoms.hasOwnProperty(fieldName)) {
+            this.symptoms[fieldName].weightScore = item.weightScore;
+            this.symptoms[fieldName].symptomWeightingId =
+              item.symptomWeightingId;
+          }
+        });
+        this.updateWeightScore();
+      },
     },
   },
-},
-
-
   methods: {
-    // 更新总分数，并传递给父组件
+    // 更新总分
     updateWeightScore() {
-      const totalScore = Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
-      this.$emit("update-weight-score", totalScore);  
+      const totalScore = Object.values(this.symptoms).reduce(
+        (acc, symptom) => acc + Number(symptom.weightScore),
+        0
+      );
+      this.$emit("update-weight-score", totalScore);
     },
   },
-
   computed: {
     // 计算总分
     totalWeightScore() {
-      return Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
+      return Object.values(this.symptoms).reduce(
+        (acc, symptom) => acc + Number(symptom.weightScore),
+        0
+      );
     },
   },
 };

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <el-form
-      :model="form"
+      :model="symptoms"
       label-width="140px"
       class="form-container"
       ref="form"
@@ -17,7 +17,7 @@
           <el-tag type="primary">{{ score.label }}</el-tag>
           <el-slider
             class="custom-slider"
-            v-model.number="form[score.model]"
+            v-model.number="symptoms[score.model].weightScore"
             show-input
             @change="updateWeightScore"
           />
@@ -37,12 +37,12 @@ export default {
   },
   data() {
     return {
-      form: {
-        HasArrhythmia: 0, // 是否有心律不齐
-        HasChestPain: 0, // 是否有胸痛
-        HasRapidPulse: 0, // 是否有脉搏细速
-        HasPalpitation: 0, // 是否有心悸
-        HasLowBloodPressure: 0, // 是否有低血压
+      symptoms: {
+        HasArrhythmia: { weightScore: 0, symptomWeightingId: null }, // 是否有心律不齐
+        HasChestPain: { weightScore: 0, symptomWeightingId: null }, // 是否有胸痛
+        HasRapidPulse: { weightScore: 0, symptomWeightingId: null }, // 是否有脉搏细速
+        HasPalpitation: { weightScore: 0, symptomWeightingId: null }, // 是否有心悸
+        HasLowBloodPressure: { weightScore: 0, symptomWeightingId: null }, // 是否有低血压
       },
       rules: {},
       scoreLabels: [
@@ -54,38 +54,37 @@ export default {
       ],
     };
   },
-watch: {
-  symptomsData: {
-    immediate: true,
-    handler(newData) {
-      newData.forEach((item) => {
-        const fieldName = item.symptomFieldName;
-        if (this.form.hasOwnProperty(fieldName)) {
-          this.form[fieldName] = item.weightScore; // 直接将 weightScore 映射到 form 中
-        }
-      });
-      this.updateWeightScore(); 
+  watch: {
+    symptomsData: {
+      immediate: true,
+      handler(newData) {
+        newData.forEach((item) => {
+          const fieldName = item.symptomFieldName;
+          if (this.symptoms.hasOwnProperty(fieldName)) {
+            this.symptoms[fieldName].weightScore = item.weightScore;
+            this.symptoms[fieldName].symptomWeightingId = item.symptomWeightingId;
+          }
+        });
+        this.updateWeightScore(); 
+      },
     },
   },
-},
-
-
   methods: {
     // 更新总分数，并传递给父组件
     updateWeightScore() {
-      const totalScore = Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
+      const totalScore = Object.values(this.symptoms).reduce((acc, symptom) => acc + Number(symptom.weightScore), 0);
       this.$emit("update-weight-score", totalScore);  
     },
   },
-
   computed: {
     // 计算总分
     totalWeightScore() {
-      return Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
+      return Object.values(this.symptoms).reduce((acc, symptom) => acc + Number(symptom.weightScore), 0);
     },
   },
 };
 </script>
+
 
 <style scoped>
 .custom-drawer {

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <el-form
-      :model="form"
+      :model="symptoms"
       label-width="140px"
       class="form-container"
       ref="form"
@@ -17,7 +17,7 @@
           <el-tag type="primary">{{ score.label }}</el-tag>
           <el-slider
             class="custom-slider"
-            v-model.number="form[score.model]"
+            v-model.number="symptoms[score.model].weightScore"
             show-input
             @change="updateWeightScore"
           />
@@ -37,20 +37,20 @@ export default {
   },
 data() {
   return {
-    form: {
-      HasCough: 0,
-      HasSputum: 0,
-      HasBloodySputum: 0,
-      HasHemoptysis: 0,
-      HasSoreThroat: 0,
-      HasDryThroat: 0,
-      HasNasalCongestion: 0,
-      HasRunnyNose: 0,
-      HasChestTightness: 0,
-      HasShortnessOfBreath: 0,
-      HasBreathingDifficulty: 0,
-      HasHoarseness: 0,
-      HasBronchitis: 0,
+    symptoms: {
+      HasCough:  { weightScore: 0, symptomWeightingId: null },
+      HasSputum: { weightScore: 0, symptomWeightingId: null },
+      HasBloodySputum: { weightScore: 0, symptomWeightingId: null },
+      HasHemoptysis: { weightScore: 0, symptomWeightingId: null },
+      HasSoreThroat: { weightScore: 0, symptomWeightingId: null },
+      HasDryThroat: { weightScore: 0, symptomWeightingId: null },
+      HasNasalCongestion: { weightScore: 0, symptomWeightingId: null },
+      HasRunnyNose: { weightScore: 0, symptomWeightingId: null },
+      HasChestTightness: { weightScore: 0, symptomWeightingId: null },
+      HasShortnessOfBreath: { weightScore: 0, symptomWeightingId: null },
+      HasBreathingDifficulty:  { weightScore: 0, symptomWeightingId: null },
+      HasHoarseness: { weightScore: 0, symptomWeightingId: null },
+      HasBronchitis: { weightScore: 0, symptomWeightingId: null },
     },
     rules: {},  // 表单验证规则
     scoreLabels: [
@@ -71,39 +71,43 @@ data() {
   };
 },
 
-watch: {
-  symptomsData: {
-    immediate: true,
-    handler(newData) {
-      newData.forEach((item) => {
-        const fieldName = item.symptomFieldName; 
-        if (this.form.hasOwnProperty(fieldName)) {
-          this.form[fieldName] = item.weightScore; // 直接将 weightScore 映射到 form 中
-        }
-      });
-      this.updateWeightScore(); 
+  watch: {
+    symptomsData: {
+      immediate: true,
+      handler(newData) {
+        newData.forEach((item) => {
+          const fieldName = item.symptomFieldName;
+          if (this.symptoms.hasOwnProperty(fieldName)) {
+            this.symptoms[fieldName].weightScore = item.weightScore;
+            this.symptoms[fieldName].symptomWeightingId =
+              item.symptomWeightingId;
+          }
+        });
+        this.updateWeightScore();
+      },
     },
   },
-},
-
-
   methods: {
-    // 更新总分数，并传递给父组件
+    // 更新总分
     updateWeightScore() {
-      const totalScore = Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
-      this.$emit("update-weight-score", totalScore);  
+      const totalScore = Object.values(this.symptoms).reduce(
+        (acc, symptom) => acc + Number(symptom.weightScore),
+        0
+      );
+      this.$emit("update-weight-score", totalScore);
     },
   },
-
   computed: {
     // 计算总分
     totalWeightScore() {
-      return Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
+      return Object.values(this.symptoms).reduce(
+        (acc, symptom) => acc + Number(symptom.weightScore),
+        0
+      );
     },
   },
 };
 </script>
-
 
 <style scoped>
 .custom-drawer {

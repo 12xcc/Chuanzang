@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <el-form
-      :model="form"
+      :model="symptoms"
       label-width="140px"
       class="form-container"
       ref="form"
@@ -17,7 +17,7 @@
           <el-tag type="primary">{{ score.label }}</el-tag>
           <el-slider
             class="custom-slider"
-            v-model.number="form[score.model]"
+            v-model.number="symptoms[score.model].weightScore"
             show-input
             @change="updateWeightScore"
           />
@@ -37,21 +37,21 @@ export default {
   },
   data() {
     return {
-      form: {
-        HasDelirium: 0, // 是否有儋妄
-        HasConvulsion: 0, // 是否有抽搐
-        HasDrowsiness: 0, // 是否有昏睡
-        HasComa: 0, // 是否有昏迷
-        HasStiffNeck: 0, // 是否有颈部强直
-        HasRestlessness: 0, // 是否有烦躁不安
-        HasMuscleParalysisNeckShoulder: 0, // 是否有颈肩部肌肉迟缓性瘫痪
-        HasMuscleParalysisLimbs: 0, // 是否有肢体肌肉迟缓性瘫痪
-        HasSwallowingDifficulty: 0, // 是否有吞咽困难
-        HasSpeechDisorder: 0, // 是否有语言障碍
-        HasConsciousnessDisorder: 0, // 是否有意识障碍或惊厥
-        HasDizziness: 0, // 是否有头晕
-        HasTinnitus: 0, // 是否有耳鸣
-        HasHearingLoss: 0, // 是否有听力减退
+      symptoms: {
+        HasDelirium: { weightScore: 0, symptomWeightingId: null }, // 是否有儋妄
+        HasConvulsion: { weightScore: 0, symptomWeightingId: null }, // 是否有抽搐
+        HasDrowsiness: { weightScore: 0, symptomWeightingId: null }, // 是否有昏睡
+        HasComa: { weightScore: 0, symptomWeightingId: null }, // 是否有昏迷
+        HasStiffNeck: { weightScore: 0, symptomWeightingId: null }, // 是否有颈部强直
+        HasRestlessness: { weightScore: 0, symptomWeightingId: null }, // 是否有烦躁不安
+        HasMuscleParalysisNeckShoulder: { weightScore: 0, symptomWeightingId: null }, // 是否有颈肩部肌肉迟缓性瘫痪
+        HasMuscleParalysisLimbs: { weightScore: 0, symptomWeightingId: null }, // 是否有肢体肌肉迟缓性瘫痪
+        HasSwallowingDifficulty: { weightScore: 0, symptomWeightingId: null }, // 是否有吞咽困难
+        HasSpeechDisorder:  { weightScore: 0, symptomWeightingId: null }, // 是否有语言障碍
+        HasConsciousnessDisorder: { weightScore: 0, symptomWeightingId: null },// 是否有意识障碍或惊厥
+        HasDizziness: { weightScore: 0, symptomWeightingId: null }, // 是否有头晕
+        HasTinnitus: { weightScore: 0, symptomWeightingId: null }, // 是否有耳鸣
+        HasHearingLoss: { weightScore: 0, symptomWeightingId: null },// 是否有听力减退
       },
       rules: {},
       scoreLabels: [
@@ -73,34 +73,39 @@ export default {
     };
   },
 
-watch: {
-  symptomsData: {
-    immediate: true,
-    handler(newData) {
-      newData.forEach((item) => {
-        const fieldName = item.symptomFieldName;  
-        if (this.form.hasOwnProperty(fieldName)) {
-          this.form[fieldName] = item.weightScore; // 直接将 weightScore 映射到 form 中
-        }
-      });
-      this.updateWeightScore(); 
+  watch: {
+    symptomsData: {
+      immediate: true,
+      handler(newData) {
+        newData.forEach((item) => {
+          const fieldName = item.symptomFieldName;
+          if (this.symptoms.hasOwnProperty(fieldName)) {
+            this.symptoms[fieldName].weightScore = item.weightScore;
+            this.symptoms[fieldName].symptomWeightingId =
+              item.symptomWeightingId;
+          }
+        });
+        this.updateWeightScore();
+      },
     },
   },
-},
-
-
   methods: {
-    // 更新总分数，并传递给父组件
+    // 更新总分
     updateWeightScore() {
-      const totalScore = Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
-      this.$emit("update-weight-score", totalScore);  
+      const totalScore = Object.values(this.symptoms).reduce(
+        (acc, symptom) => acc + Number(symptom.weightScore),
+        0
+      );
+      this.$emit("update-weight-score", totalScore);
     },
   },
-
   computed: {
     // 计算总分
     totalWeightScore() {
-      return Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
+      return Object.values(this.symptoms).reduce(
+        (acc, symptom) => acc + Number(symptom.weightScore),
+        0
+      );
     },
   },
 };

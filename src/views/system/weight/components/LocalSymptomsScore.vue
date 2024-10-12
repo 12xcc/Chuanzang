@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <el-form
-      :model="form"
+      :model="symptoms"
       label-width="140px"
       class="form-container"
       ref="form"
@@ -17,7 +17,7 @@
           <el-tag type="primary">{{ score.label }}</el-tag>
           <el-slider
             class="custom-slider"
-            v-model.number="form[score.model]"
+            v-model.number="symptoms[score.model].weightScore"
             show-input
             @change="updateWeightScore"
           />
@@ -29,29 +29,29 @@
 
 <script>
 export default {
-    props: {
+  props: {
     symptomsData: {
       type: Array,
-      required: true, 
+      required: true,
     },
   },
   data() {
     return {
-      form: {
-        HasConjunctivitis: 0, // 是否有结膜炎
-        HasConjunctivalCongestion: 0, // 是否有眼结膜充血、肿胀疼痛
-        HasEyelidEdema: 0, // 是否有上下眼睑水肿
-        HasSmellTasteLoss: 0, // 是否有嗅觉味觉减退或丧失
-        HasFacialRednessOrPallor: 0, // 是否有颜面潮红或苍白
-        HasRednessNeckChest: 0, // 是否有颈部、胸部潮红
-        HasLipCyanosis: 0, // 是否有口唇发绀
-        HasSkinPallorOrBruising: 0, // 是否有皮肤苍白或带青紫
-        HasGumBleeding: 0, // 是否有牙龈出血
-        HasKidneyPain: 0, // 是否有肾区疼痛
-        HasLowBackPain: 0, // 是否有腰痛
-        HasOrbitalPain: 0, // 是否有眼眶痛
-        HasMucosalBleedingInOralOrNasal: 0, // 是否有口腔、鼻腔等处黏膜出血点
-        HasSkinBleedingPoints: 0, // 是否有腋下/上臂/胸部或其它部位皮肤出血点
+      symptoms: {
+        HasConjunctivitis: { weightScore: 0, symptomWeightingId: null },
+        HasConjunctivalCongestion: { weightScore: 0, symptomWeightingId: null },
+        HasEyelidEdema: { weightScore: 0, symptomWeightingId: null },
+        HasSmellTasteLoss: { weightScore: 0, symptomWeightingId: null },
+        HasFacialRednessOrPallor: { weightScore: 0, symptomWeightingId: null },
+        HasRednessNeckChest: { weightScore: 0, symptomWeightingId: null },
+        HasLipCyanosis: { weightScore: 0, symptomWeightingId: null },
+        HasSkinPallorOrBruising: { weightScore: 0, symptomWeightingId: null },
+        HasGumBleeding: { weightScore: 0, symptomWeightingId: null },
+        HasKidneyPain: { weightScore: 0, symptomWeightingId: null },
+        HasLowBackPain: { weightScore: 0, symptomWeightingId: null },
+        HasOrbitalPain: { weightScore: 0, symptomWeightingId: null },
+        HasMucosalBleedingInOralOrNasal: { weightScore: 0, symptomWeightingId: null },
+        HasSkinBleedingPoints: { weightScore: 0, symptomWeightingId: null },
       },
       rules: {},
       scoreLabels: [
@@ -67,46 +67,48 @@ export default {
         { label: "是否有肾区疼痛", model: "HasKidneyPain" },
         { label: "是否有腰痛", model: "HasLowBackPain" },
         { label: "是否有眼眶痛", model: "HasOrbitalPain" },
-        { label: "是否有口腔、鼻腔等处黏膜出血点", model: "HasMucosalBleedingInOrNasal" },
+        { label: "是否有口腔、鼻腔等处黏膜出血点", model: "HasMucosalBleedingInOralOrNasal" },
         { label: "是否有腋下/上臂/胸部或其它部位皮肤出血点", model: "HasSkinBleedingPoints" },
       ],
     };
   },
-
-watch: {
-  symptomsData: {
-    immediate: true,
-    handler(newData) {
-      newData.forEach((item) => {
-        const fieldName = item.symptomFieldName;  
-        if (this.form.hasOwnProperty(fieldName)) {
-          this.form[fieldName] = item.weightScore; // 直接将 weightScore 映射到 form 中
-        }
-      });
-      this.updateWeightScore(); 
+  watch: {
+    symptomsData: {
+      immediate: true,
+      handler(newData) {
+        newData.forEach((item) => {
+          const fieldName = item.symptomFieldName;
+          if (this.symptoms.hasOwnProperty(fieldName)) {
+            this.symptoms[fieldName].weightScore = item.weightScore;
+            this.symptoms[fieldName].symptomWeightingId = item.symptomWeightingId;
+          }
+        });
+        this.updateWeightScore();
+      },
     },
   },
-},
-
-
-
-
   methods: {
-    // 更新总分数，并传递给父组件
+    // 更新总分
     updateWeightScore() {
-      const totalScore = Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
-      this.$emit("update-weight-score", totalScore);  
+      const totalScore = Object.values(this.symptoms).reduce(
+        (acc, symptom) => acc + Number(symptom.weightScore),
+        0
+      );
+      this.$emit("update-weight-score", totalScore);
     },
   },
-
   computed: {
     // 计算总分
     totalWeightScore() {
-      return Object.values(this.form).reduce((acc, score) => acc + Number(score), 0);
+      return Object.values(this.symptoms).reduce(
+        (acc, symptom) => acc + Number(symptom.weightScore),
+        0
+      );
     },
   },
 };
 </script>
+
 
 <style scoped>
 .custom-drawer {
