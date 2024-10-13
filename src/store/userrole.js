@@ -22,7 +22,7 @@ export const useUserStore = defineStore('user', {
       localStorage.removeItem('user');
     },
     isNurse() {
-      return this.role === 'nurse'; // 检查角色
+      return this.role === 'nurse'; 
     },
   }  
 });

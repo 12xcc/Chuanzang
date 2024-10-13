@@ -66,7 +66,7 @@ import { useUserStore } from "@/store/userrole"; // 引入用户角色 store
 import { ElMessage } from 'element-plus'; 
 import passwordOpen from "../../assets/password_close.png";
 import passwordClose from "../../assets/password_open.png";
-
+import { useTagsStore } from "@/store/tags.js";
 export default {
   setup() {
     const router = useRouter();
@@ -76,6 +76,7 @@ export default {
     const passwordFieldType = ref("password");
     const usernameError = ref("");
     const passwordError = ref("");
+    const tagStore = useTagsStore();
 
     const togglePasswordVisibility = () => {
       passwordFieldType.value =
@@ -106,8 +107,10 @@ const handleSubmit = () => {
     };
     userStore.login(userData);
     localStorage.setItem('user', JSON.stringify(userData)); // 保存到 localStorage
+    tagStore.removeAllTag (); //避免不同登录时出现其他角色的tags
     router.push("/user/password");
     ElMessage.success("登录成功");
+  
   } else {
      ElMessage.error("账号或密码错误");
   }

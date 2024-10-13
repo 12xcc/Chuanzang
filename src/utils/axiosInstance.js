@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const axiosInstance = axios.create({
     baseURL: '', // 设置基础 URL
-    // baseURL: 'http://43.138.213.55:8888/', // 设置基础 URL
+    // baseURL: 'http://43.138.213.55:8080/', // 设置基础 URL
     timeout: 10000, // 设置请求超时
 });
 

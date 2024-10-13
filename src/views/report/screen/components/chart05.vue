@@ -23,19 +23,20 @@
           style="width: 100%; height: 100%;"
           :show-overflow-tooltip="true"
         >
-          <el-table-column prop="Name" label="姓名" width="60" />
-          <el-table-column prop="Department" label="部门" width="80" />
-          <el-table-column prop="statu"  label="健康状况" width="80">
+          <el-table-column prop="name" label="姓名" width="60" />
+          <el-table-column prop="department" label="部门" width="80" />
+
+          <el-table-column prop="isHealth"  label="健康状况" width="80">
             <template #default="scope">
               <el-tag :type="scope.row.statu === '健康' ? 'success' : 'danger'">
                 {{ scope.row.statu }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="statu"  label="诊断结果" width="80">
+          <el-table-column prop="diagnosisDiseaseTypeName"  label="诊断结果" width="80">
             <template #default="scope">
-              <el-tag :type="scope.row.statu === '健康' ? 'success' : 'danger'">
-                {{ scope.row.statu }}
+              <el-tag :type="scope.row.diagnosisDiseaseTypeName === '健康' ? 'success' : 'danger'">
+                {{ scope.row.diagnosisDiseaseTypeName }}
               </el-tag>
             </template>
           </el-table-column>
@@ -49,18 +50,18 @@
 import { ref, onMounted } from 'vue';
 
 const data = ref([
-  { id: 1, Name: '张三', Department: '测量队', statu: '健康', gender: '男', PhoneNumber: '13022045890' },
-  { id: 2, Name: '李四', Department: '测量队', statu: '鼠疫', gender: '女', PhoneNumber: '13789645890' },
-  { id: 3, Name: '王五', Department: '合约部', statu: '健康', gender: '男', PhoneNumber: '12022045890' },
-  { id: 4, Name: '赵六', Department: '合约部', statu: '新型冠状病毒感染', gender: '女', PhoneNumber: '13022045890' },
-  { id: 5, Name: '钱七', Department: '测量队', statu: '炭疽', gender: '男', PhoneNumber: '13022045890' },
-  { id: 6, Name: '孙八', Department: '测量队', statu: '健康', gender: '男', PhoneNumber: '14900045890' },
-  { id: 7, Name: '周九', Department: '测量队', statu: '健康', gender: '男', PhoneNumber: '12082045890' },
-  { id: 8, Name: '吴十', Department: '测量队', statu: '健康', gender: '男', PhoneNumber: '19022333890' }
+  { id: 1, name: '张三', department: '测量队', statu: '健康', gender: '男', PhoneNumber: '13022045890' },
+  { id: 2, name: '李四', department: '测量队', statu: '鼠疫', gender: '女', PhoneNumber: '13789645890' },
+  { id: 3, name: '王五', department: '合约部', statu: '健康', gender: '男', PhoneNumber: '12022045890' },
+  { id: 4, name: '赵六', department: '合约部', statu: '新型冠状病毒感染', gender: '女', PhoneNumber: '13022045890' },
+  { id: 5, name: '钱七', department: '测量队', statu: '炭疽', gender: '男', PhoneNumber: '13022045890' },
+  { id: 6, name: '孙八', department: '测量队', statu: '健康', gender: '男', PhoneNumber: '14900045890' },
+  { id: 7, name: '周九', department: '测量队', statu: '健康', gender: '男', PhoneNumber: '12082045890' },
+  { id: 8, name: '吴十', department: '测量队', statu: '健康', gender: '男', PhoneNumber: '19022333890' }
 ]);
 
 const displayedData = ref([...data.value]);
-const searchQuery = ref(''); // 搜索框内容
+const searchQuery = ref(''); 
 
 // 过滤数据
 const filterData = () => {

@@ -1,8 +1,5 @@
 <template>
   <div class="container">
-    <div class="left">
-      <!-- <el-icon class="icon" size="20"><Fold /></el-icon> -->
-    </div>
     <div class="right">
       <div class="tags-container">
         <el-tag
@@ -14,26 +11,32 @@
           @click="selectTag(tag)"
         >
           {{ tag.title }}
-          <!-- <template #close>
-           <el-icon class="closeicon"><Close /></el-icon>
-          </template> -->
         </el-tag>
       </div>
+    </div>
+    <div class="left">
+      <el-button
+        style="font-size: 12px; position: absolute; right: 10px; top: 5px"
+        @click="handleLogout"
+      >
+        登出
+      </el-button>
     </div>
   </div>
 </template>
 
 <script>
-import { Fold, Close } from '@element-plus/icons-vue';
-import { mapState } from 'pinia';
-import { useTagsStore } from '@/store/tags';
-import { useRouter } from 'vue-router';
+import { mapState } from "pinia";
+import { useTagsStore } from "@/store/tags";
+import { useRouter } from "vue-router";
+import { useUserStore } from "@/store/userrole.js"; // 引入用户 store
+import { ElMessageBox, ElMessage } from "element-plus";
 
 export default {
-  name: 'NavHeader',
+  name: "NavHeader",
 
   computed: {
-    ...mapState(useTagsStore, ['tagsList']),
+    ...mapState(useTagsStore, ["tagsList"]),
     currentPath() {
       return this.$router.currentRoute.value.path;
     },
@@ -45,7 +48,9 @@ export default {
     },
 
     removeTag(tagPath) {
-      const currentTagIndex = this.tagsList.findIndex(tag => tag.path === tagPath);
+      const currentTagIndex = this.tagsList.findIndex(
+        (tag) => tag.path === tagPath
+      );
 
       // 删除标签
       this.$store.removeTag(tagPath);
@@ -56,16 +61,56 @@ export default {
         if (previousTag) {
           this.$router.push(previousTag.path);
         } else {
-          this.$router.push('/user/password');
+          this.$router.push("/user/password");
         }
       }
     },
-  },
 
+   async handleLogout() {
+      const userStore = useUserStore();
+
+      ElMessageBox.confirm(
+        '您确定要退出登录吗？', 
+        '确认退出', 
+        {
+          confirmButtonText: '确认',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+      )
+      .then(async () => {
+
+        // 清除本地用户状态和存储
+        userStore.$reset(); // 清空用户 Pinia 状态
+        localStorage.removeItem('user'); // 清除 localStorage 中的用户信息
+
+        // 可选：调用后端 API 进行安全登出
+        // try {
+        //   await fetch('/api/logout', { method: 'POST' });
+        // } catch (error) {
+        //   console.error("Logout API failed", error);
+        // }
+
+        ElMessage({
+          type: 'success',
+          message: '退出登录成功',
+        });
+        this.$router.push("/login");
+
+      })
+      .catch(() => {
+        ElMessage({
+          type: 'info',
+          message: '已取消退出操作',
+        });
+      });
+    }
+  },
+  
   created() {
     this.$store = useTagsStore();
     this.$router = useRouter();
-  }
+  },
 };
 </script>
 
@@ -73,51 +118,53 @@ export default {
 .container {
   display: flex;
   align-items: center;
-  background: #FFFFFF;
+  background: #ffffff;
   height: 100%;
   padding-right: 25px;
 }
 
 .left {
-  display: flex;
+  position: absolute;
+  right: 0px;
+  display: block;
   align-items: center;
-  height: 100%;
+  height: 40px;
+  width: 80px;
+  background: #ffffff;
 }
 
 .icon {
   width: 45px;
   height: 100%;
-  color: #333333 ;
-  background-color: #FFFFFF;
+  color: #333333;
+  background-color: #ffffff;
 }
 
 .icon:hover {
   background-color: #fafafa;
   cursor: pointer;
-
 }
 
 .tags-container {
   display: flex;
-  align-items: center; 
+  align-items: center;
   gap: 10px;
   padding: 10px;
   cursor: pointer;
 }
 
 .el-tag {
-  color: #A6A6A6; 
-  border: 1px solid #A6A6A6;
-  background-color: #FAFAFA; 
+  color: #a6a6a6;
+  border: 1px solid #a6a6a6;
+  background-color: #fafafa;
   height: 30px;
-  line-height: 30px; 
+  line-height: 30px;
   padding: 0 12px;
 }
 
 .el-tag.active {
-  color: #285AC8;
-  border: 1px solid #285AC8;
-  background-color: #FAFAFA;
+  color: #285ac8;
+  border: 1px solid #285ac8;
+  background-color: #fafafa;
 }
-
 </style>
