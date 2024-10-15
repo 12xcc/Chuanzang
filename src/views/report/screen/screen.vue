@@ -45,10 +45,12 @@ export default {
 <style scoped>
 .container{
   background: #FFFFFF;
-  width: 100%;
+  width:100%;
   height: auto;
   border-radius: 5px;
+ 
 }
+
 .title{
     text-align: center;
     width: 100%;

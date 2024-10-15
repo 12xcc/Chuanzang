@@ -15,6 +15,7 @@
           clearable
           size="default"
           style="width: 200px; margin-right: -15px"
+          @clear="handleQuery"
         >
           <el-option
             value="新型冠状病毒感染"
@@ -192,7 +193,7 @@ export default {
               (this.queryParams.pageNum - 1) * this.queryParams.pageSize +
               index +
               1,
-            MaterialType: this.queryParams.diseaseTypeName || "未知类型",
+            MaterialType: item.materialType || "未知类型",
             Title: item.title || "-",
             FilePath: item.filePath || "-",
             Link: item.link || "-",

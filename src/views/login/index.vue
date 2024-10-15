@@ -87,7 +87,7 @@ export default {
     const users = {
       19357907217: { Name:"张三", password: "123456", role: "admin" },
       13330656624: { Name:"李四", password: "123456", role: "nurse" },
-      19508191094: { Name:"张三", password: "123456", role: "cdc" }
+      19508191094: { Name:"王五", password: "123456", role: "cdc" }
     };
 
 const handleSubmit = () => {

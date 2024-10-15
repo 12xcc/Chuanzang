@@ -35,8 +35,6 @@
                 placeholder="请输入标题"
                 @blur="$refs.form.validateField('Title')"
                 clearable
-                :disabled="allDisabled"
-                 
               ></el-input>
             </el-form-item>
 
@@ -44,31 +42,52 @@
             <el-form-item label="材料类型" prop="MaterialType">
               <el-radio-group
                 v-model="form.MaterialType"
-                :disabled="allDisabled"
-                 
               >
                 <el-radio value="图片">图片</el-radio>
                 <el-radio value="文章">文章</el-radio>
                 <el-radio value="视频">视频</el-radio>
-                <el-radio value="链接">链接</el-radio>
+                <el-radio value="网页链接">网页链接</el-radio>
               </el-radio-group>
             </el-form-item>
           </div>
         </div>
 
-        <!------------------------------------ 症状标签 ------------------------------->
-
+        <!-- 文件上传或链接输入 -->
         <div class="select flex gap-2 mb-4">
           <div class="title-container">
             <div class="blue-box"></div>
             <span class="title-text">请上传材料文件</span>
           </div>
-          <UploadSection
-            v-if="form.MaterialType === '图片' || form.MaterialType === '文章'"
-            ref="UploadSection"
+          <!-- 文章时启用 PdfUpload -->
+          <PdfUpload
+            v-if="form.MaterialType === '文章'"
+            :file-path="form.filePath"
+            :editable="true"
+            ref="PdfUpload"
           />
-          <VideoUpload v-if="form.MaterialType === '视频'" ref="VideoUpload" />
-          <el-input v-if="form.MaterialType === '链接'" style="width:400px"/>
+
+          <!-- 图片时启用 ImageUpload -->
+          <ImageUpload
+            v-if="form.MaterialType === '图片'"
+            :file-path="form.filePath"
+             :editable="true"
+            ref="ImageUpload"
+          />
+
+          <!-- 视频时启用 VedioUpload -->
+          <VedioUpload
+            v-if="form.MaterialType === '视频'"
+            :file-path="form.filePath"
+             :editable="true"
+            ref="VedioUpload"
+          />
+
+          <!-- 网页链接时 -->
+          <el-input
+            v-model="form.Link"
+            v-if="form.MaterialType === '网页链接'"
+            style="width: 400px"
+          />
         </div>
       </el-form>
     </div>
@@ -77,69 +96,37 @@
 
 <script>
 import { ElMessage } from "element-plus";
-import UploadSection from "@/components/UploadSection.vue";
-import VideoUpload from "@/components/VideoUpload.vue";
-
+import PdfUpload from "./pdfUpload.vue";
+import ImageUpload from "./imageUpload.vue";
+import VedioUpload from "./VideoUpload.vue";
+import { saveMaterial } from "@/api/propaganda/propaganda.js"
 export default {
   components: {
-    UploadSection,
-    VideoUpload,
+    PdfUpload,
+    ImageUpload,
+    VedioUpload,
   },
   data() {
     return {
-      allDisabled: false,
-       
       visible: false, // 控制弹窗显示
       form: {
         Title: '',
         MaterialType: '',
       },
       rules: {
-        Title:[{ required: true, message: '请填写标题', }],
-        MaterialType: [
-          { required: true, message: '请选择材料类型', trigger: 'change' },
-        ],
-        fileOrInput: [
-          {
-            validator: (rule, value, callback) => {
-              if (!this.form.MaterialType) {
-                return callback(); // 如果没有选择材料类型，直接返回
-              }
-              const isFileUploaded = this.$refs.UploadSection && this.$refs.UploadSection.hasFile; // 假设UploadSection有hasFile属性
-              const isInputFilled = this.form.MaterialType === '链接' ? this.form.link : false; // 检查链接输入框是否填写
-              if (isFileUploaded || isInputFilled) {
-                return callback(); // 如果上传文件或输入框不为空，验证通过
-              }
-              callback(new Error('请上传文件或填写输入框')); // 否则返回错误信息
-            },
-            trigger: 'change',
-          },
-        ],
+        Title: [{ required: true, message: '请填写标题', trigger: 'blur' }],
+        MaterialType: [{ required: true, message: '请选择材料类型', trigger: 'change' }],
       },
     };
   },
-
   methods: {
-    toggleTag(field) {
-      this.form[field] = !this.form[field];
-    },
-    showDrawer(user) {
-      this.form = { ...user };
+    showDrawer() {
       this.visible = true;
     },
     handleCancel() {
       this.visible = false;
-      this.clearValidationMessages(); // 清除验证信息
       this.handleReset();
     },
-
-    clearValidationMessages() {
-      Object.keys(this.rules).forEach(key => {
-        this.$refs.form.clearValidate(key);
-      });
-      this.$refs.form.clearValidate('MaterialType');
-    },
-
     async handleSubmit() {
       try {
         await this.$refs.form.validate();
@@ -149,17 +136,13 @@ export default {
           type: "success",
         });
         this.handleReset();
-        this.clearValidationMessages(); // 清除验证信息
       } catch (error) {
-        // 处理验证错误
-        console.error("验证失败:", error.message);
         ElMessage({
-          message:"提交失败",
+          message: "提交失败",
           type: "error",
         });
       }
     },
-
     handleReset() {
       this.form = {
         Title: '',

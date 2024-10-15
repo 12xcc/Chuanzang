@@ -53,3 +53,17 @@ export const getLearningMaterialFile = async (filename) => {
   );
   return response;
 };
+
+// 添加宣传材料
+export const saveMaterial = async (formData) => {
+  const response = await axiosInstance.post(
+    "/cdcStaff/promotionalMaterialsManager/saveMaterial",
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response;
+};

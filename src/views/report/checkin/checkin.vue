@@ -27,6 +27,7 @@
           v-model="queryParams.choice"
           placeholder="请选择字段"
           clearable
+          @clear="handleQuery"
           size="default"
           style="width: 180px; margin-right: -15px"
         >
@@ -42,6 +43,7 @@
           v-model="queryParams.check"
           placeholder="请输入文本"
           clearable
+          @clear="handleQuery"
           size="default"
           @keyup.enter.native="handleQuery"
           style="width: 180px !important; margin-right: -15px"
@@ -56,6 +58,7 @@
           start-placeholder="请选择"
           end-placeholder="打卡日期范围"
           style="width: 280px"
+          @clear="handleQuery"
         />
       </el-form-item>
 

@@ -648,7 +648,7 @@ handleSubmit() {
 
         // 调用接口提交用户信息
         const response = await axiosInstance.post(
-          "/userManager/addOneUser",
+          "/admin/userManager/addOneUser",
           requestData, // 请求体
           {
             headers: {

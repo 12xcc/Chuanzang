@@ -13,6 +13,7 @@
           v-model="queryParams.check"
           placeholder="请输入文本"
           clearable
+          @clear="handleQuery"
           size="default"
           @keyup.enter.native="handleQuery"
           style="width: 200px !important; margin-right: -15px"

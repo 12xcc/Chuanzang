@@ -101,7 +101,7 @@ export default {
       .catch(() => {
         ElMessage({
           type: 'info',
-          message: '已取消退出操作',
+          message: '已取消登出操作',
         });
       });
     }

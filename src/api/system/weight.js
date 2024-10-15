@@ -19,7 +19,7 @@ export const getExcelInitialWeightScoringTableForInfectiousDiseases = async () =
   return response;
 };
 
-// 根据疾病id批量更新疾病权重信息
+// 根据疾病id批量更新疾病权重信息 可以只传修改过的几条数据
 export const updateBatchWeightScoring = async (params) => {
   const response = await axiosInstance.post("/admin/systemValueManager/updateBatchWeightScoring", params);
   return response;

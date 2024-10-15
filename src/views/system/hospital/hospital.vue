@@ -13,9 +13,10 @@
           v-model="queryParams.check"
           placeholder="请输入文本"
           clearable
+          @clear="handleQuery"
           size="default"
           @keyup.enter.native="handleQuery"
-          style="width:200px !important; margin-right:-15px;"
+          style="width: 200px !important; margin-right: -15px"
         />
       </el-form-item>
 
@@ -26,53 +27,72 @@
           @click="handleQuery"
           plain
           size="default"
-          style="margin-left:5px;"
-        >搜索</el-button>
+          style="margin-left: 5px"
+          >搜索</el-button
+        >
         <el-button
           type="primary"
           class="custom-button"
           @click="handleImport"
           size="default"
-        >导入</el-button>
+          >导入</el-button
+        >
         <el-button
           type="warning"
           class="custom-button"
           @click="handleDownload"
           size="default"
-        >导入模板下载</el-button>
+          >导入模板下载</el-button
+        >
         <el-button
           type="primary"
           class="custom-button"
           @click="handleExport"
           size="default"
-        >导出</el-button>
+          >导出</el-button
+        >
       </el-form-item>
     </el-form>
 
     <!-- 表格部分 -->
     <div class="usertable">
-      <el-table 
-        :header-cell-style="{height:'40px',background:'#f5f7fa',color: '#333333'}" 
-        v-loading="loading" 
-        :data="allData" 
-        style="width: 100%;"
+      <el-table
+        :header-cell-style="{
+          height: '40px',
+          background: '#f5f7fa',
+          color: '#333333',
+        }"
+        v-loading="loading"
+        :data="allData"
+        style="width: 100%"
         :height="tableHeight"
         :show-overflow-tooltip="true"
       >
-        <el-table-column 
-          type="selection" 
-          width="55" 
-        />
+        <el-table-column type="selection" width="55" />
         <el-table-column prop="serialNumber" label="序号" width="80" />
         <el-table-column prop="HospitalName" label="医院名" width="300" />
-        <el-table-column prop="HospitalPhoneNumber" label="联系电话" width="200" />
+        <el-table-column
+          prop="HospitalPhoneNumber"
+          label="联系电话"
+          width="200"
+        />
         <el-table-column prop="Address" label="地址" min-width="500" />
         <el-table-column fixed="right" label="操作" min-width="260">
           <template #default="scope">
-            <el-button link type="primary" size="large" @click="handleClick(scope.row.HospitalID)">
+            <el-button
+              link
+              type="primary"
+              size="large"
+              @click="handleClick(scope.row.HospitalID)"
+            >
               修改
             </el-button>
-            <el-button link type="danger" size="large" @click="handleDelete(scope.row)">
+            <el-button
+              link
+              type="danger"
+              size="large"
+              @click="handleDelete(scope.row.HospitalID)"
+            >
               删除
             </el-button>
           </template>
@@ -97,16 +117,17 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue';
-import Pagination from '@/components/pagination.vue';
-import Hospitaldata from './components/hospitaldata.vue';
-import BatchImport from './components/batchImport.vue'
+import { ref, computed, onMounted } from "vue";
+import Pagination from "@/components/pagination.vue";
+import Hospitaldata from "./components/hospitaldata.vue";
+import BatchImport from "./components/batchImport.vue";
 import {
   fetchHospitalData,
   exportHospitalData,
-  getExcelHospitalTemplate, 
-} from '@/api/system/hospital.js'; 
-import { ElMessage } from 'element-plus';
+  getExcelHospitalTemplate,
+  deleteHospitalInfo,
+} from "@/api/system/hospital.js";
+import { ElMessage } from "element-plus";
 
 export default {
   components: {
@@ -114,13 +135,13 @@ export default {
     Hospitaldata,
     BatchImport,
   },
-  
+
   data() {
     return {
       queryParams: {
-        check: '',
+        check: "",
         pageNum: 1,
-        pageSize: 15
+        pageSize: 15,
       },
       allData: [],
       showSearch: true,
@@ -173,7 +194,6 @@ export default {
       }
     },
 
-
     // 批量导入
     handleImport() {
       this.$refs.BatchImport.showDialog();
@@ -182,7 +202,7 @@ export default {
     // 下载导入模板
     async handleDownload() {
       try {
-        const response = await getExcelHospitalTemplate(); 
+        const response = await getExcelHospitalTemplate();
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement("a");
         link.href = url;
@@ -206,7 +226,7 @@ export default {
     // 导出医院信息
     async handleExport() {
       try {
-        const response = await exportHospitalData(); 
+        const response = await exportHospitalData();
         if (response.status === 200) {
           const url = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement("a");
@@ -240,7 +260,32 @@ export default {
     },
 
     // 删除医院
-    handleDelete(row) {
+    async handleDelete(HospitalID) {
+      this.$confirm("您确定要删除该医院吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          try {
+            const response = await deleteHospitalInfo(HospitalID);
+            if (response.data.code === 1) {
+              this.handleQuery();
+              ElMessage({
+                message: "删除成功",
+                type: "success",
+              });
+            } else {
+              ElMessage.error("删除失败：" + response.data.message);
+            }
+          } catch (error) {
+            ElMessage.error("删除失败，请重试！");
+          }
+        })
+        .catch(() => {
+          // 处理取消操作
+          // this.$message.info("已取消状态切换");
+        });
     },
 
     // 分页
@@ -251,25 +296,24 @@ export default {
     },
 
     // 处理批量导入的数据
-    async handleImportData(importedData) {
-    },
+    async handleImportData(importedData) {},
   },
 
   mounted() {
     this.handleQuery();
-  }
+  },
 };
 </script>
 
 <style scoped>
 .container {
   padding: 10px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border-radius: 5px;
 }
 
 .custom-button {
-  margin-right:10px;
+  margin-right: 10px;
 }
 
 .usertable {

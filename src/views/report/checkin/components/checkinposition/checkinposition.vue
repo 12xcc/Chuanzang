@@ -160,14 +160,12 @@ export default {
           this.form.Gender = data.gender; // 性别
           this.form.Ethnicity = data.ethnicity; // 民族
           this.form.Department = data.department; // 部门/工种
-
-          // 格式化 WorkOnPlateauStartDate
-          if (data.checkinDate && data.checkinDate.length === 3) {
-            const [year, month, day] = data.checkinDate;
-            this.form.CheckinDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-          } else {
-            this.form.CheckinDate = ""; 
-          }
+            this.form.CheckInDate = data.checkInDate
+              ? `${data.checkInDate[0]}-${String(data.checkInDate[1]).padStart(
+                  2,
+                  "0"
+                )}-${String(data.checkInDate[2]).padStart(2, "0")}`
+              : "";
         } else {
           console.error("获取用户信息失败:", response.data.msg);
         }

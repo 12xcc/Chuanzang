@@ -5,35 +5,38 @@
       <div class="table">
 
         <!-- 手机号搜索框 -->
-        <el-form-item label="手机号" prop="check" class="search" size="large">
-          <el-input
-            v-model="searchQuery"
-            placeholder="请输入手机号"
-            clearable
-            size="default"
-            style="width: 200px !important; margin-right: -15px"
-            @input="filterData" 
-          />
-        </el-form-item>
+        <div style="display:flex">
+          <el-form-item label="手机号" prop="check" class="search" size="large">
+            <el-input
+              v-model=" queryParams.check"
+              placeholder="请输入手机号"
+              clearable
+              size="default"
+              style="width: 160px !important; margin-right: -15px"
+            />
+          </el-form-item>
+          <el-button style="margin-top:33px;margin-left:30px" @click="filterData">
+            搜索
+          </el-button>
+        </div>
 
         <!-- 数据表格 -->
         <el-table 
-          :data="displayedData" 
+          :data="data" 
           :header-cell-style="{height:'15px',background:'#FFFFFF',color: '#333333'}" 
           style="width: 100%; height: 100%;"
           :show-overflow-tooltip="true"
         >
-          <el-table-column prop="name" label="姓名" width="60" />
-          <el-table-column prop="department" label="部门" width="80" />
-
-          <el-table-column prop="isHealth"  label="健康状况" width="80">
+        <el-table-column prop="userId" label="ID" width="60" />
+          <el-table-column prop="name" label="姓名" width="80" />
+          <el-table-column prop="isHealth" label="健康状况" width="80">
             <template #default="scope">
-              <el-tag :type="scope.row.statu === '健康' ? 'success' : 'danger'">
-                {{ scope.row.statu }}
+              <el-tag :type="scope.row.isHealth ? 'success' : 'danger'">
+                {{ scope.row.isHealth ? '健康' : '不健康' }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="diagnosisDiseaseTypeName"  label="诊断结果" width="80">
+          <el-table-column prop="diagnosisDiseaseTypeName" label="诊断结果" width="80">
             <template #default="scope">
               <el-tag :type="scope.row.diagnosisDiseaseTypeName === '健康' ? 'success' : 'danger'">
                 {{ scope.row.diagnosisDiseaseTypeName }}
@@ -46,39 +49,60 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue';
+<script>
+import { getChickInInfoByText } from '@/api/report/screen.js';
 
-const data = ref([
-  { id: 1, name: '张三', department: '测量队', statu: '健康', gender: '男', PhoneNumber: '13022045890' },
-  { id: 2, name: '李四', department: '测量队', statu: '鼠疫', gender: '女', PhoneNumber: '13789645890' },
-  { id: 3, name: '王五', department: '合约部', statu: '健康', gender: '男', PhoneNumber: '12022045890' },
-  { id: 4, name: '赵六', department: '合约部', statu: '新型冠状病毒感染', gender: '女', PhoneNumber: '13022045890' },
-  { id: 5, name: '钱七', department: '测量队', statu: '炭疽', gender: '男', PhoneNumber: '13022045890' },
-  { id: 6, name: '孙八', department: '测量队', statu: '健康', gender: '男', PhoneNumber: '14900045890' },
-  { id: 7, name: '周九', department: '测量队', statu: '健康', gender: '男', PhoneNumber: '12082045890' },
-  { id: 8, name: '吴十', department: '测量队', statu: '健康', gender: '男', PhoneNumber: '19022333890' }
-]);
+export default {
+  data() {
+    return {
+      queryParams: {
+        infoNumber: 5,
+      phoneNumber:null,
+      check:null,
+      },
+      data: []
+    };
+  },
+  methods: {
+    async filterData() {
+  this.loading = true;
+  try {
+    const params = {
+      infoNumber: this.queryParams.infoNumber || 5,
+      phoneNumber: this.queryParams.check,
+    };
 
-const displayedData = ref([...data.value]);
-const searchQuery = ref(''); 
+    const response = await getChickInInfoByText(params);
+    
+    // 假设返回的数据格式为 { code: 1, data: [...] }
+    if (response.data.code === 1) {
+      // 确保 data 是数组
+      if (Array.isArray(response.data.data)) {
+        this.data = response.data.data; 
+      } else {
+        this.$message.error("返回的数据格式不正确");
+      }
+    } else {
+      this.$message.error("获取用户数据失败，请重试！" + response.data.message);
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    this.$message.error("获取用户数据失败，请重试！");
+  } finally {
+    this.loading = false;
+  }
+}
 
-// 过滤数据
-const filterData = () => {
-  const query = searchQuery.value.trim();
-  if (query === '') {
-    displayedData.value = [...data.value]; // 如果请输入框为空，显示全部数据
-  } else {
-    displayedData.value = data.value.filter(item =>
-      item.PhoneNumber.includes(query) // 根据手机号筛选
-    );
+
+  },
+
+  mounted() {
+
   }
 };
-
-onMounted(() => {
-  displayedData.value = [...data.value]; // 初始化数据
-});
 </script>
+
+
 
 <style scoped>
 .container {
@@ -115,21 +139,16 @@ onMounted(() => {
 
 .search {
   margin-top: 30px;
-  margin-left: 30px;
+  margin-left: 10px;
 }
 
 .table {
   height: 100%;
+  
 }
 
 .el-table {
-  margin-top: 25px;
+  margin-top: 0px;
 }
 
-.avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  object-fit: cover;
-}
 </style>

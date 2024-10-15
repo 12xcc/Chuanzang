@@ -7,7 +7,6 @@
       size="default"
       :inline="true"
       v-show="showSearch"
-      style="display: flex"
     >
       <el-form-item label="" prop="choice">
         <el-select

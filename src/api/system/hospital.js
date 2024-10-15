@@ -67,3 +67,11 @@ export const putHospitalDataByExcel = async (formData) => {
   );
   return response;
 };
+
+// 删除医院信息
+export const deleteHospitalInfo = async (hospitalId) => {
+  const response = await axiosInstance.delete(
+    `/admin/systemHospitalManager/deleteHospitalInfo/${hospitalId}`,
+  );
+  return response;
+};

@@ -39,7 +39,9 @@ const getTitle = () => {
 <style lang="less" scoped>
 .aside-container {
   height: 100%;
-  width: 210px;
+  width: 217px;
+  overflow-y:auto ;
+  overflow-x:hidden ;
 }
 .logo-lg {
   font-style: normal;

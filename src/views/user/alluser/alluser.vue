@@ -14,6 +14,7 @@
           v-model="queryParams.UserType"
           placeholder="请选择用户类型"
           clearable
+          @clear="handleQuery"
           size="default"
           style="width: 200px; margin-right: -15px"
           @change="handleUserTypeChange"
@@ -50,6 +51,7 @@
           v-model="queryParams.check"
           placeholder="请输入搜索内容"
           clearable
+          @clear="handleQuery"
           size="default"
           @keyup.enter.native="handleQuery"
           style="width: 200px !important; margin-right: -15px"

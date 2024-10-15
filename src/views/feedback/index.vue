@@ -13,6 +13,7 @@
           v-model="queryParams.namecheck"
           placeholder="请输入姓名"
           clearable
+          @clear="handleQuery"
           size="default"
           @keyup.enter.native="handleQuery"
           style="width: 200px !important; margin-right: -15px"
@@ -23,6 +24,7 @@
           v-model="queryParams.phoneNumbercheck"
           placeholder="请输入联系电话"
           clearable
+          @clear="handleQuery"
           size="default"
           @keyup.enter.native="handleQuery"
           style="width: 200px !important; margin-right: -15px"
@@ -33,6 +35,7 @@
           v-model="queryParams.titlecheck"
           placeholder="请输入意见标题"
           clearable
+          @clear="handleQuery"
           size="default"
           @keyup.enter.native="handleQuery"
           style="width: 200px !important; margin-right: -15px"

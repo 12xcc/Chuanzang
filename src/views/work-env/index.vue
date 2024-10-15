@@ -13,6 +13,7 @@
           v-model="queryParams.WorkStationName"
           placeholder="请输入文本"
           clearable
+          @clear="handleQuery"
           size="default"
           @keyup.enter.native="handleQuery"
           style="width: 200px !important; margin-right: -15px"
@@ -40,6 +41,7 @@
           end-placeholder=""
           value-format="YYYY-MM"
           style="width: 300px"
+          @clear="handleQuery"
         />
       </el-form-item>
 
