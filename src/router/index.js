@@ -32,7 +32,7 @@ const hospital = () =>import('@/views/system/hospital/hospital.vue')
 
 const feedback = () =>import('@/views/feedback/index.vue')
 const propaganda = () => import('@/views/propaganda/index.vue')
-
+const satisfaction = () => import('@/views/satisfaction/index.vue')
 // 1.定义路由数据
 const routes=[
     {
@@ -152,10 +152,17 @@ const routes=[
                 component: feedback,
                 name: 'feedback'
             },
+            // 宣传材料
             {
                 path: 'propaganda',
                 component: propaganda,
                 name: 'propaganda'
+            },
+            // 满意度调查
+            {
+                path: 'satisfaction',
+                component: satisfaction,
+                name: 'satisfaction'
             }
         ]
     },
