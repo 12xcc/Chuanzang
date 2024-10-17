@@ -19,7 +19,6 @@
           <el-option :key="1" label="姓名" :value="1"></el-option>
           <el-option :key="2" label="电话" :value="2"></el-option>
           <el-option :key="3" label="部门/工种" :value="3"></el-option>
-          <el-option :key="4" label="特殊职业" :value="4"></el-option>
         </el-select>
       </el-form-item>
 
@@ -41,7 +40,9 @@
           range-separator="到"
           start-placeholder="请选择"
           end-placeholder="就诊日期范围"
+          value-format="YYYY-MM-DD"
           style="width: 300px"
+          @clear="handleQuery"
         />
       </el-form-item>
 
@@ -53,25 +54,29 @@
           plain
           size="default"
           style="margin-left: 5px"
-        >搜索</el-button>
+          >搜索</el-button
+        >
         <el-button
           type="primary"
           class="custom-button"
           @click="handleExport"
           size="default"
-        >导出</el-button>
+          >导出</el-button
+        >
         <el-button
           type="warning"
           class="custom-button"
           @click="handleDownload"
           size="default"
-        >含检测数据导出</el-button>
+          >含检测数据导出</el-button
+        >
         <el-button
           type="primary"
           class="custom-button"
           @click="handleSubmitDiagnosis"
           size="default"
-        >提交诊断信息</el-button>
+          >提交诊断信息</el-button
+        >
       </el-form-item>
     </el-form>
 
@@ -84,20 +89,25 @@
           color: '#333333',
         }"
         v-loading="loading"
-        :data="paginatedData"
+        :data="allData"
         style="width: 100%"
         :height="tableHeight"
-        show-overflow-tooltip="true"
+        :show-overflow-tooltip="true"
       >
         <el-table-column type="selection" width="55" />
-        <el-table-column prop="serialNumber" label="序号" width="80" height="48" />
+        <el-table-column
+          prop="serialNumber"
+          label="序号"
+          width="80"
+          height="48"
+        />
         <el-table-column prop="userType" label="用户类型" width="120" />
         <el-table-column prop="name" label="姓名" width="100">
           <template #default="scope">
             <el-button
               v-if="isNurse()"
               type="text"
-              @click="handleCheckuser(scope.row)"
+              @click="handleCheckuser(scope.row.userId)"
             >
               {{ scope.row.name }}
             </el-button>
@@ -108,7 +118,7 @@
         <el-table-column prop="gender" label="性别" width="100" />
         <el-table-column prop="age" label="年龄" width="100" />
         <el-table-column prop="department" label="部门/工种" width="120" />
-        <el-table-column prop="diseaseType" label="确诊疾病" width="120">
+        <el-table-column prop="diseaseType" label="确诊疾病" width="160">
           <template #default="scope">
             <el-tag
               size="default"
@@ -126,7 +136,7 @@
               :type="
                 scope.row.diseaseOutcome === '治愈'
                   ? 'success'
-                  : scope.row.diseaseOutcome === '好转'
+                  : scope.row.diseaseOutcome === '未愈'
                   ? 'warning'
                   : 'danger'
               "
@@ -135,15 +145,34 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="admissionDate" label="就诊/入院日期" width="120" />
-        <el-table-column prop="dischargeDate" label="出院日期" width="120" />
-        <el-table-column prop="deathDate" label="死亡日期" width="120" />
+        <el-table-column prop="admissionDate" label="就诊/入院日期" width="120">
+          <template #default="scope">
+            {{ scope.row.admissionDate }}
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="dischargeDate" label="出院日期" width="120">
+          <template #default="scope">
+            {{ scope.row.dischargeDate }}
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="deathDate" label="死亡日期" width="120">
+          <template #default="scope">
+            {{ scope.row.deathDate }}
+          </template>
+        </el-table-column>
+
         <el-table-column fixed="right" label="操作" min-width="260">
           <template #default="scope">
-            <el-button link type="primary" size="large" @click="handleCheck(scope.row)">
+            <el-button
+              link
+              type="primary"
+              size="large"
+              @click="handleCheck(scope.row)"
+            >
               查看 / 编辑
             </el-button>
-            
           </template>
         </el-table-column>
       </el-table>
@@ -158,23 +187,25 @@
       />
     </div>
 
-    <Checkuser
-      ref="Checkuser"
-      :users="filteredData"
-      :visible="checkUserVisible"
-    />
+    <Checkuser ref="Checkuser" :users="allData" :visible="checkUserVisible" />
     <Checkdaignosisdata ref="Checkdaignosisdata" />
     <Checkuserdata ref="Checkuserdata" />
   </div>
 </template>
 
 <script>
-import { ref, computed } from "vue";
 import { useUserStore } from "@/store/userrole.js"; // 引入用户角色存储
 import Pagination from "@/components/pagination.vue";
 import Checkuser from "./components/checkuser.vue";
 import Checkdaignosisdata from "./components/checkdaignosisdata/checkdaignosisdata.vue";
-import Checkuserdata from '../user/alluser/components/checkuserdata.vue';
+import Checkuserdata from "../user/alluser/components/checkuserdata.vue";
+import {
+  pageSelectDiagnosis,
+  getExcelClinicalInformationExportForm,
+  saveDiagnosis,
+  selectDiagnosis,
+  updateDiagnosis,
+} from "@/api/diagnosis/diagnosis";
 
 export default {
   components: {
@@ -198,172 +229,92 @@ export default {
         pageNum: 1,
         pageSize: 15,
       },
-      allData: [
-          {
-          serialNumber: "1",
-          userType: "铁路职工",
-          name: "张伟",
-          phoneNumber: "13800000001",
-          gender: "男",
-          age: "44",
-          department: "工程技术部",
-          diseaseType: "流感",
-          discoveryMethod: "APP填报",
-          hospitalName: "拉萨医院",
-          diseaseOutcome: "治愈",
-          admissionDate: "2024-03-03",
-          dischargeDate: "2024-03-04",
-          deathDate: "",
-        },
-        {
-          serialNumber: "2",
-          userType: "铁路职工",
-          name: "李强",
-          phoneNumber: "13800000122",
-          gender: "男",
-          age: "35",
-          department: "工程技术部",
-          diseaseType: "流感",
-          discoveryMethod: "APP填报",
-          hospitalName: "拉萨医院",
-          diseaseOutcome: "死亡",
-          admissionDate: "2024-03-03",
-          dischargeDate: "2024-03-04",
-          deathDate: "",
-        },
-        {
-          serialNumber: "3",
-          userType: "铁路职工",
-          name: "王丽",
-          phoneNumber: "13800000003",
-          gender: "女",
-          age: "28",
-          department: "合约部",
-          diseaseType: "肠炭疽",
-          discoveryMethod: "APP填报",
-          hospitalName: "拉萨医院",
-          diseaseOutcome: "治愈",
-          admissionDate: "2024-03-03",
-          dischargeDate: "2024-03-04",
-          deathDate: "",
-        },
-        {
-          serialNumber: "4",
-          userType: "铁路职工",
-          name: "赵鹏",
-          phoneNumber: "13800340004",
-          gender: "男",
-          age: "39",
-          department: "测量队",
-          diseaseType: "新冠病毒感染",
-          discoveryMethod: "APP填报",
-          hospitalName: "拉萨医院",
-          diseaseOutcome: "好转",
-          admissionDate: "2024-03-03",
-          dischargeDate: "2024-03-04",
-          deathDate: "",
-        },
-        {
-          serialNumber: "5",
-          userType: "铁路职工",
-          name: "陈梅",
-          phoneNumber: "13800000005",
-          gender: "女",
-          age: "41",
-          department: "测量队",
-          diseaseType: "鼠疫",
-          discoveryMethod: "APP填报",
-          hospitalName: "拉萨医院",
-          diseaseOutcome: "治愈",
-          admissionDate: "2024-03-03",
-          dischargeDate: "2024-03-04",
-          deathDate: "",
-        },
-        {
-          serialNumber: "6",
-          userType: "铁路职工",
-          name: "刘洋",
-          phoneNumber: "13800000006",
-          gender: "男",
-          age: "32",
-          department: "工程技术部",
-          diseaseType: "流感",
-          discoveryMethod: "APP填报",
-          hospitalName: "拉萨医院",
-          diseaseOutcome: "治愈",
-          admissionDate: "2024-03-03",
-          dischargeDate: "2024-03-04",
-          deathDate: "",
-        },
-        {
-          serialNumber: "6",
-          userType: "铁路职工",
-          name: "张伟",
-          phoneNumber: "13800000006",
-          gender: "男",
-          age: "32",
-          department: "工程技术部",
-          diseaseType: "流感",
-          discoveryMethod: "APP填报",
-          hospitalName: "拉萨医院",
-          diseaseOutcome: "治愈",
-          admissionDate: "2024-03-08",
-          dischargeDate: "2024-03-10",
-          deathDate: "",
-        },
-      ],
+      allData: [],
       showSearch: true,
       loading: false,
+      total: 0,
     };
   },
   computed: {
-    filteredData() {
-      const { check, date } = this.queryParams;
-      const lowerCaseCheck = check ? check.toLowerCase() : "";
-      if (!check && (!date || date.length === 0)) {
-        return this.allData;
-      }
-      return this.allData.filter((item) => {
-        const fieldsToSearch = ["name", "phoneNumber", "department"];
-        const textMatch = check
-          ? fieldsToSearch.some((field) => {
-              const itemFieldValue =
-                item[field]?.toString().toLowerCase() || "";
-              return itemFieldValue.includes(lowerCaseCheck);
-            })
-          : true;
-
-        const admissionDate = new Date(item.admissionDate);
-        const dateMatch =
-          Array.isArray(date) &&
-          date.length === 2
-            ? admissionDate >= new Date(date[0]) && admissionDate <= new Date(date[1])
-            : true;
-
-        return textMatch && dateMatch;
-      });
-    },
-    paginatedData() {
-      const { pageNum, pageSize } = this.queryParams;
-      return this.filteredData.slice(
-        (pageNum - 1) * pageSize,
-        pageNum * pageSize
-      );
-    },
-    total() {
-      return this.filteredData.length;
-    },
     tableHeight() {
       return window.innerHeight - 300;
     },
   },
+
   methods: {
     isNurse() {
       return this.userStore.isNurse(); // 用户角色存储的 isNurse 方法
     },
-    handleQuery() {
-      this.queryParams.pageNum = 1;
+
+    async handleQuery() {
+      this.loading = true;
+      try {
+        let beginDate = "";
+        let endDate = "";
+
+        if (
+          Array.isArray(this.queryParams.date) &&
+          this.queryParams.date.length === 2
+        ) {
+          [beginDate, endDate] = this.queryParams.date;
+        }
+
+        const params = {
+          beginDate: beginDate || "", 
+          endDate: endDate || "", 
+          name: this.queryParams.choice === 1 ? this.queryParams.check : "",
+          phoneNumber:
+            this.queryParams.choice === 2 ? this.queryParams.check : "",
+          department:
+            this.queryParams.choice === 3 ? this.queryParams.check : "",
+          pageNo: this.queryParams.pageNum || 1,
+          pageSize: this.queryParams.pageSize || 15,
+        };
+
+        const response = await pageSelectDiagnosis(params);
+
+        if (response.data.code === 1) {
+          this.allData = response.data.data.records.map((item, index) => {
+            const serialNumber =
+              (this.queryParams.pageNum - 1) * this.queryParams.pageSize +
+              index +
+              1;
+
+            // 日期格式化，将数组转为 'YYYY-MM-DD'
+            const formatDate = (dateArray) => {
+              if (!Array.isArray(dateArray) || dateArray.length !== 3) {
+                return ""; 
+              }
+              const [year, month, day] = dateArray;
+              return `${year}-${String(month).padStart(2, "0")}-${String(
+                day
+              ).padStart(2, "0")}`;
+            };
+
+            // 深拷贝并格式化数据
+            const formattedItem = {
+              ...item,
+              serialNumber, // 自定义字段
+              admissionDate: formatDate(item.admissionDate),
+              dischargeDate: formatDate(item.dischargeDate),
+              deathDate: formatDate(item.deathDate),
+            };
+
+            return formattedItem; // 返回格式化后的数据
+          });
+
+          this.total = response.data.data.total;
+        } else {
+          ElMessage.error("获取诊断信息失败，请重试！" + response.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching diagnosis data:", error);
+        ElMessage.error("获取诊断信息失败，请重试！");
+      } finally {
+        this.loading = false;
+      }
     },
+
     handlePagination(pageNum) {
       this.queryParams.pageNum = pageNum;
     },
@@ -378,15 +329,25 @@ export default {
         console.warn("用户数据为空");
       }
     },
-    handleCheck(row) {
-      this.$refs.Checkdaignosisdata.showDrawer(row);
+    handleCheck(user) {
+      this.$refs.Checkdaignosisdata.showDrawer(user);
     },
-    handleCheckuser(row){
-this.$refs.Checkuserdata.showDrawer(row);
+    handleCheckuser(userId) {
+      this.$refs.Checkuserdata.showDrawer(userId);
     },
     handleDownload() {
       console.log("下载功能未实现");
     },
+
+    handlePagination({ page, limit }) {
+      this.queryParams.pageNum = page;
+      this.queryParams.pageSize = limit;
+      this.handleQuery();
+    },
+  },
+
+  mounted() {
+    this.handleQuery();
   },
 };
 </script>

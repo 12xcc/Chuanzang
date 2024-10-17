@@ -432,13 +432,20 @@
 <script>
 import { ElMessage } from "element-plus";
 import Dateselection from "@/components/date_selection.vue";
+
 export default {
   components: {
     Dateselection,
   },
+  props: {
+    data: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data() {
     return {
-        allDisabled:true, 
+      allDisabled: true,
       visible: false, // 控制弹窗显示
       form: {
         diseaseType: "", // 确诊疾病
@@ -454,11 +461,18 @@ export default {
         registrationClassification: "", // 登记分类
         otherRegistrationDetails: "", // 登记分类其他详情
         plagueSubtype: "", // 鼠疫子类
-        anthraxSubtype: "", // 炭疽子类 
+        anthraxSubtype: "", // 炭疽子类
       },
-
       rules: {},
     };
+  },
+  watch: {
+    data: {
+      immediate: true,
+      handler(newVal) {
+        this.form = { ...this.form, ...newVal };
+      },
+    },
   },
   methods: {
     toggleDisease(disease) {
@@ -466,31 +480,41 @@ export default {
       if (this.form.diseaseType !== "鼠疫") {
         this.form.plagueSubtype = ""; // 清空鼠疫子类
       }
+      if (this.form.diseaseType !== "炭疽") {
+        this.form.anthraxSubtype = ""; // 清空炭疽子类
+      }
+      if (this.form.diseaseType !== "其他") {
+        this.form.otherDiseaseName = ""; // 清空其他疾病名称
+      }
     },
     togglePlagueSubtype(subtype) {
       this.form.plagueSubtype =
         this.form.plagueSubtype === subtype ? "" : subtype;
     },
+    toggleAnthraxSubtype(subtype) {
+      this.form.anthraxSubtype =
+        this.form.anthraxSubtype === subtype ? "" : subtype;
+    },
     toggleDiscoveryMethod(value) {
       this.form.discoveryMethod = value;
-       if (this.form.discoveryMethod !== '其他') {
-      this.form.otherDiscoveryMethodName = ''; // 清空其他途径名称
-    }
+      if (this.form.discoveryMethod !== "其他") {
+        this.form.otherDiscoveryMethodName = ""; // 清空其他途径名称
+      }
     },
-    toggleOutcome() {
+    toggleOutcome(value) {
       this.form.diseaseOutcome = value;
     },
-    
     toggleRegistration(value) {
       this.form.registrationClassification = value;
+      if (this.form.registrationClassification !== "其他") {
+        this.form.otherRegistrationDetails = ""; // 清空登记分类其他详情
+      }
     },
     handleAble() {
       this.allDisabled = false;
-       
     },
-    handleCancel(){
+    handleCancel() {
       this.allDisabled = true;
-       
     },
     getInitialForm() {
       return {
@@ -506,14 +530,35 @@ export default {
         admissionSymptomsAndSigns: "", // 就诊/入院时症状和体征
         registrationClassification: "", // 登记分类
         otherRegistrationDetails: "", // 登记分类其他详情
+        plagueSubtype: "", // 鼠疫子类
+        anthraxSubtype: "", // 炭疽子类
       };
     },
     getData() {
       return this.form; // 返回当前组件的表单数据
     },
+    handleReset() {
+      this.form = this.getInitialForm();
+    },
+    validate() {
+      return new Promise((resolve, reject) => {
+        if (this.$refs.form) {
+          this.$refs.form.validate((valid) => {
+            if (valid) {
+              resolve();
+            } else {
+              reject(new Error("诊断信息验证失败"));
+            }
+          });
+        } else {
+          resolve();
+        }
+      });
+    },
   },
 };
 </script>
+
 
 
 

@@ -26,7 +26,7 @@ const getTitle = () => {
 
   if (userStore.role === 'admin') {
     return `系统管理员-${name}`;
-  } else if (userStore.role === 'nurse') {
+  } else if (userStore.role === 'medicalStaff') {
     return `专职医护人员-${name}`; 
   } else if (userStore.role === 'cdc') {
     return `疾控中心工作人员-${name}`;

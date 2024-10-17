@@ -86,7 +86,7 @@ export default {
     // 用户数组
     const users = {
       19357907217: { name:"张三", password: "123456", role: "admin" },
-      13330656624: { name:"李四", password: "123456", role: "nurse" },
+      13330656624: { name:"李四", password: "123456", role: "medicalStaff" },
       19508191094: { name:"王五", password: "123456", role: "cdc" }
     };
 

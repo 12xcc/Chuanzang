@@ -42,7 +42,7 @@ export default defineConfig({
         changeOrigin: true,
         logLevel: 'debug',
       },
-      '/nurse': {
+      '/medicalStaff': {
         target: 'http://43.138.213.55:8080', // 后端服务的地址
         changeOrigin: true,
         logLevel: 'debug',

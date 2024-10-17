@@ -17,7 +17,7 @@
         <img src="../assets/menu_icons/all-users.svg" alt="" class="menu-icons" />
         <span>所有用户管理</span>
       </el-menu-item>
-      <el-menu-item index="/user/password"  v-if="userStore.role === 'admin'||userStore.role === 'nurse'||userStore.role === 'cdc'" >
+      <el-menu-item index="/user/password"  v-if="userStore.role === 'admin'||userStore.role === 'medicalStaff'||userStore.role === 'cdc'" >
         <img src="../assets/menu_icons/password.svg" alt="" class="menu-icons" />
         <span>个人密码修改</span>
       </el-menu-item>
@@ -47,12 +47,12 @@
       </el-menu-item>
     </el-sub-menu>
 
-    <el-menu-item index="/diagnosis" v-if="userStore.role === 'admin' || userStore.role === 'nurse'||userStore.role === 'cdc'">
+    <el-menu-item index="/diagnosis" v-if="userStore.role === 'admin' || userStore.role === 'medicalStaff'||userStore.role === 'cdc'">
       <img src="../assets/menu_icons/diagnosis.svg" alt="" class="menu-icons" />
       <span>诊断信息管理</span>
     </el-menu-item>
 
-    <el-menu-item index="/check" v-if="userStore.role === 'admin' || userStore.role === 'nurse'||userStore.role === 'cdc'">
+    <el-menu-item index="/check" v-if="userStore.role === 'admin' || userStore.role === 'medicalStaff'||userStore.role === 'cdc'">
       <img src="../assets/menu_icons/check.svg" alt="" class="menu-icons" />
       <span>检查信息管理</span>
     </el-menu-item>

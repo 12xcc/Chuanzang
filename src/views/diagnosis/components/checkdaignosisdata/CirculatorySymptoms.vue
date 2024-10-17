@@ -31,17 +31,17 @@
             胸痛
           </el-check-tag>
           <el-check-tag
-            :checked="form.hasRapidPulse"
+            :checked="form.HasRapidPulse"
             type="primary"
-            @change="toggleTag('hasRapidPulse')"
+            @change="toggleTag('HasRapidPulse')"
             :disabled="allDisabled"  
           >
             脉搏细速
           </el-check-tag>
           <el-check-tag
-            :checked="form.hasPalpitation"
+            :checked="form.HasPalpitation"
             type="primary"
-            @change="toggleTag('hasPalpitation')"
+            @change="toggleTag('HasPalpitation')"
             :disabled="allDisabled"  
           >
             心悸
@@ -66,8 +66,8 @@ export default {
       form: {
         hasArrhythmia: false,
         hasChestPain: false,
-        hasRapidPulse: false,
-        hasPalpitation: false,
+        HasRapidPulse: false,
+        HasPalpitation: false,
       },
 
       rules: {},
@@ -119,8 +119,8 @@ export default {
       return {
         hasArrhythmia: false,
         hasChestPain: false,
-        hasRapidPulse: false,
-        hasPalpitation: false,
+        HasRapidPulse: false,
+        HasPalpitation: false,
       };
     },
      getData() {
