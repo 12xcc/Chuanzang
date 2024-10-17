@@ -9,15 +9,15 @@
       v-show="showSearch"
     >
       <!-- 用户类型选择 -->
-      <el-form-item label="" prop="UserType" size="default">
+      <el-form-item label="" prop="userType" size="default">
         <el-select
-          v-model="queryParams.UserType"
+          v-model="queryParams.userType"
           placeholder="请选择用户类型"
           clearable
           @clear="handleQuery"
           size="default"
           style="width: 200px; margin-right: -15px"
-          @change="handleUserTypeChange"
+          @change="handleuserTypeChange"
         >
           <el-option label="系统管理员" value="系统管理员"></el-option>
           <el-option label="铁路职工" value="铁路职工"></el-option>
@@ -116,19 +116,19 @@
       >
         <el-table-column type="selection" width="55" />
         <el-table-column prop="serialNumber" label="序号" width="80" />
-        <el-table-column prop="UserType" label="用户类型" width="150" />
-        <el-table-column prop="Name" label="姓名" width="150" />
-        <el-table-column prop="PhoneNumber" label="电话" width="120" />
-        <el-table-column prop="Gender" label="性别" width="100" />
-        <el-table-column prop="Age" label="年龄" width="100" />
-        <el-table-column prop="Ethnicity" label="民族" width="120" />
+        <el-table-column prop="userType" label="用户类型" width="150" />
+        <el-table-column prop="name" label="姓名" width="150" />
+        <el-table-column prop="phoneNumber" label="电话" width="120" />
+        <el-table-column prop="gender" label="性别" width="100" />
+        <el-table-column prop="age" label="年龄" width="100" />
+        <el-table-column prop="ethnicity" label="民族" width="120" />
         <el-table-column prop="EducationLevel" label="学历" width="120" />
         <el-table-column
           prop="WorkOnPlateauStartDate"
           label="高原工作时间"
           width="120"
         />
-        <el-table-column prop="Department" label="部门/工种" width="120" />
+        <el-table-column prop="department" label="部门/工种" width="120" />
         <el-table-column
           prop="SpecificOccupation"
           label="特殊职业"
@@ -215,7 +215,7 @@ export default {
   data() {
     return {
       queryParams: {
-        UserType: "",
+        userType: "",
         choice: "", // 选择的字段
         check: "", // 搜索关键词
         pageNum: 1,
@@ -241,7 +241,7 @@ export default {
       this.loading = true;
       try {
         const params = {
-          userType: this.queryParams.UserType || "",
+          userType: this.queryParams.userType || "",
           pageNo: this.queryParams.pageNum || 1,
           pageSize: this.queryParams.pageSize || 15,
         };
@@ -259,12 +259,12 @@ export default {
               (this.queryParams.pageNum - 1) * this.queryParams.pageSize +
               index +
               1,
-            UserType: item.userType,
-            Name: item.name,
-            PhoneNumber: item.phoneNumber,
-            Gender: item.gender,
-            Age: item.age,
-            Ethnicity: item.ethnicity,
+            userType: item.userType,
+            name: item.name,
+            phoneNumber: item.phoneNumber,
+            gender: item.gender,
+            age: item.age,
+            ethnicity: item.ethnicity,
             EducationLevel: item.educationLevel,
 
             // 日期格式转换
@@ -276,7 +276,7 @@ export default {
                 ).padStart(2, "0")}`
               : "",
 
-            Department: item.department,
+            department: item.department,
             SpecificOccupation: item.specificOccupation,
             isActive: item.isActived,
             userId: item.userId,
@@ -416,7 +416,7 @@ export default {
     },
 
     // 用户类型变化时触发查询
-    handleUserTypeChange() {
+    handleuserTypeChange() {
       this.queryParams.pageNum = 1; // 重置为第一页
       this.fetchUserData();
     },

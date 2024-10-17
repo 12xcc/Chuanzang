@@ -54,7 +54,7 @@
       @close="stopVideo"
     >
       <template #title>
-        <span>{{ currentFileName }}</span>
+        <span>{{ currentFilename }}</span>
       </template>
       <div class="video-container">
         <video 
@@ -101,7 +101,7 @@ const dialogImageUrl = ref('');
 const dialogVisible = ref(false);
 const disabled = ref(false);
 const files = ref<ExtendedUploadFile[]>([]);
-const currentFileName = ref('');
+const currentFilename = ref('');
 const isVideo = ref(false); // 判断是否为视频
 const videoPlayer = ref<HTMLVideoElement | null>(null); // 视频播放器引用
 
@@ -135,7 +135,7 @@ watch(() => props.filePath, (newFilePath) => {
 const handlePictureCardPreview = (file: ExtendedUploadFile) => {
   dialogImageUrl.value = file.url || URL.createObjectURL(file.raw);
   isVideo.value = file.raw && file.raw.type === 'video/mp4'; // 判断是否为视频
-  currentFileName.value = file.name; // 获取当前文件名
+  currentFilename.value = file.name; // 获取当前文件名
   dialogVisible.value = true; // 打开对话框
 }
 

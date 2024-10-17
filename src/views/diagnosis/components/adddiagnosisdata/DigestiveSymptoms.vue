@@ -28,7 +28,7 @@
             >
               <el-form-item label="腹泻次数" style="">
                 <el-input-number
-                  v-model="form.DiarrheaTimesPerDay"
+                  v-model="form.diarrheaTimesPerDay"
                   :min="0"
                   placeholder="腹泻次数"
                 />
@@ -37,7 +37,7 @@
 
               <el-form-item label="粪便性状" style="">
                 <el-radio-group
-                  v-model="form.HasStoolType1"
+                  v-model="form.hasStoolType1"
                   type="primary"
                   :disabled="allDisabled"
                    
@@ -52,7 +52,7 @@
               </el-form-item>
 
               <el-form-item label="腹泻方式" style="margin-top: 20px">
-                <el-radio-group v-model="form.DiarrheaMode">
+                <el-radio-group v-model="form.diarrheaMode">
                   <el-radio value="里急后重">里急后重</el-radio>
                   <el-radio value="通畅">通畅</el-radio>
                   <el-radio value="失禁">失禁</el-radio>
@@ -61,14 +61,14 @@
               </el-form-item>
 
               <el-form-item label="粪便量" style="margin-top: 20px">
-                <el-radio-group v-model="form.StoolAmount">
+                <el-radio-group v-model="form.stoolAmount">
                   <el-radio value="多">多</el-radio>
                   <el-radio value="少">少</el-radio>
                 </el-radio-group>
               </el-form-item>
 
               <el-form-item label="粪便气味" style="margin-top: 20px">
-                <el-radio-group v-model="form.StoolOdor">
+                <el-radio-group v-model="form.stoolOdor">
                   <el-radio value="恶臭">恶臭</el-radio>
                   <el-radio value="无恶臭">无恶臭</el-radio>
                 </el-radio-group>
@@ -82,8 +82,8 @@
               <span class="title-text">呕吐情况</span>
             </div>
             <el-check-tag
-              :checked="form.HasVomiting"
-              @change="toggleTag('HasVomiting')"
+              :checked="form.hasVomiting"
+              @change="toggleTag('hasVomiting')"
               type="primary"
               :disabled="allDisabled"
                
@@ -93,11 +93,11 @@
 
             <div
               class="NextContainer"
-              v-if="form.HasVomiting"
+              v-if="form.hasVomiting"
               style="padding: 15px 0 15px 0"
             >
               <el-radio-group
-                v-model="form.VomitingMode"
+                v-model="form.vomitingMode"
                 style="margin-left: 20px"
               >
                 <el-radio value="喷射状">喷射状</el-radio>
@@ -114,8 +114,8 @@
             <span class="title-text">其他症状</span>
           </div>
           <el-check-tag
-            :checked="form.HasNausea"
-            @change="toggleTag('HasNausea')"
+            :checked="form.hasNausea"
+            @change="toggleTag('hasNausea')"
             type="primary"
             :disabled="allDisabled"
              
@@ -123,8 +123,8 @@
             恶心
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasAppetiteLoss"
-            @change="toggleTag('HasAppetiteLoss')"
+            :checked="form.hasAppetiteLoss"
+            @change="toggleTag('hasAppetiteLoss')"
             type="primary"
             :disabled="allDisabled"
              
@@ -132,8 +132,8 @@
             食欲减退
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasAbdominalDistension"
-            @change="toggleTag('HasAbdominalDistension')"
+            :checked="form.hasAbdominalDistension"
+            @change="toggleTag('hasAbdominalDistension')"
             type="primary"
             :disabled="allDisabled"
              
@@ -141,8 +141,8 @@
             腹胀
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasAbdominalPain"
-            @change="toggleTag('HasAbdominalPain')"
+            :checked="form.hasAbdominalPain"
+            @change="toggleTag('hasAbdominalPain')"
             type="primary"
             :disabled="allDisabled"
              
@@ -150,8 +150,8 @@
             腹痛
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasBorborygmus"
-            @change="toggleTag('HasBorborygmus')"
+            :checked="form.hasBorborygmus"
+            @change="toggleTag('hasBorborygmus')"
             type="primary"
             :disabled="allDisabled"
              
@@ -159,8 +159,8 @@
             腹鸣
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasUpperAbdominalDiscomfort"
-            @change="toggleTag('HasUpperAbdominalDiscomfort')"
+            :checked="form.hasUpperAbdominalDiscomfort"
+            @change="toggleTag('hasUpperAbdominalDiscomfort')"
             type="primary"
             :disabled="allDisabled"
              
@@ -168,8 +168,8 @@
             上腹部不适
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasConstipation"
-            @change="toggleTag('HasConstipation')"
+            :checked="form.hasConstipation"
+            @change="toggleTag('hasConstipation')"
             type="primary"
             :disabled="allDisabled"
              
@@ -177,8 +177,8 @@
             便秘
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasOliguriaOrAnuria"
-            @change="toggleTag('HasOliguriaOrAnuria')"
+            :checked="form.hasOliguriaOrAnuria"
+            @change="toggleTag('hasOliguriaOrAnuria')"
             type="primary"
             :disabled="allDisabled"
              
@@ -200,24 +200,24 @@ export default {
        
       form: {
         arrheaFrequencyGEThreeTimesPerDay: "",
-        DiarrheaTimesPerDay: "",
-        HasStoolType1: false,
-        StoolType1Detail: "",
-        HasStoolType2: false,
-        StoolType2Detail: "",
-        DiarrheaMode: "",
-        StoolAmount: "",
-        StoolOdor: "",
-        HasVomiting: false,
-        VomitingMode: "",
-        HasNausea: false,
-        HasAppetiteLoss: false,
-        HasAbdominalDistension: false,
-        HasAbdominalPain: false,
-        HasBorborygmus: false,
-        HasUpperAbdominalDiscomfort: false,
-        HasConstipation: false,
-        HasOliguriaOrAnuria: false,
+        diarrheaTimesPerDay: "",
+        hasStoolType1: false,
+        stoolType1Detail: "",
+        hasStoolType2: false,
+        stoolType2Detail: "",
+        diarrheaMode: "",
+        stoolAmount: "",
+        stoolOdor: "",
+        hasVomiting: false,
+        vomitingMode: "",
+        hasNausea: false,
+        hasAppetiteLoss: false,
+        hasAbdominalDistension: false,
+        hasAbdominalPain: false,
+        hasBorborygmus: false,
+        hasUpperAbdominalDiscomfort: false,
+        hasConstipation: false,
+        hasOliguriaOrAnuria: false,
       },
       rules: {},
     };
@@ -234,24 +234,24 @@ export default {
     getInitialForm() {
       return {
          arrheaFrequencyGEThreeTimesPerDay: "",
-        DiarrheaTimesPerDay: "",
-        HasStoolType1: false,
-        StoolType1Detail: "",
-        HasStoolType2: false,
-        StoolType2Detail: "",
-        DiarrheaMode: "",
-        StoolAmount: "",
-        StoolOdor: "",
-        HasVomiting: false,
-        VomitingMode: "",
-        HasNausea: false,
-        HasAppetiteLoss: false,
-        HasAbdominalDistension: false,
-        HasAbdominalPain: false,
-        HasBorborygmus: false,
-        HasUpperAbdominalDiscomfort: false,
-        HasConstipation: false,
-        HasOliguriaOrAnuria: false,
+        diarrheaTimesPerDay: "",
+        hasStoolType1: false,
+        stoolType1Detail: "",
+        hasStoolType2: false,
+        stoolType2Detail: "",
+        diarrheaMode: "",
+        stoolAmount: "",
+        stoolOdor: "",
+        hasVomiting: false,
+        vomitingMode: "",
+        hasNausea: false,
+        hasAppetiteLoss: false,
+        hasAbdominalDistension: false,
+        hasAbdominalPain: false,
+        hasBorborygmus: false,
+        hasUpperAbdominalDiscomfort: false,
+        hasConstipation: false,
+        hasOliguriaOrAnuria: false,
       };
     },
     getData() {

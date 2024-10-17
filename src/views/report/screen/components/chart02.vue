@@ -28,7 +28,7 @@
 //       const data = response.data.data;
 
 //       // 提取疾病名称和患病人数
-//       const xAxisData = data.map(item => item.diagnosisDiseaseTypeName);
+//       const xAxisData = data.map(item => item.diagnosisdiseaseTypeName);
 //       const seriesData = data.map(item => item.count);
 
 //       // 更新图表配置

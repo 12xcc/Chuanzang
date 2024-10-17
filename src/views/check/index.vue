@@ -95,30 +95,30 @@
       >
         <el-table-column type="selection" width="55" />
         <el-table-column prop="serialNumber" label="序号" width="80" />
-        <el-table-column prop="UserType" label="用户类型" width="120" />
-         <el-table-column prop="Name" label="姓名" width="100">
+        <el-table-column prop="userType" label="用户类型" width="120" />
+         <el-table-column prop="name" label="姓名" width="100">
           <template #default="scope">
             <el-button
               v-if="isNurse()"
               type="text"
               @click="handleCheckuser(scope.row)"
             >
-              {{ scope.row.Name }}
+              {{ scope.row.name }}
             </el-button>
-            <span v-else>{{ scope.row.Name }}</span>
+            <span v-else>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="PhoneNumber" label="电话" width="120" />
-        <el-table-column prop="Gender" label="性别" width="100" />
-        <el-table-column prop="Age" label="年龄" width="100" />
-        <el-table-column prop="Department" label="部门/工种" width="120" />
+        <el-table-column prop="phoneNumber" label="电话" width="120" />
+        <el-table-column prop="gender" label="性别" width="100" />
+        <el-table-column prop="age" label="年龄" width="100" />
+        <el-table-column prop="department" label="部门/工种" width="120" />
         <el-table-column
-          prop="IsVirusAntigenTestDone"
+          prop="isVirusAntigenTestDone"
           label="病毒抗原检测"
           width="120"
         >
           <template #default="scope">
-            <el-tag v-if="scope.row.IsVirusAntigenTestDone" type="success">
+            <el-tag v-if="scope.row.isVirusAntigenTestDone" type="success">
               √
             </el-tag>
             <span v-else></span>
@@ -126,12 +126,12 @@
         </el-table-column>
 
         <el-table-column
-          prop="IsVirusNucleicAcidTestDone"
+          prop="isVirusNucleicAcidTestDone"
           label="病毒核酸检测"
           width="120"
         >
           <template #default="scope">
-            <el-tag v-if="scope.row.IsVirusNucleicAcidTestDone" type="success">
+            <el-tag v-if="scope.row.isVirusNucleicAcidTestDone" type="success">
               √
             </el-tag>
             <span v-else></span>
@@ -139,12 +139,12 @@
         </el-table-column>
 
         <el-table-column
-          prop="IsVirusCultureIsolationDone"
+          prop="isVirusCultureIsolationDone"
           label="病毒培养分离"
           width="120"
         >
           <template #default="scope">
-            <el-tag v-if="scope.row.IsVirusCultureIsolationDone" type="success">
+            <el-tag v-if="scope.row.isVirusCultureIsolationDone" type="success">
               √
             </el-tag>
             <span v-else></span>
@@ -152,19 +152,19 @@
         </el-table-column>
 
         <el-table-column
-          prop="IsSerologicalTestDone"
+          prop="isSerologicalTestDone"
           label="血清学检测"
           width="120"
         >
           <template #default="scope">
-            <el-tag v-if="scope.row.IsSerologicalTestDone" type="success">
+            <el-tag v-if="scope.row.isSerologicalTestDone" type="success">
               √
             </el-tag>
             <span v-else></span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="CheckInDate" label="检测日期" min-width="120" />
+        <el-table-column prop="checkInDate" label="检测日期" min-width="120" />
         <el-table-column fixed="right" label="操作" min-width="260">
           <template #default="scope">
             <el-button link type="primary" size="large" @click="handleCheck(scope.row)"
@@ -207,7 +207,7 @@ export default {
     return {
       checkUserVisible: false,
       queryParams: {
-        IsHealth: "",
+        isHealth: "",
         check: "",
         date:[],
         pageNum: 1,
@@ -217,117 +217,117 @@ export default {
       allData: [
         {
           serialNumber: "1",
-          UserType: "铁路职工",
-          Name: "张伟",
-          PhoneNumber: "13800000001",
-          Gender: "男",
-          Age: "44",
-          Department: "工程技术部",
-          IsVirusAntigenTestDone: true,
-          IsVirusNucleicAcidTestDone: true,
-          IsVirusCultureIsolationDone: true,
-          IsSerologicalTestDone: true,
-          CheckInDate: "2024-03-03",
+          userType: "铁路职工",
+          name: "张伟",
+          phoneNumber: "13800000001",
+          gender: "男",
+          age: "44",
+          department: "工程技术部",
+          isVirusAntigenTestDone: true,
+          isVirusNucleicAcidTestDone: true,
+          isVirusCultureIsolationDone: true,
+          isSerologicalTestDone: true,
+          checkInDate: "2024-03-03",
         },
         {
           serialNumber: "2",
-          UserType: "铁路职工",
-          Name: "李强",
-          PhoneNumber: "13800000122",
-          Gender: "男",
-          Age: "35",
-          Department: "测量队",
-          Department: "工程技术部",
-          IsVirusAntigenTestDone: false,
-          IsVirusNucleicAcidTestDone: true,
-          IsVirusCultureIsolationDone: true,
-          IsSerologicalTestDone: true,
-          CheckInDate: "2024-04-15",
+          userType: "铁路职工",
+          name: "李强",
+          phoneNumber: "13800000122",
+          gender: "男",
+          age: "35",
+          department: "测量队",
+          department: "工程技术部",
+          isVirusAntigenTestDone: false,
+          isVirusNucleicAcidTestDone: true,
+          isVirusCultureIsolationDone: true,
+          isSerologicalTestDone: true,
+          checkInDate: "2024-04-15",
         },
         {
           serialNumber: "3",
-          UserType: "铁路职工",
-          Name: "王丽",
-          PhoneNumber: "13800000003",
-          Gender: "女",
-          Age: "28",
-          Department: "测量队",
-          Department: "工程技术部",
-          IsVirusAntigenTestDone: false,
-          IsVirusNucleicAcidTestDone: true,
-          IsVirusCultureIsolationDone: true,
-          IsSerologicalTestDone: false,
-          CheckInDate: "2024-05-10",
+          userType: "铁路职工",
+          name: "王丽",
+          phoneNumber: "13800000003",
+          gender: "女",
+          age: "28",
+          department: "测量队",
+          department: "工程技术部",
+          isVirusAntigenTestDone: false,
+          isVirusNucleicAcidTestDone: true,
+          isVirusCultureIsolationDone: true,
+          isSerologicalTestDone: false,
+          checkInDate: "2024-05-10",
         },
         {
           serialNumber: "4",
-          UserType: "铁路职工",
-          Name: "赵鹏",
-          PhoneNumber: "13800340004",
-          Gender: "男",
-          Age: "39",
-          Department: "工程技术部",
-          IsVirusAntigenTestDone: true,
-          IsVirusNucleicAcidTestDone: true,
-          IsVirusCultureIsolationDone: false,
-          IsSerologicalTestDone: true,
-          CheckInDate: "2024-02-20",
+          userType: "铁路职工",
+          name: "赵鹏",
+          phoneNumber: "13800340004",
+          gender: "男",
+          age: "39",
+          department: "工程技术部",
+          isVirusAntigenTestDone: true,
+          isVirusNucleicAcidTestDone: true,
+          isVirusCultureIsolationDone: false,
+          isSerologicalTestDone: true,
+          checkInDate: "2024-02-20",
         },
         {
           serialNumber: "5",
-          UserType: "铁路职工",
-          Name: "陈梅",
-          PhoneNumber: "13800000005",
-          Gender: "女",
-          Age: "41",
-          Department: "合约部",
-          IsVirusAntigenTestDone: true,
-          IsVirusNucleicAcidTestDone: true,
-          IsVirusCultureIsolationDone: true,
-          IsSerologicalTestDone: true,
-          CheckInDate: "2024-06-01",
+          userType: "铁路职工",
+          name: "陈梅",
+          phoneNumber: "13800000005",
+          gender: "女",
+          age: "41",
+          department: "合约部",
+          isVirusAntigenTestDone: true,
+          isVirusNucleicAcidTestDone: true,
+          isVirusCultureIsolationDone: true,
+          isSerologicalTestDone: true,
+          checkInDate: "2024-06-01",
         },
         {
           serialNumber: "6",
-          UserType: "铁路职工",
-          Name: "刘洋",
-          PhoneNumber: "13800000006",
-          Gender: "男",
-          Age: "32",
-          Department: "工程技术部",
-          IsVirusAntigenTestDone: false,
-          IsVirusNucleicAcidTestDone:false,
-          IsVirusCultureIsolationDone: true,
-          IsSerologicalTestDone: false,
-          CheckInDate: "2024-07-18",
+          userType: "铁路职工",
+          name: "刘洋",
+          phoneNumber: "13800000006",
+          gender: "男",
+          age: "32",
+          department: "工程技术部",
+          isVirusAntigenTestDone: false,
+          isVirusNucleicAcidTestDone:false,
+          isVirusCultureIsolationDone: true,
+          isSerologicalTestDone: false,
+          checkInDate: "2024-07-18",
         },
         {
           serialNumber: "4",
-          UserType: "铁路职工",
-          Name: "赵鹏",
-          PhoneNumber: "13800340004",
-          Gender: "男",
-          Age: "39",
-          Department: "工程技术部",
-          IsVirusAntigenTestDone: true,
-          IsVirusNucleicAcidTestDone: true,
-          IsVirusCultureIsolationDone: false,
-          IsSerologicalTestDone: true,
-          CheckInDate: "2024-02-20",
+          userType: "铁路职工",
+          name: "赵鹏",
+          phoneNumber: "13800340004",
+          gender: "男",
+          age: "39",
+          department: "工程技术部",
+          isVirusAntigenTestDone: true,
+          isVirusNucleicAcidTestDone: true,
+          isVirusCultureIsolationDone: false,
+          isSerologicalTestDone: true,
+          checkInDate: "2024-02-20",
         },
         {
           serialNumber: "5",
-          UserType: "铁路职工",
-          Name: "陈梅",
-          PhoneNumber: "13800000005",
-          Gender: "女",
-          Age: "41",
-          Department: "合约部",
-          IsVirusAntigenTestDone: true,
-          IsVirusNucleicAcidTestDone: false,
-          IsVirusCultureIsolationDone: false,
-          IsSerologicalTestDone: true,
-          CheckInDate: "2024-06-01",
+          userType: "铁路职工",
+          name: "陈梅",
+          phoneNumber: "13800000005",
+          gender: "女",
+          age: "41",
+          department: "合约部",
+          isVirusAntigenTestDone: true,
+          isVirusNucleicAcidTestDone: false,
+          isVirusCultureIsolationDone: false,
+          isSerologicalTestDone: true,
+          checkInDate: "2024-06-01",
         },
       ],
       showSearch: true,
@@ -347,8 +347,8 @@ setup() {
         return this.allData;
       }
       return this.allData.filter((item) => {
-        // const userTypeMatch = !UserType || item.UserType === this.convertUserType(UserType);
-        const fieldsToSearch = ["Name", "PhoneNumber", "Department",""];
+        // const userTypeMatch = !userType || item.userType === this.convertuserType(userType);
+        const fieldsToSearch = ["name", "phoneNumber", "department",""];
         const textMatch = check
           ? fieldsToSearch.some((field) => {
               const itemFieldValue =
@@ -357,11 +357,11 @@ setup() {
             })
           : true; // 如果没有输入文本，默认匹配为 true
 
-           const CheckInDate = new Date(item.CheckInDate);
+           const checkInDate = new Date(item.checkInDate);
         const dateMatch =
           Array.isArray(date) && date.length === 2
-            ? CheckInDate >= new Date(date[0]) &&
-              CheckInDate <= new Date(date[1])
+            ? checkInDate >= new Date(date[0]) &&
+              checkInDate <= new Date(date[1])
             : true; // 如果没有选择日期，默认匹配为 true
 
 
@@ -415,7 +415,7 @@ this.$refs.Checkuserdata.showDrawer(row);
       }
     },
 
-    convertIsHealth(value) {
+    convertisHealth(value) {
       switch (value) {
         case 1:
           return "是";

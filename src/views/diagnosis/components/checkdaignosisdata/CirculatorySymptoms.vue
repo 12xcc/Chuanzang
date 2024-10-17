@@ -15,33 +15,33 @@
             <span class="title-text">症状</span>
           </div>
           <el-check-tag
-            :checked="form.HasArrhythmia"
+            :checked="form.hasArrhythmia"
             type="primary"
-            @change="toggleTag('HasArrhythmia')"
+            @change="toggleTag('hasArrhythmia')"
             :disabled="allDisabled"  
           >
             心律不齐
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasChestPain"
+            :checked="form.hasChestPain"
             type="primary"
-            @change="toggleTag('HasChestPain')"
+            @change="toggleTag('hasChestPain')"
             :disabled="allDisabled"  
           >
             胸痛
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasRapidPulse"
+            :checked="form.hasRapidPulse"
             type="primary"
-            @change="toggleTag('HasRapidPulse')"
+            @change="toggleTag('hasRapidPulse')"
             :disabled="allDisabled"  
           >
             脉搏细速
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasPalpitation"
+            :checked="form.hasPalpitation"
             type="primary"
-            @change="toggleTag('HasPalpitation')"
+            @change="toggleTag('hasPalpitation')"
             :disabled="allDisabled"  
           >
             心悸
@@ -64,10 +64,10 @@ export default {
       allDisabled:true, 
       visible: false, // 控制弹窗显示
       form: {
-        HasArrhythmia: false,
-        HasChestPain: false,
-        HasRapidPulse: false,
-        HasPalpitation: false,
+        hasArrhythmia: false,
+        hasChestPain: false,
+        hasRapidPulse: false,
+        hasPalpitation: false,
       },
 
       rules: {},
@@ -117,10 +117,10 @@ export default {
     },
     getInitialForm() {
       return {
-        HasArrhythmia: false,
-        HasChestPain: false,
-        HasRapidPulse: false,
-        HasPalpitation: false,
+        hasArrhythmia: false,
+        hasChestPain: false,
+        hasRapidPulse: false,
+        hasPalpitation: false,
       };
     },
      getData() {

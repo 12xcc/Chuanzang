@@ -33,36 +33,36 @@
           </div>
           <div class="BaseInfoDetail">
             <!------------------------------- 姓名 --------------------------------------->
-            <el-form-item label="姓名" prop="Name">
+            <el-form-item label="姓名" prop="name">
               <el-input
-                v-model="form.Name"
+                v-model="form.name"
                 style="width: 200px"
                 placeholder="请输入姓名"
-                @blur="$refs.form.validateField('Name')"
+                @blur="$refs.form.validateField('name')"
                 clearable
                 :disabled="allDisabled"  
               ></el-input>
             </el-form-item>
 
             <!------------------------------- 性别 ----------------------------------------->
-            <el-form-item label="性别" prop="Gender">
+            <el-form-item label="性别" prop="gender">
               <el-input
-                v-model="form.Gender"
+                v-model="form.gender"
                 style="width: 200px"
                 placeholder=""
                 clearable
                 :disabled="allDisabled"  
               ></el-input>
-              <!-- <el-radio-group v-model="form.Gender">
+              <!-- <el-radio-group v-model="form.gender">
                 <el-radio value="男">男</el-radio>
                 <el-radio value="女">女</el-radio>
               </el-radio-group> -->
             </el-form-item>
 
             <!-- 年龄 -->
-            <el-form-item label="年龄" prop="Age">
+            <el-form-item label="年龄" prop="age">
               <el-input
-                v-model="form.Age"
+                v-model="form.age"
                 style="width: 200px"
                 placeholder="根据身份证号生成"
                 clearable
@@ -71,15 +71,15 @@
             </el-form-item>
 
             <!-- 民族 -->
-            <el-form-item label="民族" prop="Ethnicity">
+            <el-form-item label="民族" prop="ethnicity">
               <el-input
-                v-model="form.Ethnicity"
+                v-model="form.ethnicity"
                 style="width: 200px"
                 placeholder=""
                 clearable
                 :disabled="allDisabled"  
               ></el-input>
-              <!-- <el-radio-group v-model="form.Ethnicity">
+              <!-- <el-radio-group v-model="form.ethnicity">
                 <el-radio value="汉族">汉族</el-radio>
                 <el-radio value="藏族">藏族</el-radio>
                 <el-radio value="彝族">彝族</el-radio>
@@ -88,15 +88,15 @@
             </el-form-item>
 
             <!-- 部门/工种 -->
-            <el-form-item label="部门/工种" prop="Department">
+            <el-form-item label="部门/工种" prop="department">
               <el-input
-                v-model="form.Department"
+                v-model="form.department"
                 style="width: 200px"
                 placeholder=""
                 clearable
                 :disabled="allDisabled"  
               ></el-input>
-              <!-- <el-radio-group v-model="form.Department">
+              <!-- <el-radio-group v-model="form.department">
                 <el-radio value="安全部">安全部</el-radio>
                 <el-radio value="财务部">财务部</el-radio>
                 <el-radio value="测量队">测量队</el-radio>
@@ -120,33 +120,33 @@
           </div>
 
           <el-check-tag
-            :checked="form.IsVirusAntigenTestDone"
+            :checked="form.isVirusAntigenTestDone"
             type="primary"
-            @change="toggleTag('IsVirusAntigenTestDone')"
+            @change="toggleTag('isVirusAntigenTestDone')"
           >
             病毒抗原检测
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.IsVirusNucleicAcidTestDone"
+            :checked="form.isVirusNucleicAcidTestDone"
             type="primary"
-            @change="toggleTag('IsVirusNucleicAcidTestDone')"
+            @change="toggleTag('isVirusNucleicAcidTestDone')"
           >
             病毒核酸检测
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.IsVirusCultureIsolationDone"
+            :checked="form.isVirusCultureIsolationDone"
             type="primary"
-            @change="toggleTag('IsVirusCultureIsolationDone')"
+            @change="toggleTag('isVirusCultureIsolationDone')"
           >
             病毒培养分离
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.IsSerologicalTestDone"
+            :checked="form.isSerologicalTestDone"
             type="primary"
-            @change="toggleTag('IsSerologicalTestDone')"
+            @change="toggleTag('isSerologicalTestDone')"
           >
             血清学检测
           </el-check-tag>
@@ -175,10 +175,10 @@ export default {
       visible: false, // 控制弹窗显示
       isEditing: false,
       form: {
-        IsVirusAntigenTestDone: false, // BOOLEAN, -- 是否已进行病毒抗原检测
-        IsVirusNucleicAcidTestDone: false, // BOOLEAN, -- 是否已进行病毒核酸检测
-        IsVirusCultureIsolationDone: false, // BOOLEAN, -- 是否已进行病毒培养分离
-        IsSerologicalTestDone: false, // BOOLEAN, -- 是否已进行血清学检测
+        isVirusAntigenTestDone: false, // BOOLEAN, -- 是否已进行病毒抗原检测
+        isVirusNucleicAcidTestDone: false, // BOOLEAN, -- 是否已进行病毒核酸检测
+        isVirusCultureIsolationDone: false, // BOOLEAN, -- 是否已进行病毒培养分离
+        isSerologicalTestDone: false, // BOOLEAN, -- 是否已进行血清学检测
       },
       refs: [
         "LabTestReport"
@@ -248,10 +248,10 @@ export default {
     },
     getInitialForm() {
       return {
-        IsVirusAntigenTestDone: false, // BOOLEAN, -- 是否已进行病毒抗原检测
-        IsVirusNucleicAcidTestDone: false, // BOOLEAN, -- 是否已进行病毒核酸检测
-        IsVirusCultureIsolationDone: false, // BOOLEAN, -- 是否已进行病毒培养分离
-        IsSerologicalTestDone: false, // BOOLEAN, -- 是否已进行血清学检测
+        isVirusAntigenTestDone: false, // BOOLEAN, -- 是否已进行病毒抗原检测
+        isVirusNucleicAcidTestDone: false, // BOOLEAN, -- 是否已进行病毒核酸检测
+        isVirusCultureIsolationDone: false, // BOOLEAN, -- 是否已进行病毒培养分离
+        isSerologicalTestDone: false, // BOOLEAN, -- 是否已进行血清学检测
       };
     },
   },

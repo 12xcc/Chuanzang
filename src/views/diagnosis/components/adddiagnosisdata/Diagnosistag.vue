@@ -15,41 +15,41 @@
           </div>
 
           <el-check-tag
-            :checked="form.HasBloodTest"
+            :checked="form.hasBloodTest"
             type="primary"
-            @change="toggleTag('HasBloodTest')"
+            @change="toggleTag('hasBloodTest')"
           >
             血常规
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasUrineTest"
+            :checked="form.hasUrineTest"
             type="primary"
-            @change="toggleTag('HasUrineTest')"
+            @change="toggleTag('hasUrineTest')"
           >
             尿常规
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasStoolTest"
+            :checked="form.hasStoolTest"
             type="primary"
-            @change="toggleTag('HasStoolTest')"
+            @change="toggleTag('hasStoolTest')"
           >
             粪便常规
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasImaging"
+            :checked="form.hasImaging"
             type="primary"
-            @change="toggleTag('HasImaging')"
+            @change="toggleTag('hasImaging')"
           >
             影像学检查
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasUltrasound"
+            :checked="form.hasUltrasound"
             type="primary"
-            @change="toggleTag('HasUltrasound')"
+            @change="toggleTag('hasUltrasound')"
           >
             B超
           </el-check-tag>
@@ -75,11 +75,11 @@ export default {
     return {
       visible: false, // 控制弹窗显示
       form: {
-        HasBloodTest: false,
-        HasUrineTest: false,
-        HasStoolTest: false,
-        HasImaging: false,
-        HasUltrasound: false,
+        hasBloodTest: false,
+        hasUrineTest: false,
+        hasStoolTest: false,
+        hasImaging: false,
+        hasUltrasound: false,
       },
 
       rules: {},
@@ -125,11 +125,11 @@ export default {
     },
     getInitialForm() {
       return {
-        HasBloodTest: false,
-        HasUrineTest: false,
-        HasStoolTest: false,
-        HasImaging: false,
-        HasUltrasound: false,
+        hasBloodTest: false,
+        hasUrineTest: false,
+        hasStoolTest: false,
+        hasImaging: false,
+        hasUltrasound: false,
       };
     },
     getData() {

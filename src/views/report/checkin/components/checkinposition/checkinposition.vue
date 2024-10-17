@@ -26,34 +26,34 @@
           </div>
           <div class="BaseInfoDetail">
             <!------------------------------- 姓名 --------------------------------------->
-            <el-form-item label="姓名" prop="Name">
+            <el-form-item label="姓名" prop="name">
               <el-input
-                v-model="form.Name"
+                v-model="form.name"
                 style="width: 200px"
                 placeholder="请输入姓名"
-                @blur="$refs.form.validateField('Name')"
+                @blur="$refs.form.validateField('name')"
                 clearable
               ></el-input>
             </el-form-item>
 
             <!------------------------------- 性别 ----------------------------------------->
-            <el-form-item label="性别" prop="Gender">
+            <el-form-item label="性别" prop="gender">
                <el-input
-                 v-model="form.Gender"
+                 v-model="form.gender"
                 style="width: 200px"
                 placeholder=""
                 clearable
               ></el-input>
-              <!-- <el-radio-group v-model="form.Gender">
+              <!-- <el-radio-group v-model="form.gender">
                 <el-radio value="男">男</el-radio>
                 <el-radio value="女">女</el-radio>
               </el-radio-group> -->
             </el-form-item>
 
             <!-- 年龄 -->
-            <el-form-item label="年龄" prop="Age">
+            <el-form-item label="年龄" prop="age">
               <el-input
-                v-model="form.Age"
+                v-model="form.age"
                 style="width: 200px"
                 placeholder="根据身份证号生成"
                 clearable
@@ -61,14 +61,14 @@
             </el-form-item>
 
             <!-- 民族 -->
-            <el-form-item label="民族" prop="Ethnicity">
+            <el-form-item label="民族" prop="ethnicity">
               <el-input
-                v-model="form.Ethnicity"
+                v-model="form.ethnicity"
                 style="width: 200px"
                 placeholder=""
                 clearable
               ></el-input>
-              <!-- <el-radio-group v-model="form.Ethnicity">
+              <!-- <el-radio-group v-model="form.ethnicity">
                 <el-radio value="汉族">汉族</el-radio>
                 <el-radio value="藏族">藏族</el-radio>
                 <el-radio value="彝族">彝族</el-radio>
@@ -77,14 +77,14 @@
             </el-form-item>
 
             <!-- 部门/工种 -->
-            <el-form-item label="部门/工种" prop="Department">
+            <el-form-item label="部门/工种" prop="department">
             <el-input
-                v-model="form.Department"
+                v-model="form.department"
                 style="width: 200px"
                 placeholder=""
                 clearable
               ></el-input>
-              <!-- <el-radio-group v-model="form.Department">
+              <!-- <el-radio-group v-model="form.department">
                 <el-radio value="安全部">安全部</el-radio>
                 <el-radio value="财务部">财务部</el-radio>
                 <el-radio value="测量队">测量队</el-radio>
@@ -98,11 +98,11 @@
               </el-radio-group> -->
             </el-form-item>
 
-            <el-form-item label="打卡时间" prop="CheckInDate">
+            <el-form-item label="打卡时间" prop="checkInDate">
               <el-input
-                v-model="form.CheckInDate"
+                v-model="form.checkInDate"
                 style="width: 200px"
-                @blur="$refs.form.validateField('CheckInDate')"
+                @blur="$refs.form.validateField('checkInDate')"
                 disabled
                 clearable
               ></el-input>
@@ -154,13 +154,13 @@ export default {
           const data = response.data.data;
 
           // 映射数据到表单中
-          this.form.UserType = data.userType; // 用户类型
-          this.form.Name = data.name; // 姓名
-          this.form.Age = data.age; // 年龄
-          this.form.Gender = data.gender; // 性别
-          this.form.Ethnicity = data.ethnicity; // 民族
-          this.form.Department = data.department; // 部门/工种
-            this.form.CheckInDate = data.checkInDate
+          this.form.userType = data.userType; // 用户类型
+          this.form.name = data.name; // 姓名
+          this.form.age = data.age; // 年龄
+          this.form.gender = data.gender; // 性别
+          this.form.ethnicity = data.ethnicity; // 民族
+          this.form.department = data.department; // 部门/工种
+            this.form.checkInDate = data.checkInDate
               ? `${data.checkInDate[0]}-${String(data.checkInDate[1]).padStart(
                   2,
                   "0"

@@ -33,9 +33,9 @@
             ></el-input>
           </el-form-item>
 
-          <el-form-item label="工务段名称" prop="WorkStationName">
+          <el-form-item label="工务段名称" prop="workStationName">
             <el-input
-              v-model="form.WorkStationName"
+              v-model="form.workStationName"
               style="width: 200px"
               placeholder="工务段所在名称"
               clearable
@@ -325,7 +325,7 @@ export default {
       visible: false, // 控制弹窗显示
       form: {
         WorkStationAltitude: "",
-        WorkStationName: "",
+        workStationName: "",
         DormitoryBuildingNumber: "",
         DormitoryRoomNumber: "",
         DormitoryOccupants: "",
@@ -375,7 +375,7 @@ export default {
 
           // 将后端返回的数据映射到表单数据 (form) 中
           this.form.WorkStationAltitude = data.workStationAltitude || "";
-          this.form.WorkStationName = data.workStationName || "";
+          this.form.workStationName = data.workStationName || "";
           this.form.DormitoryBuildingNumber =
             data.dormitoryBuildingNumber || "";
           this.form.DormitoryRoomNumber = data.dormitoryRoomNumber || "";

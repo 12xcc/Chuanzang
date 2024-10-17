@@ -24,9 +24,9 @@
         :rules="rules"
       >
         <!-- 用户类型 -->
-        <el-form-item label="用户类型" prop="UserType" size="default">
+        <el-form-item label="用户类型" prop="userType" size="default">
         <el-select
-          v-model="form.UserType"
+          v-model="form.userType"
           placeholder="请选择用户类型"
           clearable
           size="default"
@@ -40,19 +40,19 @@
       </el-form-item>
 
         <!-- 姓名 -->
-        <el-form-item label="姓名" prop="Name">
+        <el-form-item label="姓名" prop="name">
           <el-input
-            v-model="form.Name"
+            v-model="form.name"
             style="width: 200px"
             placeholder="请输入姓名"
             clearable
-            @blur="$refs.form.validateField('Name')"
+            @blur="$refs.form.validateField('name')"
           ></el-input>
         </el-form-item>
 
         <!-- 性别 -->
-        <el-form-item label="性别" prop="Gender">
-          <el-radio-group v-model="form.Gender">
+        <el-form-item label="性别" prop="gender">
+          <el-radio-group v-model="form.gender">
             <el-radio value="男">男</el-radio>
             <el-radio value="女">女</el-radio>
           </el-radio-group>
@@ -61,7 +61,7 @@
        
         <!-- 是否为孕妇 -->
         <el-form-item
-          v-if="form.Gender === '女'"
+          v-if="form.gender === '女'"
           label="是否为孕妇"
           prop="IsPregnant"
         >
@@ -90,9 +90,9 @@
         </el-form-item>
 
         <!-- 年龄 -->
-        <el-form-item label="年龄" prop="Age">
+        <el-form-item label="年龄" prop="age">
           <el-input
-            v-model="form.Age"
+            v-model="form.age"
             style="width: 200px"
             placeholder="根据身份证号生成"
             clearable
@@ -100,8 +100,8 @@
         </el-form-item>
 
         <!-- 民族 -->
-        <el-form-item label="民族" prop="Ethnicity">
-          <el-radio-group v-model="form.Ethnicity">
+        <el-form-item label="民族" prop="ethnicity">
+          <el-radio-group v-model="form.ethnicity">
             <el-radio value="汉族">汉族</el-radio>
             <el-radio value="藏族">藏族</el-radio>
             <el-radio value="彝族">彝族</el-radio>
@@ -138,8 +138,8 @@
 
 
         <!-- 部门/工种 -->
-        <el-form-item label="部门/工种" prop="Department">
-          <el-radio-group v-model="form.Department">
+        <el-form-item label="部门/工种" prop="department">
+          <el-radio-group v-model="form.department">
             <el-radio value="安全部">安全部</el-radio>
             <el-radio value="财务部">财务部</el-radio>
             <el-radio value="测量队">测量队</el-radio>
@@ -185,46 +185,46 @@
          <el-form-item
           v-if="form.MedicalPersonnelType === '其他'"
           label="其他工作性质名称"
-          prop="OtherPositionName"
+          prop="OtherPositionname"
         >
-          <el-input v-model="form.OtherPositionName" style="width: 200px" />
+          <el-input v-model="form.OtherPositionname" style="width: 200px" />
         </el-form-item>
 
         <!-- 联系电话 -->
-        <el-form-item label="联系电话" prop="PhoneNumber">
+        <el-form-item label="联系电话" prop="phoneNumber">
           <el-input
             style="width: 200px"
-            v-model="form.PhoneNumber"
+            v-model="form.phoneNumber"
             placeholder="手机"
             clearable
           ></el-input>
         </el-form-item>
 
         <!-- 其他联系电话 -->
-        <el-form-item label="其他联系电话" prop="OtherPhoneNumber">
+        <el-form-item label="其他联系电话" prop="OtherphoneNumber">
           <el-input
             style="width: 200px"
-            v-model="form.OtherPhoneNumber"
+            v-model="form.OtherphoneNumber"
             placeholder="其他联系电话"
             clearable
           ></el-input>
         </el-form-item>
 
         <!-- 紧急联系人姓名 -->
-        <el-form-item label="紧急联系人姓名" prop="EmergencyContactName">
+        <el-form-item label="紧急联系人姓名" prop="EmergencyContactname">
           <el-input
             style="width: 200px"
-            v-model="form.EmergencyContactName"
+            v-model="form.EmergencyContactname"
             placeholder="姓名"
             clearable
           ></el-input>
         </el-form-item>
 
         <!-- 紧急联系人电话 -->
-        <el-form-item label="紧急联系人电话" prop="EmergencyContactPhoneNumber">
+        <el-form-item label="紧急联系人电话" prop="EmergencyContactphoneNumber">
           <el-input
             style="width: 200px"
-            v-model="form.EmergencyContactPhoneNumber"
+            v-model="form.EmergencyContactphoneNumber"
             placeholder="联系电话"
             clearable
           ></el-input>
@@ -241,9 +241,9 @@
         </el-form-item>
 
         <!-- 既往病史和基本情况 -->
-        <el-form-item label="既往病史和基本情况" prop="HasMedicalHistory">
+        <el-form-item label="既往病史和基本情况" prop="hasMedicalHistory">
           <el-radio-group
-            v-model="form.HasMedicalHistory"
+            v-model="form.hasMedicalHistory"
             @change="handleMedicalHistoryChange"
           >
             <el-radio :value="true">有</el-radio>
@@ -251,95 +251,95 @@
           </el-radio-group>
 
           <!-- 当选择“有”时，显示疾病选项 -->
-          <div v-if="form.HasMedicalHistory">
-            <el-checkbox v-model="form.HasHypertension" label="高血压"
+          <div v-if="form.hasMedicalHistory">
+            <el-checkbox v-model="form.hasHypertension" label="高血压"
               >高血压</el-checkbox
             >
-            <el-checkbox v-model="form.HasDiabetes" label="糖尿病"
+            <el-checkbox v-model="form.hasDiabetes" label="糖尿病"
               >糖尿病</el-checkbox
             >
-            <el-checkbox v-model="form.HasHyperlipidemia" label="高脂血症"
+            <el-checkbox v-model="form.hasHyperlipidemia" label="高脂血症"
               >高脂血症</el-checkbox
             >
-            <el-checkbox v-model="form.HasHyperuricemia" label="高尿酸"
+            <el-checkbox v-model="form.hasHyperuricemia" label="高尿酸"
               >高尿酸</el-checkbox
             >
-            <el-checkbox v-model="form.HasCoronaryHeartDisease" label="冠心病"
+            <el-checkbox v-model="form.hasCoronaryHeartDisease" label="冠心病"
               >冠心病</el-checkbox
             >
-            <el-checkbox v-model="form.HasStroke" label="脑卒中"
+            <el-checkbox v-model="form.hasStroke" label="脑卒中"
               >脑卒中</el-checkbox
             >
             <el-checkbox
-              v-model="form.HasOtherCardiovascularDiseases"
+              v-model="form.hasOtherCardiovascularDiseases"
               label="其他心脑血管疾病"
               >其他心脑血管疾病</el-checkbox
             >
-            <el-checkbox v-model="form.HasAsthma" label="哮喘"
+            <el-checkbox v-model="form.hasAsthma" label="哮喘"
               >哮喘</el-checkbox
             >
-            <el-checkbox v-model="form.HasCOPD" label="慢性阻塞性肺部疾病"
+            <el-checkbox v-model="form.hasCOPD" label="慢性阻塞性肺部疾病"
               >慢性阻塞性肺部疾病</el-checkbox
             >
-            <el-checkbox v-model="form.HasPepticUlcer" label="消化性溃疡"
+            <el-checkbox v-model="form.hasPepticUlcer" label="消化性溃疡"
               >消化性溃疡</el-checkbox
             >
 
             <!-- 恶性肿瘤 -->
             <el-form-item>
               <el-checkbox
-                v-model="form.HasMalignantTumor"
+                v-model="form.hasMalignantTumor"
                 @change="handleCancerChange"
                 label="恶性肿瘤"
               >
                 恶性肿瘤
               </el-checkbox>
               <!-- 恶性肿瘤子选项 -->
-              <div v-if="form.HasMalignantTumor" class="othercancer">
-                <el-checkbox v-model="form.HasLungCancer" label="肺癌"
+              <div v-if="form.hasMalignantTumor" class="othercancer">
+                <el-checkbox v-model="form.hasLungCancer" label="肺癌"
                   >肺癌</el-checkbox
                 >
-                <el-checkbox v-model="form.HasOtherCancer" label="其他"
+                <el-checkbox v-model="form.hasOtherCancer" label="其他"
                   >其他</el-checkbox
                 >
                 <!-- 其他恶性肿瘤请输入框 -->
                 <el-input
-                  v-if="form.HasOtherCancer"
-                  v-model="form.OtherCancerName"
+                  v-if="form.hasOtherCancer"
+                  v-model="form.OtherCancername"
                   placeholder="请输入其他恶性肿瘤"
                   clearable
-                  prop="OtherCancerName"
+                  prop="OtherCancername"
                 ></el-input>
               </div>
             </el-form-item>
 
             <!-- 其他疾病选项 -->
             <el-checkbox
-              v-model="form.HasSevereMentalDisorders"
+              v-model="form.hasSevereMentalDisorders"
               label="严重精神障碍"
               >严重精神障碍</el-checkbox
             >
-            <el-checkbox v-model="form.HasTuberculosis" label="结核病"
+            <el-checkbox v-model="form.hasTuberculosis" label="结核病"
               >结核病</el-checkbox
             >
-            <el-checkbox v-model="form.HasHepatitis" label="肝炎"
+            <el-checkbox v-model="form.hasHepatitis" label="肝炎"
               >肝炎</el-checkbox
             >
-            <el-checkbox v-model="form.HasOccupationalDisease" label="职业病"
+            <el-checkbox v-model="form.hasOccupationalDisease" label="职业病"
               >职业病</el-checkbox
             >
-            <el-checkbox v-model="form.HasChronicKidneyDisease" label="慢性肾病"
+            <el-checkbox v-model="form.hasChronicKidneyDisease" label="慢性肾病"
               >慢性肾病</el-checkbox
             >
-            <el-checkbox v-model="form.HasChronicLiverDisease" label="慢性肝病"
+            <el-checkbox v-model="form.hasChronicLiverDisease" label="慢性肝病"
               >慢性肝病</el-checkbox
             >
             <el-checkbox
-              v-model="form.HasImmunodeficiency"
+              v-model="form.hasImmunodeficiency"
               label="免疫缺陷类疾病"
               >免疫缺陷类疾病</el-checkbox
             >
-            <el-checkbox v-model="form.HasTyphus" label="斑疹伤寒"
+            <el-checkbox v-model="form.hasTyphus" label="斑疹伤寒"
               >斑疹伤寒</el-checkbox
             >
             <el-checkbox
@@ -347,10 +347,10 @@
               label="产后（6周以内）"
               >产后（6周以内）</el-checkbox
             >
-            <el-checkbox v-model="form.HasDustExposure" label="粉尘接触史"
+            <el-checkbox v-model="form.hasDustExposure" label="粉尘接触史"
               >粉尘接触史</el-checkbox
             >
-            <el-checkbox v-model="form.HasOtherDiseases" label="其他"
+            <el-checkbox v-model="form.hasOtherDiseases" label="其他"
               >其他</el-checkbox
             >
           </div>
@@ -438,40 +438,40 @@ export default {
       currentUserId: null, // 当前编辑的用户ID
       visible: false, // 控制弹窗显示
       form: {
-        UserType: null, // 用户类型
-        Name: null, // 姓名
-        Gender: null, // 性别
+        userType: null, // 用户类型
+        name: null, // 姓名
+        gender: null, // 性别
         IsPregnant: false, // 是否怀孕
         PregnancyWeeks: null, // 怀孕周数
         IDNumber: null, // 身份证号
-        Age: null, // 年龄
-        Ethnicity: null, // 民族
+        age: null, // 年龄
+        ethnicity: null, // 民族
         EducationLevel: null, // 文化程度
         WorkOnPlateauStartDate: null, //高原工作时间
-        Department: null, // 部门/工种
+        department: null, // 部门/工种
         SpecificOccupation: null, // 具体职业
         MedicalPersonnelType: null, // 医护人员类型
-        OtherPositionName: null, //其他名称
-        PhoneNumber: null, // 手机号码
-        OtherPhoneNumber: null, // 其他电话号码
-        EmergencyContactName: null, // 紧急联系人姓名
-        EmergencyContactPhoneNumber: null, // 紧急联系人电话
+        OtherPositionname: null, //其他名称
+        phoneNumber: null, // 手机号码
+        OtherphoneNumber: null, // 其他电话号码
+        EmergencyContactname: null, // 紧急联系人姓名
+        EmergencyContactphoneNumber: null, // 紧急联系人电话
         EmergencyContactRelation: null, // 紧急联系人关系
-        HasMedicalHistory: false, // 既往病史
-        HasHypertension: false, // 高血压
-        HasDiabetes: false, // 糖尿病
-        HasHyperlipidemia: false, // 高脂血症
-        HasHyperuricemia: false, // 高尿酸
-        HasCoronaryHeartDisease: false, // 冠心病
-        HasStroke: false, // 脑卒中
-        HasAsthma: false, // 哮喘
-        HasCOPD: false, // 慢性阻塞性肺疾病
-        HasMalignantTumor: false, // 恶性肿瘤
-        HasLungCancer: false, // 肺癌
-        HasOtherCancer: false, // 其他癌症
-        OtherCancerName: null, // 其他恶性肿瘤名称
-        HasOtherDiseases: false, // 其他疾病
-        OtherDiseasesName: null, // 其他疾病名称
+        hasMedicalHistory: false, // 既往病史
+        hasHypertension: false, // 高血压
+        hasDiabetes: false, // 糖尿病
+        hasHyperlipidemia: false, // 高脂血症
+        hasHyperuricemia: false, // 高尿酸
+        hasCoronaryHeartDisease: false, // 冠心病
+        hasStroke: false, // 脑卒中
+        hasAsthma: false, // 哮喘
+        hasCOPD: false, // 慢性阻塞性肺疾病
+        hasMalignantTumor: false, // 恶性肿瘤
+        hasLungCancer: false, // 肺癌
+        hasOtherCancer: false, // 其他癌症
+        OtherCancername: null, // 其他恶性肿瘤名称
+        hasOtherDiseases: false, // 其他疾病
+        OtherDiseasesname: null, // 其他疾病名称
         SmokingStatus: null, // 吸烟史
         DrinkingStatus: null, // 饮酒史
         Height: null, // 身高
@@ -503,23 +503,23 @@ export default {
           const data = response.data.data;
 
           // 映射数据到表单中
-          this.form.UserType = data.userType;
-          this.form.Name = data.name;
-          this.form.Age = data.age;
-          this.form.Gender = data.gender;
+          this.form.userType = data.userType;
+          this.form.name = data.name;
+          this.form.age = data.age;
+          this.form.gender = data.gender;
           this.form.IsPregnant = data.isPregnant;
           this.form.PregnancyWeeks = data.pregnancyWeeks;
           this.form.IDNumber = data.idNumber;
-          this.form.Ethnicity = data.ethnicity;
+          this.form.ethnicity = data.ethnicity;
           this.form.EducationLevel = data.educationLevel;
-          this.form.Department = data.department;
+          this.form.department = data.department;
           this.form.SpecificOccupation = data.specificOccupation;
           this.form.MedicalPersonnelType = data.medicalPersonnelType;
-          this.form.OtherPositionName = data.otherPositionName;
-          this.form.PhoneNumber = data.phoneNumber;
-          this.form.OtherPhoneNumber = data.otherPhoneNumber;
-          this.form.EmergencyContactName = data.emergencyContactName;
-          this.form.EmergencyContactPhoneNumber = data.emergencyContactPhoneNumber;
+          this.form.OtherPositionname = data.otherPositionname;
+          this.form.phoneNumber = data.phoneNumber;
+          this.form.OtherphoneNumber = data.otherphoneNumber;
+          this.form.EmergencyContactname = data.emergencyContactname;
+          this.form.EmergencyContactphoneNumber = data.emergencyContactphoneNumber;
           this.form.EmergencyContactRelation = data.emergencyContactRelation;
           this.form.Height = data.height;
           this.form.Weight = data.weight;
@@ -532,20 +532,20 @@ export default {
           }
 
           // 既往病史映射
-          this.form.HasMedicalHistory = data.hasMedicalHistory;
-          this.form.HasHypertension = data.hasHypertension;
-          this.form.HasDiabetes = data.hasDiabetes;
-          this.form.HasHyperlipidemia = data.hasHyperlipidemia;
-          this.form.HasHyperuricemia = data.hasHyperuricemia;
-          this.form.HasCoronaryHeartDisease = data.hasCoronaryHeartDisease;
-          this.form.HasStroke = data.hasStroke;
-          this.form.HasAsthma = data.hasAsthma;
-          this.form.HasCOPD = data.hasCOPD;
-          this.form.HasMalignantTumor = data.hasMalignantTumor;
-          this.form.HasLungCancer = data.hasLungCancer;
-          this.form.HasOtherCancer = data.hasOtherCancer;
-          this.form.HasOtherDiseases = data.hasOtherDiseases;
-          this.form.OtherDiseasesName = data.otherDiseasesName;
+          this.form.hasMedicalHistory = data.hasMedicalHistory;
+          this.form.hasHypertension = data.hasHypertension;
+          this.form.hasDiabetes = data.hasDiabetes;
+          this.form.hasHyperlipidemia = data.hasHyperlipidemia;
+          this.form.hasHyperuricemia = data.hasHyperuricemia;
+          this.form.hasCoronaryHeartDisease = data.hasCoronaryHeartDisease;
+          this.form.hasStroke = data.hasStroke;
+          this.form.hasAsthma = data.hasAsthma;
+          this.form.hasCOPD = data.hasCOPD;
+          this.form.hasMalignantTumor = data.hasMalignantTumor;
+          this.form.hasLungCancer = data.hasLungCancer;
+          this.form.hasOtherCancer = data.hasOtherCancer;
+          this.form.hasOtherDiseases = data.hasOtherDiseases;
+          this.form.OtherDiseasesname = data.otherDiseasesname;
 
           this.form.IsVaccinatedForCOVID = data.isVaccinatedForCOVID;
           this.form.IsVaccinatedForFlu = data.isVaccinatedForFlu;
@@ -574,42 +574,42 @@ export default {
           try {
             const requestData = {
               userId: this.currentUserId,
-               userType: this.form.UserType,
-          name: this.form.Name,
-          age: this.form.Age,
-          gender: this.form.Gender,
+               userType: this.form.userType,
+          name: this.form.name,
+          age: this.form.age,
+          gender: this.form.gender,
           isPregnant: this.form.IsPregnant,
           pregnancyWeeks: this.form.PregnancyWeeks,
           idNumber: this.form.IDNumber,
-          ethnicity: this.form.Ethnicity,
+          ethnicity: this.form.ethnicity,
           educationLevel: this.form.EducationLevel,
-          department: this.form.Department,
+          department: this.form.department,
           specificOccupation: this.form.SpecificOccupation,
           medicalPersonnelType: this.form.MedicalPersonnelType,
-          otherPositionName: this.form.OtherPositionName,
-          phoneNumber: this.form.PhoneNumber,
-          otherPhoneNumber: this.form.OtherPhoneNumber,
-          emergencyContactName: this.form.EmergencyContactName,
-          emergencyContactPhoneNumber: this.form.EmergencyContactPhoneNumber,
+          otherPositionname: this.form.OtherPositionname,
+          phoneNumber: this.form.phoneNumber,
+          otherphoneNumber: this.form.OtherphoneNumber,
+          emergencyContactname: this.form.EmergencyContactname,
+          emergencyContactphoneNumber: this.form.EmergencyContactphoneNumber,
           emergencyContactRelation: this.form.EmergencyContactRelation,
           height: this.form.Height,
           weight: this.form.Weight,
           workOnPlateauStartDate: this.form.WorkOnPlateauStartDate,
-          hasMedicalHistory: this.form.HasMedicalHistory,
-          hasHypertension: this.form.HasHypertension,
-          hasDiabetes: this.form.HasDiabetes,
-          hasHyperlipidemia: this.form.HasHyperlipidemia,
-          hasHyperuricemia: this.form.HasHyperuricemia,
-          hasCoronaryHeartDisease: this.form.HasCoronaryHeartDisease,
-          hasStroke: this.form.HasStroke,
-          hasAsthma: this.form.HasAsthma,
-          hasCOPD: this.form.HasCOPD,
-          hasMalignantTumor: this.form.HasMalignantTumor,
-          hasLungCancer: this.form.HasLungCancer,
-          hasOtherCancer: this.form.HasOtherCancer,
-          otherCancerName: this.form.OtherCancerName,
-          hasOtherDiseases: this.form.HasOtherDiseases,
-          otherDiseasesName: this.form.OtherDiseasesName,
+          hasMedicalHistory: this.form.hasMedicalHistory,
+          hasHypertension: this.form.hasHypertension,
+          hasDiabetes: this.form.hasDiabetes,
+          hasHyperlipidemia: this.form.hasHyperlipidemia,
+          hasHyperuricemia: this.form.hasHyperuricemia,
+          hasCoronaryHeartDisease: this.form.hasCoronaryHeartDisease,
+          hasStroke: this.form.hasStroke,
+          hasAsthma: this.form.hasAsthma,
+          hasCOPD: this.form.hasCOPD,
+          hasMalignantTumor: this.form.hasMalignantTumor,
+          hasLungCancer: this.form.hasLungCancer,
+          hasOtherCancer: this.form.hasOtherCancer,
+          otherCancername: this.form.OtherCancername,
+          hasOtherDiseases: this.form.hasOtherDiseases,
+          otherDiseasesname: this.form.OtherDiseasesname,
           smokingStatus: this.form.SmokingStatus,
           drinkingStatus: this.form.DrinkingStatus,
           isVaccinatedForCOVID: this.form.IsVaccinatedForCOVID,
@@ -652,12 +652,12 @@ export default {
     },
 
     handleMedicalHistoryChange() {
-      if (!this.form.HasMedicalHistory) {
+      if (!this.form.hasMedicalHistory) {
         this.clearAllDiseases();
       }
     },
     handleCancerChange() {
-      if (!this.form.HasMalignantTumor) {
+      if (!this.form.hasMalignantTumor) {
         this.clearCancerFields();
       }
     },
@@ -667,34 +667,34 @@ export default {
       }
     },
     clearAllDiseases() {
-      this.form.HasHypertension = false;
-      this.form.HasDiabetes = false;
-      this.form.HasHyperlipidemia = false;
-      this.form.HasHyperuricemia = false;
-      this.form.HasCoronaryHeartDisease = false;
-      this.form.HasStroke = false;
-      this.form.HasOtherCardiovascularDiseases = false;
-      this.form.HasAsthma = false;
-      this.form.HasCOPD = false;
-      this.form.HasPepticUlcer = false;
-      this.form.HasMalignantTumor = false;
+      this.form.hasHypertension = false;
+      this.form.hasDiabetes = false;
+      this.form.hasHyperlipidemia = false;
+      this.form.hasHyperuricemia = false;
+      this.form.hasCoronaryHeartDisease = false;
+      this.form.hasStroke = false;
+      this.form.hasOtherCardiovascularDiseases = false;
+      this.form.hasAsthma = false;
+      this.form.hasCOPD = false;
+      this.form.hasPepticUlcer = false;
+      this.form.hasMalignantTumor = false;
       this.clearCancerFields();
-      this.form.HasSevereMentalDisorders = false;
-      this.form.HasTuberculosis = false;
-      this.form.HasHepatitis = false;
-      this.form.HasOccupationalDisease = false;
-      this.form.HasChronicKidneyDisease = false;
-      this.form.HasChronicLiverDisease = false;
-      this.form.HasImmunodeficiency = false;
-      this.form.HasTyphus = false;
+      this.form.hasSevereMentalDisorders = false;
+      this.form.hasTuberculosis = false;
+      this.form.hasHepatitis = false;
+      this.form.hasOccupationalDisease = false;
+      this.form.hasChronicKidneyDisease = false;
+      this.form.hasChronicLiverDisease = false;
+      this.form.hasImmunodeficiency = false;
+      this.form.hasTyphus = false;
       this.form.IsPostpartumInSixWeeks = false;
-      this.form.HasDustExposure = false;
-      this.form.HasOtherDiseases = false;
+      this.form.hasDustExposure = false;
+      this.form.hasOtherDiseases = false;
     },
     clearCancerFields() {
-      this.form.HasLungCancer = false;
-      this.form.HasOtherCancer = false;
-      this.form.OtherCancerName = "";
+      this.form.hasLungCancer = false;
+      this.form.hasOtherCancer = false;
+      this.form.OtherCancername = "";
     },
   },
 };

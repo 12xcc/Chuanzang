@@ -56,18 +56,18 @@
       >
         <el-table-column type="selection" width="55" />
         <el-table-column prop="serialNumber" label="序号" width="80" />
-        <el-table-column prop="DiseaseTypeName" label="疾病类型" width="300" />
-        <el-table-column prop="HasSubtype" label="是否包含子类型" width="200">
+        <el-table-column prop="diseaseTypeName" label="疾病类型" width="300" />
+        <el-table-column prop="hasSubtype" label="是否包含子类型" width="200">
           <template #default="scope">
             <el-tag
               size="default"
-              :type="scope.row.HasSubtype === '是' ? 'success' : 'primary'"
+              :type="scope.row.hasSubtype === '是' ? 'success' : 'primary'"
             >
-              {{ scope.row.HasSubtype }}
+              {{ scope.row.hasSubtype }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="SubtypeName" label="子类型" min-width="500" />
+        <el-table-column prop="subtypeName" label="子类型" min-width="500" />
       </el-table>
 
       <!-- 分页组件 -->
@@ -136,9 +136,9 @@ export default {
               (this.queryParams.pageNum - 1) * this.queryParams.pageSize +
               index +
               1,
-            DiseaseTypeName: item.diseaseTypeName,
-            HasSubtype: item.hasSubtype ? "是" : "否",
-            SubtypeName: item.subDiseaseList
+            diseaseTypeName: item.diseaseTypeName,
+            hasSubtype: item.hasSubtype ? "是" : "否",
+            subtypeName: item.subDiseaseList
               ? item.subDiseaseList.map((sub) => sub.subtypeName).join(", ")
               : "", // 检查 subDiseaseList 是否为 null
           }));

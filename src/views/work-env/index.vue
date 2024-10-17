@@ -8,9 +8,9 @@
       :inline="true"
       v-show="showSearch"
     >
-      <el-form-item label="工作地点名" prop="WorkStationName" size="default">
+      <el-form-item label="工作地点名" prop="workStationName" size="default">
         <el-input
-          v-model="queryParams.WorkStationName"
+          v-model="queryParams.workStationName"
           placeholder="请输入文本"
           clearable
           @clear="handleQuery"
@@ -86,9 +86,9 @@
           width="80"
           height="48"
         />
-        <el-table-column prop="Name" label="姓名" width="100" />
+        <el-table-column prop="name" label="姓名" width="100" />
         <el-table-column
-          prop="WorkStationName"
+          prop="workStationName"
           label="工务段名称"
           width="200"
         />
@@ -156,7 +156,7 @@ export default {
   data() {
     return {
       queryParams: {
-        WorkStationName: "",
+        workStationName: "",
         date: [],
         pageNum: 1,
         pageSize: 15,
@@ -206,7 +206,7 @@ export default {
       endYearMonth: endYearMonth || "",
       pageNo: this.queryParams.pageNum || 1,
       pageSize: this.queryParams.pageSize || 15,
-      workStationName: this.queryParams.WorkStationName || "",
+      workStationName: this.queryParams.workStationName || "",
     };
     
     const response = await fetchWorkenvData(params);
@@ -217,8 +217,8 @@ export default {
           (this.queryParams.pageNum - 1) * this.queryParams.pageSize +
           index +
           1,
-        Name: item.name,
-        WorkStationName: item.workStationName,
+        name: item.name,
+        workStationName: item.workStationName,
         WorkStationAltitude: item.workStationAltitude,
         AvgMonthlyPressure: item.avgMonthlyPressure,
         MaxTemperature: item.maxTemperature,

@@ -52,7 +52,7 @@
           width="55" 
         />
         <el-table-column prop="serialNumber" label="序号" width="80" />
-        <el-table-column prop="DiseaseTypeName" label="疾病类型" width="300" />
+        <el-table-column prop="diseaseTypeName" label="疾病类型" width="300" />
         <el-table-column prop="HasSubtype" label="是否包含子类型" width="200">
           <template #default="scope">
             <el-tag size="default" :type="scope.row.HasSubtype === '是' ? 'success' : 'primary'">
@@ -60,7 +60,7 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="SubtypeName" label="子类型" min-width="500" />
+        <el-table-column prop="subtypeName" label="子类型" min-width="500" />
         <el-table-column fixed="right" label="操作" min-width="260">
           <template #default="scope">
             <el-button link type="primary" size="large" @click="handleWeight(scope.row)">
@@ -133,9 +133,9 @@ export default {
           const records = response.data.data.records || [];
           this.allData = records.map((item, index) => ({
             serialNumber: (this.queryParams.pageNum - 1) * this.queryParams.pageSize + index + 1,
-            DiseaseTypeName: item.diseaseTypeName,
-            HasSubtype: item.hasSubtype ? '是' : '否',
-            SubtypeName: item.subDiseaseList ? item.subDiseaseList.map(sub => sub.subtypeName).join(', ') : '',
+            diseaseTypeName: item.diseaseTypeName,
+            HasSubtype: item.HasSubtype ? '是' : '否',
+            subtypeName: item.subDiseaseList ? item.subDiseaseList.map(sub => sub.subtypeName).join(', ') : '',
           }));
           this.total = response.data.data.total || 0; 
         } else {

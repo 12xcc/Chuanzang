@@ -8,9 +8,9 @@
       :inline="true"
       v-show="showSearch"
     >
-      <el-form-item label="是否患病" prop="IsHealth" size="default">
+      <el-form-item label="是否患病" prop="isHealth" size="default">
         <el-select
-          v-model="queryParams.IsHealth"
+          v-model="queryParams.isHealth"
           placeholder="请选择"
           clearable
           size="default"
@@ -110,36 +110,36 @@
           width="80"
           height="48"
         />
-        <el-table-column prop="UserType" label="用户类型" width="120" />
-        <el-table-column prop="Name" label="姓名" width="100" />
-        <el-table-column prop="PhoneNumber" label="电话" width="120" />
-        <el-table-column prop="Gender" label="性别" width="100" />
-        <el-table-column prop="Age" label="年龄" width="100" />
-        <el-table-column prop="Department" label="部门/工种" width="120" />
-        <el-table-column prop="IsHealth" label="患病" width="120">
+        <el-table-column prop="userType" label="用户类型" width="120" />
+        <el-table-column prop="name" label="姓名" width="100" />
+        <el-table-column prop="phoneNumber" label="电话" width="120" />
+        <el-table-column prop="gender" label="性别" width="100" />
+        <el-table-column prop="age" label="年龄" width="100" />
+        <el-table-column prop="department" label="部门/工种" width="120" />
+        <el-table-column prop="isHealth" label="患病" width="120">
           <template #default="scope">
-            <el-tag :type="scope.row.IsHealth === '否' ? 'success' : 'danger'">
-              {{ scope.row.IsHealth }}
+            <el-tag :type="scope.row.isHealth === false ? 'success' : 'danger'">
+              {{ scope.row.isHealth === false ? "否" : "是" }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="LocationName" label="位置信息" min-width="120" />
-        <el-table-column prop="CheckInDate" label="打卡日期" min-width="120" />
+        <el-table-column prop="locationName" label="位置信息" min-width="120" />
+        <el-table-column prop="checkInDate" label="打卡日期" min-width="120" />
         <el-table-column
-          prop="DiseaseTypeName"
+          prop="diseaseTypeName"
           label="最有可能疾病"
           min-width="160"
         >
           <template #default="scope">
             <el-tag type="danger">
-              {{ scope.row.DiseaseTypeName }}
+              {{ scope.row.diseaseTypeName }}
             </el-tag>
           </template>
         </el-table-column>
         <el-table-column fixed="right" label="操作" min-width="260">
           <template #default="scope">
             <el-button
-              v-if="scope.row.IsHealth === '是'"
+              v-if="scope.row.isHealth === true "
               class="checksymptom"
               link
               type="primary"
@@ -192,7 +192,7 @@ export default {
   data() {
     return {
       queryParams: {
-        IsHealth: null,
+        isHealth: null,
         check: "",
         date: [],
         pageNum: 1,
@@ -229,7 +229,7 @@ export default {
           checkInDateEnd: checkInDateEnd || "",
           pageNo: this.queryParams.pageNum || 1,
           pageSize: this.queryParams.pageSize || 15,
-          isHealth: this.queryParams.IsHealth || "",
+          isHealth: this.queryParams.isHealth || "",
         };
 
         if (this.queryParams.choice && this.queryParams.check) {
@@ -240,29 +240,26 @@ export default {
         const response = await pageSelectCheckin(params);
 
         if (response.data.code === 1) {
-          this.allData = response.data.data.records.map((item, index) => ({
-            serialNumber:
+          this.allData = response.data.data.records.map((item, index) => {
+            // 特殊处理 serialNumber、checkInDate
+            const serialNumber =
               (this.queryParams.pageNum - 1) * this.queryParams.pageSize +
               index +
-              1,
-            userId: item.userId,
-            statusId:item.statusId,
-            UserType: item.userType,
-            Name: item.name,
-            PhoneNumber: item.phoneNumber,
-            Gender: item.gender,
-            Age: item.age,
-            Department: item.department,
-            IsHealth: item.isHealth ? "是" : "否",
-            LocationName: item.locationName,
-            CheckInDate: item.checkInDate
+              1;
+            const checkInDate = item.checkInDate
               ? `${item.checkInDate[0]}-${String(item.checkInDate[1]).padStart(
                   2,
                   "0"
                 )}-${String(item.checkInDate[2]).padStart(2, "0")}`
-              : "",
-            DiseaseTypeName: item.diseaseTypeName,
-          }));
+              : "";
+            // 通过解构获取其他字段
+            return {
+              serialNumber,
+              checkInDate,
+              isHealth: item.isHealth,
+              ...item, //其他字段直接解构，不做映射
+            };
+          });
           this.total = response.data.data.total;
         } else {
           this.$message.error(
@@ -276,6 +273,7 @@ export default {
         this.loading = false;
       }
     },
+
     // 职工打卡信息导出表
     async handleExport() {
       try {

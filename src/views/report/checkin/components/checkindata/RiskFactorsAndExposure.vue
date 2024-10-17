@@ -99,23 +99,23 @@
             </div>
           </div>
           <el-form-item label="" style="display: flex; margin-left: -340px">
-            <el-checkbox v-model="form.HasDrinkingRawWater" value="饮生水"
+            <el-checkbox v-model="form.hasDrinkingRawWater" value="饮生水"
               >饮生水</el-checkbox
             >
-            <el-checkbox v-model="form.HasEatingRawFood" value="吃生冷食品"
+            <el-checkbox v-model="form.hasEatingRawFood" value="吃生冷食品"
               >吃生冷食品</el-checkbox
             >
-            <el-checkbox v-model="form.HasEatingColdCookedFood" value="熟食冷吃"
+            <el-checkbox v-model="form.hasEatingColdCookedFood" value="熟食冷吃"
               >熟食冷吃</el-checkbox
             >
-            <el-checkbox v-model="form.HasEatingSeafood" value="海水产品"
+            <el-checkbox v-model="form.hasEatingSeafood" value="海水产品"
               >海水产品</el-checkbox
             >
           </el-form-item>
 
           <el-form-item label="食物名字" style="margin-left: -270px">
             <el-input
-              v-model="form.FoodNames"
+              v-model="form.Foodnames"
               placeholder="请输入食物名字"
               style="width: 200px"
               clearable
@@ -205,7 +205,7 @@
             style="margin-left: 60px;padding-bottom:15px"
           >
             <el-input
-              v-model="form.OtherWildActivityName"
+              v-model="form.OtherWildActivityname"
               placeholder="请输入其他活动名称"
               style="width: 200px; margin-left: -60px"
             ></el-input>
@@ -386,56 +386,56 @@
                   padding-bottom: 5px;
                 "
               >
-                <el-checkbox v-model="form.HasContactWithRat" value="'鼠'"
+                <el-checkbox v-model="form.hasContactWithRat" value="'鼠'"
                   >鼠</el-checkbox
                 >
-                <el-checkbox v-model="form.HasContactWithMarmot" value="'旱獭'"
+                <el-checkbox v-model="form.hasContactWithMarmot" value="'旱獭'"
                   >旱獭</el-checkbox
                 >
-                <el-checkbox v-model="form.HasContactWithLice" value="'虱'"
+                <el-checkbox v-model="form.hasContactWithLice" value="'虱'"
                   >虱</el-checkbox
                 >
-                <el-checkbox v-model="form.HasContactWithFlea" value="'蚤'"
+                <el-checkbox v-model="form.hasContactWithFlea" value="'蚤'"
                   >蚤</el-checkbox
                 >
-                <el-checkbox v-model="form.HasContactWithCat" value="'猫'"
+                <el-checkbox v-model="form.hasContactWithCat" value="'猫'"
                   >猫</el-checkbox
                 >
-                <el-checkbox v-model="form.HasContactWithBird" value="'鸟'"
+                <el-checkbox v-model="form.hasContactWithBird" value="'鸟'"
                   >鸟</el-checkbox
                 >
-                <el-checkbox v-model="form.HasContactWithPig" value="'猪'"
+                <el-checkbox v-model="form.hasContactWithPig" value="'猪'"
                   >猪</el-checkbox
                 >
-                <el-checkbox v-model="form.HasContactWithHorse" value="'马'"
+                <el-checkbox v-model="form.hasContactWithHorse" value="'马'"
                   >马</el-checkbox
                 >
-                <el-checkbox v-model="form.HasContactWithMule" value="'骡'"
+                <el-checkbox v-model="form.hasContactWithMule" value="'骡'"
                   >骡</el-checkbox
                 >
-                <el-checkbox v-model="form.HasContactWithDonkey" value="'驴'"
+                <el-checkbox v-model="form.hasContactWithDonkey" value="'驴'"
                   >驴</el-checkbox
                 >
-                <el-checkbox v-model="form.HasContactWithCow" value="'牛'"
+                <el-checkbox v-model="form.hasContactWithCow" value="'牛'"
                   >牛</el-checkbox
                 >
-                <el-checkbox v-model="form.HasContactWithSheep" value="'羊'"
+                <el-checkbox v-model="form.hasContactWithSheep" value="'羊'"
                   >羊</el-checkbox
                 >
-                <el-checkbox v-model="form.HasContactWithDog" value="'狗'"
+                <el-checkbox v-model="form.hasContactWithDog" value="'狗'"
                   >狗</el-checkbox
                 >
-                <el-checkbox v-model="form.HasContactWithRabbit" value="'兔'"
+                <el-checkbox v-model="form.hasContactWithRabbit" value="'兔'"
                   >兔</el-checkbox
                 >
-                <el-checkbox v-model="form.HasContactWithWolf" value="'狼'"
+                <el-checkbox v-model="form.hasContactWithWolf" value="'狼'"
                   >狼</el-checkbox
                 >
-                <el-checkbox v-model="form.HasContactWithTiger" value="'虎'"
+                <el-checkbox v-model="form.hasContactWithTiger" value="'虎'"
                   >虎</el-checkbox
                 >
                 <el-checkbox
-                  v-model="form.HasContactWithOtherAnimal"
+                  v-model="form.hasContactWithOtherAnimal"
                   @change="handleOtherChange"
                   value="'其他'"
                   >其他</el-checkbox
@@ -444,12 +444,12 @@
             </div>
             <el-form-item
               label="其他动物名称"
-              v-if="form.HasContactWithOtherAnimal"
+              v-if="form.hasContactWithOtherAnimal"
               label-position="left"
               style="margin-left: 60px"
             >
               <el-input
-                v-model="form.OtherAnimalName"
+                v-model="form.OtherAnimalname"
                 placeholder="请填写其他动物名称"
                 style="width: 200px; margin-left: -60px; padding-bottom: 15px"
               ></el-input>
@@ -483,7 +483,7 @@
             label-position="left"
             style="margin-left: 20px"
           >
-            <el-radio-group v-model="form.HasMosquitoBite">
+            <el-radio-group v-model="form.hasMosquitoBite">
               <el-radio :value="true">是</el-radio>
               <el-radio :value="false">否</el-radio>
             </el-radio-group>
@@ -635,18 +635,18 @@ export default {
         IsDiningOut: false, // 5天内是否外出就餐
         IsDiningUnclear: false, // 5天内就餐情况不清楚
 
-        HasDrinkingRawWater: false, // 是否饮生水
-        HasEatingRawFood: false, // 是否吃生冷食品
-        HasEatingColdCookedFood: false, // 是否熟食冷吃
-        HasEatingSeafood: false, // 是否吃海水产品
+        hasDrinkingRawWater: false, // 是否饮生水
+        hasEatingRawFood: false, // 是否吃生冷食品
+        hasEatingColdCookedFood: false, // 是否熟食冷吃
+        hasEatingSeafood: false, // 是否吃海水产品
 
-        FoodNames: "", // 食物名字
+        Foodnames: "", // 食物名字
         DiningPlace: "", // 就餐地点
 
         GroupOutbreak: "", // 同一家庭、办公室、车间等集体单位是否有聚集性发病
         OutdoorStayOrWorkWithinMonth: "", // 发病前1月内是否在野外住宿或工作
         WildActivityHistory: "", // 野外/户外活动史
-        OtherWildActivityName: "", // 其他活动名称
+        OtherWildActivityname: "", // 其他活动名称
 
         PlagueArea: "", // 是否到过鼠疫流行区
         SpecificPlagueLocation: "", // 具体地点
@@ -662,31 +662,31 @@ export default {
 
         ContactWithAnimals: "", // 是否接触过动物
         ContactPlace: "", //  接触地点
-        HasContactWithRat: false,
-        HasContactWithMarmot: false,
-        HasContactWithLice: false,
-        HasContactWithFlea: false,
-        HasContactWithCat: false,
-        HasContactWithBird: false,
-        HasContactWithPig: false,
-        HasContactWithHorse: false,
-        HasContactWithMule: false,
-        HasContactWithDonkey: false,
-        HasContactWithCow: false,
-        HasContactWithSheep: false,
-        HasContactWithDog: false,
-        HasContactWithRabbit: false,
-        HasContactWithWolf: false,
-        HasContactWithTiger: false,
-        HasContactWithOtherAnimal: false, // 是否接触其他动物
-        OtherAnimalName: "",
+        hasContactWithRat: false,
+        hasContactWithMarmot: false,
+        hasContactWithLice: false,
+        hasContactWithFlea: false,
+        hasContactWithCat: false,
+        hasContactWithBird: false,
+        hasContactWithPig: false,
+        hasContactWithHorse: false,
+        hasContactWithMule: false,
+        hasContactWithDonkey: false,
+        hasContactWithCow: false,
+        hasContactWithSheep: false,
+        hasContactWithDog: false,
+        hasContactWithRabbit: false,
+        hasContactWithWolf: false,
+        hasContactWithTiger: false,
+        hasContactWithOtherAnimal: false, // 是否接触其他动物
+        OtherAnimalname: "",
 
         IsHillyOrMountainous: false, // 是否居住在丘陵或山区
         IsPlain: false, //是否居住在平原
         IsOtherResidenceType: false, // 是否居住在其他地区
 
         // 如果这里设置成null，那么这个选项必选
-        HasMosquitoBite: null, // 14天内是否明确被蚊虫叮咬过
+        hasMosquitoBite: null, // 14天内是否明确被蚊虫叮咬过
         TickBite: "", //发病前2周内是否被蜱叮咬过
         FleaBite: "", // 发病是否被跳蚤叮咬过
         ContactWithRatIn2Months: "", // 发病前2个月内是否接触鼠类
@@ -718,14 +718,14 @@ export default {
     handleOutdoorChange() {
       if (this.form.OutdoorStayOrWorkWithinMonth != "是") {
         this.form.WildActivityHistory = "";
-        this.form.OtherWildActivityName = "";
+        this.form.OtherWildActivityname = "";
       }
     },
 
     handleOtherActivityChange() {
       if (this.form.WildActivityHistory != "其他") {
         // this.WildActivityHistory="";
-        this.form.OtherWildActivityName = "";
+        this.form.OtherWildActivityname = "";
       }
     },
 
@@ -753,29 +753,29 @@ export default {
     clearContactPlace() {
       if (this.form.ContactWithAnimals !== "是") {
         this.form.ContactPlace = "";
-        this.form.HasContactWithRat = false;
-        this.form.HasContactWithMarmot = false;
-        this.form.HasContactWithLice = false;
-        this.form.HasContactWithFlea = false;
-        this.form.HasContactWithCat = false;
-        this.form.HasContactWithBird = false;
-        this.form.HasContactWithPig = false;
-        this.form.HasContactWithHorse = false;
-        this.form.HasContactWithMule = false;
-        this.form.HasContactWithDonkey = false;
-        this.form.HasContactWithCow = false;
-        this.form.HasContactWithSheep = false;
-        this.form.HasContactWithDog = false;
-        this.form.HasContactWithRabbit = false;
-        this.form.HasContactWithWolf = false;
-        this.form.HasContactWithTiger = false;
-        this.form.HasContactWithOtherAnimal = false; // 是否接触其他动物
+        this.form.hasContactWithRat = false;
+        this.form.hasContactWithMarmot = false;
+        this.form.hasContactWithLice = false;
+        this.form.hasContactWithFlea = false;
+        this.form.hasContactWithCat = false;
+        this.form.hasContactWithBird = false;
+        this.form.hasContactWithPig = false;
+        this.form.hasContactWithHorse = false;
+        this.form.hasContactWithMule = false;
+        this.form.hasContactWithDonkey = false;
+        this.form.hasContactWithCow = false;
+        this.form.hasContactWithSheep = false;
+        this.form.hasContactWithDog = false;
+        this.form.hasContactWithRabbit = false;
+        this.form.hasContactWithWolf = false;
+        this.form.hasContactWithTiger = false;
+        this.form.hasContactWithOtherAnimal = false; // 是否接触其他动物
       }
     },
 
     handleOtherChange() {
-      if (!this.form.HasContactWithOtherAnimal) {
-        this.form.OtherAnimalName = "";
+      if (!this.form.hasContactWithOtherAnimal) {
+        this.form.OtherAnimalname = "";
       }
     },
     clearRatContactMethod() {
@@ -799,18 +799,18 @@ export default {
         IsDiningOut: false, // 5天内是否外出就餐
         IsDiningUnclear: false, // 5天内就餐情况不清楚
 
-        HasDrinkingRawWater: false, // 是否饮生水
-        HasEatingRawFood: false, // 是否吃生冷食品
-        HasEatingColdCookedFood: false, // 是否熟食冷吃
-        HasEatingSeafood: false, // 是否吃海水产品
+        hasDrinkingRawWater: false, // 是否饮生水
+        hasEatingRawFood: false, // 是否吃生冷食品
+        hasEatingColdCookedFood: false, // 是否熟食冷吃
+        hasEatingSeafood: false, // 是否吃海水产品
 
-        FoodNames: "", // 食物名字
+        Foodnames: "", // 食物名字
         DiningPlace: "", // 就餐地点
 
         GroupOutbreak: "", // 同一家庭、办公室、车间等集体单位是否有聚集性发病
         OutdoorStayOrWorkWithinMonth: "", // 发病前1月内是否在野外住宿或工作
         WildActivityHistory: "", // 野外/户外活动史
-        OtherWildActivityName: "", // 其他活动名称
+        OtherWildActivityname: "", // 其他活动名称
 
         PlagueArea: "", // 是否到过鼠疫流行区
         SpecificPlagueLocation: "", // 具体地点
@@ -826,31 +826,31 @@ export default {
 
         ContactWithAnimals: "", // 是否接触过动物
         ContactPlace: "", //  接触地点
-        HasContactWithRat: false,
-        HasContactWithMarmot: false,
-        HasContactWithLice: false,
-        HasContactWithFlea: false,
-        HasContactWithCat: false,
-        HasContactWithBird: false,
-        HasContactWithPig: false,
-        HasContactWithHorse: false,
-        HasContactWithMule: false,
-        HasContactWithDonkey: false,
-        HasContactWithCow: false,
-        HasContactWithSheep: false,
-        HasContactWithDog: false,
-        HasContactWithRabbit: false,
-        HasContactWithWolf: false,
-        HasContactWithTiger: false,
-        HasContactWithOtherAnimal: false, // 是否接触其他动物
-        OtherAnimalName: "",
+        hasContactWithRat: false,
+        hasContactWithMarmot: false,
+        hasContactWithLice: false,
+        hasContactWithFlea: false,
+        hasContactWithCat: false,
+        hasContactWithBird: false,
+        hasContactWithPig: false,
+        hasContactWithHorse: false,
+        hasContactWithMule: false,
+        hasContactWithDonkey: false,
+        hasContactWithCow: false,
+        hasContactWithSheep: false,
+        hasContactWithDog: false,
+        hasContactWithRabbit: false,
+        hasContactWithWolf: false,
+        hasContactWithTiger: false,
+        hasContactWithOtherAnimal: false, // 是否接触其他动物
+        OtherAnimalname: "",
 
         IsHillyOrMountainous: false, // 是否居住在丘陵或山区
         IsPlain: false, //是否居住在平原
         IsOtherResidenceType: false, // 是否居住在其他地区
 
         // 如果这里设置成null，那么这个选项必选
-        HasMosquitoBite: null, // 14天内是否明确被蚊虫叮咬过
+        hasMosquitoBite: null, // 14天内是否明确被蚊虫叮咬过
         TickBite: "", //发病前2周内是否被蜱叮咬过
         FleaBite: "", // 发病是否被跳蚤叮咬过
         ContactWithRatIn2Months: "", // 发病前2个月内是否接触鼠类

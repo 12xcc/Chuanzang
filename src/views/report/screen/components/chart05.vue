@@ -36,10 +36,10 @@
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="diagnosisDiseaseTypeName" label="诊断结果" width="80">
+          <el-table-column prop="diagnosisdiseaseTypeName" label="诊断结果" width="80">
             <template #default="scope">
-              <el-tag :type="scope.row.diagnosisDiseaseTypeName === '健康' ? 'success' : 'danger'">
-                {{ scope.row.diagnosisDiseaseTypeName }}
+              <el-tag :type="scope.row.diagnosisdiseaseTypeName === '健康' ? 'success' : 'danger'">
+                {{ scope.row.diagnosisdiseaseTypeName }}
               </el-tag>
             </template>
           </el-table-column>

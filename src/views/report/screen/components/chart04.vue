@@ -86,9 +86,9 @@ export default {
             tooltip: {
               trigger: "item", 
               formatter: function (params) {
-                const diseaseName = params.name;
+                const diseasename = params.name;
                 const count = params.value;
-                return `${diseaseName}: ${count} 人`; 
+                return `${diseasename}: ${count} 人`; 
               },
               backgroundColor: "#FFFFFF",
               borderColor:"#FFFFFF",

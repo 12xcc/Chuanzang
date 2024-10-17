@@ -52,7 +52,7 @@
       @close="stopVideo"
     >
       <template #title>
-        <span>{{ currentFileName }}</span>
+        <span>{{ currentFilename }}</span>
       </template>
       <div class="video-container">
         <video 
@@ -97,7 +97,7 @@ const dialogImageUrl = ref('');
 const dialogVisible = ref(false);
 const disabled = ref(false);
 const files = ref<ExtendedUploadFile[]>([]);
-const currentFileName = ref('');
+const currentFilename = ref('');
 const isVideo = ref(false); // 新增变量判断是否为视频
 const videoPlayer = ref<HTMLVideoElement | null>(null); // 用于存储视频播放器引用
 
@@ -111,7 +111,7 @@ const handleRemove: UploadProps['onRemove'] = (file, fileList) => {
 const handlePictureCardPreview = (file: ExtendedUploadFile) => {
   dialogImageUrl.value = URL.createObjectURL(file.raw);
   isVideo.value = file.raw && file.raw.type === 'video/mp4'; // 判断是否为视频
-  currentFileName.value = file.name; // 获取当前文件名
+  currentFilename.value = file.name; // 获取当前文件名
   dialogVisible.value = true; // 显示对话框
 }
 

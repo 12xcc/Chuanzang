@@ -14,113 +14,113 @@
             <span class="title-text">症状</span>
           </div>
           <el-check-tag
-      :checked="form.HasDelirium"
+      :checked="form.hasDelirium"
       type="primary"
-      @change="toggleTag('HasDelirium')"
+      @change="toggleTag('hasDelirium')"
     >
       儋妄
     </el-check-tag>
 
     <el-check-tag
-      :checked="form.HasConvulsion"
+      :checked="form.hasConvulsion"
       type="primary"
-      @change="toggleTag('HasConvulsion')"
+      @change="toggleTag('hasConvulsion')"
     >
       抽搐
     </el-check-tag>
 
     <el-check-tag
-      :checked="form.HasDrowsiness"
+      :checked="form.hasDrowsiness"
       type="primary"
-      @change="toggleTag('HasDrowsiness')"
+      @change="toggleTag('hasDrowsiness')"
     >
       昏睡
     </el-check-tag>
 
     <el-check-tag
-      :checked="form.HasComa"
+      :checked="form.hasComa"
       type="primary"
-      @change="toggleTag('HasComa')"
+      @change="toggleTag('hasComa')"
     >
       昏迷
     </el-check-tag>
 
     <el-check-tag
-      :checked="form.HasStiffNeck"
+      :checked="form.hasStiffNeck"
       type="primary"
-      @change="toggleTag('HasStiffNeck')"
+      @change="toggleTag('hasStiffNeck')"
     >
       颈部强直
     </el-check-tag>
 
     <el-check-tag
-      :checked="form.HasRestlessness"
+      :checked="form.hasRestlessness"
       type="primary"
-      @change="toggleTag('HasRestlessness')"
+      @change="toggleTag('hasRestlessness')"
     >
       烦躁不安
     </el-check-tag>
 
     <el-check-tag
-      :checked="form.HasMuscleParalysisNeckShoulder"
+      :checked="form.hasMuscleParalysisNeckShoulder"
       type="primary"
-      @change="toggleTag('HasMuscleParalysisNeckShoulder')"
+      @change="toggleTag('hasMuscleParalysisNeckShoulder')"
     >
       颈肩部肌肉迟缓性瘫痪
     </el-check-tag>
 
     <el-check-tag
-      :checked="form.HasMuscleParalysisLimbs"
+      :checked="form.hasMuscleParalysisLimbs"
       type="primary"
-      @change="toggleTag('HasMuscleParalysisLimbs')"
+      @change="toggleTag('hasMuscleParalysisLimbs')"
     >
       肢体肌肉迟缓性瘫痪
     </el-check-tag>
 
     <el-check-tag
-      :checked="form.HasSwallowingDifficulty"
+      :checked="form.hasSwallowingDifficulty"
       type="primary"
-      @change="toggleTag('HasSwallowingDifficulty')"
+      @change="toggleTag('hasSwallowingDifficulty')"
     >
       吞咽困难
     </el-check-tag>
 
     <el-check-tag
-      :checked="form.HasSpeechDisorder"
+      :checked="form.hasSpeechDisorder"
       type="primary"
-      @change="toggleTag('HasSpeechDisorder')"
+      @change="toggleTag('hasSpeechDisorder')"
     >
       语言障碍
     </el-check-tag>
 
     <el-check-tag
-      :checked="form.HasConsciousnessDisorder"
+      :checked="form.hasConsciousnessDisorder"
       type="primary"
-      @change="toggleTag('HasConsciousnessDisorder')"
+      @change="toggleTag('hasConsciousnessDisorder')"
     >
       意识障碍或惊厥
     </el-check-tag>
 
     <el-check-tag
-      :checked="form.HasDizziness"
+      :checked="form.hasDizziness"
       type="primary"
-      @change="toggleTag('HasDizziness')"
+      @change="toggleTag('hasDizziness')"
     >
       头晕
     </el-check-tag>
 
     <el-check-tag
-      :checked="form.HasTinnitus"
+      :checked="form.hasTinnitus"
       type="primary"
-      @change="toggleTag('HasTinnitus')"
+      @change="toggleTag('hasTinnitus')"
     >
       耳鸣
     </el-check-tag>
 
     <el-check-tag
-      :checked="form.HasHearingLoss"
+      :checked="form.hasHearingLoss"
       type="primary"
-      @change="toggleTag('HasHearingLoss')"
+      @change="toggleTag('hasHearingLoss')"
     >
       听力减退
     </el-check-tag>
@@ -142,20 +142,20 @@ export default {
     return {
       visible: false, // 控制弹窗显示
       form: {
-         HasDelirium: false,
-        HasConvulsion: false,
-        HasDrowsiness: false,
-        HasComa: false,
-        HasStiffNeck: false,
-        HasRestlessness: false,
-        HasMuscleParalysisNeckShoulder: false,
-        HasMuscleParalysisLimbs: false,
-        HasSwallowingDifficulty: false,
-        HasSpeechDisorder: false,
-        HasConsciousnessDisorder: false,
-        HasDizziness: false,
-        HasTinnitus: false,
-        HasHearingLoss: false
+         hasDelirium: false,
+        hasConvulsion: false,
+        hasDrowsiness: false,
+        hasComa: false,
+        hasStiffNeck: false,
+        hasRestlessness: false,
+        hasMuscleParalysisNeckShoulder: false,
+        hasMuscleParalysisLimbs: false,
+        hasSwallowingDifficulty: false,
+        hasSpeechDisorder: false,
+        hasConsciousnessDisorder: false,
+        hasDizziness: false,
+        hasTinnitus: false,
+        hasHearingLoss: false
       },
 
       rules: {},
@@ -203,20 +203,20 @@ export default {
     },
     getInitialForm() {
       return {
-         HasDelirium: false,
-        HasConvulsion: false,
-        HasDrowsiness: false,
-        HasComa: false,
-        HasStiffNeck: false,
-        HasRestlessness: false,
-        HasMuscleParalysisNeckShoulder: false,
-        HasMuscleParalysisLimbs: false,
-        HasSwallowingDifficulty: false,
-        HasSpeechDisorder: false,
-        HasConsciousnessDisorder: false,
-        HasDizziness: false,
-        HasTinnitus: false,
-        HasHearingLoss: false
+         hasDelirium: false,
+        hasConvulsion: false,
+        hasDrowsiness: false,
+        hasComa: false,
+        hasStiffNeck: false,
+        hasRestlessness: false,
+        hasMuscleParalysisNeckShoulder: false,
+        hasMuscleParalysisLimbs: false,
+        hasSwallowingDifficulty: false,
+        hasSpeechDisorder: false,
+        hasConsciousnessDisorder: false,
+        hasDizziness: false,
+        hasTinnitus: false,
+        hasHearingLoss: false
       };
     },
 

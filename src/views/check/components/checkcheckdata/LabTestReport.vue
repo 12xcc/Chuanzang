@@ -6,9 +6,9 @@
       <span class="title-text">粪便检查报告（请上传jpg或pdf格式）</span>
     </div>
     <UploadSection
-      v-model="reports.fecal"
+      v-model="reports.hasStoolTest"
       :specimen-type="'粪便'"
-      report-type="fecal"
+      report-type="hasStoolTest"
 
     />
 
@@ -48,7 +48,7 @@ export default {
     return {
       allDisabled:true,
       reports: {
-        fecal: [],
+        hasStoolTest: [],
         vomit: [],
         blood: [],
       },

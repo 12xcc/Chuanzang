@@ -70,9 +70,9 @@
       >
         <el-table-column type="selection" width="55" />
         <el-table-column prop="serialNumber" label="序号" width="80" />
-        <el-table-column prop="HospitalName" label="医院名" width="300" />
+        <el-table-column prop="hospitalName" label="医院名" width="300" />
         <el-table-column
-          prop="HospitalPhoneNumber"
+          prop="hospitalPhoneNumber"
           label="联系电话"
           width="200"
         />
@@ -177,8 +177,8 @@ export default {
               index +
               1,
             HospitalID: item.hospitalId,
-            HospitalName: item.hospitalName,
-            HospitalPhoneNumber: item.hospitalPhoneNumber,
+            hospitalName: item.hospitalName,
+            hospitalPhoneNumber: item.hospitalPhoneNumber,
             Address: item.address,
           }));
 

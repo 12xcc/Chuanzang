@@ -13,9 +13,9 @@
             <div class="blue-box"></div>
             <span class="title-text">发热情况</span>
           </div>
-          <el-form-item label="是否发热(≥37.3℃)" prop="HasFever">
+          <el-form-item label="是否发热(≥37.3℃)" prop="hasFever">
             <el-select
-              v-model="form.HasFever"
+              v-model="form.hasFever"
               placeholder="是否发热"
               clearable
               size="default"
@@ -28,11 +28,11 @@
 
           <el-form-item
             label="最高体温(℃)"
-            v-if="form.HasFever === 1"
-            prop="HighestTemperature"
+            v-if="form.hasFever === 1"
+            prop="highestTemperature"
           >
             <el-input
-              v-model="form.HighestTemperature"
+              v-model="form.highestTemperature"
               placeholder="最高体温"
               clearable
               size="default"
@@ -42,11 +42,11 @@
           </el-form-item>
           <el-form-item
             label="持续时间(h)"
-            v-if="form.HasFever === 1"
-            prop="FeverDuration"
+            v-if="form.hasFever === 1"
+            prop="feverDuration"
           >
             <el-input
-              v-model="form.FeverDuration"
+              v-model="form.feverDuration"
               placeholder="最高体温"
               clearable
               size="default"
@@ -62,103 +62,103 @@
             <span class="title-text">情况</span>
           </div>
           <el-check-tag
-            :checked="form.HasChills"
+            :checked="form.hasChills"
             type="primary"
-            @change="toggleTag('HasChills')"
+            @change="toggleTag('hasChills')"
           >
             寒战
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasSweating"
+            :checked="form.hasSweating"
             type="primary"
-            @change="toggleTag('HasSweating')"
+            @change="toggleTag('hasSweating')"
           >
             大汗
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasFatigue"
+            :checked="form.hasFatigue"
             type="primary"
-            @change="toggleTag('HasFatigue')"
+            @change="toggleTag('hasFatigue')"
           >
             乏力
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasHeadache"
+            :checked="form.hasHeadache"
             type="primary"
-            @change="toggleTag('HasHeadache')"
+            @change="toggleTag('hasHeadache')"
           >
             头痛
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasMusclePain"
+            :checked="form.hasMusclePain"
             type="primary"
-            @change="toggleTag('HasMusclePain')"
+            @change="toggleTag('hasMusclePain')"
           >
             肌肉酸痛
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasJointPain"
+            :checked="form.hasJointPain"
             type="primary"
-            @change="toggleTag('HasJointPain')"
+            @change="toggleTag('hasJointPain')"
           >
             关节酸痛
           </el-check-tag>
         </div>
 
         <el-check-tag
-          :checked="form.HasLymphNodeSwelling"
+          :checked="form.hasLymphNodeSwelling"
           type="primary"
-          @change="toggleTag('HasLymphNodeSwelling')"
-          prop="HasLymphNodeSwelling"
+          @change="toggleTag('hasLymphNodeSwelling')"
+          prop="hasLymphNodeSwelling"
         >
           淋巴结肿大
         </el-check-tag>
 
         <div
-          v-if="form.HasLymphNodeSwelling"
+          v-if="form.hasLymphNodeSwelling"
           class="flex gap-2 mt-4"
           style="margin-left: 20px"
         >
           <span style="color: red">*</span>
           <el-check-tag
-            :checked="form.HasLymphNodeSwellingGroin"
+            :checked="form.hasLymphNodeSwellingGroin"
             type="primary"
-            @change="toggleTag('HasLymphNodeSwellingGroin')"
+            @change="toggleTag('hasLymphNodeSwellingGroin')"
           >
             腹股沟
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasLymphNodeSwellingArmpit"
+            :checked="form.hasLymphNodeSwellingArmpit"
             type="primary"
-            @change="toggleTag('HasLymphNodeSwellingArmpit')"
+            @change="toggleTag('hasLymphNodeSwellingArmpit')"
           >
             腋下
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasLymphNodeSwellingSubclavian"
+            :checked="form.hasLymphNodeSwellingSubclavian"
             type="primary"
-            @change="toggleTag('HasLymphNodeSwellingSubclavian')"
+            @change="toggleTag('hasLymphNodeSwellingSubclavian')"
           >
             锁骨下
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasLymphNodeSwellingNeck"
+            :checked="form.hasLymphNodeSwellingNeck"
             type="primary"
-            @change="toggleTag('HasLymphNodeSwellingNeck')"
+            @change="toggleTag('hasLymphNodeSwellingNeck')"
           >
             颈部
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasLymphNodeSwellingElbow"
+            :checked="form.hasLymphNodeSwellingElbow"
             type="primary"
-            @change="toggleTag('HasLymphNodeSwellingElbow')"
+            @change="toggleTag('hasLymphNodeSwellingElbow')"
           >
             肘
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasLymphNodeSwellingPopliteal"
+            :checked="form.hasLymphNodeSwellingPopliteal"
             type="primary"
-            @change="toggleTag('HasLymphNodeSwellingPopliteal')"
+            @change="toggleTag('hasLymphNodeSwellingPopliteal')"
           >
             腘窝
           </el-check-tag>
@@ -166,65 +166,65 @@
 
         <div class="flex gap-2 mt-4">
           <el-check-tag
-            :checked="form.HasCyanosis"
+            :checked="form.hasCyanosis"
             type="primary"
-            @change="toggleTag('HasCyanosis')"
+            @change="toggleTag('hasCyanosis')"
           >
             口唇、颜面、四肢及全身皮肤发绀
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasSubcutaneousAndMucosalBleedingSpots"
+            :checked="form.hasSubcutaneousAndMucosalBleedingSpots"
             type="primary"
-            @change="toggleTag('HasSubcutaneousAndMucosalBleedingSpots')"
+            @change="toggleTag('hasSubcutaneousAndMucosalBleedingSpots')"
           >
             皮下及黏膜出血或出血点
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasSevereAnemia"
+            :checked="form.hasSevereAnemia"
             type="primary"
-            @change="toggleTag('HasSevereAnemia')"
+            @change="toggleTag('hasSevereAnemia')"
           >
             严重贫血
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasPainfulRedRash"
+            :checked="form.hasPainfulRedRash"
             type="primary"
-            @change="toggleTag('HasPainfulRedRash')"
+            @change="toggleTag('hasPainfulRedRash')"
           >
             皮肤可见剧痛的红色丘疹
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasBloodBlisters"
+            :checked="form.hasBloodBlisters"
             type="primary"
-            @change="toggleTag('HasBloodBlisters')"
+            @change="toggleTag('hasBloodBlisters')"
           >
             皮肤可见周边呈灰黑色、基底坚硬的血性水泡
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasSkinUlcer"
+            :checked="form.hasSkinUlcer"
             type="primary"
-            @change="toggleTag('HasSkinUlcer')"
+            @change="toggleTag('hasSkinUlcer')"
           >
             皮肤出现呈灰黑色创面的溃疡
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasSubcutaneousAndMucosalBleedingCavity"
+            :checked="form.hasSubcutaneousAndMucosalBleedingCavity"
             type="primary"
-            @change="toggleTag('HasSubcutaneousAndMucosalBleedingCavity')"
+            @change="toggleTag('hasSubcutaneousAndMucosalBleedingCavity')"
           >
             皮下及粘膜出血腔道出血
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasCongestiveOrPetechialRash"
+            :checked="form.hasCongestiveOrPetechialRash"
             type="primary"
-            @change="toggleTag('HasCongestiveOrPetechialRash')"
+            @change="toggleTag('hasCongestiveOrPetechialRash')"
           >
             皮疹：充血性或点状出血疹
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasPressureInsensitiveRash"
+            :checked="form.hasPressureInsensitiveRash"
             type="primary"
-            @change="toggleTag('HasPressureInsensitiveRash')"
+            @change="toggleTag('hasPressureInsensitiveRash')"
           >
             皮疹：起初压之退色，后期压之不退，多见于四肢、躯干，面部一般没有
           </el-check-tag>
@@ -232,17 +232,17 @@
           <!-- 失水 -->
           <div class="Dehydration" style="">
             <el-check-tag
-              :checked="form.HasDehydration"
+              :checked="form.hasDehydration"
               type="primary"
-              @change="toggleTag('HasDehydration')"
-              prop="HasDehydration"
+              @change="toggleTag('hasDehydration')"
+              prop="hasDehydration"
             >
               失水
             </el-check-tag>
 
             <div class="NextContainer">
               <el-form-item
-                v-if="form.HasDehydration"
+                v-if="form.hasDehydration"
                 style="padding: 15px 0 15px 0; margin-left: 20px"
                 prop="Dehydration"
                 label="失水程度"
@@ -259,67 +259,67 @@
 
           <!-- 瘙痒性斑丘疹/水疱 -->
           <el-check-tag
-            :checked="form.HasItchyRash"
+            :checked="form.hasItchyRash"
             type="primary"
-            @change="toggleTag('HasItchyRash')"
+            @change="toggleTag('hasItchyRash')"
             style="display: block; width: 154px"
-            prop="HasItchyRash"
+            prop="hasItchyRash"
           >
             瘙痒性斑丘疹/水疱
           </el-check-tag>
 
           <div
-            v-if="form.HasItchyRash"
-            @change="handleHasItchyRashChange"
+            v-if="form.hasItchyRash"
+            @change="handlehasItchyRashChange"
             style="margin-left: 20px"
           >
             <span style="color: red">*</span>
             <el-check-tag
-              :checked="form.ItchyRashOnFingers"
+              :checked="form.itchyRashOnFingers"
               type="primary"
-              @change="toggleTag('ItchyRashOnFingers')"
+              @change="toggleTag('itchyRashOnFingers')"
             >
               手指
             </el-check-tag>
             <el-check-tag
-              :checked="form.ItchyRashOnBackOfHands"
+              :checked="form.itchyRashOnBackOfHands"
               type="primary"
-              @change="toggleTag('ItchyRashOnBackOfHands')"
+              @change="toggleTag('itchyRashOnBackOfHands')"
             >
               手背
             </el-check-tag>
             <el-check-tag
-              :checked="form.ItchyRashOnUpperLimbs"
+              :checked="form.itchyRashOnUpperLimbs"
               type="primary"
-              @change="toggleTag('ItchyRashOnUpperLimbs')"
+              @change="toggleTag('itchyRashOnUpperLimbs')"
             >
               上肢
             </el-check-tag>
             <el-check-tag
-              :checked="form.ItchyRashOnLowerLimbs"
+              :checked="form.itchyRashOnLowerLimbs"
               type="primary"
-              @change="toggleTag('ItchyRashOnLowerLimbs')"
+              @change="toggleTag('itchyRashOnLowerLimbs')"
             >
               下肢
             </el-check-tag>
             <el-check-tag
-              :checked="form.ItchyRashOnFeet"
+              :checked="form.itchyRashOnFeet"
               type="primary"
-              @change="toggleTag('ItchyRashOnFeet')"
+              @change="toggleTag('itchyRashOnFeet')"
             >
               足背
             </el-check-tag>
             <el-check-tag
-              :checked="form.ItchyRashOnFace"
+              :checked="form.itchyRashOnFace"
               type="primary"
-              @change="toggleTag('ItchyRashOnFace')"
+              @change="toggleTag('itchyRashOnFace')"
             >
               面部
             </el-check-tag>
             <el-check-tag
-              :checked="form.ItchyRashOnOther"
+              :checked="form.itchyRashOnOther"
               type="primary"
-              @change="toggleTag('ItchyRashOnOther')"
+              @change="toggleTag('itchyRashOnOther')"
             >
               其他
             </el-check-tag>
@@ -327,68 +327,68 @@
 
           <!-- 水肿 -->
           <el-check-tag
-            :checked="form.HasEdema"
+            :checked="form.hasEdema"
             type="primary"
-            @change="toggleTag('HasEdema')"
+            @change="toggleTag('hasEdema')"
           >
             水肿
           </el-check-tag>
 
           <!-- 盗汗 -->
           <el-check-tag
-            :checked="form.HasNightSweats"
+            :checked="form.hasNightSweats"
             type="primary"
-            @change="toggleTag('HasNightSweats')"
+            @change="toggleTag('hasNightSweats')"
           >
             盗汗
           </el-check-tag>
 
           <!-- 消瘦 -->
           <el-check-tag
-            :checked="form.HasWeightLoss"
+            :checked="form.hasWeightLoss"
             type="primary"
-            @change="toggleTag('HasWeightLoss')"
+            @change="toggleTag('hasWeightLoss')"
           >
             消瘦
           </el-check-tag>
 
           <!-- 虚脱/全身无力 -->
           <el-check-tag
-            :checked="form.HasExhaustion"
+            :checked="form.hasExhaustion"
             type="primary"
-            @change="toggleTag('HasExhaustion')"
+            @change="toggleTag('hasExhaustion')"
           >
             虚脱/全身无力
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasWhiteBloodCells"
+            :checked="form.hasWhiteBloodCells"
             type="primary"
-            @change="toggleTag('HasWhiteBloodCells')"
+            @change="toggleTag('hasWhiteBloodCells')"
           >
             白细胞明显增高
           </el-check-tag>
 
           <div>
             <el-check-tag
-              :checked="form.HasBloodPressureDrop"
+              :checked="form.hasBloodPressureDrop"
               type="primary"
-              @change="toggleTag('HasBloodPressureDrop')"
+              @change="toggleTag('hasBloodPressureDrop')"
             >
               血压下降
             </el-check-tag>
             <div class="NextContainer">
               <el-form-item
                 label="最低血压(mmHg)"
-                v-if="form.HasBloodPressureDrop"
+                v-if="form.hasBloodPressureDrop"
                 style="margin-left: 20px; padding: 15px 0 15px 0"
                 label-position="left"
-                prop="HasBloodPressureDrop"
+                prop="hasBloodPressureDrop"
               >
                 <el-input
-                  v-model="form.LowestBloodPressure"
+                  v-model="form.lowestBloodPressurer"
                   style="width: 200px"
                   placeholder="请输入最低血压"
-                  prop="LowestBloodPressure"
+                  prop="lowestBloodPressurer"
                 >
                 </el-input>
               </el-form-item>
@@ -396,35 +396,35 @@
           </div>
 
           <el-check-tag
-            :checked="form.HasShockSyndrome"
+            :checked="form.hasShockSyndrome"
             type="primary"
-            @change="toggleTag('HasShockSyndrome')"
+            @change="toggleTag('hasShockSyndrome')"
           >
             休克症候群
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasHighIntracranialPressure"
+            :checked="form.hasHighIntracranialPressure"
             type="primary"
-            @change="toggleTag('HasHighIntracranialPressures')"
+            @change="toggleTag('hasHighIntracranialPressures')"
           >
             颅压高
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasTurbidCerebrospinalFluid"
+            :checked="form.hasTurbidCerebrospinalFluid"
             type="primary"
-            @change="toggleTag('HasTurbidCerebrospinalFluid')"
+            @change="toggleTag('hasTurbidCerebrospinalFluid')"
           >
             脑脊液浊浑
           </el-check-tag>
 
           <div>
             <el-check-tag
-              :checked="form.HasBleeding"
+              :checked="form.hasBleeding"
               type="primary"
-              @change="toggleTag('HasBleeding')"
-              prop="HasBleeding"
+              @change="toggleTag('hasBleeding')"
+              prop="hasBleeding"
             >
               出血
             </el-check-tag>
@@ -432,13 +432,13 @@
             <div class="NextContainer">
               <el-form-item
                 label="出血量(ml)"
-                v-if="form.HasBleeding"
+                v-if="form.hasBleeding"
                 style="margin-left: 20px; padding: 15px 0 0 0"
                 label-position="left"
-                prop="BleedingVolume"
+                prop="bleedingVolume"
               >
                 <el-input
-                  v-model="form.BleedingVolume"
+                  v-model="form.bleedingVolume"
                   style="width: 200px"
                   placeholder="请输入出血量"
                 >
@@ -446,13 +446,13 @@
               </el-form-item>
               <el-form-item
                 label="出血腔道"
-                v-if="form.HasBleeding"
+                v-if="form.hasBleeding"
                 style="margin-left: 20px; padding: 0 0 15px 0"
                 label-position="left"
-                prop="BleedingCavity"
+                prop="bleedingCavity"
               >
                 <el-input
-                  v-model="form.BleedingCavity"
+                  v-model="form.bleedingCavity"
                   style="width: 200px"
                   placeholder="请输入出血腔道"
                 >
@@ -462,32 +462,32 @@
           </div>
 
           <el-check-tag
-            :checked="form.HasPlasmaLeakage"
+            :checked="form.hasPlasmaLeakage"
             type="primary"
-            @change="toggleTag('HasPlasmaLeakage')"
+            @change="toggleTag('hasPlasmaLeakage')"
           >
             血浆渗漏表现
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasOtherOrganDamage"
+            :checked="form.hasOtherOrganDamage"
             type="primary"
-            @change="toggleTag('HasOtherOrganDamage')"
+            @change="toggleTag('hasOtherOrganDamage')"
           >
             其他重要脏器损伤
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasKernigSign"
+            :checked="form.hasKernigSign"
             type="primary"
-            @change="toggleTag('HasKernigSign')"
+            @change="toggleTag('hasKernigSign')"
           >
             Kernig征
           </el-check-tag>
           <el-check-tag
-            :checked="form.HasBrudzinskiSign"
+            :checked="form.hasBrudzinskiSign"
             type="primary"
-            @change="toggleTag('HasBrudzinskiSign')"
+            @change="toggleTag('hasBrudzinskiSign')"
           >
             Brudzinski征
           </el-check-tag>
@@ -508,81 +508,81 @@ export default {
     return {
       visible: false, // 控制弹窗显示
       form: {
-        HasFever: null,
-        HasChills: false,
-        HasSweating: false,
-        HasFatigue: false,
-        HasHeadache: false,
-        HasMusclePain: false,
-        HasJointPain: false,
-        HasLymphNodeSwelling: false,
-        HasLymphNodeSwellingGroin: false,
-        HasLymphNodeSwellingArmpit: false,
-        HasLymphNodeSwellingSubclavian: false,
-        HasLymphNodeSwellingNeck: false,
-        HasLymphNodeSwellingElbow: false,
-        HasLymphNodeSwellingPopliteal: false,
-        HasCyanosis: false,
-        HasSubcutaneousAndMucosalBleedingSpots: false,
-        HasSevereAnemia: false, // 是否严重贫血
-        HasPainfulRedRash: false,
-        HasBloodBlisters: false,
-        HasSkinUlcer: false,
-        HasSubcutaneousAndMucosalBleedingCavity: false, //皮下及粘膜出血腔道出血
-        HasCongestiveOrPetechialRash: false,
-        HasPressureInsensitiveRash: false,
-        HasDehydration: false,
+        hasFever: null,
+        hasChills: false,
+        hasSweating: false,
+        hasFatigue: false,
+        hasHeadache: false,
+        hasMusclePain: false,
+        hasJointPain: false,
+        hasLymphNodeSwelling: false,
+        hasLymphNodeSwellingGroin: false,
+        hasLymphNodeSwellingArmpit: false,
+        hasLymphNodeSwellingSubclavian: false,
+        hasLymphNodeSwellingNeck: false,
+        hasLymphNodeSwellingElbow: false,
+        hasLymphNodeSwellingPopliteal: false,
+        hasCyanosis: false,
+        hasSubcutaneousAndMucosalBleedingSpots: false,
+        hasSevereAnemia: false, // 是否严重贫血
+        hasPainfulRedRash: false,
+        hasBloodBlisters: false,
+        hasSkinUlcer: false,
+        hasSubcutaneousAndMucosalBleedingCavity: false, //皮下及粘膜出血腔道出血
+        hasCongestiveOrPetechialRash: false,
+        hasPressureInsensitiveRash: false,
+        hasDehydration: false,
         Dehydration: "",
 
-        HasItchyRash: false,
-        ItchyRashOnFingers: false,
-        ItchyRashOnBackOfHands: false,
-        ItchyRashOnUpperLimbs: false,
-        ItchyRashOnLowerLimbs: false,
-        ItchyRashOnFeet: false,
-        ItchyRashOnFace: false,
-        ItchyRashOnOther: false,
+        hasItchyRash: false,
+        itchyRashOnFingers: false,
+        itchyRashOnBackOfHands: false,
+        itchyRashOnUpperLimbs: false,
+        itchyRashOnLowerLimbs: false,
+        itchyRashOnFeet: false,
+        itchyRashOnFace: false,
+        itchyRashOnOther: false,
 
-        HasEdema: false,
-        HasNightSweats: false,
-        HasWeightLoss: false,
-        HasExhaustion: false,
+        hasEdema: false,
+        hasNightSweats: false,
+        hasWeightLoss: false,
+        hasExhaustion: false,
 
-        HasWhiteBloodCells: false, //是否白细胞明显增高
-        HasBloodPressureDrop: false, // 是否血压下降
-        LowestBloodPressure: "", //最低血压（mmHg）
+        hasWhiteBloodCells: false, //是否白细胞明显增高
+        hasBloodPressureDrop: false, // 是否血压下降
+        lowestBloodPressurer: "", //最低血压（mmHg）
 
-        HasShockSyndrome: false, //是否休克症候群
-        HasHighIntracranialPressure: false, //是否颅压高
-        HasTurbidCerebrospinalFluid: false, // 是否脑脊液浊浑
+        hasShockSyndrome: false, //是否休克症候群
+        hasHighIntracranialPressure: false, //是否颅压高
+        hasTurbidCerebrospinalFluid: false, // 是否脑脊液浊浑
 
-        HasBleeding: false, // 是否出血
-        BleedingVolume: "", //INT 出血量（ml）
-        BleedingCavity: "", // VARCHAR(255), -- 出血腔道
+        hasBleeding: false, // 是否出血
+        bleedingVolume: "", //INT 出血量（ml）
+        bleedingCavity: "", // VARCHAR(255), -- 出血腔道
 
-        HasPlasmaLeakage: false, // 是否血浆渗漏表现
-        HasOtherOrganDamage: false, // 是否其他重要脏器损伤
+        hasPlasmaLeakage: false, // 是否血浆渗漏表现
+        hasOtherOrganDamage: false, // 是否其他重要脏器损伤
 
-        HasKernigSign: false, // 是否Kernig征
-        HasBrudzinskiSign: false, //是否Brudzinski征
+        hasKernigSign: false, // 是否Kernig征
+        hasBrudzinskiSign: false, //是否Brudzinski征
       },
 
       rules: {
-        // HasFever: [
+        // hasFever: [
         //   { required: true, message: "请选择是否发热", trigger: "blur" },
         // ],
-        FeverDuration: [
+        feverDuration: [
           { required: true, message: "请输入持续时间", trigger: "blur" },
         ],
-        HighestTemperature: [
+        highestTemperature: [
           { required: true, message: "请输入最高体温", trigger: "blur" },
         ],
         Dehydration: [
           { required: true, message: "请选择失水程度", trigger: "blur" },
         ],
-        HasBloodPressureDrop: [{ required: true, message: "请输入最低血压" }],
-        BleedingVolume: [{ required: true }],
-        BleedingCavity: [{ required: true }],
+        hasBloodPressureDrop: [{ required: true, message: "请输入最低血压" }],
+        bleedingVolume: [{ required: true }],
+        bleedingCavity: [{ required: true }],
       },
     };
   },
@@ -591,36 +591,36 @@ export default {
       this.form[field] = !this.form[field];
 
       // 失水未被选中时，其子选项清空
-      if (field === "HasDehydration" && !this.form[field]) {
+      if (field === "hasDehydration" && !this.form[field]) {
         this.form.Dehydration = "";
       }
       // 淋巴结肿大未被选中时，其子选项全部清空
-      if (field === "HasLymphNodeSwelling" && !this.form[field]) {
-        this.form.HasLymphNodeSwellingGroin = false;
-        this.form.HasLymphNodeSwellingArmpit = false;
-        this.form.HasLymphNodeSwellingSubclavian = false;
-        this.form.HasLymphNodeSwellingNeck = false;
-        this.form.HasLymphNodeSwellingElbow = false;
-        this.form.HasLymphNodeSwellingPopliteal = false;
+      if (field === "hasLymphNodeSwelling" && !this.form[field]) {
+        this.form.hasLymphNodeSwellingGroin = false;
+        this.form.hasLymphNodeSwellingArmpit = false;
+        this.form.hasLymphNodeSwellingSubclavian = false;
+        this.form.hasLymphNodeSwellingNeck = false;
+        this.form.hasLymphNodeSwellingElbow = false;
+        this.form.hasLymphNodeSwellingPopliteal = false;
       }
       // 瘙痒性斑丘疹/水疱未被选中时，其子选项全部清空
-      if (field === "HasItchyRash" && !this.form[field]) {
-        this.form.ItchyRashOnFingers = false;
-        this.form.ItchyRashOnBackOfHands = false;
-        this.form.ItchyRashOnUpperLimbs = false;
-        this.form.ItchyRashOnLowerLimbs = false;
-        this.form.ItchyRashOnFeet = false;
-        this.form.ItchyRashOnFace = false;
-        this.form.ItchyRashOnOther = false;
+      if (field === "hasItchyRash" && !this.form[field]) {
+        this.form.itchyRashOnFingers = false;
+        this.form.itchyRashOnBackOfHands = false;
+        this.form.itchyRashOnUpperLimbs = false;
+        this.form.itchyRashOnLowerLimbs = false;
+        this.form.itchyRashOnFeet = false;
+        this.form.itchyRashOnFace = false;
+        this.form.itchyRashOnOther = false;
       }
       // 清空血压下降子项
-      if (field === "HasBloodPressureDrop" && !this.form[field]) {
-        this.form.LowestBloodPressure = "";
+      if (field === "hasBloodPressureDrop" && !this.form[field]) {
+        this.form.lowestBloodPressurer = "";
       }
       // 清空出血子项
-      if (field === "HasBleeding" && !this.form[field]) {
-        this.form.BleedingVolume = "";
-        this.form.BleedingCavity = "";
+      if (field === "hasBleeding" && !this.form[field]) {
+        this.form.bleedingVolume = "";
+        this.form.bleedingCavity = "";
       }
     },
     showDrawer(user) {
@@ -635,19 +635,19 @@ export default {
     validate() {
       return new Promise((resolve, reject) => {
         // 验证失水
-        if (this.form.HasDehydration && !this.form.Dehydration) {
+        if (this.form.hasDehydration && !this.form.Dehydration) {
           return reject(new Error("请选择失水程度"));
         }
 
         // 验证淋巴结肿大
-        if (this.form.HasLymphNodeSwelling) {
+        if (this.form.hasLymphNodeSwelling) {
           const hasSelectedLymphNode =
-            this.form.HasLymphNodeSwellingGroin ||
-            this.form.HasLymphNodeSwellingArmpit ||
-            this.form.HasLymphNodeSwellingSubclavian ||
-            this.form.HasLymphNodeSwellingNeck ||
-            this.form.HasLymphNodeSwellingElbow ||
-            this.form.HasLymphNodeSwellingPopliteal;
+            this.form.hasLymphNodeSwellingGroin ||
+            this.form.hasLymphNodeSwellingArmpit ||
+            this.form.hasLymphNodeSwellingSubclavian ||
+            this.form.hasLymphNodeSwellingNeck ||
+            this.form.hasLymphNodeSwellingElbow ||
+            this.form.hasLymphNodeSwellingPopliteal;
 
           if (!hasSelectedLymphNode) {
             return reject(new Error("请选择淋巴结肿大的部位"));
@@ -655,15 +655,15 @@ export default {
         }
 
         // 验证瘙痒性斑丘疹/水疱
-        if (this.form.HasItchyRash) {
+        if (this.form.hasItchyRash) {
           const hasSelectedRashLocation =
-            this.form.ItchyRashOnFingers ||
-            this.form.ItchyRashOnBackOfHands ||
-            this.form.ItchyRashOnUpperLimbs ||
-            this.form.ItchyRashOnLowerLimbs ||
-            this.form.ItchyRashOnFeet ||
-            this.form.ItchyRashOnFace ||
-            this.form.ItchyRashOnOther;
+            this.form.itchyRashOnFingers ||
+            this.form.itchyRashOnBackOfHands ||
+            this.form.itchyRashOnUpperLimbs ||
+            this.form.itchyRashOnLowerLimbs ||
+            this.form.itchyRashOnFeet ||
+            this.form.itchyRashOnFace ||
+            this.form.itchyRashOnOther;
 
           if (!hasSelectedRashLocation) {
             return reject(new Error("请选择瘙痒性斑丘疹/水疱的部位"));
@@ -671,13 +671,13 @@ export default {
         }
 
         // 验证血压下降
-        if (this.form.HasBloodPressureDrop && !this.form.LowestBloodPressure) {
+        if (this.form.hasBloodPressureDrop && !this.form.lowestBloodPressurer) {
           return reject(new Error("请输入最低血压"));
         }
 
         // 验证出血
-        if (this.form.HasBleeding) {
-          if (!this.form.BleedingVolume || !this.form.BleedingCavity) {
+        if (this.form.hasBleeding) {
+          if (!this.form.bleedingVolume || !this.form.bleedingCavity) {
             return reject(new Error("请填写出血量和出血腔道"));
           }
         }
@@ -695,63 +695,63 @@ export default {
     },
     getInitialForm() {
       return {
-        HasFever: null,
-        HasChills: false,
-        HasSweating: false,
-        HasFatigue: false,
-        HasHeadache: false,
-        HasMusclePain: false,
-        HasJointPain: false,
-        HasLymphNodeSwelling: false,
-        HasLymphNodeSwellingGroin: false,
-        HasLymphNodeSwellingArmpit: false,
-        HasLymphNodeSwellingSubclavian: false,
-        HasLymphNodeSwellingNeck: false,
-        HasLymphNodeSwellingElbow: false,
-        HasLymphNodeSwellingPopliteal: false,
-        HasCyanosis: false,
-        HasSubcutaneousAndMucosalBleedingSpots: false,
-        HasSevereAnemia: false, // 是否严重贫血
-        HasPainfulRedRash: false,
-        HasBloodBlisters: false,
-        HasSkinUlcer: false,
-        HasSubcutaneousAndMucosalBleedingCavity: false, //皮下及粘膜出血腔道出血
-        HasCongestiveOrPetechialRash: false,
-        HasPressureInsensitiveRash: false,
-        HasDehydration: false,
+        hasFever: null,
+        hasChills: false,
+        hasSweating: false,
+        hasFatigue: false,
+        hasHeadache: false,
+        hasMusclePain: false,
+        hasJointPain: false,
+        hasLymphNodeSwelling: false,
+        hasLymphNodeSwellingGroin: false,
+        hasLymphNodeSwellingArmpit: false,
+        hasLymphNodeSwellingSubclavian: false,
+        hasLymphNodeSwellingNeck: false,
+        hasLymphNodeSwellingElbow: false,
+        hasLymphNodeSwellingPopliteal: false,
+        hasCyanosis: false,
+        hasSubcutaneousAndMucosalBleedingSpots: false,
+        hasSevereAnemia: false, // 是否严重贫血
+        hasPainfulRedRash: false,
+        hasBloodBlisters: false,
+        hasSkinUlcer: false,
+        hasSubcutaneousAndMucosalBleedingCavity: false, //皮下及粘膜出血腔道出血
+        hasCongestiveOrPetechialRash: false,
+        hasPressureInsensitiveRash: false,
+        hasDehydration: false,
         Dehydration: "",
 
-        HasItchyRash: false,
-        ItchyRashOnFingers: false,
-        ItchyRashOnBackOfHands: false,
-        ItchyRashOnUpperLimbs: false,
-        ItchyRashOnLowerLimbs: false,
-        ItchyRashOnFeet: false,
-        ItchyRashOnFace: false,
-        ItchyRashOnOther: false,
+        hasItchyRash: false,
+        itchyRashOnFingers: false,
+        itchyRashOnBackOfHands: false,
+        itchyRashOnUpperLimbs: false,
+        itchyRashOnLowerLimbs: false,
+        itchyRashOnFeet: false,
+        itchyRashOnFace: false,
+        itchyRashOnOther: false,
 
-        HasEdema: false,
-        HasNightSweats: false,
-        HasWeightLoss: false,
-        HasExhaustion: false,
+        hasEdema: false,
+        hasNightSweats: false,
+        hasWeightLoss: false,
+        hasExhaustion: false,
 
-        HasWhiteBloodCells: false, //是否白细胞明显增高
-        HasBloodPressureDrop: false, // 是否血压下降
-        LowestBloodPressure: "", //最低血压（mmHg）
+        hasWhiteBloodCells: false, //是否白细胞明显增高
+        hasBloodPressureDrop: false, // 是否血压下降
+        lowestBloodPressurer: "", //最低血压（mmHg）
 
-        HasShockSyndrome: false, //是否休克症候群
-        HasHighIntracranialPressure: false, //是否颅压高
-        HasTurbidCerebrospinalFluid: false, // 是否脑脊液浊浑
+        hasShockSyndrome: false, //是否休克症候群
+        hasHighIntracranialPressure: false, //是否颅压高
+        hasTurbidCerebrospinalFluid: false, // 是否脑脊液浊浑
 
-        HasBleeding: false, // 是否出血
-        BleedingVolume: "", //INT 出血量（ml）
-        BleedingCavity: "", // VARCHAR(255), -- 出血腔道
+        hasBleeding: false, // 是否出血
+        bleedingVolume: "", //INT 出血量（ml）
+        bleedingCavity: "", // VARCHAR(255), -- 出血腔道
 
-        HasPlasmaLeakage: false, // 是否血浆渗漏表现
-        HasOtherOrganDamage: false, // 是否其他重要脏器损伤
+        hasPlasmaLeakage: false, // 是否血浆渗漏表现
+        hasOtherOrganDamage: false, // 是否其他重要脏器损伤
 
-        HasKernigSign: false, // 是否Kernig征
-        HasBrudzinskiSign: false, //是否Brudzinski征
+        hasKernigSign: false, // 是否Kernig征
+        hasBrudzinskiSign: false, //是否Brudzinski征
       };
     },
     getData() {

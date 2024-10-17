@@ -91,53 +91,53 @@
       >
         <el-table-column type="selection" width="55" />
         <el-table-column prop="serialNumber" label="序号" width="80" height="48" />
-        <el-table-column prop="UserType" label="用户类型" width="120" />
-        <el-table-column prop="Name" label="姓名" width="100">
+        <el-table-column prop="userType" label="用户类型" width="120" />
+        <el-table-column prop="name" label="姓名" width="100">
           <template #default="scope">
             <el-button
               v-if="isNurse()"
               type="text"
               @click="handleCheckuser(scope.row)"
             >
-              {{ scope.row.Name }}
+              {{ scope.row.name }}
             </el-button>
-            <span v-else>{{ scope.row.Name }}</span>
+            <span v-else>{{ scope.row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="PhoneNumber" label="电话" width="120" />
-        <el-table-column prop="Gender" label="性别" width="100" />
-        <el-table-column prop="Age" label="年龄" width="100" />
-        <el-table-column prop="Department" label="部门/工种" width="120" />
-        <el-table-column prop="DiseaseType" label="确诊疾病" width="120">
+        <el-table-column prop="phoneNumber" label="电话" width="120" />
+        <el-table-column prop="gender" label="性别" width="100" />
+        <el-table-column prop="age" label="年龄" width="100" />
+        <el-table-column prop="department" label="部门/工种" width="120" />
+        <el-table-column prop="diseaseType" label="确诊疾病" width="120">
           <template #default="scope">
             <el-tag
               size="default"
-              :type="scope.row.DiseaseType === '健康' ? 'success' : 'danger'"
+              :type="scope.row.diseaseType === '健康' ? 'success' : 'danger'"
             >
-              {{ scope.row.DiseaseType }}
+              {{ scope.row.diseaseType }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="DiscoveryMethod" label="发现途径" width="120" />
-        <el-table-column prop="HospitalName" label="确诊医院" width="120" />
-        <el-table-column prop="DiseaseOutcome" label="疾病转归" width="120">
+        <el-table-column prop="discoveryMethod" label="发现途径" width="120" />
+        <el-table-column prop="hospitalName" label="确诊医院" width="120" />
+        <el-table-column prop="diseaseOutcome" label="疾病转归" width="120">
           <template #default="scope">
             <el-tag
               :type="
-                scope.row.DiseaseOutcome === '治愈'
+                scope.row.diseaseOutcome === '治愈'
                   ? 'success'
-                  : scope.row.DiseaseOutcome === '好转'
+                  : scope.row.diseaseOutcome === '好转'
                   ? 'warning'
                   : 'danger'
               "
             >
-              {{ scope.row.DiseaseOutcome }}
+              {{ scope.row.diseaseOutcome }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="AdmissionDate" label="就诊/入院日期" width="120" />
-        <el-table-column prop="DischargeDate" label="出院日期" width="120" />
-        <el-table-column prop="DeathDate" label="死亡日期" width="120" />
+        <el-table-column prop="admissionDate" label="就诊/入院日期" width="120" />
+        <el-table-column prop="dischargeDate" label="出院日期" width="120" />
+        <el-table-column prop="deathDate" label="死亡日期" width="120" />
         <el-table-column fixed="right" label="操作" min-width="260">
           <template #default="scope">
             <el-button link type="primary" size="large" @click="handleCheck(scope.row)">
@@ -201,115 +201,115 @@ export default {
       allData: [
           {
           serialNumber: "1",
-          UserType: "铁路职工",
-          Name: "张伟",
-          PhoneNumber: "13800000001",
-          Gender: "男",
-          Age: "44",
-          Department: "工程技术部",
-          DiseaseType: "流感",
-          DiscoveryMethod: "APP填报",
-          HospitalName: "拉萨医院",
-          DiseaseOutcome: "治愈",
-          AdmissionDate: "2024-03-03",
-          DischargeDate: "2024-03-04",
-          DeathDate: "",
+          userType: "铁路职工",
+          name: "张伟",
+          phoneNumber: "13800000001",
+          gender: "男",
+          age: "44",
+          department: "工程技术部",
+          diseaseType: "流感",
+          discoveryMethod: "APP填报",
+          hospitalName: "拉萨医院",
+          diseaseOutcome: "治愈",
+          admissionDate: "2024-03-03",
+          dischargeDate: "2024-03-04",
+          deathDate: "",
         },
         {
           serialNumber: "2",
-          UserType: "铁路职工",
-          Name: "李强",
-          PhoneNumber: "13800000122",
-          Gender: "男",
-          Age: "35",
-          Department: "工程技术部",
-          DiseaseType: "流感",
-          DiscoveryMethod: "APP填报",
-          HospitalName: "拉萨医院",
-          DiseaseOutcome: "死亡",
-          AdmissionDate: "2024-03-03",
-          DischargeDate: "2024-03-04",
-          DeathDate: "",
+          userType: "铁路职工",
+          name: "李强",
+          phoneNumber: "13800000122",
+          gender: "男",
+          age: "35",
+          department: "工程技术部",
+          diseaseType: "流感",
+          discoveryMethod: "APP填报",
+          hospitalName: "拉萨医院",
+          diseaseOutcome: "死亡",
+          admissionDate: "2024-03-03",
+          dischargeDate: "2024-03-04",
+          deathDate: "",
         },
         {
           serialNumber: "3",
-          UserType: "铁路职工",
-          Name: "王丽",
-          PhoneNumber: "13800000003",
-          Gender: "女",
-          Age: "28",
-          Department: "合约部",
-          DiseaseType: "肠炭疽",
-          DiscoveryMethod: "APP填报",
-          HospitalName: "拉萨医院",
-          DiseaseOutcome: "治愈",
-          AdmissionDate: "2024-03-03",
-          DischargeDate: "2024-03-04",
-          DeathDate: "",
+          userType: "铁路职工",
+          name: "王丽",
+          phoneNumber: "13800000003",
+          gender: "女",
+          age: "28",
+          department: "合约部",
+          diseaseType: "肠炭疽",
+          discoveryMethod: "APP填报",
+          hospitalName: "拉萨医院",
+          diseaseOutcome: "治愈",
+          admissionDate: "2024-03-03",
+          dischargeDate: "2024-03-04",
+          deathDate: "",
         },
         {
           serialNumber: "4",
-          UserType: "铁路职工",
-          Name: "赵鹏",
-          PhoneNumber: "13800340004",
-          Gender: "男",
-          Age: "39",
-          Department: "测量队",
-          DiseaseType: "新冠病毒感染",
-          DiscoveryMethod: "APP填报",
-          HospitalName: "拉萨医院",
-          DiseaseOutcome: "好转",
-          AdmissionDate: "2024-03-03",
-          DischargeDate: "2024-03-04",
-          DeathDate: "",
+          userType: "铁路职工",
+          name: "赵鹏",
+          phoneNumber: "13800340004",
+          gender: "男",
+          age: "39",
+          department: "测量队",
+          diseaseType: "新冠病毒感染",
+          discoveryMethod: "APP填报",
+          hospitalName: "拉萨医院",
+          diseaseOutcome: "好转",
+          admissionDate: "2024-03-03",
+          dischargeDate: "2024-03-04",
+          deathDate: "",
         },
         {
           serialNumber: "5",
-          UserType: "铁路职工",
-          Name: "陈梅",
-          PhoneNumber: "13800000005",
-          Gender: "女",
-          Age: "41",
-          Department: "测量队",
-          DiseaseType: "鼠疫",
-          DiscoveryMethod: "APP填报",
-          HospitalName: "拉萨医院",
-          DiseaseOutcome: "治愈",
-          AdmissionDate: "2024-03-03",
-          DischargeDate: "2024-03-04",
-          DeathDate: "",
+          userType: "铁路职工",
+          name: "陈梅",
+          phoneNumber: "13800000005",
+          gender: "女",
+          age: "41",
+          department: "测量队",
+          diseaseType: "鼠疫",
+          discoveryMethod: "APP填报",
+          hospitalName: "拉萨医院",
+          diseaseOutcome: "治愈",
+          admissionDate: "2024-03-03",
+          dischargeDate: "2024-03-04",
+          deathDate: "",
         },
         {
           serialNumber: "6",
-          UserType: "铁路职工",
-          Name: "刘洋",
-          PhoneNumber: "13800000006",
-          Gender: "男",
-          Age: "32",
-          Department: "工程技术部",
-          DiseaseType: "流感",
-          DiscoveryMethod: "APP填报",
-          HospitalName: "拉萨医院",
-          DiseaseOutcome: "治愈",
-          AdmissionDate: "2024-03-03",
-          DischargeDate: "2024-03-04",
-          DeathDate: "",
+          userType: "铁路职工",
+          name: "刘洋",
+          phoneNumber: "13800000006",
+          gender: "男",
+          age: "32",
+          department: "工程技术部",
+          diseaseType: "流感",
+          discoveryMethod: "APP填报",
+          hospitalName: "拉萨医院",
+          diseaseOutcome: "治愈",
+          admissionDate: "2024-03-03",
+          dischargeDate: "2024-03-04",
+          deathDate: "",
         },
         {
           serialNumber: "6",
-          UserType: "铁路职工",
-          Name: "张伟",
-          PhoneNumber: "13800000006",
-          Gender: "男",
-          Age: "32",
-          Department: "工程技术部",
-          DiseaseType: "流感",
-          DiscoveryMethod: "APP填报",
-          HospitalName: "拉萨医院",
-          DiseaseOutcome: "治愈",
-          AdmissionDate: "2024-03-08",
-          DischargeDate: "2024-03-10",
-          DeathDate: "",
+          userType: "铁路职工",
+          name: "张伟",
+          phoneNumber: "13800000006",
+          gender: "男",
+          age: "32",
+          department: "工程技术部",
+          diseaseType: "流感",
+          discoveryMethod: "APP填报",
+          hospitalName: "拉萨医院",
+          diseaseOutcome: "治愈",
+          admissionDate: "2024-03-08",
+          dischargeDate: "2024-03-10",
+          deathDate: "",
         },
       ],
       showSearch: true,
@@ -324,7 +324,7 @@ export default {
         return this.allData;
       }
       return this.allData.filter((item) => {
-        const fieldsToSearch = ["Name", "PhoneNumber", "Department"];
+        const fieldsToSearch = ["name", "phoneNumber", "department"];
         const textMatch = check
           ? fieldsToSearch.some((field) => {
               const itemFieldValue =
@@ -333,11 +333,11 @@ export default {
             })
           : true;
 
-        const AdmissionDate = new Date(item.AdmissionDate);
+        const admissionDate = new Date(item.admissionDate);
         const dateMatch =
           Array.isArray(date) &&
           date.length === 2
-            ? AdmissionDate >= new Date(date[0]) && AdmissionDate <= new Date(date[1])
+            ? admissionDate >= new Date(date[0]) && admissionDate <= new Date(date[1])
             : true;
 
         return textMatch && dateMatch;

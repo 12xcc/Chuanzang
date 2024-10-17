@@ -27,9 +27,9 @@
             <div class="blue-box"></div>
             <span class="title-text">疾病名称</span>
           </div>
-          <el-form-item label="疾病名称" prop="DiseaseTypeName">
+          <el-form-item label="疾病名称" prop="diseaseTypeName">
             <el-input
-              v-model="form.DiseaseTypeName"
+              v-model="form.diseaseTypeName"
               style="width: 200px"
               clearable
               :disabled="allDisabled"
@@ -170,7 +170,7 @@ export default {
       visible: false, // 控制抽屉显示隐藏
       selectedTag: "全身症状", // 默认选中的标签
       form: {
-        DiseaseTypeName: "", // 疾病类型名称
+        diseaseTypeName: "", // 疾病类型名称
         WeightScore: 0, // 当前总分
       },
       generalSymptomsData: [], // GeneralSymptoms 数据
@@ -205,7 +205,7 @@ export default {
     // 调用接口获取症状数据
     async fetchSymptomsData() {
       try {
-        const params = { diseaseTypeName: this.form.DiseaseTypeName };
+        const params = { diseaseTypeName: this.form.diseaseTypeName };
         const response = await getAllWeightScoringInfo(params);
 
         if (

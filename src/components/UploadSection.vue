@@ -52,7 +52,7 @@
 
     <el-dialog v-model="dialogVisible" class="custom-dialog" :modal="true">
       <template #title>
-        <span>{{ currentFileName }}</span>
+        <span>{{ currentFilename }}</span>
       </template>
       <img 
         v-if="!isPdf" 
@@ -91,7 +91,7 @@ const dialogVisible = ref(false);
 const disabled = ref(false);
 const files = ref<UploadFile[]>([]);
 const isPdf = ref(false); // 新增变量判断是否为PDF
-const currentFileName = ref(''); // 新增变量存储当前文件名
+const currentFilename = ref(''); // 新增变量存储当前文件名
 
 const handleRemove: UploadProps['onRemove'] = (file, fileList) => {
   const index = fileList.indexOf(file);
@@ -103,7 +103,7 @@ const handleRemove: UploadProps['onRemove'] = (file, fileList) => {
 const handlePictureCardPreview = (file: UploadFile) => {
   dialogImageUrl.value = file.url || URL.createObjectURL(file.raw);
   isPdf.value = file.raw && file.raw.type === 'application/pdf'; // 判断是否为PDF
-  currentFileName.value = file.name; // 获取当前文件名
+  currentFilename.value = file.name; // 获取当前文件名
   dialogVisible.value = true;
 }
 </script>

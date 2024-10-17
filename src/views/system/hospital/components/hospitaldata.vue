@@ -23,21 +23,21 @@
         ref="form"
         :rules="rules"
       >
-        <el-form-item label="医院名称" prop="HospitalName">
+        <el-form-item label="医院名称" prop="hospitalName">
           <el-input
-            v-model="form.HospitalName"
+            v-model="form.hospitalName"
             style="width: 200px"
             placeholder="请输入医院名称"
-            @blur="$refs.form.validateField('HospitalName')"
+            @blur="$refs.form.validateField('hospitalName')"
           ></el-input>
         </el-form-item>
 
-        <el-form-item label="联系电话" prop="HospitalPhoneNumber">
+        <el-form-item label="联系电话" prop="hospitalPhoneNumber">
           <el-input
-            v-model="form.HospitalPhoneNumber"
+            v-model="form.hospitalPhoneNumber"
             style="width: 200px"
             placeholder="请输入医院电话"
-            @blur="$refs.form.validateField('HospitalPhoneNumber')"
+            @blur="$refs.form.validateField('hospitalPhoneNumber')"
           ></el-input>
         </el-form-item>
 
@@ -66,14 +66,14 @@ export default {
       currentHospitalId :"",
       visible: false, // 控制弹窗显示
       form: {
-        HospitalName: '',
-        HospitalPhoneNumber: '',
+        hospitalName: '',
+        hospitalPhoneNumber: '',
         Address: '',
       },
 
       rules: {
-        HospitalName: [{ required: true, message: '请输入医院名称', trigger: 'blur' }],
-        HospitalPhoneNumber: [{ required: true, message: '请输入联系电话', trigger: 'blur' }],
+        hospitalName: [{ required: true, message: '请输入医院名称', trigger: 'blur' }],
+        hospitalPhoneNumber: [{ required: true, message: '请输入联系电话', trigger: 'blur' }],
         Address: [{ required: true, message: '请输入医院地址', trigger: 'blur' }],
       },
     };
@@ -87,8 +87,8 @@ export default {
         if (response.data.code === 1) {
           // 将后端数据映射到表单
           this.form = {
-            HospitalName: response.data.data.hospitalName,
-            HospitalPhoneNumber: response.data.data.hospitalPhoneNumber,
+            hospitalName: response.data.data.hospitalName,
+            hospitalPhoneNumber: response.data.data.hospitalPhoneNumber,
             Address: response.data.data.address,
           };
         } else {
@@ -124,8 +124,8 @@ export default {
           try {
             const params = {
                hospitalId: this.currentHospitalId,
-               hospitalName: this.form.HospitalName,
-               hospitalPhoneNumber:this.form.HospitalPhoneNumber,
+               hospitalName: this.form.hospitalName,
+               hospitalPhoneNumber:this.form.hospitalPhoneNumber,
                address:this.form.Address,
             };
 
@@ -168,8 +168,8 @@ export default {
 
     getInitialForm() {
       return {
-        HospitalName: '',
-        HospitalPhoneNumber: '',
+        hospitalName: '',
+        hospitalPhoneNumber: '',
         Address: '',
       };
     },

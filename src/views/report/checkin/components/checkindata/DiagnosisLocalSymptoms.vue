@@ -15,126 +15,126 @@
             <span class="title-text">症状</span>
           </div>
           <el-check-tag
-            :checked="form.HasConjunctivitis"
+            :checked="form.hasConjunctivitis"
             type="primary"
-            @change="toggleTag('HasConjunctivitis')"
+            @change="toggleTag('hasConjunctivitis')"
             :disabled="allDisabled"  
           >
             结膜炎
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasConjunctivalCongestion"
+            :checked="form.hasConjunctivalCongestion"
             type="primary"
-            @change="toggleTag('HasConjunctivalCongestion')"
+            @change="toggleTag('hasConjunctivalCongestion')"
             :disabled="allDisabled"  
           >
             眼结膜充血、肿胀疼痛
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasEyelidEdema"
+            :checked="form.hasEyelidEdema"
             type="primary"
-            @change="toggleTag('HasEyelidEdema')"
+            @change="toggleTag('hasEyelidEdema')"
             :disabled="allDisabled"  
           >
             上下眼睑水肿
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasSmellTasteLoss"
+            :checked="form.hasSmellTasteLoss"
             type="primary"
-            @change="toggleTag('HasSmellTasteLoss')"
+            @change="toggleTag('hasSmellTasteLoss')"
             :disabled="allDisabled"  
           >
             嗅觉味觉减退或丧失
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasFacialRednessOrPallor"
+            :checked="form.hasFacialRednessOrPallor"
             type="primary"
-            @change="toggleTag('HasFacialRednessOrPallor')"
+            @change="toggleTag('hasFacialRednessOrPallor')"
             :disabled="allDisabled"  
           >
             颜面潮红或苍白
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasRednessNeckChest"
+            :checked="form.hasRednessNeckChest"
             type="primary"
-            @change="toggleTag('HasRednessNeckChest')"
+            @change="toggleTag('hasRednessNeckChest')"
             :disabled="allDisabled"  
           >
             潮红（颈部、胸部）
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasLipCyanosis"
+            :checked="form.hasLipCyanosis"
             type="primary"
-            @change="toggleTag('HasLipCyanosis')"
+            @change="toggleTag('hasLipCyanosis')"
             :disabled="allDisabled"  
           >
             口唇发绀
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasSkinPallorOrBruising"
+            :checked="form.hasSkinPallorOrBruising"
             type="primary"
-            @change="toggleTag('HasSkinPallorOrBruising')"
+            @change="toggleTag('hasSkinPallorOrBruising')"
             :disabled="allDisabled"  
           >
             皮肤苍白或带青紫
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasGumBleeding"
+            :checked="form.hasGumBleeding"
             type="primary"
-            @change="toggleTag('HasGumBleeding')"
+            @change="toggleTag('hasGumBleeding')"
             :disabled="allDisabled"  
           >
             牙龈出血
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasKidneyPain"
+            :checked="form.hasKidneyPain"
             type="primary"
-            @change="toggleTag('HasKidneyPain')"
+            @change="toggleTag('hasKidneyPain')"
             :disabled="allDisabled"  
           >
             肾区疼痛
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasLowBackPain"
+            :checked="form.hasLowBackPain"
             type="primary"
-            @change="toggleTag('HasLowBackPain')"
+            @change="toggleTag('hasLowBackPain')"
             :disabled="allDisabled"  
           >
             腰痛
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasOrbitalPain"
+            :checked="form.hasOrbitalPain"
             type="primary"
-            @change="toggleTag('HasOrbitalPain')"
+            @change="toggleTag('hasOrbitalPain')"
             :disabled="allDisabled"  
           >
             眼眶痛
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasMucosalBleedingInOralOrNasal"
+            :checked="form.hasMucosalBleedingInOralOrNasal"
             type="primary"
-            @change="toggleTag('HasMucosalBleedingInOralOrNasal')"
+            @change="toggleTag('hasMucosalBleedingInOralOrNasal')"
             :disabled="allDisabled"  
           >
             口腔、鼻腔等处黏膜有出血点
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasSkinBleedingPoints"
+            :checked="form.hasSkinBleedingPoints"
             type="primary"
-            @change="toggleTag('HasSkinBleedingPoints')"
+            @change="toggleTag('hasSkinBleedingPoints')"
             :disabled="allDisabled"  
           >
             腋下/上臂/胸部或其它部位有皮肤出血点
@@ -157,20 +157,20 @@ export default {
       allDisabled:true, 
       visible: false, // 控制弹窗显示
       form: {
-        HasConjunctivitis: false,
-        HasConjunctivalCongestion: false,
-        HasEyelidEdema: false,
-        HasSmellTasteLoss: false,
-        HasFacialRednessOrPallor: false,
-        HasRednessNeckChest: false,
-        HasLipCyanosis: false,
-        HasSkinPallorOrBruising: false,
-        HasGumBleeding: false,
-        HasKidneyPain: false,
-        HasLowBackPain: false,
-        HasOrbitalPain: false,
-        HasMucosalBleedingInOralOrNasal: false,
-        HasSkinBleedingPoints: false,
+        hasConjunctivitis: false,
+        hasConjunctivalCongestion: false,
+        hasEyelidEdema: false,
+        hasSmellTasteLoss: false,
+        hasFacialRednessOrPallor: false,
+        hasRednessNeckChest: false,
+        hasLipCyanosis: false,
+        hasSkinPallorOrBruising: false,
+        hasGumBleeding: false,
+        hasKidneyPain: false,
+        hasLowBackPain: false,
+        hasOrbitalPain: false,
+        hasMucosalBleedingInOralOrNasal: false,
+        hasSkinBleedingPoints: false,
       },
 
       rules: {},
@@ -216,20 +216,20 @@ export default {
     },
     getInitialForm() {
       return {
-        HasConjunctivitis: false,
-        HasConjunctivalCongestion: false,
-        HasEyelidEdema: false,
-        HasSmellTasteLoss: false,
-        HasFacialRednessOrPallor: false,
-        HasRednessNeckChest: false,
-        HasLipCyanosis: false,
-        HasSkinPallorOrBruising: false,
-        HasGumBleeding: false,
-        HasKidneyPain: false,
-        HasLowBackPain: false,
-        HasOrbitalPain: false,
-        HasMucosalBleedingInOralOrNasal: false,
-        HasSkinBleedingPoints: false,
+        hasConjunctivitis: false,
+        hasConjunctivalCongestion: false,
+        hasEyelidEdema: false,
+        hasSmellTasteLoss: false,
+        hasFacialRednessOrPallor: false,
+        hasRednessNeckChest: false,
+        hasLipCyanosis: false,
+        hasSkinPallorOrBruising: false,
+        hasGumBleeding: false,
+        hasKidneyPain: false,
+        hasLowBackPain: false,
+        hasOrbitalPain: false,
+        hasMucosalBleedingInOralOrNasal: false,
+        hasSkinBleedingPoints: false,
       };
     },
     getData() {

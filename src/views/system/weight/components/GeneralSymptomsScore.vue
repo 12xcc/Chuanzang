@@ -50,7 +50,7 @@ export default {
         HasMusclePain: { weightScore: 0, symptomWeightingId: null },
         HasJointPain: { weightScore: 0, symptomWeightingId: null },
         HasLymphNodeSwelling: { weightScore: 0, symptomWeightingId: null },
-        HasCyanosis: { weightScore: 0, symptomWeightingId: null },
+        hasCyanosis: { weightScore: 0, symptomWeightingId: null },
         HasSubcutaneousAndMucosalBleedingSpots: {
           weightScore: 0,
           symptomWeightingId: null,
@@ -84,7 +84,7 @@ export default {
         { label: "肌肉酸痛", model: "HasMusclePain" },
         { label: "关节酸痛", model: "HasJointPain" },
         { label: "淋巴结肿大", model: "HasLymphNodeSwelling" },
-        { label: "发绀", model: "HasCyanosis" },
+        { label: "发绀", model: "hasCyanosis" },
         {
           label: "皮下及黏膜出血",
           model: "HasSubcutaneousAndMucosalBleedingSpots",
@@ -108,10 +108,10 @@ export default {
       immediate: true,
       handler(newData) {
         newData.forEach((item) => {
-          const fieldName = item.symptomFieldName;
-          if (this.symptoms.hasOwnProperty(fieldName)) {
-            this.symptoms[fieldName].weightScore = item.weightScore;
-            this.symptoms[fieldName].symptomWeightingId =
+          const fieldname = item.symptomFieldName;
+          if (this.symptoms.hasOwnProperty(fieldname)) {
+            this.symptoms[fieldname].weightScore = item.weightScore;
+            this.symptoms[fieldname].symptomWeightingId =
               item.symptomWeightingId;
           }
         });

@@ -14,8 +14,8 @@
               <img :src="getAvatarUrl(scope.row.gender)" alt="头像" class="avatar" />
             </template>
           </el-table-column>
-          <el-table-column prop="Name" label="姓名" width="60" />
-          <el-table-column prop="Department" label="部门/工种" width="100" />
+          <el-table-column prop="name" label="姓名" width="60" />
+          <el-table-column prop="department" label="部门/工种" width="100" />
           <el-table-column prop="statu" fixed="right" label="状态" width="70">
             <template #default="scope">
               <el-tag :type="scope.row.statu === '健康' ? 'success' : 'danger'">
@@ -41,11 +41,11 @@ const getAvatarUrl = (gender) => {
 };
 
 const data = ref([
-  { id: 1, Name: '张三', Department: '测量队', statu: '健康', gender: '男' },
-  { id: 2, Name: '李四', Department: '测量队', statu: '鼠疫', gender: '女' },
-  { id: 3, Name: '王五', Department: '合约部', statu: '健康', gender: '男' },
-  { id: 4, Name: '赵六', Department: '合约部', statu: '新型冠状病毒感染', gender: '女' },
-  { id: 5, Name: '钱七', Department: '测量队', statu: '炭疽', gender: '男' }
+  { id: 1, name: '张三', department: '测量队', statu: '健康', gender: '男' },
+  { id: 2, name: '李四', department: '测量队', statu: '鼠疫', gender: '女' },
+  { id: 3, name: '王五', department: '合约部', statu: '健康', gender: '男' },
+  { id: 4, name: '赵六', department: '合约部', statu: '新型冠状病毒感染', gender: '女' },
+  { id: 5, name: '钱七', department: '测量队', statu: '炭疽', gender: '男' }
 ]);
 
 const displayedData = ref([...data.value]);

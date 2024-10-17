@@ -16,7 +16,7 @@
             <span class="title-text">确诊疾病</span>
           </div>
           <el-check-tag
-            :checked="form.DiseaseType === '新型冠状病毒感染'"
+            :checked="form.diseaseType === '新型冠状病毒感染'"
             type="primary"
             @change="toggleDisease('新型冠状病毒感染')"
             :disabled="allDisabled"  
@@ -24,7 +24,7 @@
             新型冠状病毒感染
           </el-check-tag>
           <el-check-tag
-            :checked="form.DiseaseType === '流感'"
+            :checked="form.diseaseType === '流感'"
             type="primary"
             @change="toggleDisease('流感')"
             :disabled="allDisabled"  
@@ -33,7 +33,7 @@
           </el-check-tag>
           <div>
             <el-check-tag
-              :checked="form.DiseaseType === '鼠疫'"
+              :checked="form.diseaseType === '鼠疫'"
               type="primary"
               @change="toggleDisease('鼠疫')"
               :disabled="allDisabled"  
@@ -42,12 +42,12 @@
             </el-check-tag>
 
             <div
-              v-if="form.DiseaseType === '鼠疫'"
-              class="PlagueSubtype"
+              v-if="form.diseaseType === '鼠疫'"
+              class="plagueSubtype"
               style="margin-left: 20px"
             >
               <el-check-tag
-                :checked="form.PlagueSubtype === '腺鼠疫'"
+                :checked="form.plagueSubtype === '腺鼠疫'"
                 type="primary"
                 @change="togglePlagueSubtype('腺鼠疫')"
                 :disabled="allDisabled"  
@@ -55,7 +55,7 @@
                 腺鼠疫
               </el-check-tag>
               <el-check-tag
-                :checked="form.PlagueSubtype === '肺鼠疫'"
+                :checked="form.plagueSubtype === '肺鼠疫'"
                 type="primary"
                 @change="togglePlagueSubtype('肺鼠疫')"
                 :disabled="allDisabled"  
@@ -63,7 +63,7 @@
                 肺鼠疫
               </el-check-tag>
               <el-check-tag
-                :checked="form.PlagueSubtype === '败血型鼠疫'"
+                :checked="form.plagueSubtype === '败血型鼠疫'"
                 type="primary"
                 @change="togglePlagueSubtype('败血型鼠疫')"
                 :disabled="allDisabled"  
@@ -71,7 +71,7 @@
                 败血型鼠疫
               </el-check-tag>
               <el-check-tag
-                :checked="form.PlagueSubtype === '肠鼠疫'"
+                :checked="form.plagueSubtype === '肠鼠疫'"
                 type="primary"
                 @change="togglePlagueSubtype('肠鼠疫')"
                 :disabled="allDisabled"  
@@ -79,7 +79,7 @@
                 肠鼠疫
               </el-check-tag>
               <el-check-tag
-                :checked="form.PlagueSubtype === '眼鼠疫'"
+                :checked="form.plagueSubtype === '眼鼠疫'"
                 type="primary"
                 @change="togglePlagueSubtype('眼鼠疫')"
                 :disabled="allDisabled"  
@@ -87,7 +87,7 @@
                 眼鼠疫
               </el-check-tag>
               <el-check-tag
-                :checked="form.PlagueSubtype === '皮肤鼠疫'"
+                :checked="form.plagueSubtype === '皮肤鼠疫'"
                 type="primary"
                 @change="togglePlagueSubtype('皮肤鼠疫')"
                 :disabled="allDisabled"  
@@ -95,7 +95,7 @@
                 皮肤鼠疫
               </el-check-tag>
               <el-check-tag
-                :checked="form.PlagueSubtype === '脑鼠疫'"
+                :checked="form.plagueSubtype === '脑鼠疫'"
                 type="primary"
                 @change="togglePlagueSubtype('脑鼠疫')"
                 :disabled="allDisabled"  
@@ -106,7 +106,7 @@
           </div>
 
           <el-check-tag
-            :checked="form.DiseaseType === '感染性腹泻'"
+            :checked="form.diseaseType === '感染性腹泻'"
             type="primary"
             @change="toggleDisease('感染性腹泻')"
             :disabled="allDisabled"  
@@ -115,16 +115,16 @@
           </el-check-tag>
           <div>
             <el-check-tag
-              :checked="form.DiseaseType === '炭疽'"
+              :checked="form.diseaseType === '炭疽'"
               type="primary"
               @change="toggleDisease('炭疽')"
               :disabled="allDisabled"  
             >
               炭疽
             </el-check-tag>
-            <div v-if="form.DiseaseType === '炭疽'" style="margin-left: 20px">
+            <div v-if="form.diseaseType === '炭疽'" style="margin-left: 20px">
               <el-check-tag
-                :checked="form.AnthraxSubtype === '皮肤炭疽'"
+                :checked="form.anthraxSubtype === '皮肤炭疽'"
                 type="primary"
                 @change="toggleAnthraxSubtype('皮肤炭疽')"
                 :disabled="allDisabled"  
@@ -132,7 +132,7 @@
                 皮肤炭疽
               </el-check-tag>
               <el-check-tag
-                :checked="form.AnthraxSubtype === '肠炭疽'"
+                :checked="form.anthraxSubtype === '肠炭疽'"
                 type="primary"
                 @change="toggleAnthraxSubtype('肠炭疽')"
                 :disabled="allDisabled"  
@@ -140,7 +140,7 @@
                 肠炭疽
               </el-check-tag>
               <el-check-tag
-                :checked="form.AnthraxSubtype === '肺炭疽'"
+                :checked="form.anthraxSubtype === '肺炭疽'"
                 type="primary"
                 @change="toggleAnthraxSubtype('肺炭疽')"
                 :disabled="allDisabled"  
@@ -148,7 +148,7 @@
                 肺炭疽
               </el-check-tag>
               <el-check-tag
-                :checked="form.AnthraxSubtype === '脑膜炎型炭疽'"
+                :checked="form.anthraxSubtype === '脑膜炎型炭疽'"
                 type="primary"
                 @change="toggleAnthraxSubtype('脑膜炎型炭疽')"
                 :disabled="allDisabled"  
@@ -156,7 +156,7 @@
                 脑膜炎型炭疽
               </el-check-tag>
               <el-check-tag
-                :checked="form.AnthraxSubtype === '败血症型炭疽'"
+                :checked="form.anthraxSubtype === '败血症型炭疽'"
                 type="primary"
                 @change="toggleAnthraxSubtype('败血症型炭疽')"
                 :disabled="allDisabled"  
@@ -166,7 +166,7 @@
             </div>
           </div>
           <el-check-tag
-            :checked="form.DiseaseType === '结核病'"
+            :checked="form.diseaseType === '结核病'"
             type="primary"
             @change="toggleDisease('结核病')"
             :disabled="allDisabled"  
@@ -174,7 +174,7 @@
             结核病
           </el-check-tag>
           <el-check-tag
-            :checked="form.DiseaseType === '登革热（蚊媒传染病）'"
+            :checked="form.diseaseType === '登革热（蚊媒传染病）'"
             type="primary"
             @change="toggleDisease('登革热（蚊媒传染病）')"
             :disabled="allDisabled"  
@@ -182,7 +182,7 @@
             登革热（蚊媒传染病）
           </el-check-tag>
           <el-check-tag
-            :checked="form.DiseaseType === '疟疾（蚊媒传染病）'"
+            :checked="form.diseaseType === '疟疾（蚊媒传染病）'"
             type="primary"
             @change="toggleDisease('疟疾（蚊媒传染病）')"
             :disabled="allDisabled"  
@@ -190,7 +190,7 @@
             疟疾（蚊媒传染病）
           </el-check-tag>
           <el-check-tag
-            :checked="form.DiseaseType === '森林脑炎（蜱媒传染病）'"
+            :checked="form.diseaseType === '森林脑炎（蜱媒传染病）'"
             type="primary"
             @change="toggleDisease('森林脑炎（蜱媒传染病）')"
             :disabled="allDisabled"  
@@ -199,7 +199,7 @@
           </el-check-tag>
           <el-check-tag
             :checked="
-              form.DiseaseType === '发热伴血小板减少综合征（蜱媒传染病）'
+              form.diseaseType === '发热伴血小板减少综合征（蜱媒传染病）'
             "
             type="primary"
             @change="toggleDisease('发热伴血小板减少综合征（蜱媒传染病）')"
@@ -208,7 +208,7 @@
             发热伴血小板减少综合征（蜱媒传染病）
           </el-check-tag>
           <el-check-tag
-            :checked="form.DiseaseType === '斑疹伤寒'"
+            :checked="form.diseaseType === '斑疹伤寒'"
             type="primary"
             @change="toggleDisease('斑疹伤寒')"
             :disabled="allDisabled"  
@@ -216,7 +216,7 @@
             斑疹伤寒
           </el-check-tag>
           <el-check-tag
-            :checked="form.DiseaseType === '流行性出血热'"
+            :checked="form.diseaseType === '流行性出血热'"
             type="primary"
             @change="toggleDisease('流行性出血热')"
             :disabled="allDisabled"  
@@ -225,7 +225,7 @@
           </el-check-tag>
           <div>
             <el-check-tag
-              :checked="form.DiseaseType === '其他'"
+              :checked="form.diseaseType === '其他'"
               type="primary"
               @change="toggleDisease('其他')"
               :disabled="allDisabled"  
@@ -234,12 +234,12 @@
             </el-check-tag>
             <div class="NextContainer">
               <el-form-item
-                v-if="form.DiseaseType === '其他'"
+                v-if="form.diseaseType === '其他'"
                 label="其他疾病"
                 style="margin-left: 20px; padding: 15px 0 15px 0"
               >
                 <el-input
-                  v-model="form.OtherDiseaseName"
+                  v-model="form.otherDiseaseName"
                   placeholder="请输入其他疾病名称"
                   :disabled="allDisabled"  
                   style=""
@@ -250,13 +250,13 @@
         </div>
 
         <!-- 病例发现途径 -->
-        <div class="DiscoveryMethod">
+        <div class="discoveryMethod">
           <div class="title-container">
             <div class="blue-box"></div>
             <span class="title-text">病例发现途径</span>
           </div>
           <el-radio-group
-            v-model="form.DiscoveryMethod"
+            v-model="form.discoveryMethod"
             @change="toggleDiscoveryMethod"
             :disabled="allDisabled"  
             style="margin-left: 20px"
@@ -269,12 +269,12 @@
           </el-radio-group>
           <div class="NextContainer">
             <el-form-item
-              v-if="form.DiscoveryMethod === '其他'"
+              v-if="form.discoveryMethod === '其他'"
               label="其他途径"
               style="margin-left: 20px; padding: 15px 0 15px 0"
             >
               <el-input
-                v-model="form.OtherDiscoveryMethodName"
+                v-model="form.otherDiscoveryMethodName"
                 placeholder="请输入其他途径名称"
                 :disabled="allDisabled"  
                 style=""
@@ -284,13 +284,13 @@
         </div>
 
         <!-- 疾病转归 -->
-        <div class="DiseaseOutcome">
+        <div class="diseaseOutcome">
           <div class="title-container">
             <div class="blue-box"></div>
             <span class="title-text">疾病转归</span>
           </div>
           <el-radio-group
-            v-model="form.DiseaseOutcome"
+            v-model="form.diseaseOutcome"
             @change="toggleOutcome"
             :disabled="allDisabled"  
             style="margin-left: 20px"
@@ -312,7 +312,7 @@
             <el-form-item label="确诊医院名称">
               <el-input
                 clearable
-                v-model="form.HospitalName"
+                v-model="form.hospitalName"
                 :disabled="allDisabled"  
                 placeholder="请输入确诊医院名称"
               />
@@ -321,7 +321,7 @@
             <!-- 就诊/入院日期 -->
             <el-form-item label="就诊/入院日期">
               <el-date-picker
-                v-model="form.AdmissionDate"
+                v-model="form.admissionDate"
                 type="date"
                 placeholder="请选择就诊/入院日期"
                 :disabled="allDisabled"  
@@ -331,7 +331,7 @@
             <!-- 出院日期 -->
             <el-form-item label="出院日期">
               <el-date-picker
-                v-model="form.DischargeDate"
+                v-model="form.dischargeDate"
                 type="date"
                 placeholder="请选择出院日期"
                 :disabled="allDisabled"  
@@ -341,7 +341,7 @@
             <!-- 死亡日期 -->
             <el-form-item label="死亡日期">
               <el-date-picker
-                v-model="form.DeathDate"
+                v-model="form.deathDate"
                 type="date"
                 placeholder="请选择死亡日期"
                 :disabled="allDisabled"  
@@ -353,7 +353,7 @@
               <el-input
                 type="textarea"
                 placeholder="请输入就诊/入院时症状和体征"
-                v-model="form.AdmissionSymptomsAndSigns"
+                v-model="form.admissionSymptomsAndSigns"
                 :disabled="allDisabled"  
               />
             </el-form-item>
@@ -361,13 +361,13 @@
         </div>
 
         <!-- 登记分类 -->
-        <div class="RegistrationClassification">
+        <div class="registrationClassification">
           <div class="title-container">
             <div class="blue-box"></div>
             <span class="title-text">登记分类</span>
           </div>
           <el-check-tag
-            :checked="form.RegistrationClassification === '新患者'"
+            :checked="form.registrationClassification === '新患者'"
             type="primary"
             @change="toggleRegistration('新患者')"
             :disabled="allDisabled"  
@@ -375,7 +375,7 @@
             新患者
           </el-check-tag>
           <el-check-tag
-            :checked="form.RegistrationClassification === '复发'"
+            :checked="form.registrationClassification === '复发'"
             type="primary"
             @change="toggleRegistration('复发')"
             :disabled="allDisabled"  
@@ -383,7 +383,7 @@
             复发
           </el-check-tag>
           <el-check-tag
-            :checked="form.RegistrationClassification === '返回'"
+            :checked="form.registrationClassification === '返回'"
             type="primary"
             @change="toggleRegistration('返回')"
             :disabled="allDisabled"  
@@ -391,7 +391,7 @@
             返回
           </el-check-tag>
           <el-check-tag
-            :checked="form.RegistrationClassification === '治疗失败'"
+            :checked="form.registrationClassification === '治疗失败'"
             type="primary"
             @change="toggleRegistration('治疗失败')"
             :disabled="allDisabled"  
@@ -401,7 +401,7 @@
 
           <div>
             <el-check-tag
-              :checked="form.RegistrationClassification === '其他'"
+              :checked="form.registrationClassification === '其他'"
               type="primary"
               @change="toggleRegistration('其他')"
               :disabled="allDisabled"  
@@ -410,12 +410,12 @@
             </el-check-tag>
             <div class="NextContainer">
               <el-form-item
-                v-if="form.RegistrationClassification === '其他'"
+                v-if="form.registrationClassification === '其他'"
                 label="其他"
                 style="margin-left: 20px; padding: 15px 0 15px 0"
               >
                 <el-input
-                  v-model="form.OtherRegistrationDetails"
+                  v-model="form.otherRegistrationDetails"
                   placeholder="请详述"
                   :disabled="allDisabled"  
                   style=""
@@ -441,18 +441,20 @@ export default {
         allDisabled:true, 
       visible: false, // 控制弹窗显示
       form: {
-        DiseaseType: "", // 确诊疾病
-        OtherDiseaseName: "", // 其他疾病名称
-        DiscoveryMethod: "", // 病例发现途径
-        OtherDiscoveryMethodName: "", // 其他途径名称
-        DiseaseOutcome: "", // 疾病转归
-        HospitalName: "", // 确诊医院名称
-        AdmissionDate: "", // 就诊/入院日期
-        DischargeDate: "", // 出院日期
-        DeathDate: "", // 死亡日期
-        AdmissionSymptomsAndSigns: "", // 就诊/入院时症状和体征
-        RegistrationClassification: "", // 登记分类
-        OtherRegistrationDetails: "", // 登记分类其他详情
+        diseaseType: "", // 确诊疾病
+        otherDiseaseName: "", // 其他疾病名称
+        discoveryMethod: "", // 病例发现途径
+        otherDiscoveryMethodName: "", // 其他途径名称
+        diseaseOutcome: "", // 疾病转归
+        hospitalName: "", // 确诊医院名称
+        admissionDate: "", // 就诊/入院日期
+        dischargeDate: "", // 出院日期
+        deathDate: "", // 死亡日期
+        admissionSymptomsAndSigns: "", // 就诊/入院时症状和体征
+        registrationClassification: "", // 登记分类
+        otherRegistrationDetails: "", // 登记分类其他详情
+        plagueSubtype: "", // 鼠疫子类
+        anthraxSubtype: "", // 炭疽子类 
       },
 
       rules: {},
@@ -460,27 +462,27 @@ export default {
   },
   methods: {
     toggleDisease(disease) {
-      this.form.DiseaseType = this.form.DiseaseType === disease ? "" : disease;
-      if (this.form.DiseaseType !== "鼠疫") {
-        this.form.PlagueSubtype = ""; // 清空鼠疫子类
+      this.form.diseaseType = this.form.diseaseType === disease ? "" : disease;
+      if (this.form.diseaseType !== "鼠疫") {
+        this.form.plagueSubtype = ""; // 清空鼠疫子类
       }
     },
     togglePlagueSubtype(subtype) {
-      this.form.PlagueSubtype =
-        this.form.PlagueSubtype === subtype ? "" : subtype;
+      this.form.plagueSubtype =
+        this.form.plagueSubtype === subtype ? "" : subtype;
     },
     toggleDiscoveryMethod(value) {
-      this.form.DiscoveryMethod = value;
-       if (this.form.DiscoveryMethod !== '其他') {
-      this.form.OtherDiscoveryMethodName = ''; // 清空其他途径名称
+      this.form.discoveryMethod = value;
+       if (this.form.discoveryMethod !== '其他') {
+      this.form.otherDiscoveryMethodName = ''; // 清空其他途径名称
     }
     },
     toggleOutcome() {
-      this.form.DiseaseOutcome = value;
+      this.form.diseaseOutcome = value;
     },
     
     toggleRegistration(value) {
-      this.form.RegistrationClassification = value;
+      this.form.registrationClassification = value;
     },
     handleAble() {
       this.allDisabled = false;
@@ -492,18 +494,18 @@ export default {
     },
     getInitialForm() {
       return {
-        DiseaseType: "", // 确诊疾病
-        OtherDiseaseName: "", // 其他疾病名称
-        DiscoveryMethod: "", // 病例发现途径
-        OtherDiscoveryMethodName: "", // 其他途径名称
-        DiseaseOutcome: "", // 疾病转归
-        HospitalName: "", // 确诊医院名称
-        AdmissionDate: "", // 就诊/入院日期
-        DischargeDate: "", // 出院日期
-        DeathDate: "", // 死亡日期
-        AdmissionSymptomsAndSigns: "", // 就诊/入院时症状和体征
-        RegistrationClassification: "", // 登记分类
-        OtherRegistrationDetails: "", // 登记分类其他详情
+        diseaseType: "", // 确诊疾病
+        otherDiseaseName: "", // 其他疾病名称
+        discoveryMethod: "", // 病例发现途径
+        otherDiscoveryMethodName: "", // 其他途径名称
+        diseaseOutcome: "", // 疾病转归
+        hospitalName: "", // 确诊医院名称
+        admissionDate: "", // 就诊/入院日期
+        dischargeDate: "", // 出院日期
+        deathDate: "", // 死亡日期
+        admissionSymptomsAndSigns: "", // 就诊/入院时症状和体征
+        registrationClassification: "", // 登记分类
+        otherRegistrationDetails: "", // 登记分类其他详情
       };
     },
     getData() {

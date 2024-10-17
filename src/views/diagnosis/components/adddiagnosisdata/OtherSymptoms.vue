@@ -14,41 +14,41 @@
             <span class="title-text">症状</span>
           </div>
           <el-check-tag
-            :checked="form.HasSuddenOnset"
+            :checked="form.hasSuddenOnset"
             type="primary"
-            @change="toggleTag('HasSuddenOnset')"
+            @change="toggleTag('hasSuddenOnset')"
           >
             突然发病
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasRapidProgress"
+            :checked="form.hasRapidProgress"
             type="primary"
-            @change="toggleTag('HasRapidProgress')"
+            @change="toggleTag('hasRapidProgress')"
           >
             病情进展迅速
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasPeriodicAttack"
+            :checked="form.hasPeriodicAttack"
             type="primary"
-            @change="toggleTag('HasPeriodicAttack')"
+            @change="toggleTag('hasPeriodicAttack')"
           >
             周期性发作
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasForcedPosture"
+            :checked="form.hasForcedPosture"
             type="primary"
-            @change="toggleTag('HasForcedPosture')"
+            @change="toggleTag('hasForcedPosture')"
           >
             强迫体位
           </el-check-tag>
 
           <el-check-tag
-            :checked="form.HasCalfMusclePain"
+            :checked="form.hasCalfMusclePain"
             type="primary"
-            @change="toggleTag('HasCalfMusclePain')"
+            @change="toggleTag('hasCalfMusclePain')"
           >
             腓肠肌疼痛
           </el-check-tag>
@@ -60,21 +60,21 @@
             <span class="title-text">其他症状</span>
           </div>
           <el-check-tag
-            :checked="form.HasOtherSymptoms"
+            :checked="form.hasOtherSymptoms"
             type="primary"
-            @change="toggleTag('HasOtherSymptoms')"
+            @change="toggleTag('hasOtherSymptoms')"
           >
             其他
           </el-check-tag>
           <div class="NextContainer">
           <el-form-item
-            v-if="form.HasOtherSymptoms"
+            v-if="form.hasOtherSymptoms"
             label="其他症状"
             style=" margin-left:-100px;margin-top: 10px;padding:15px 0 15px 0"
-            prop="OtherSymptomsName"
+            prop="otherSymptomsName"
           >
             <el-input
-              v-model="form.OtherSymptomsName"
+              v-model="form.otherSymptomsName"
               placeholder="请输入其他症状"
               clearable
               size="default"
@@ -99,17 +99,17 @@ export default {
     return {
       visible: false, // 控制弹窗显示
       form: {
-        HasSuddenOnset: false,
-        HasRapidProgress: false,
-        HasPeriodicAttack: false,
-        HasForcedPosture: false,
-        HasCalfMusclePain: false,
-        HasOtherSymptoms: false,
-        OtherSymptomsName: "",
+        hasSuddenOnset: false,
+        hasRapidProgress: false,
+        hasPeriodicAttack: false,
+        hasForcedPosture: false,
+        hasCalfMusclePain: false,
+        hasOtherSymptoms: false,
+        otherSymptomsName: "",
       },
 
       rules: {
-        OtherSymptomsName:[
+        otherSymptomsName:[
           {required:true,message:""}
         ]
       },
@@ -118,8 +118,8 @@ export default {
   methods: {
     toggleTag(field) {
       this.form[field] = !this.form[field];
-      if (!this.form.HasOtherSymptoms) {
-        this.form.OtherSymptomsName = "";
+      if (!this.form.hasOtherSymptoms) {
+        this.form.otherSymptomsName = "";
       }
     },
     showDrawer(user) {
@@ -133,7 +133,7 @@ export default {
      validate() {
       return new Promise((resolve, reject) => {
         // 验证其他症状
-         if (this.form.HasOtherSymptoms && !this.form.OtherSymptomsName) {
+         if (this.form.hasOtherSymptoms && !this.form.otherSymptomsName) {
       return reject(new Error("请输入其他->其他症状"));
     }
     // 验证通过
@@ -171,13 +171,13 @@ export default {
     },
     getInitialForm() {
       return {
-        HasSuddenOnset: false,
-        HasRapidProgress: false,
-        HasPeriodicAttack: false,
-        HasForcedPosture: false,
-        HasCalfMusclePain: false,
-        HasOtherSymptoms: false,
-        OtherSymptomsName: "",
+        hasSuddenOnset: false,
+        hasRapidProgress: false,
+        hasPeriodicAttack: false,
+        hasForcedPosture: false,
+        hasCalfMusclePain: false,
+        hasOtherSymptoms: false,
+        otherSymptomsName: "",
       };
     },
     getData() {

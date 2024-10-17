@@ -24,22 +24,22 @@
       >
         <div>
           <el-form-item label="姓名">
-            <el-input v-model="Name" placeholder="请输入姓名" clearable />
+            <el-input v-model="name" placeholder="请输入姓名" clearable />
           </el-form-item>
           <el-form-item label="联系电话">
-            <el-input v-model="PhoneNumber" placeholder="请输入联系电话" clearable />
+            <el-input v-model="phoneNumber" placeholder="请输入联系电话" clearable />
           </el-form-item>
         </div>
 
         <div>
           <el-form-item label="性别">
-            <el-select v-model="Gender" placeholder="选择性别" clearable>
+            <el-select v-model="gender" placeholder="选择性别" clearable>
               <el-option label="男" value="男" />
               <el-option label="女" value="女" />
             </el-select>
           </el-form-item>
           <el-form-item label="年龄">
-            <el-input v-model="Age" placeholder="请输入年龄" clearable />
+            <el-input v-model="age" placeholder="请输入年龄" clearable />
           </el-form-item>
         </div>
       </el-form>
@@ -55,12 +55,12 @@
       :data="filteredUsers"
       style="margin-top: 20px; margin-left: 40px; width: 700px"
     >
-      <el-table-column prop="Name" label="姓名" width="100" />
-      <el-table-column prop="Gender" label="性别" width="60" />
-      <el-table-column prop="Age" label="年龄" width="60" />
-      <el-table-column prop="Ethnicity" label="民族" width="80" />
-      <el-table-column prop="Department" label="部门/工种" width="120" />
-      <el-table-column prop="PhoneNumber" label="电话" width="120" />
+      <el-table-column prop="name" label="姓名" width="100" />
+      <el-table-column prop="gender" label="性别" width="60" />
+      <el-table-column prop="age" label="年龄" width="60" />
+      <el-table-column prop="ethnicity" label="民族" width="80" />
+      <el-table-column prop="department" label="部门/工种" width="120" />
+      <el-table-column prop="phoneNumber" label="电话" width="120" />
       <el-table-column label="操作">
         <template #default="{ row }">
           <el-button @click="selectUser(row)">添加检测信息</el-button>
@@ -98,10 +98,10 @@ export default {
   emits: ["update:visible", "user-selected"],
   data() {
     return {
-      Name: "",
-      PhoneNumber: "",
-      Gender: "",
-      Age: null,
+      name: "",
+      phoneNumber: "",
+      gender: "",
+      age: null,
       selectedUser: null,
       filteredUsers: [],
       dialogVisible: this.visible, // 初始状态与 props 绑定
@@ -114,10 +114,10 @@ export default {
     searchUsers() {
       this.filteredUsers = this.users.filter((user) => {
         return (
-          (!this.Name || user.Name.includes(this.Name)) &&
-          (!this.PhoneNumber || user.PhoneNumber.includes(this.PhoneNumber)) &&
-          (!this.Gender || user.Gender === this.Gender) &&
-          (!this.Age || user.Age === this.Age)
+          (!this.name || user.name.includes(this.name)) &&
+          (!this.phoneNumber || user.phoneNumber.includes(this.phoneNumber)) &&
+          (!this.gender || user.gender === this.gender) &&
+          (!this.age || user.age === this.age)
         );
       });
     },
@@ -130,10 +130,10 @@ export default {
       this.$emit("update:visible", false); // 关闭对话框
     },
     resetForm() {
-      this.Name = "";
-      this.PhoneNumber = "";
-      this.Gender = "";
-      this.Age = null;
+      this.name = "";
+      this.phoneNumber = "";
+      this.gender = "";
+      this.age = null;
       this.filteredUsers = [];
       this.selectedUser = null;
     },

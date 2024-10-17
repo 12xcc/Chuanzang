@@ -78,10 +78,10 @@ export default {
       immediate: true,
       handler(newData) {
         newData.forEach((item) => {
-          const fieldName = item.symptomFieldName;
-          if (this.symptoms.hasOwnProperty(fieldName)) {
-            this.symptoms[fieldName].weightScore = item.weightScore;
-            this.symptoms[fieldName].symptomWeightingId =
+          const fieldname = item.symptomFieldName;
+          if (this.symptoms.hasOwnProperty(fieldname)) {
+            this.symptoms[fieldname].weightScore = item.weightScore;
+            this.symptoms[fieldname].symptomWeightingId =
               item.symptomWeightingId;
           }
         });

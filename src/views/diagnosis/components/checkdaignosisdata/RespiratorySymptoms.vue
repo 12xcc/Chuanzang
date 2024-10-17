@@ -2,81 +2,81 @@
   <div class="flex gap-2">
     <!-- 表单选项 -->
     <el-check-tag
-      :checked="form.HasCough"
+      :checked="form.hasCough"
       type="primary"
-      @change="toggleTag('HasCough')"
+      @change="toggleTag('hasCough')"
       :disabled="allDisabled"  
     >
       咳嗽
     </el-check-tag>
     <el-check-tag
-      :checked="form.HasSputum"
+      :checked="form.hasSputum"
       type="primary"
-      @change="toggleTag('HasSputum')"
+      @change="toggleTag('hasSputum')"
       :disabled="allDisabled"  
     >
       咳痰
     </el-check-tag>
     <el-check-tag
-      :checked="form.HasBloodySputum"
+      :checked="form.hasBloodySputum"
       type="primary"
-      @change="toggleTag('HasBloodySputum')"
+      @change="toggleTag('hasBloodySputum')"
       :disabled="allDisabled"  
     >
       血痰
     </el-check-tag>
     <el-check-tag
-      :checked="form.HasHemoptysis"
+      :checked="form.hasHemoptysis"
       type="primary"
-      @change="toggleTag('HasHemoptysis')"
+      @change="toggleTag('hasHemoptysis')"
       :disabled="allDisabled"  
     >
       咳血
     </el-check-tag>
     <el-check-tag
-      :checked="form.HasSoreThroat"
+      :checked="form.hasSoreThroat"
       type="primary"
-      @change="toggleTag('HasSoreThroat')"
+      @change="toggleTag('hasSoreThroat')"
       :disabled="allDisabled"  
     >
       咽痛
     </el-check-tag>
     <el-check-tag
-      :checked="form.HasDryThroat"
+      :checked="form.hasDryThroat"
       type="primary"
-      @change="toggleTag('HasDryThroat')"
+      @change="toggleTag('hasDryThroat')"
       :disabled="allDisabled"  
     >
       咽干
     </el-check-tag>
     <el-check-tag
-      :checked="form.HasNasalCongestion"
+      :checked="form.hasNasalCongestion"
       type="primary"
-      @change="toggleTag('HasNasalCongestion')"
+      @change="toggleTag('hasNasalCongestion')"
       :disabled="allDisabled"  
     >
       鼻塞
     </el-check-tag>
     <el-check-tag
-      :checked="form.HasRunnyNose"
+      :checked="form.hasRunnyNose"
       type="primary"
-      @change="toggleTag('HasRunnyNose')"
+      @change="toggleTag('hasRunnyNose')"
       :disabled="allDisabled"  
     >
       流涕
     </el-check-tag>
     <el-check-tag
-      :checked="form.HasPharyngealHyperemia"
+      :checked="form.hasPharyngealHyperemia"
       type="primary"
-      @change="toggleTag('HasPharyngealHyperemia')"
+      @change="toggleTag('hasPharyngealHyperemia')"
       :disabled="allDisabled"  
     >
       咽充血
     </el-check-tag>
     <el-check-tag
-      :checked="form.HasChestTightness"
+      :checked="form.hasChestTightness"
       type="primary"
-      @change="toggleTag('HasChestTightness')"
+      @change="toggleTag('hasChestTightness')"
       :disabled="allDisabled"  
     >
       胸闷
@@ -90,33 +90,33 @@
       气促
     </el-check-tag>
     <el-check-tag
-      :checked="form.HasBreathingDifficulty"
+      :checked="form.hasBreathingDifficulty"
       type="primary"
-      @change="toggleTag('HasBreathingDifficulty')"
+      @change="toggleTag('hasBreathingDifficulty')"
       :disabled="allDisabled"  
     >
       呼吸困难
     </el-check-tag>
     <el-check-tag
-      :checked="form.HasHoarseness"
+      :checked="form.hasHoarseness"
       type="primary"
-      @change="toggleTag('HasHoarseness')"
+      @change="toggleTag('hasHoarseness')"
       :disabled="allDisabled"  
     >
       声音嘶哑
     </el-check-tag>
     <el-check-tag
-      :checked="form.HasBronchitis"
+      :checked="form.hasBronchitis"
       type="primary"
-      @change="toggleTag('HasBronchitis')"
+      @change="toggleTag('hasBronchitis')"
       :disabled="allDisabled"  
     >
       支气管炎或支气管肺炎
     </el-check-tag>
     <el-check-tag
-      :checked="form.HasLungRales"
+      :checked="form.hasLungRales"
       type="primary"
-      @change="toggleTag('HasLungRales')"
+      @change="toggleTag('hasLungRales')"
       :disabled="allDisabled"  
     >
       听诊肺部有散在湿性罗音
@@ -130,21 +130,21 @@ export default {
     return {
       allDisabled:true, 
       form: {
-        HasCough: false,
-        HasSputum: false,
-        HasBloodySputum: false,
-        HasHemoptysis: false,
-        HasSoreThroat: false,
-        HasDryThroat: false,
-        HasNasalCongestion: false,
-        HasRunnyNose: false,
-        HasChestTightness: false,
+        hasCough: false,
+        hasSputum: false,
+        hasBloodySputum: false,
+        hasHemoptysis: false,
+        hasSoreThroat: false,
+        hasDryThroat: false,
+        hasNasalCongestion: false,
+        hasRunnyNose: false,
+        hasChestTightness: false,
         hasShortnessOfBreath: false,
-        HasBreathingDifficulty: false,
-        HasHoarseness: false,
-        HasBronchitis: false,
-        HasPharyngealHyperemia: false, //咽充血
-        HasLungRales: false, //是否听诊肺部有散在湿性罗音
+        hasBreathingDifficulty: false,
+        hasHoarseness: false,
+        hasBronchitis: false,
+        hasPharyngealHyperemia: false, //咽充血
+        hasLungRales: false, //是否听诊肺部有散在湿性罗音
       }
     };
   },
@@ -167,19 +167,19 @@ export default {
     },
     getInitialForm() {
       return {
-         HasCough: false,
-        HasSputum: false,
-        HasBloodySputum: false,
-        HasHemoptysis: false,
-        HasSoreThroat: false,
-        HasDryThroat: false,
-        HasNasalCongestion: false,
-        HasRunnyNose: false,
-        HasChestTightness: false,
+         hasCough: false,
+        hasSputum: false,
+        hasBloodySputum: false,
+        hasHemoptysis: false,
+        hasSoreThroat: false,
+        hasDryThroat: false,
+        hasNasalCongestion: false,
+        hasRunnyNose: false,
+        hasChestTightness: false,
         hasShortnessOfBreath: false,
-        HasBreathingDifficulty: false,
-        HasHoarseness: false,
-        HasBronchitis: false
+        hasBreathingDifficulty: false,
+        hasHoarseness: false,
+        hasBronchitis: false
       };
     },
     getData() {

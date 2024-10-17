@@ -18,7 +18,7 @@
 
           <el-form-item label="身高(cm)">
             <el-input
-              v-model.number="form.Height"
+              v-model.number="form.height"
               placeholder="请输入身高"
               clearable
             />
@@ -26,7 +26,7 @@
 
           <el-form-item label="体重(kg)">
             <el-input
-              v-model.number="form.Weight"
+              v-model.number="form.weight"
               placeholder="请输入体重"
               clearable
             />
@@ -34,7 +34,7 @@
 
           <el-form-item label="血压(mmHg)">
             <el-input
-              v-model="form.BloodPressure"
+              v-model="form.bloodPressure"
               placeholder="请输入血压 "
               clearable
             />
@@ -51,14 +51,14 @@
 
           <el-form-item label="空腹血糖(mmol/L)">
             <el-input
-              v-model.number="form.BloodSugarFasting"
+              v-model.number="form.bloodSugarFasting"
               placeholder="请输入空腹血糖 "
               clearable
             />
           </el-form-item>
           <el-form-item label="随机血糖(mmol/L)">
             <el-input
-              v-model.number="form.BloodSugarRandom"
+              v-model.number="form.bloodSugarRandom"
               placeholder="请输入随机血糖 "
               clearable
             />
@@ -75,35 +75,35 @@
 
           <el-form-item label="总胆固醇(mmol/L)">
             <el-input
-              v-model.number="form.CholesterolTotal"
+              v-model.number="form.cholesterolTotal"
               placeholder="请输入总胆固醇 "
               clearable
             />
           </el-form-item>
           <el-form-item label="甘油三酯(mmol/L)">
             <el-input
-              v-model.number="form.Triglycerides"
+              v-model.number="form.triglycerides"
               placeholder="请输入甘油三酯 "
               clearable
             />
           </el-form-item>
           <el-form-item label="胆固醇脂(mmol/L)">
             <el-input
-              v-model.number="form.CholesterolLipid"
+              v-model.number="form.cholesterolLipid"
               placeholder="请输入胆固醇脂 "
               clearable
             />
           </el-form-item>
           <el-form-item label="高密度脂蛋白(mmol/L)">
             <el-input
-              v-model.number="form.HDL"
+              v-model.number="form.hdl"
               placeholder="请输入高密度脂蛋白 "
               clearable
             />
           </el-form-item>
           <el-form-item label="低密度脂蛋白(mmol/L)">
             <el-input
-              v-model.number="form.LDL"
+              v-model.number="form.ldl"
               placeholder="请输入低密度脂蛋白"
               clearable
             />
@@ -120,7 +120,7 @@
 
           <el-form-item label="血氧饱和度(%)">
             <el-input
-              v-model.number="form.BloodOxygen"
+              v-model.number="form.bloodOxygen"
               placeholder="请输入血氧饱和度"
               clearable
             />
@@ -143,17 +143,17 @@ export default {
       allDisabled:true, 
       visible: false, // 控制弹窗显示
       form: {
-         Height: null,
-        Weight: null,
-        BloodPressure: '',
-        BloodSugarFasting: null,
-        BloodSugarRandom: null,
-        CholesterolTotal: null,
-        Triglycerides: null,
-        CholesterolLipid: null,
-        HDL: null,
-        LDL: null,
-        BloodOxygen: null,
+        height: null,
+        weight: null,
+        bloodPressure: '',
+        bloodSugarFasting: null,
+        bloodSugarRandom: null,
+        cholesterolTotal: null,
+        triglycerides: null,
+        cholesterolLipid: null,
+        hdl: null,
+        ldl: null,
+        bloodOxygen: null,
       },
 
       rules: {},
@@ -170,17 +170,17 @@ export default {
     },
     getInitialForm() {
       return {
-          Height: null,
-        Weight: null,
-        BloodPressure: '',
-        BloodSugarFasting: null,
-        BloodSugarRandom: null,
-        CholesterolTotal: null,
-        Triglycerides: null,
-        CholesterolLipid: null,
-        HDL: null,
-        LDL: null,
-        BloodOxygen: null,
+        height: null,
+        weight: null,
+        bloodPressure: '',
+        bloodSugarFasting: null,
+        bloodSugarRandom: null,
+        cholesterolTotal: null,
+        triglycerides: null,
+        cholesterolLipid: null,
+        hdl: null,
+        ldl: null,
+        bloodOxygen: null,
       };
     },
     getData() {

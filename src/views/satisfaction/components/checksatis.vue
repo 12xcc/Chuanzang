@@ -18,7 +18,6 @@
         ref="form"
         disabled
       >
-
           <div class="BaseInofo">
             <div class="title-container">
               <div class="blue-box"></div>
@@ -50,7 +49,7 @@
               ></el-input>
             </el-form-item>
           </div>
-        </div>
+
       </el-form>
     </div>
   </el-drawer>

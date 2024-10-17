@@ -1,22 +1,27 @@
 <template>
   <div>
-    <el-form :model="form" label-width="160px" ref="form" label-position="left" :rules="rules">
+    <el-form
+      :model="form"
+      label-width="160px"
+      ref="form"
+      label-position="left"
+      :rules="rules"
+      :disabled="allDisabled"
+    >
       <div class="Symptoms">
         <div class="Condition">
           <div class="title-container">
             <div class="blue-box"></div>
             <span class="title-text">有无并发症</span>
           </div>
-          <el-radio-group
-            v-model="form.HasComplications"
-          >
+          <el-radio-group v-model="form.hasComplications">
             <el-radio :value="true">有</el-radio>
             <el-radio :value="false">无</el-radio>
           </el-radio-group>
         </div>
       </div>
 
-      <div v-if="form.HasComplications">
+      <div v-if="form.hasComplications">
         <div class="Symptoms">
           <div class="Condition">
             <div class="title-container">
@@ -25,296 +30,385 @@
             </div>
             <div class="flex gap-2">
               <el-check-tag
-                :checked="form.HasViralPneumonia"
+                :checked="form.hasViralPneumonia"
                 type="primary"
-                @change="toggleTag('HasViralPneumonia')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasViralPneumonia')"
+                :disabled="allDisabled"
               >
                 病毒性肺炎
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasBacterialPneumonia"
+                :checked="form.hasBacterialPneumonia"
                 type="primary"
-                @change="toggleTag('HasBacterialPneumonia')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasBacterialPneumonia')"
+                :disabled="allDisabled"
               >
                 细菌性肺炎
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasFungalPneumonia"
+                :checked="form.hasFungalPneumonia"
                 type="primary"
-                @change="toggleTag('HasFungalPneumonia')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasFungalPneumonia')"
+                :disabled="allDisabled"
               >
                 真菌性肺炎
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasRespiratoryFailure"
+                :checked="form.hasRespiratoryFailure"
                 type="primary"
-                @change="toggleTag('HasRespiratoryFailure')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasRespiratoryFailure')"
+                :disabled="allDisabled"
               >
                 呼吸衰竭
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasARDS"
+                :checked="form.hasArds"
                 type="primary"
-                @change="toggleTag('HasARDS')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasArds')"
+                :disabled="allDisabled"
               >
                 急性呼吸窘迫综合征(ARDS)
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasDIC"
+                :checked="form.hasDic"
                 type="primary"
-                @change="toggleTag('HasDIC')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasDic')"
+                :disabled="allDisabled"
               >
                 弥散性血管内凝血（DIC）
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasToxicShock"
+                :checked="form.hasToxicShock"
                 type="primary"
-                @change="toggleTag('HasToxicShock')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasToxicShock')"
+                :disabled="allDisabled"
               >
                 感染中毒性休克
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasMeningitis"
+                :checked="form.hasMeningitis"
                 type="primary"
-                @change="toggleTag('HasMeningitis')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasMeningitis')"
+                :disabled="allDisabled"
               >
                 脑膜炎
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasEncephalitis"
+                :checked="form.hasEncephalitis"
                 type="primary"
-                @change="toggleTag('HasEncephalitis')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasEncephalitis')"
+                :disabled="allDisabled"
               >
                 脑炎
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasBacteremia"
+                :checked="form.hasBacteremia"
                 type="primary"
-                @change="toggleTag('HasBacteremia')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasBacteremia')"
+                :disabled="allDisabled"
               >
                 菌血症
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasMyocarditis"
+                :checked="form.hasMyocarditis"
                 type="primary"
-                @change="toggleTag('HasMyocarditis')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasMyocarditis')"
+                :disabled="allDisabled"
               >
                 心肌炎
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasAcuteLungInjury"
+                :checked="form.hasAcuteLungInjury"
                 type="primary"
-                @change="toggleTag('HasAcuteLungInjury')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasAcuteLungInjury')"
+                :disabled="allDisabled"
               >
-                急性肺损伤/ARDS
+                急性肺损伤
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasAcuteKidneyInjury"
+                :checked="form.hasAcuteKidneyInjury"
                 type="primary"
-                @change="toggleTag('HasAcuteKidneyInjury')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasAcuteKidneyInjury')"
+                :disabled="allDisabled"
               >
                 急性肾损伤
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasEpilepsy"
+                :checked="form.hasEpilepsy"
                 type="primary"
-                @change="toggleTag('HasEpilepsy')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasEpilepsy')"
+                :disabled="allDisabled"
               >
                 癫痫
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasToxicHepatitis"
+                :checked="form.hasToxicHepatitis"
                 type="primary"
-                @change="toggleTag('HasToxicHepatitis')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasToxicHepatitis')"
+                :disabled="allDisabled"
               >
                 中毒性肝炎
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasFluidOverload"
+                :checked="form.hasFluidOverload"
                 type="primary"
-                @change="toggleTag('HasFluidOverload')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasFluidOverload')"
+                :disabled="allDisabled"
               >
                 输液过量
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasSuperinfection"
+                :checked="form.hasSuperinfection"
                 type="primary"
-                @change="toggleTag('HasSuperinfection')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasSuperinfection')"
+                :disabled="allDisabled"
               >
                 二重感染
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasHypoxemia"
+                :checked="form.hasHypoxemia"
                 type="primary"
-                @change="toggleTag('HasHypoxemia')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasHypoxemia')"
+                :disabled="allDisabled"
               >
                 低氧血症
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasSepticShock"
+                :checked="form.hasSepticShock"
                 type="primary"
-                @change="toggleTag('HasSepticShock')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasSepticShock')"
+                :disabled="allDisabled"
               >
                 脓毒症休克
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasMetabolicAcidosis"
+                :checked="form.hasMetabolicAcidosis"
                 type="primary"
-                @change="toggleTag('HasMetabolicAcidosis')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasMetabolicAcidosis')"
+                :disabled="allDisabled"
               >
                 代谢性酸中毒
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasElectrolyteImbalance"
+                :checked="form.hasElectrolyteImbalance"
                 type="primary"
-                @change="toggleTag('HasElectrolyteImbalance')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasElectrolyteImbalance')"
+                :disabled="allDisabled"
               >
                 电解质及酸碱失衡
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasHemolysis"
+                :checked="form.hasHemolysis"
                 type="primary"
-                @change="toggleTag('HasHemolysis')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasHemolysis')"
+                :disabled="allDisabled"
               >
                 急性血管内溶血
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasGastrointestinalBleeding"
+                :checked="form.hasGastrointestinalBleeding"
                 type="primary"
-                @change="toggleTag('HasGastrointestinalBleeding')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasGastrointestinalBleeding')"
+                :disabled="allDisabled"
               >
                 消化道出血
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasCoagulationDisorder"
+                :checked="form.hasBronchitis"
                 type="primary"
-                @change="toggleTag('HasCoagulationDisorder')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasBronchitis')"
+                :disabled="allDisabled"
+              >
+                支气管炎
+              </el-check-tag>
+              <el-check-tag
+                :checked="form.hasBronchopneumonia"
+                type="primary"
+                @change="toggleTag('hasBronchopneumonia')"
+                :disabled="allDisabled"
+              >
+                支气管肺炎
+              </el-check-tag>
+              <el-check-tag
+                :checked="form.hasSecondaryInfection"
+                type="primary"
+                @change="toggleTag('hasSecondaryInfection')"
+                :disabled="allDisabled"
+              >
+                继发性感染
+              </el-check-tag>
+              <el-check-tag
+                :checked="form.hasHypertensiveEncephalopathy"
+                type="primary"
+                @change="toggleTag('hasHypertensiveEncephalopathy')"
+                :disabled="allDisabled"
+              >
+                高血压脑病
+              </el-check-tag>
+              <el-check-tag
+                :checked="form.hasNasalBleeding"
+                type="primary"
+                @change="toggleTag('hasNasalBleeding')"
+                :disabled="allDisabled"
+              >
+                鼻出血
+              </el-check-tag>
+              <el-check-tag
+                :checked="form.hasVaginalBleeding"
+                type="primary"
+                @change="toggleTag('hasVaginalBleeding')"
+                :disabled="allDisabled"
+              >
+                阴道出血
+              </el-check-tag>
+
+              <el-check-tag
+                :checked="form.hasCoagulationDisorder"
+                type="primary"
+                @change="toggleTag('hasCoagulationDisorder')"
+                :disabled="allDisabled"
               >
                 凝血功能障碍
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasMultipleOrganFailure"
+                :checked="form.hasMultipleOrganFailure"
                 type="primary"
-                @change="toggleTag('HasMultipleOrganFailure')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasMultipleOrganFailure')"
+                :disabled="allDisabled"
               >
                 多器官功能衰竭
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasAnemia"
+                :checked="form.hasAnemia"
                 type="primary"
-                @change="toggleTag('HasAnemia')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasAnemia')"
+                :disabled="allDisabled"
               >
                 贫血
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasHepatosplenomegaly"
+                :checked="form.hasHepatosplenomegaly"
                 type="primary"
-                @change="toggleTag('HasHepatosplenomegaly')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasHepatosplenomegaly')"
+                :disabled="allDisabled"
               >
                 肝脾肿大
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasBrainEdema"
+                :checked="form.hasBrainEdema"
                 type="primary"
-                @change="toggleTag('HasBrainEdema')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasBrainEdema')"
+                :disabled="allDisabled"
               >
                 脑水肿
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasHUS"
+                :checked="form.hasHus"
                 type="primary"
-                @change="toggleTag('HasHUS')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasHus')"
+                :disabled="allDisabled"
               >
                 溶血性尿毒综合征
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasHematemesis"
+                :checked="form.hasHematemesis"
                 type="primary"
-                @change="toggleTag('HasHematemesis')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasHematemesis')"
+                :disabled="allDisabled"
               >
                 呕血
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasMelena"
+                :checked="form.hasMelena"
                 type="primary"
-                @change="toggleTag('HasMelena')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasMelena')"
+                :disabled="allDisabled"
               >
                 便血
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasHemoptysis"
+                :checked="form.hasHemoptysis"
                 type="primary"
-                @change="toggleTag('HasHemoptysis')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasHemoptysis')"
+                :disabled="allDisabled"
               >
                 咯血
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasAbdominalHemorrhage"
+                :checked="form.hasAbdominalHemorrhage"
                 type="primary"
-                @change="toggleTag('HasAbdominalHemorrhage')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasAbdominalHemorrhage')"
+                :disabled="allDisabled"
               >
                 腹腔出血
               </el-check-tag>
               <el-check-tag
-                :checked="form.HasHypovolemicShock"
+                :checked="form.hasPulmonaryEdema"
                 type="primary"
-                @change="toggleTag('HasHypovolemicShock')"
-                :disabled="allDisabled"  
+                @change="toggleTag('hasPulmonaryEdema')"
+                :disabled="allDisabled"
               >
-                低血容量休克
+                肺水肿
+              </el-check-tag>
+              <el-check-tag
+                :checked="form.hasMyocardialDamage"
+                type="primary"
+                @change="toggleTag('hasMyocardialDamage')"
+                :disabled="allDisabled"
+              >
+                心肌损害
+              </el-check-tag>
+              <el-check-tag
+                :checked="form.hasLiverDamage"
+                type="primary"
+                @change="toggleTag('hasLiverDamage')"
+                :disabled="allDisabled"
+              >
+                肝损害
+              </el-check-tag>
+              <el-check-tag
+                :checked="form.hasIntracranialHemorrhage"
+                type="primary"
+                @change="toggleTag('hasIntracranialHemorrhage')"
+                :disabled="allDisabled"
+              >
+                颅内出血
+              </el-check-tag>
+              <el-check-tag
+                :checked="form.hasSevereAnemia"
+                type="primary"
+                @change="toggleTag('hasSevereAnemia')"
+                :disabled="allDisabled"
+              >
+                严重贫血
+              </el-check-tag>
+              <el-check-tag
+                :checked="form.hasSpontaneousRenalRupture"
+                type="primary"
+                @change="toggleTag('hasSpontaneousRenalRupture')"
+                :disabled="allDisabled"
+              >
+                自发性肾破裂
               </el-check-tag>
 
               <el-check-tag
-                :checked="form.OtherComplications"
+                :checked="form.otherComplications"
                 type="primary"
-                @change="toggleTag('OtherComplications')"
-                :disabled="allDisabled"  
+                @change="toggleTag('otherComplications')"
+                :disabled="allDisabled"
               >
                 其他
               </el-check-tag>
               <div class="NextContainer">
                 <el-form-item
-                  v-if="form.OtherComplications"
+                  v-if="form.otherComplications"
                   label="其他并发症"
                   style="margin-left: 20px; padding: 15px 0 15px 0"
                   labei-position="left"
-                  prop="OtherComplicationsName"
+                  prop="otherComplicationsName"
                 >
                   <el-input
-                    v-model="form.OtherComplicationsName"
+                    v-model="form.otherComplicationsName"
                     placeholder="请输入其他并发症"
                     style="width: 200px"
                   />
@@ -328,53 +422,66 @@
   </div>
 </template>
 
+
 <script>
 export default {
   data() {
     return {
+      allDisabled: false,
       form: {
-        HasComplications: false,
-        HasViralPneumonia: false,
-        HasBacterialPneumonia: false,
-        HasFungalPneumonia: false,
-        HasRespiratoryFailure: false,
-        HasARDS: false,
-        HasDIC: false,
-        HasToxicShock: false,
-        HasMeningitis: false,
-        HasEncephalitis: false,
-        HasBacteremia: false,
-        HasMyocarditis: false,
-        HasAcuteLungInjury: false,
-        HasAcuteKidneyInjury: false,
-        HasEpilepsy: false,
-        HasToxicHepatitis: false,
-        HasFluidOverload: false,
-        HasSuperinfection: false,
-        HasHypoxemia: false,
-        HasSepticShock: false,
-        HasMetabolicAcidosis: false,
-        HasElectrolyteImbalance: false,
-        HasHemolysis: false,
-        HasGastrointestinalBleeding: false,
-        HasCoagulationDisorder: false,
-        HasMultipleOrganFailure: false,
-        HasAnemia: false,
-        HasHepatosplenomegaly: false,
-        HasBrainEdema: false,
-        HasHUS: false,
-        HasHematemesis: false,
-        HasMelena: false,
-        HasHemoptysis: false,
-        HasAbdominalHemorrhage: false,
-        HasHypovolemicShock: false,
-        OtherComplications: false,
-        OtherComplicationsName: "",
+        hasComplications: false,
+        hasViralPneumonia: false,
+        hasBacterialPneumonia: false,
+        hasFungalPneumonia: false,
+        hasRespiratoryFailure: false,
+        hasArds: false, // 修正: 大小写
+        hasDic: false, // 修正: 大小写
+        hasToxicShock: false,
+        hasMeningitis: false,
+        hasEncephalitis: false,
+        hasBacteremia: false,
+        hasMyocarditis: false,
+        hasAcuteLungInjury: false,
+        hasAcuteKidneyInjury: false,
+        hasEpilepsy: false,
+        hasToxicHepatitis: false,
+        hasFluidOverload: false,
+        hasSuperinfection: false,
+        hasHypoxemia: false,
+        hasSepticShock: false,
+        hasMetabolicAcidosis: false,
+        hasElectrolyteImbalance: false,
+        hasHemolysis: false,
+        hasGastrointestinalBleeding: false,
+        hasCoagulationDisorder: false,
+        hasMultipleOrganFailure: false,
+        hasAnemia: false,
+        hasHepatosplenomegaly: false,
+        hasBrainEdema: false,
+        hasHus: false, // 修正: 大小写
+        hasHematemesis: false,
+        hasMelena: false,
+        hasHemoptysis: false,
+        hasAbdominalHemorrhage: false,
+        hasPulmonaryEdema: false, // 新增
+        hasMyocardialDamage: false, // 新增
+        hasLiverDamage: false, // 新增
+        hasIntracranialHemorrhage: false, // 新增
+        hasSevereAnemia: false, // 新增
+        hasSpontaneousRenalRupture: false, // 新增
+        hasBronchitis: false, // 新增
+        hasBronchopneumonia: false, // 新增
+        hasSecondaryInfection: false, // 新增
+        hasHypertensiveEncephalopathy: false, // 新增
+        hasNasalBleeding: false, // 新增
+        hasVaginalBleeding: false, // 新增
+        otherComplications: false, // 修正: 小写
+        otherComplicationsName: "", // 修正: 小写
       },
       rules: {
-        OtherComplicationsName:[
-          {required:true,message:"请输入其他并发症"}
-        ]
+        otherComplicationsName: [
+          { required: true, message: "请输入其他并发症" },
+        ],
       },
       allDisabled: false,
     };
@@ -382,106 +489,129 @@ export default {
   methods: {
     toggleTag(field) {
       this.form[field] = !this.form[field];
-      if (field === "OtherComplications" && !this.form[field]) {
-        this.form.OtherComplicationsName = "";
+      if (field === "otherComplications" && !this.form[field]) {
+        this.form.otherComplicationsName = "";
       }
     },
-      validate() {
+    validate() {
       return new Promise((resolve, reject) => {
         // 选择了有并发症，必须选择子选项
-        if (this.form.HasComplications) {
-          const hasComplications=
-          this.form.HasViralPneumonia||
-        this.form.HasBacterialPneumonia ||
-        this.form.HasFungalPneumonia ||
-        this.form.HasRespiratoryFailure ||
-        this.form.HasARDS ||
-        this.form.HasDIC ||
-        this.form.HasToxicShock ||
-        this.form.HasMeningitis ||
-        this.form.HasEncephalitis ||
-        this.form.HasBacteremia ||
-        this.form.HasMyocarditis ||
-        this.form.HasAcuteLungInjury ||
-        this.form.HasAcuteKidneyInjury ||
-        this.form.HasEpilepsy ||
-        this.form.HasToxicHepatitis ||
-        this.form.HasFluidOverload ||
-        this.form.HasSuperinfection ||
-        this.form.HasHypoxemia ||
-        this.form.HasSepticShock ||
-        this.form.HasMetabolicAcidosis ||
-        this.form.HasElectrolyteImbalance ||
-        this.form.HasHemolysis ||
-        this.form.HasGastrointestinalBleeding ||
-        this.form.HasCoagulationDisorder ||
-        this.form.HasMultipleOrganFailure ||
-        this.form.HasAnemia ||
-        this.form.HasHepatosplenomegaly ||
-        this.form.HasBrainEdema ||
-        this.form.HasHUS ||
-        this.form.HasHematemesis ||
-        this.form.HasMelena ||
-        this.form.HasHemoptysis ||
-        this.form.HasAbdominalHemorrhage ||
-        this.form.HasHypovolemicShock ||
-        this.form.OtherComplications;
-        if(!hasComplications)
-        {
-          return reject(new Error("请选择并发症"));
-        }
+        if (this.form.hasComplications) {
+          const hasComplications =
+            this.form.hasViralPneumonia ||
+            this.form.hasBacterialPneumonia ||
+            this.form.hasFungalPneumonia ||
+            this.form.hasRespiratoryFailure ||
+            this.form.hasArds ||
+            this.form.hasDic ||
+            this.form.hasToxicShock ||
+            this.form.hasMeningitis ||
+            this.form.hasEncephalitis ||
+            this.form.hasBacteremia ||
+            this.form.hasMyocarditis ||
+            this.form.hasAcuteLungInjury ||
+            this.form.hasAcuteKidneyInjury ||
+            this.form.hasEpilepsy ||
+            this.form.hasToxicHepatitis ||
+            this.form.hasFluidOverload ||
+            this.form.hasSuperinfection ||
+            this.form.hasHypoxemia ||
+            this.form.hasSepticShock ||
+            this.form.hasMetabolicAcidosis ||
+            this.form.hasElectrolyteImbalance ||
+            this.form.hasHemolysis ||
+            this.form.hasGastrointestinalBleeding ||
+            this.form.hasCoagulationDisorder ||
+            this.form.hasMultipleOrganFailure ||
+            this.form.hasAnemia ||
+            this.form.hasHepatosplenomegaly ||
+            this.form.hasBrainEdema ||
+            this.form.hasHus ||
+            this.form.hasHematemesis ||
+            this.form.hasMelena ||
+            this.form.hasHemoptysis ||
+            this.form.hasAbdominalHemorrhage ||
+            this.form.hasBronchitis || // 新增字段
+            this.form.hasBronchopneumonia || // 新增字段
+            this.form.hasSecondaryInfection || // 新增字段
+            this.form.hasHypertensiveEncephalopathy || // 新增字段
+            this.form.hasNasalBleeding || // 新增字段
+            this.form.hasVaginalBleeding || // 新增字段
+            this.form.hasPulmonaryEdema || // 新增字段
+            this.form.hasMyocardialDamage || // 新增字段
+            this.form.hasLiverDamage || // 新增字段
+            this.form.hasIntracranialHemorrhage || // 新增字段
+            this.form.hasSevereAnemia || // 新增字段
+            this.form.hasSpontaneousRenalRupture || // 新增字段
+            this.form.otherComplications; // 修正拼写
+          if (!hasComplications) {
+            return reject(new Error("请选择并发症"));
+          }
         }
         // 验证通过
         this.$refs.form.validate((valid) => {
-          valid ? resolve() : reject(new Error("表单提交失败，请检查必填字段是否未填写"));
+          valid
+            ? resolve()
+            : reject(new Error("表单提交失败，请检查必填字段是否未填写"));
         });
       });
     },
-    getData(){
+    getData() {
       return this.form;
     },
-    handleReset(){
+    handleReset() {
       this.form = this.getInitialForm();
     },
     getInitialForm() {
       return {
-        HasComplications: false,
-        HasViralPneumonia: false,
-        HasBacterialPneumonia: false,
-        HasFungalPneumonia: false,
-        HasRespiratoryFailure: false,
-        HasARDS: false,
-        HasDIC: false,
-        HasToxicShock: false,
-        HasMeningitis: false,
-        HasEncephalitis: false,
-        HasBacteremia: false,
-        HasMyocarditis: false,
-        HasAcuteLungInjury: false,
-        HasAcuteKidneyInjury: false,
-        HasEpilepsy: false,
-        HasToxicHepatitis: false,
-        HasFluidOverload: false,
-        HasSuperinfection: false,
-        HasHypoxemia: false,
-        HasSepticShock: false,
-        HasMetabolicAcidosis: false,
-        HasElectrolyteImbalance: false,
-        HasHemolysis: false,
-        HasGastrointestinalBleeding: false,
-        HasCoagulationDisorder: false,
-        HasMultipleOrganFailure: false,
-        HasAnemia: false,
-        HasHepatosplenomegaly: false,
-        HasBrainEdema: false,
-        HasHUS: false,
-        HasHematemesis: false,
-        HasMelena: false,
-        HasHemoptysis: false,
-        HasAbdominalHemorrhage: false,
-        HasHypovolemicShock: false,
-        OtherComplications: false,
-        OtherComplicationsName: "",
+        hasComplications: false,
+        hasViralPneumonia: false,
+        hasBacterialPneumonia: false,
+        hasFungalPneumonia: false,
+        hasRespiratoryFailure: false,
+        hasArds: false, // 修正: 大小写
+        hasDic: false, // 修正: 大小写
+        hasToxicShock: false,
+        hasMeningitis: false,
+        hasEncephalitis: false,
+        hasBacteremia: false,
+        hasMyocarditis: false,
+        hasAcuteLungInjury: false,
+        hasAcuteKidneyInjury: false,
+        hasEpilepsy: false,
+        hasToxicHepatitis: false,
+        hasFluidOverload: false,
+        hasSuperinfection: false,
+        hasHypoxemia: false,
+        hasSepticShock: false,
+        hasMetabolicAcidosis: false,
+        hasElectrolyteImbalance: false,
+        hasHemolysis: false,
+        hasGastrointestinalBleeding: false,
+        hasCoagulationDisorder: false,
+        hasMultipleOrganFailure: false,
+        hasAnemia: false,
+        hasHepatosplenomegaly: false,
+        hasBrainEdema: false,
+        hasHus: false, // 修正: 大小写
+        hasHematemesis: false,
+        hasMelena: false,
+        hasHemoptysis: false,
+        hasAbdominalHemorrhage: false,
+        hasPulmonaryEdema: false, // 新增
+        hasMyocardialDamage: false, // 新增
+        hasLiverDamage: false, // 新增
+        hasIntracranialHemorrhage: false, // 新增
+        hasSevereAnemia: false, // 新增
+        hasSpontaneousRenalRupture: false, // 新增
+        hasBronchitis: false, // 新增
+        hasBronchopneumonia: false, // 新增
+        hasSecondaryInfection: false, // 新增
+        hasHypertensiveEncephalopathy: false, // 新增
+        hasNasalBleeding: false, // 新增
+        hasVaginalBleeding: false, // 新增
+        otherComplications: false, // 修正: 小写
+        otherComplicationsName: "", // 修正: 小写
       };
     },
   },
