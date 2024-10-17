@@ -4,22 +4,22 @@ export const useUserStore = defineStore('user', {
   state: () => {
     const savedUser = JSON.parse(localStorage.getItem('user'));
     return {
-      user: savedUser ? savedUser.phoneNumber : null,
+      phoneNumber: savedUser ? savedUser.phoneNumber : null,
       role: savedUser ? savedUser.role : null,
-      username: savedUser ? savedUser.Name : '', // 改为 Name
+      name: savedUser ? savedUser.name : '', 
     };
   },
   actions: {
-    login({ username, role, Name }) {
-      this.user = username;
+    login({ phoneNumber, role, name }) {
+      this.phoneNumber = phoneNumber;
       this.role = role;
-      this.username = Name;
+      this.name = name;
     },
     logout() {
-      this.user = null;
+      this.phoneNumber = null;
       this.role = null;
-      this.username = '';
-      localStorage.removeItem('user');
+      this.name = '';
+      localStorage.removeItem('phoneNumber');
     },
     isNurse() {
       return this.role === 'nurse'; 

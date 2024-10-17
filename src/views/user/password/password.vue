@@ -4,18 +4,18 @@
       <div class="login-title">修改密码</div>
       <form @submit.prevent="handleSubmit">
         <div class="input-group">
-          <label for="username">原密码</label>
+          <label for="phoneNumber">原密码</label>
           <input
-            v-model="username"
+            v-model="phoneNumber"
             type="text"
-            id="username"
+            id="phoneNumber"
             placeholder="······"
             maxlength="16"
-            @input="validateAndFormatUsername"
+            @input="validateAndFormatphoneNumber"
             disabled
           />
-          <span v-if="usernameError" class="error-message">{{
-            usernameError
+          <span v-if="phoneNumberError" class="error-message">{{
+            phoneNumberError
           }}</span>
         </div>
 
@@ -90,12 +90,12 @@ import passwordClose from "@/assets/password_open.png";
 export default {
   setup() {
     const router = useRouter();
-    const username = ref("");
+    const phoneNumber = ref("");
     const password = ref("");
     const confirmPassword = ref("");
     const passwordFieldType = ref("password");
     const confirmPasswordFieldType = ref("password");
-    const usernameError = ref("");
+    const phoneNumberError = ref("");
     const passwordError = ref("");
     const confirmPasswordError = ref("");
 
@@ -128,13 +128,13 @@ export default {
       return passwordPattern.test(password);
     };
 
-    const validateAndFormatUsername = () => {
+    const validateAndFormatphoneNumber = () => {
       const phonePattern = /^[1-9]\d{0,10}$/;
-      if (!phonePattern.test(username.value)) {
-        username.value = username.value.slice(0, -1);
+      if (!phonePattern.test(phoneNumber.value)) {
+        phoneNumber.value = phoneNumber.value.slice(0, -1);
       }
-      usernameError.value =
-        username.value.length === 11 && phonePattern.test(username.value)
+      phoneNumberError.value =
+        phoneNumber.value.length === 11 && phonePattern.test(phoneNumber.value)
           ? ""
           : "请输入正确的用户名";
     };
@@ -153,28 +153,28 @@ export default {
     const isSubmitDisabled = ref(true);
     const checkFormValidity = () => {
       isSubmitDisabled.value =
-        !username.value ||
+        !phoneNumber.value ||
         !password.value ||
         !confirmPassword.value ||
-        usernameError.value ||
+        phoneNumberError.value ||
         passwordError.value ||
         confirmPasswordError.value;
     };
 
     return {
-      username,
+      phoneNumber,
       password,
       confirmPassword,
       passwordFieldType,
       confirmPasswordFieldType,
       passwordOpen,
       passwordClose,
-      usernameError,
+      phoneNumberError,
       passwordError,
       confirmPasswordError,
       togglePasswordVisibility,
       handleSubmit,
-      validateAndFormatUsername,
+      validateAndFormatphoneNumber,
       validateAndFormatPassword,
       validateAndFormatConfirmPassword,
       isSubmitDisabled,
@@ -215,7 +215,7 @@ export default {
   margin-bottom: 30px;
   text-align: left;
 }
-#username {
+#phoneNumber {
   background-color: #f4f4f4 !important;
   color: #a6a6a6;
   font-size: 16px;

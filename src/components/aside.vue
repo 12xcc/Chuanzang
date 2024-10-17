@@ -22,17 +22,17 @@ const handleOpen = () => {};
 // 根据角色返回不同的标题
 const getTitle = () => {
   const userStore = useUserStore();
-  const userName = userStore.username || ''; 
+  const name = userStore.name || ''; 
 
   if (userStore.role === 'admin') {
-    return `系统管理员-${userName}`;
+    return `系统管理员-${name}`;
   } else if (userStore.role === 'nurse') {
-    return `专职医护人员-${userName}`; 
+    return `专职医护人员-${name}`; 
   } else if (userStore.role === 'cdc') {
-    return `疾控中心工作人员-${userName}`;
+    return `疾控中心工作人员-${name}`;
   }
 
-  return `用户-${userName}`; // 默认标题
+  return `用户-${name}`; // 默认标题
 };
 </script>
 

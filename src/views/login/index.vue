@@ -5,17 +5,17 @@
         <div class="login-title">登录</div>
         <form @submit.prevent="handleSubmit">
           <div class="input-group">
-            <label for="username">用户名</label>
+            <label for="phoneNumber">用户名</label>
             <input
-              v-model="username"
+              v-model="phoneNumber"
               type="text"
-              id="username"
+              id="phoneNumber"
               placeholder="手机号"
               maxlength="11"
-              @input="validateAndFormatUsername"
+              @input="validateAndFormatphoneNumber"
             />
-            <span v-if="usernameError" class="error-message">{{
-              usernameError
+            <span v-if="phoneNumberError" class="error-message">{{
+              phoneNumberError
             }}</span>
           </div>
           <div class="input-group">
@@ -71,10 +71,10 @@ export default {
   setup() {
     const router = useRouter();
     const userStore = useUserStore(); 
-    const username = ref("");
+    const phoneNumber = ref("");
     const password = ref("");
     const passwordFieldType = ref("password");
-    const usernameError = ref("");
+    const phoneNumberError = ref("");
     const passwordError = ref("");
     const tagStore = useTagsStore();
 
@@ -85,29 +85,29 @@ export default {
 
     // 用户数组
     const users = {
-      19357907217: { Name:"张三", password: "123456", role: "admin" },
-      13330656624: { Name:"李四", password: "123456", role: "nurse" },
-      19508191094: { Name:"王五", password: "123456", role: "cdc" }
+      19357907217: { name:"张三", password: "123456", role: "admin" },
+      13330656624: { name:"李四", password: "123456", role: "nurse" },
+      19508191094: { name:"王五", password: "123456", role: "cdc" }
     };
 
 const handleSubmit = () => {
-  const user = users[username.value];
+  const user = users[phoneNumber.value];
   if (
     user &&
     user.password === password.value &&
-    username.value &&
+    phoneNumber.value &&
     password.value &&
-    !usernameError.value &&
+    !phoneNumberError.value &&
     !passwordError.value
   ) {
     const userData = {
-      phoneNumber: username.value,
+      phoneNumber: phoneNumber.value,
       role: user.role,
-      Name: user.Name, 
+      name: user.name, 
     };
     userStore.login(userData);
     localStorage.setItem('user', JSON.stringify(userData)); // 保存到 localStorage
-    tagStore.removeAllTag (); //避免不同登录时出现其他角色的tags
+    tagStore.removeAllTag (); // 避免不同登录时出现其他角色的tags
     router.push("/user/password");
     ElMessage.success("登录成功");
   
@@ -117,17 +117,17 @@ const handleSubmit = () => {
 };
 
     const resetPassword = () => {
-      password.value = username.value.slice(-6);
+      password.value = phoneNumber.value.slice(-6);
       alert("密码已重置为身份证后六位");
     };
 
-    const validateAndFormatUsername = () => {
+    const validateAndFormatphoneNumber = () => {
       const phonePattern = /^[1-9]\d{0,10}$/; // 允许最多11位字符
-      if (!phonePattern.test(username.value)) {
-        username.value = username.value.slice(0, -1); // 删除最后一个无效字符
+      if (!phonePattern.test(phoneNumber.value)) {
+        phoneNumber.value = phoneNumber.value.slice(0, -1); // 删除最后一个无效字符
       }
-      usernameError.value =
-        username.value.length === 11 && phonePattern.test(username.value)
+      phoneNumberError.value =
+        phoneNumber.value.length === 11 && phonePattern.test(phoneNumber.value)
           ? ""
           : "请输入正确的用户名";
     };
@@ -144,17 +144,17 @@ const handleSubmit = () => {
     };
 
     return {
-      username,
+      phoneNumber,
       password,
       passwordFieldType,
       passwordOpen,
       passwordClose,
-      usernameError,
+      phoneNumberError,
       passwordError,
       togglePasswordVisibility,
       handleSubmit,
       resetPassword,
-      validateAndFormatUsername,
+      validateAndFormatphoneNumber,
       validateAndFormatPassword,
     };
   },
