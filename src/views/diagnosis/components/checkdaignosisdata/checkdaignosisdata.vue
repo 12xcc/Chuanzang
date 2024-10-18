@@ -320,15 +320,15 @@ export default {
           // 分发数据到各个子组件，若数据为 null，则赋值为 null
           this.diagnosisResults = data.diagnosisresults || null;
           this.diagnosispersonalinfo = data.diagnosispersonalinfo || null;
-          this.diagnosisgeneralsymptoms = data.GeneralSymptoms || null;
-          this.diagnosisrespiratorysymptoms = data.RespiratorySymptoms || null;
-          this.diagnosiscirculatorysymptoms = data.CirculatorySymptoms || null;
-          this.diagnosisneurologicalsymptoms = data.NeurologicalSymptoms || null;
-          this.diagnosislocalsymptoms = data.DiagnosisLocalSymptoms || null;
-          this.diagnosisothersymptoms = data.OtherSymptoms || null;
-          this.diagnosiscomplications = data.RiskFactorsAndExposure || null;
-          this.diagnosisdigestivesymptoms = data.DigestiveSymptoms || null;
-          this.diagnosisexaminations = data.DiagnosisExaminations || null;
+          this.diagnosisgeneralsymptoms = data.diagnosisgeneralsymptoms || null;
+          this.diagnosisrespiratorysymptoms = data.diagnosisrespiratorysymptoms || null;
+          this.diagnosiscirculatorysymptoms = data.diagnosiscirculatorysymptoms || null;
+          this.diagnosisneurologicalsymptoms = data.diagnosisneurologicalsymptoms || null;
+          this.diagnosislocalsymptoms = data.diagnosislocalsymptoms || null;
+          this.diagnosisothersymptoms = data.diagnosisothersymptoms || null;
+          this.diagnosiscomplications = data.diagnosiscomplications || null;
+          this.diagnosisdigestivesymptoms = data.diagnosisdigestivesymptoms || null;
+          this.diagnosisexaminations = data.diagnosisexaminations || null;
 
           // 更新标签的 enabled 状态
           this.updateTagEnabledStatus();
@@ -348,7 +348,7 @@ export default {
     // 更新标签的 enabled 状态
     updateTagEnabledStatus() {
       this.tags.forEach((tag) => {
-        switch (tag.name) {
+        switch (tag.name) { 
           case "DiagnosisResults":
             tag.enabled = this.diagnosisResults !== null;
             break;

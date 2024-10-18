@@ -154,21 +154,19 @@ export default {
       }
     };
   },
-      watch: {
+watch: {
   data: {
     immediate: true,
     handler(newVal) {
+      console.log('Received data in RespiratorySymptoms.vue:', newVal);
       if (newVal) {
-        // 先将所有数据映射到 form
         this.form = { ...this.form, ...newVal };
-
         this.$forceUpdate();
-      } else {
-        console.warn('Received null or undefined data');
       }
     },
   },
 },
+
   methods: {
     toggleTag(field) {
      this.form[field] = !this.form[field];
