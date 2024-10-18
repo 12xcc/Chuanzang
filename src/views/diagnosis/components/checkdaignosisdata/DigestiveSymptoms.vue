@@ -15,14 +15,14 @@
             <div class="blue-box"></div>
             <span class="title-text">腹泻情况</span>
           </div>
-          <el-radio-group v-model="form.arrheaFrequencyGEThreeTimesPerDay">
+          <el-radio-group v-model="form.diarrheaFrequencyGEThreeTimesPerDay">
             <el-radio :value="1">腹泻 <3次/天</el-radio>
             <el-radio :value="2">腹泻 ≥3 次/天</el-radio>
           </el-radio-group>
 
           <div class="NextContainer">
             <div
-              v-if="form.arrheaFrequencyGEThreeTimesPerDay"
+              v-if="form.diarrheaFrequencyGEThreeTimesPerDay"
               style="padding: 15px 0 15px 0"
             >
               <el-form-item label="腹泻次数" style="">
@@ -210,22 +210,28 @@
 <script>
 import { ElMessage } from "element-plus";
 export default {
+      props: {
+    data: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data() {
     return {
       allDisabled: true,
 
       form: {
-        arrheaFrequencyGEThreeTimesPerDay: "",
-        diarrheaTimesPerDay: "",
+        diarrheaFrequencyGEThreeTimesPerDay: null,
+        diarrheaTimesPerDay: null,
         hasStoolType1: false,
-        stoolType1Detail: "",
+        stoolType1Detail: null,
         hasStoolType2: false,
-        stoolType2Detail: "",
-        diarrheaMode: "",
-        stoolAmount: "",
-        stoolOdor: "",
+        stoolType2Detail: null,
+        diarrheaMode: null,
+        stoolAmount: null,
+        stoolOdor: null,
         hasVomiting: false,
-        vomitingMode: "",
+        vomitingMode: null,
         hasNausea: false,
         hasAppetiteLoss: false,
         hasAbdominalDistension: false,
@@ -238,6 +244,21 @@ export default {
       rules: {},
     };
   },
+      watch: {
+  data: {
+    immediate: true,
+    handler(newVal) {
+      if (newVal) {
+        // 先将所有数据映射到 form
+        this.form = { ...this.form, ...newVal };
+
+        this.$forceUpdate();
+      } else {
+        console.warn('Received null or undefined data');
+      }
+    },
+  },
+},
   methods: {
     handleStoolTypeChange(type) {
       if (type === 1) {
@@ -259,6 +280,9 @@ export default {
     },
     toggleTag(field) {
       this.form[field] = !this.form[field];
+    },
+    getData() {
+      return this.form; // 返回当前组件的表单数据
     },
   },
 };

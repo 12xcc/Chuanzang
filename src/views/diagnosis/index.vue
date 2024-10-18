@@ -66,7 +66,7 @@
         <el-button
           type="warning"
           class="custom-button"
-          @click="handleDownload"
+          @click="handleExportAI"
           size="default"
           >含检测数据导出</el-button
         >
@@ -314,29 +314,90 @@ export default {
         this.loading = false;
       }
     },
+    
+    // 导出表格信息
+    async handleExport() {
+      try {
+        this.$message({
+          message: "正在导出，请稍候...",
+          type: "warning",
+        });
+        const response = await getExcelClinicalInformationExportForm(); 
+        if (response.status === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "诊断信息导出表.xlsx");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          this.$message({
+            message: "导出成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            message: "导出失败，请重试",
+            type: "error",
+          });
+        }
+      } catch (error) {
+        console.error("导出出错:", error);
+        this.$message({
+          message: "导出出错，请重试",
+          type: "error",
+        });
+      }
+    },
+
+    // 含AI数据导出
+    async handleExportAI() {
+      try {
+        this.$message({
+          message: "正在导出，请稍候...",
+          type: "warning",
+        });
+        const response = await getExcelClinicalInformationExportForm(); 
+        if (response.status === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "诊断信息导出表(AI).xlsx");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          this.$message({
+            message: "导出成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            message: "导出失败，请重试",
+            type: "error",
+          });
+        }
+      } catch (error) {
+        console.error("导出出错:", error);
+        this.$message({
+          message: "导出出错，请重试",
+          type: "error",
+        });
+      }
+    },
 
     handlePagination(pageNum) {
       this.queryParams.pageNum = pageNum;
     },
-    handleExport() {
-      console.log("导出功能未实现");
-    },
     handleSubmitDiagnosis() {
-      if (this.filteredData.length > 0) {
         this.checkUserVisible = true;
         this.$refs.Checkuser.showDialog();
-      } else {
-        console.warn("用户数据为空");
-      }
     },
+
     handleCheck(user) {
       this.$refs.Checkdaignosisdata.showDrawer(user);
     },
     handleCheckuser(userId) {
       this.$refs.Checkuserdata.showDrawer(userId);
-    },
-    handleDownload() {
-      console.log("下载功能未实现");
     },
 
     handlePagination({ page, limit }) {

@@ -138,6 +138,12 @@ export default {
   components: {
     Dateselection,
   },
+    props: {
+    data: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data() {
     return {
       allDisabled:true, 
@@ -159,6 +165,21 @@ export default {
       rules: {},
     };
   },
+  watch: {
+  data: {
+    immediate: true,
+    handler(newVal) {
+      if (newVal) {
+        // 先将所有数据映射到 form
+        this.form = { ...this.form, ...newVal };
+
+        this.$forceUpdate();
+      } else {
+        console.warn('Received null or undefined data');
+      }
+    },
+  },
+},
   methods: {
     handleAble() {
       this.allDisabled = false;

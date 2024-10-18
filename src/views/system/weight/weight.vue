@@ -53,10 +53,13 @@
         />
         <el-table-column prop="serialNumber" label="序号" width="80" />
         <el-table-column prop="diseaseTypeName" label="疾病类型" width="300" />
-        <el-table-column prop="HasSubtype" label="是否包含子类型" width="200">
+        <el-table-column prop="hasSubtype" label="是否包含子类型" width="200">
           <template #default="scope">
-            <el-tag size="default" :type="scope.row.HasSubtype === '是' ? 'success' : 'primary'">
-              {{ scope.row.HasSubtype }}
+            <el-tag
+              size="default"
+              :type="scope.row.hasSubtype === '是' ? 'success' : 'primary'"
+            >
+              {{ scope.row.hasSubtype }}
             </el-tag>
           </template>
         </el-table-column>
@@ -117,27 +120,34 @@ export default {
   },
 
   methods: {
-      
+
     // 获取疾病列表
     async handleQuery() {
-      this.loading = true; 
+      this.loading = true;
       try {
         const params = {
           pageNo: this.queryParams.pageNum,
           pageSize: this.queryParams.pageSize,
-          text: this.queryParams.check || "",
+          text: this.queryParams.check,
         };
 
         const response = await fetchDiseaseData(params);
+        // console.log("API 响应:", response);
+
         if (response.data.code === 1) {
-          const records = response.data.data.records || [];
+          const records = response.data.data.records || []; // 使用空数组，如果为 null
           this.allData = records.map((item, index) => ({
-            serialNumber: (this.queryParams.pageNum - 1) * this.queryParams.pageSize + index + 1,
+            serialNumber:
+              (this.queryParams.pageNum - 1) * this.queryParams.pageSize +
+              index +
+              1,
             diseaseTypeName: item.diseaseTypeName,
-            HasSubtype: item.HasSubtype ? '是' : '否',
-            subtypeName: item.subDiseaseList ? item.subDiseaseList.map(sub => sub.subtypeName).join(', ') : '',
+            hasSubtype: item.hasSubtype ? "是" : "否",
+            subtypeName: item.subDiseaseList
+              ? item.subDiseaseList.map((sub) => sub.subtypeName).join(", ")
+              : "", // 检查 subDiseaseList 是否为 null
           }));
-          this.total = response.data.data.total || 0; 
+          this.total = response.data.data.total || 0; // 如果 total 缺失，默认设置为 0
         } else {
           this.$message.error("获取疾病数据失败，请重试！" + response.data.msg);
         }
@@ -145,7 +155,7 @@ export default {
         console.error("获取疾病数据出错:", error);
         this.$message.error("获取疾病数据失败，请重试！");
       } finally {
-        this.loading = false; 
+        this.loading = false;
       }
     },
 

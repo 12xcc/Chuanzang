@@ -6,7 +6,7 @@
       class="form-container"
       ref="form"
       :rules="rules"
-      :disabled="allDisabled"  
+      :disabled="allDisabled"
     >
       <div class="GeneralSymptoms">
         <div class="Condition">
@@ -18,7 +18,7 @@
             :checked="form.hasSuddenOnset"
             type="primary"
             @change="toggleTag('hasSuddenOnset')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             突然发病
           </el-check-tag>
@@ -27,7 +27,7 @@
             :checked="form.hasRapidProgress"
             type="primary"
             @change="toggleTag('hasRapidProgress')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             病情进展迅速
           </el-check-tag>
@@ -36,7 +36,7 @@
             :checked="form.hasPeriodicAttack"
             type="primary"
             @change="toggleTag('hasPeriodicAttack')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             周期性发作
           </el-check-tag>
@@ -45,7 +45,7 @@
             :checked="form.hasForcedPosture"
             type="primary"
             @change="toggleTag('hasForcedPosture')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             强迫体位
           </el-check-tag>
@@ -54,7 +54,7 @@
             :checked="form.hasCalfMusclePain"
             type="primary"
             @change="toggleTag('hasCalfMusclePain')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             腓肠肌疼痛
           </el-check-tag>
@@ -69,7 +69,7 @@
             :checked="form.hasOtherSymptoms"
             type="primary"
             @change="toggleTag('hasOtherSymptoms')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             其他
           </el-check-tag>
@@ -77,7 +77,11 @@
             <el-form-item
               v-if="form.hasOtherSymptoms"
               label="其他症状"
-              style="margin-left:-100px;margin-top: 10px;padding:15px 0 15px 0"
+              style="
+                margin-left: -100px;
+                margin-top: 10px;
+                padding: 15px 0 15px 0;
+              "
               prop="otherSymptomsName"
             >
               <el-input
@@ -85,8 +89,8 @@
                 placeholder="请输入其他症状"
                 clearable
                 size="default"
-                style="margin-left:100px;width: 250px"
-                :disabled="allDisabled"  
+                style="margin-left: 100px; width: 250px"
+                :disabled="allDisabled"
               />
             </el-form-item>
           </div>
@@ -104,9 +108,15 @@ export default {
   components: {
     Dateselection,
   },
+  props: {
+    data: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data() {
     return {
-      allDisabled:true, 
+      allDisabled: true,
       visible: false, // 控制弹窗显示
       form: {
         hasSuddenOnset: false,
@@ -115,15 +125,28 @@ export default {
         hasForcedPosture: false,
         hasCalfMusclePain: false,
         hasOtherSymptoms: false,
-        otherSymptomsName: "",
+        otherSymptomsName: null,
       },
 
       rules: {
-        otherSymptomsName:[
-          {required:true,message:""}
-        ]
+        otherSymptomsName: [{ required: true, message: "" }],
       },
     };
+  },
+  watch: {
+    data: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal) {
+          // 先将所有数据映射到 form
+          this.form = { ...this.form, ...newVal };
+
+          this.$forceUpdate();
+        } else {
+          console.warn("Received null or undefined data");
+        }
+      },
+    },
   },
   methods: {
     toggleTag(field) {
@@ -138,24 +161,24 @@ export default {
     },
     handleAble() {
       this.allDisabled = false;
-       
     },
-    handleCancel(){
+    handleCancel() {
       this.allDisabled = true;
-       
     },
-     validate() {
+    validate() {
       return new Promise((resolve, reject) => {
         // 验证其他症状
-         if (this.form.hasOtherSymptoms && !this.form.otherSymptomsName) {
-      return reject(new Error("请输入其他->其他症状"));
-    }
-    // 验证通过
+        if (this.form.hasOtherSymptoms && !this.form.otherSymptomsName) {
+          return reject(new Error("请输入其他->其他症状"));
+        }
+        // 验证通过
         this.$refs.form.validate((valid) => {
-          valid ? resolve() : reject(new Error("表单提交失败，请检查必填字段是否未填写"));
+          valid
+            ? resolve()
+            : reject(new Error("表单提交失败，请检查必填字段是否未填写"));
         });
       });
-     },
+    },
     handleSubmit() {
       console.log("触发");
       this.$refs.form.validate((valid) => {
@@ -191,7 +214,7 @@ export default {
         hasForcedPosture: false,
         hasCalfMusclePain: false,
         hasOtherSymptoms: false,
-        otherSymptomsName: "",
+        otherSymptomsName: null,
       };
     },
     getData() {
@@ -264,9 +287,8 @@ export default {
 }
 .Condition {
   margin-top: 20px;
-  
 }
-.NextContainer{
+.NextContainer {
   width: 500px;
 }
 </style>

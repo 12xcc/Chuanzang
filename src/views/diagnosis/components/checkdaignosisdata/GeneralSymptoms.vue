@@ -48,7 +48,7 @@
           >
             <el-input
               v-model="form.feverDuration"
-              placeholder="最高体温"
+              placeholder="持续时间"
               clearable
               size="default"
               style="width: 200px"
@@ -550,6 +550,12 @@ export default {
   components: {
     Dateselection,
   },
+  props: {
+    data: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data() {
     return {
       allDisabled: true,
@@ -559,6 +565,7 @@ export default {
         hasFever: null,
         hasChills: false,
         hasSweating: false,
+        feverDuration: null,
         hasFatigue: false,
         hasHeadache: false,
         hasMusclePain: false,
@@ -576,11 +583,12 @@ export default {
         hasPainfulRedRash: false,
         hasBloodBlisters: false,
         hasSkinUlcer: false,
+        highestTemperature: null, //最高体温
         hasSubcutaneousAndMucosalBleedingCavity: false, //皮下及粘膜出血腔道出血
         hasCongestiveOrPetechialRash: false,
         hasPressureInsensitiveRash: false,
         hasDehydration: false,
-        dehydrationSeverity: "",
+        dehydrationSeverity: null,
 
         hasItchyRash: false,
         itchyRashOnFingers: false,
@@ -598,15 +606,15 @@ export default {
 
         hasWhiteBloodCells: false, //是否白细胞明显增高
         hasBloodPressureDrop: false, // 是否血压下降
-        lowestBloodPressurer: "", //最低血压（mmHg）
+        lowestBloodPressurer: null, //最低血压（mmHg）
 
         hasShockSyndrome: false, //是否休克症候群
         hasHighIntracranialPressure: false, //是否颅压高
         hasTurbidCerebrospinalFluid: false, // 是否脑脊液浊浑
 
         hasBleeding: false, // 是否出血
-        bleedingVolume: "", //INT 出血量（ml）
-        bleedingCavity: "", // VARCHAR(255), -- 出血腔道
+        bleedingVolume: null, //INT 出血量（ml）
+        bleedingCavity: null, // VARCHAR(255), -- 出血腔道
 
         hasPlasmaLeakage: false, // 是否血浆渗漏表现
         hasOtherOrganDamage: false, // 是否其他重要脏器损伤
@@ -618,13 +626,28 @@ export default {
       rules: {},
     };
   },
+  watch: {
+    data: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal) {
+          // 先将所有数据映射到 form
+          this.form = { ...this.form, ...newVal };
+
+          this.$forceUpdate();
+        } else {
+          console.warn("Received null or undefined data");
+        }
+      },
+    },
+  },
   methods: {
     toggleTag(field) {
       this.form[field] = !this.form[field];
 
       // 失水未被选中时，其子选项清空
       if (field === "hasDehydration" && !this.form[field]) {
-        this.form.Dehydration = "";
+        this.form.dehydrationSeverity = "";
       }
       // 淋巴结肿大未被选中时，其子选项全部清空
       if (field === "hasLymphNodeSwelling" && !this.form[field]) {
@@ -658,7 +681,7 @@ export default {
     validate() {
       return new Promise((resolve, reject) => {
         // 验证失水
-        if (this.form.hasDehydration && !this.form.Dehydration) {
+        if (this.form.hasDehydration && !this.form.dehydrationSeverity) {
           return reject(new Error("请选择失水程度"));
         }
 
@@ -735,27 +758,30 @@ export default {
         hasChills: false,
         hasSweating: false,
         hasFatigue: false,
+        feverDuration: null,
         hasHeadache: false,
         hasMusclePain: false,
         hasJointPain: false,
+        highestTemperature: null, //最高体温
         hasLymphNodeSwelling: false,
         hasLymphNodeSwellingGroin: false,
         hasLymphNodeSwellingArmpit: false,
         hasLymphNodeSwellingSubclavian: false,
         hasLymphNodeSwellingNeck: false,
         hasLymphNodeSwellingElbow: false,
-        hasLymphNodeSwellingPopliteal: false, // 腘窝淋巴结肿大
-        hasCyanosis: false, // 是否口唇、颜面、四肢及全身皮肤发绀
+        hasLymphNodeSwellingPopliteal: false,
+        hasCyanosis: false,
         hasSubcutaneousAndMucosalBleedingSpots: false,
         hasSevereAnemia: false, // 是否严重贫血
         hasPainfulRedRash: false,
         hasBloodBlisters: false,
         hasSkinUlcer: false,
-        hasSubcutaneousAndMucosalBleedingCavity: false, // 皮下及黏膜出血腔道出血
+        hasSubcutaneousAndMucosalBleedingCavity: false, //皮下及粘膜出血腔道出血
         hasCongestiveOrPetechialRash: false,
         hasPressureInsensitiveRash: false,
-        hasDehydration: false, // 是否失水
-        dehydrationSeverity: "", // 失水程度
+        hasDehydration: false,
+        dehydrationSeverity: null,
+
         hasItchyRash: false,
         itchyRashOnFingers: false,
         itchyRashOnBackOfHands: false,
@@ -763,26 +789,30 @@ export default {
         itchyRashOnLowerLimbs: false,
         itchyRashOnFeet: false,
         itchyRashOnFace: false,
-        itchyRashOnOther: false, // 其他部位瘙痒性斑丘疹/水疱
-        hasEdema: false, // 是否水肿
+        itchyRashOnOther: false,
+
+        hasEdema: false,
         hasNightSweats: false,
-        hasWeightLoss: false, // 是否消瘦
+        hasWeightLoss: false,
         hasExhaustion: false,
-        hasWhiteBloodCells: false, // 是否白细胞明显增高
+
+        hasWhiteBloodCells: false, //是否白细胞明显增高
         hasBloodPressureDrop: false, // 是否血压下降
-        lowestBloodPressurer: "", // 最低血压（mmHg）
-        hasShockSyndrome: false, // 是否休克症候群
-        hasHighIntracranialPressure: false, // 是否颅压高
+        lowestBloodPressurer: null, //最低血压（mmHg）
+
+        hasShockSyndrome: false, //是否休克症候群
+        hasHighIntracranialPressure: false, //是否颅压高
         hasTurbidCerebrospinalFluid: false, // 是否脑脊液浊浑
+
         hasBleeding: false, // 是否出血
-        bleedingVolume: "", // 出血量（ml）
-        bleedingCavity: "", // 出血腔道
+        bleedingVolume: null, //INT 出血量（ml）
+        bleedingCavity: null, // VARCHAR(255), -- 出血腔道
+
         hasPlasmaLeakage: false, // 是否血浆渗漏表现
         hasOtherOrganDamage: false, // 是否其他重要脏器损伤
+
         hasKernigSign: false, // 是否Kernig征
-        hasBrudzinskiSign: false, // 是否Brudzinski征
-        feverDuration: "", // 发热持续时间（小时）
-        highestTemperature: "", // 最高体温（℃）
+        hasBrudzinskiSign: false, //是否Brudzinski征
       };
     },
     getData() {

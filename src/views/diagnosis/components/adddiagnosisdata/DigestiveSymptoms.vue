@@ -16,14 +16,14 @@
             <div class="blue-box"></div>
             <span class="title-text">腹泻情况</span>
           </div>
-          <el-radio-group v-model="form.arrheaFrequencyGEThreeTimesPerDay">
+          <el-radio-group v-model="form.diarrheaFrequencyGEThreeTimesPerDay">
             <el-radio :value="1">腹泻 <3次/天</el-radio>
             <el-radio :value="2">腹泻 ≥3 次/天</el-radio>
           </el-radio-group>
 
           <div class="NextContainer">
             <div
-              v-if="form.arrheaFrequencyGEThreeTimesPerDay"
+              v-if="form.diarrheaFrequencyGEThreeTimesPerDay"
               style="padding: 15px 0 15px 0"
             >
               <el-form-item label="腹泻次数" style="">
@@ -199,7 +199,7 @@ export default {
       allDisabled: false,
        
       form: {
-        arrheaFrequencyGEThreeTimesPerDay: "",
+        diarrheaFrequencyGEThreeTimesPerDay: "",
         diarrheaTimesPerDay: "",
         hasStoolType1: false,
         stoolType1Detail: "",
@@ -233,7 +233,7 @@ export default {
     },
     getInitialForm() {
       return {
-         arrheaFrequencyGEThreeTimesPerDay: "",
+         diarrheaFrequencyGEThreeTimesPerDay: "",
         diarrheaTimesPerDay: "",
         hasStoolType1: false,
         stoolType1Detail: "",

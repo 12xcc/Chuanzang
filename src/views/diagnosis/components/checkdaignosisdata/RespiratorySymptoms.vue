@@ -126,6 +126,12 @@
 
 <script>
 export default {
+      props: {
+    data: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data() {
     return {
       allDisabled:true, 
@@ -148,6 +154,21 @@ export default {
       }
     };
   },
+      watch: {
+  data: {
+    immediate: true,
+    handler(newVal) {
+      if (newVal) {
+        // 先将所有数据映射到 form
+        this.form = { ...this.form, ...newVal };
+
+        this.$forceUpdate();
+      } else {
+        console.warn('Received null or undefined data');
+      }
+    },
+  },
+},
   methods: {
     toggleTag(field) {
      this.form[field] = !this.form[field];
@@ -167,7 +188,7 @@ export default {
     },
     getInitialForm() {
       return {
-         hasCough: false,
+        hasCough: false,
         hasSputum: false,
         hasBloodySputum: false,
         hasHemoptysis: false,
@@ -179,7 +200,9 @@ export default {
         hasShortnessOfBreath: false,
         hasBreathingDifficulty: false,
         hasHoarseness: false,
-        hasBronchitis: false
+        hasBronchitis: false,
+        hasPharyngealHyperemia: false, //咽充血
+        hasLungRales: false, //是否听诊肺部有散在湿性罗音
       };
     },
     getData() {

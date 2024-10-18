@@ -17,7 +17,7 @@
             :checked="form.hasDelirium"
             type="primary"
             @change="toggleTag('hasDelirium')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             儋妄
           </el-check-tag>
@@ -26,7 +26,7 @@
             :checked="form.hasConvulsion"
             type="primary"
             @change="toggleTag('hasConvulsion')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             抽搐
           </el-check-tag>
@@ -35,7 +35,7 @@
             :checked="form.hasDrowsiness"
             type="primary"
             @change="toggleTag('hasDrowsiness')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             昏睡
           </el-check-tag>
@@ -44,7 +44,7 @@
             :checked="form.hasComa"
             type="primary"
             @change="toggleTag('hasComa')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             昏迷
           </el-check-tag>
@@ -53,7 +53,7 @@
             :checked="form.hasStiffNeck"
             type="primary"
             @change="toggleTag('hasStiffNeck')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             颈部强直
           </el-check-tag>
@@ -62,7 +62,7 @@
             :checked="form.hasRestlessness"
             type="primary"
             @change="toggleTag('hasRestlessness')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             烦躁不安
           </el-check-tag>
@@ -71,7 +71,7 @@
             :checked="form.hasMuscleParalysisNeckShoulder"
             type="primary"
             @change="toggleTag('hasMuscleParalysisNeckShoulder')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             颈肩部肌肉迟缓性瘫痪
           </el-check-tag>
@@ -80,7 +80,7 @@
             :checked="form.hasMuscleParalysisLimbs"
             type="primary"
             @change="toggleTag('hasMuscleParalysisLimbs')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             肢体肌肉迟缓性瘫痪
           </el-check-tag>
@@ -89,7 +89,7 @@
             :checked="form.hasSwallowingDifficulty"
             type="primary"
             @change="toggleTag('hasSwallowingDifficulty')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             吞咽困难
           </el-check-tag>
@@ -98,7 +98,7 @@
             :checked="form.hasSpeechDisorder"
             type="primary"
             @change="toggleTag('hasSpeechDisorder')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             语言障碍
           </el-check-tag>
@@ -107,7 +107,7 @@
             :checked="form.hasConsciousnessDisorder"
             type="primary"
             @change="toggleTag('hasConsciousnessDisorder')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             意识障碍或惊厥
           </el-check-tag>
@@ -116,7 +116,7 @@
             :checked="form.hasDizziness"
             type="primary"
             @change="toggleTag('hasDizziness')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             头晕
           </el-check-tag>
@@ -125,7 +125,7 @@
             :checked="form.hasTinnitus"
             type="primary"
             @change="toggleTag('hasTinnitus')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             耳鸣
           </el-check-tag>
@@ -134,7 +134,7 @@
             :checked="form.hasHearingLoss"
             type="primary"
             @change="toggleTag('hasHearingLoss')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             听力减退
           </el-check-tag>
@@ -152,9 +152,15 @@ export default {
   components: {
     Dateselection,
   },
+  props: {
+    data: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data() {
     return {
-      allDisabled:true, 
+      allDisabled: true,
       visible: false, // 控制弹窗显示
       form: {
         hasDelirium: false,
@@ -170,11 +176,26 @@ export default {
         hasConsciousnessDisorder: false,
         hasDizziness: false,
         hasTinnitus: false,
-        hasHearingLoss: false
+        hasHearingLoss: false,
       },
 
       rules: {},
     };
+  },
+  watch: {
+    data: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal) {
+          // 先将所有数据映射到 form
+          this.form = { ...this.form, ...newVal };
+
+          this.$forceUpdate();
+        } else {
+          console.warn("Received null or undefined data");
+        }
+      },
+    },
   },
   methods: {
     toggleTag(field) {
@@ -187,11 +208,9 @@ export default {
     },
     handleAble() {
       this.allDisabled = false;
-       
     },
-    handleCancel(){
+    handleCancel() {
       this.allDisabled = true;
-       
     },
     handleSubmit() {
       console.log("触发");
@@ -222,7 +241,7 @@ export default {
     },
     getInitialForm() {
       return {
-         hasDelirium: false,
+        hasDelirium: false,
         hasConvulsion: false,
         hasDrowsiness: false,
         hasComa: false,
@@ -235,7 +254,7 @@ export default {
         hasConsciousnessDisorder: false,
         hasDizziness: false,
         hasTinnitus: false,
-        hasHearingLoss: false
+        hasHearingLoss: false,
       };
     },
 
@@ -289,22 +308,22 @@ export default {
   margin-top: 20px;
 }
 .title-container {
-    display: flex;
-    margin-left: 0px;
-    margin-bottom: 20px;
-    margin-top: 20px;
-  }
-  
-  .blue-box {
-    width: 6px;
-    height: 18px;
-    background-color: #285ac8;
-    margin-right: 10px;
-  }
-  
-  .title-text {
-    font-size: 12px;
-    font-weight: bold;
-    color: #4a4a4a;
-  }
+  display: flex;
+  margin-left: 0px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.blue-box {
+  width: 6px;
+  height: 18px;
+  background-color: #285ac8;
+  margin-right: 10px;
+}
+
+.title-text {
+  font-size: 12px;
+  font-weight: bold;
+  color: #4a4a4a;
+}
 </style>

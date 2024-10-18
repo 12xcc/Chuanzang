@@ -204,6 +204,7 @@
             <DiagnosisExaminations
               ref="DiagnosisExaminations"
               :data="diagnosisexaminations"
+               @updateReports="handleReportsUpdate" 
             />
           </div>
         </div>
@@ -224,7 +225,7 @@ import DiagnosisLocalSymptoms from "./DiagnosisLocalSymptoms.vue";
 import OtherSymptoms from "./OtherSymptoms.vue";
 import RiskFactorsAndExposure from "./RiskFactorsAndExposure.vue";
 import DiagnosisPersonalInfo from "./DiagnosisPersonalInfo.vue";
-import DiagnosisExaminations from "../adddiagnosisdata/DiagnosisExaminations .vue";
+import DiagnosisExaminations from "./DiagnosisExaminations.vue";
 import DigestiveSymptoms from '../checkdaignosisdata/DigestiveSymptoms.vue';
 import {
   selectDiagnosis,
@@ -385,6 +386,14 @@ export default {
             tag.enabled = false;
         }
       });
+    },
+
+    handleReportsUpdate({ reports, fileList }) {
+      this.reportsData = {
+        reports,
+        fileList,
+      };
+      console.log('Updated reports and fileList:', this.reportsData);
     },
 
     handleCancel() {

@@ -6,7 +6,7 @@
       class="form-container"
       ref="form"
       :rules="rules"
-      :disabled="allDisabled"  
+      :disabled="allDisabled"
     >
       <div class="GeneralSymptoms">
         <div class="Condition">
@@ -18,7 +18,7 @@
             :checked="form.hasArrhythmia"
             type="primary"
             @change="toggleTag('hasArrhythmia')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             心律不齐
           </el-check-tag>
@@ -26,7 +26,7 @@
             :checked="form.hasChestPain"
             type="primary"
             @change="toggleTag('hasChestPain')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             胸痛
           </el-check-tag>
@@ -34,7 +34,7 @@
             :checked="form.hasRapidPulse"
             type="primary"
             @change="toggleTag('hasRapidPulse')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             脉搏细速
           </el-check-tag>
@@ -42,7 +42,7 @@
             :checked="form.hasPalpitation"
             type="primary"
             @change="toggleTag('hasPalpitation')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             心悸
           </el-check-tag>
@@ -59,9 +59,15 @@ export default {
   components: {
     Dateselection,
   },
+  props: {
+    data: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data() {
     return {
-      allDisabled:true, 
+      allDisabled: true,
       visible: false, // 控制弹窗显示
       form: {
         hasArrhythmia: false,
@@ -73,6 +79,21 @@ export default {
       rules: {},
     };
   },
+  watch: {
+    data: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal) {
+          // 先将所有数据映射到 form
+          this.form = { ...this.form, ...newVal };
+
+          this.$forceUpdate();
+        } else {
+          console.warn("Received null or undefined data");
+        }
+      },
+    },
+  },
   methods: {
     toggleTag(field) {
       this.form[field] = !this.form[field];
@@ -83,11 +104,9 @@ export default {
     },
     handleAble() {
       this.allDisabled = false;
-       
     },
-    handleCancel(){
+    handleCancel() {
       this.allDisabled = true;
-       
     },
     handleSubmit() {
       console.log("触发");
@@ -123,7 +142,7 @@ export default {
         hasPalpitation: false,
       };
     },
-     getData() {
+    getData() {
       return this.form; // 返回当前组件的表单数据
     },
   },

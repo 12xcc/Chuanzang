@@ -197,6 +197,7 @@ import { useUserStore } from "@/store/userrole.js"; // 引入用户角色存储
 import Checkuser from "./components/checkuser.vue";
 import Checkcheckdata from "./components/checkcheckdata/checkchekcdata.vue"
 import Checkuserdata from '../user/alluser/components/checkuserdata.vue';
+import {pageSelectLabTest,getDetectionInformationExportFormExcel,getUserByBaseInfo,saveLabTestReport,selectLabTest} from "@/api/check/check"
 export default {
   components: {
     Checkuser,
