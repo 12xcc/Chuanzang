@@ -580,7 +580,7 @@ export default {
         hasCongestiveOrPetechialRash: false,
         hasPressureInsensitiveRash: false,
         hasDehydration: false,
-        Dehydration: "",
+        dehydrationSeverity: "",
 
         hasItchyRash: false,
         itchyRashOnFingers: false,

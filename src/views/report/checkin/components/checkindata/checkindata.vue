@@ -308,19 +308,19 @@ export default {
           console.log("Form is valid:", valid);
           if (valid) {
             console.log("个人基本信息:", this.form);
-            const GeneralSymptomsData = this.$refs.GeneralSymptoms.getData();
-            const RespiratorySymptomsData =this.$refs.RespiratorySymptoms.getData();
-            const NeurologicalSymptomsData = this.$refs.NeurologicalSymptoms.getData();
-            const CirculatorySymptomsData = this.$refs.CirculatorySymptoms.getData();
-            const DiagnosisLocalSymptomsData = this.$refs.DiagnosisLocalSymptoms.getData();
-            const OtherSymptomsData = this.$refs.OtherSymptoms.getData();
+            const diagnosisgeneralsymptoms = this.$refs.GeneralSymptoms.getData();
+            const diagnosisrespiratorysymptoms =this.$refs.RespiratorySymptoms.getData();
+            const diagnosisneurologicalsymptoms = this.$refs.NeurologicalSymptoms.getData();
+            const diagnosiscirculatorysymptoms = this.$refs.CirculatorySymptoms.getData();
+            const diagnosislocalsymptoms = this.$refs.DiagnosisLocalSymptoms.getData();
+            const diagnosisothersymptoms = this.$refs.OtherSymptoms.getData();
             const RiskFactorsAndExposureData = this.$refs.RiskFactorsAndExposure.getData();
-            console.log("全身症状:",  GeneralSymptomsData);
-            console.log("呼吸系统症状:",RespiratorySymptomsData);         
-            console.log("循环系统症状:", CirculatorySymptomsData);
-            console.log("神经系统症状:" ,NeurologicalSymptomsData);
-            console.log("局部症状:", DiagnosisLocalSymptomsData);
-            console.log("其他:",OtherSymptomsData);
+            console.log("全身症状:",  diagnosisgeneralsymptoms);
+            console.log("呼吸系统症状:",diagnosisrespiratorysymptoms);         
+            console.log("循环系统症状:", diagnosiscirculatorysymptoms);
+            console.log("神经系统症状:" ,diagnosisneurologicalsymptoms);
+            console.log("局部症状:", diagnosislocalsymptoms);
+            console.log("其他:",diagnosisothersymptoms);
             console.log("危险因素与暴露史:", RiskFactorsAndExposureData);
 
             this.visible = false;

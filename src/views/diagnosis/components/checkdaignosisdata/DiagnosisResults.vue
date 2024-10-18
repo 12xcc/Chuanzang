@@ -323,6 +323,7 @@
               <el-date-picker
                 v-model="form.admissionDate"
                 type="date"
+                format="YYYY-MM-DD"
                 placeholder="请选择就诊/入院日期"
                 :disabled="allDisabled"  
               />
@@ -333,6 +334,7 @@
               <el-date-picker
                 v-model="form.dischargeDate"
                 type="date"
+                format="YYYY-MM-DD"
                 placeholder="请选择出院日期"
                 :disabled="allDisabled"  
               />
@@ -343,6 +345,7 @@
               <el-date-picker
                 v-model="form.deathDate"
                 type="date"
+                format="YYYY-MM-DD"
                 placeholder="请选择死亡日期"
                 :disabled="allDisabled"  
               />
@@ -446,7 +449,6 @@ export default {
   data() {
     return {
       allDisabled: true,
-      visible: false, // 控制弹窗显示
       form: {
         diseaseType: "", // 确诊疾病
         otherDiseaseName: "", // 其他疾病名称
@@ -463,17 +465,53 @@ export default {
         plagueSubtype: "", // 鼠疫子类
         anthraxSubtype: "", // 炭疽子类
       },
-      rules: {},
+      rules: {
+        diseaseType: [{ required: true, message: "请选择确诊疾病", trigger: "blur" }],
+        // 根据需要，添加其他验证规则
+      },
     };
   },
-  watch: {
-    data: {
-      immediate: true,
-      handler(newVal) {
+watch: {
+  data: {
+    immediate: true,
+    handler(newVal) {
+      if (newVal) {
+        // 先将所有数据映射到 form
         this.form = { ...this.form, ...newVal };
-      },
+
+        // 格式化 admissionDate
+        if (newVal.admissionDate && newVal.admissionDate.length === 3) {
+          const [year, month, day] = newVal.admissionDate;
+          this.form.admissionDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+        } else {
+          this.form.admissionDate = "";
+        }
+
+        // 格式化 dischargeDate
+        if (newVal.dischargeDate && newVal.dischargeDate.length === 3) {
+          const [year, month, day] = newVal.dischargeDate;
+          this.form.dischargeDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+        } else {
+          this.form.dischargeDate = "";
+        }
+
+        // 格式化 deathDate
+        if (newVal.deathDate && newVal.deathDate.length === 3) {
+          const [year, month, day] = newVal.deathDate;
+          this.form.deathDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+        } else {
+          this.form.deathDate = "";
+        }
+
+        // 强制视图更新，确保渲染更新
+        this.$forceUpdate();
+      }
     },
   },
+},
+
+
+
   methods: {
     toggleDisease(disease) {
       this.form.diseaseType = this.form.diseaseType === disease ? "" : disease;
@@ -534,11 +572,13 @@ export default {
         anthraxSubtype: "", // 炭疽子类
       };
     },
+
     getData() {
       return this.form; // 返回当前组件的表单数据
     },
     handleReset() {
       this.form = this.getInitialForm();
+      this.allDisabled = true;
     },
     validate() {
       return new Promise((resolve, reject) => {
@@ -558,6 +598,7 @@ export default {
   },
 };
 </script>
+
 
 
 

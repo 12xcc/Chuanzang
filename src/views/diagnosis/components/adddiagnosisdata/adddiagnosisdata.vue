@@ -334,33 +334,33 @@ export default {
 
         // 如果子组件验证通过，继续处理其他数据
         const DiagnosisResultsData = this.$refs.DiagnosisResults.getData();
-        const GeneralSymptomsData = this.$refs.GeneralSymptoms.getData();
-        const DiagnosisPersonalInfoData =
+        const diagnosisgeneralsymptoms = this.$refs.GeneralSymptoms.getData();
+        const diagnosispersonalinfo =
           this.$refs.DiagnosisPersonalInfo.getData();
-        const RespiratorySymptomsData =
+        const diagnosisrespiratorysymptoms =
           this.$refs.RespiratorySymptoms.getData();
-        const NeurologicalSymptomsData =
+        const diagnosisneurologicalsymptoms =
           this.$refs.NeurologicalSymptoms.getData();
-        const CirculatorySymptomsData =
+        const diagnosiscirculatorysymptoms =
           this.$refs.CirculatorySymptoms.getData();
-        const DiagnosisLocalSymptomsData =
+        const diagnosislocalsymptoms =
           this.$refs.DiagnosisLocalSymptoms.getData();
-        const OtherSymptomsData = this.$refs.OtherSymptoms.getData();
+        const diagnosisothersymptoms = this.$refs.OtherSymptoms.getData();
         const DiagnosisComplicationsData =
           this.$refs.DiagnosisComplications.getData();
         const DiagnosistagData = this.$refs.Diagnosistag.getData();
-        const DigestiveSymptomsData = this.$refs.DigestiveSymptoms.getData();
+        const diagnosisdigestivesymptoms = this.$refs.DigestiveSymptoms.getData();
         console.log("诊断信息:", DiagnosisResultsData);
-        console.log("基本信息：", DiagnosisPersonalInfoData);
-        console.log("全身症状:", GeneralSymptomsData);
-        console.log("呼吸系统症状:", RespiratorySymptomsData);
-        console.log("循环系统症状:", CirculatorySymptomsData);
-        console.log("神经系统症状:", NeurologicalSymptomsData);
-        console.log("局部症状:", DiagnosisLocalSymptomsData);
-        console.log("其他:", OtherSymptomsData);
+        console.log("基本信息：", diagnosispersonalinfo);
+        console.log("全身症状:", diagnosisgeneralsymptoms);
+        console.log("呼吸系统症状:", diagnosisrespiratorysymptoms);
+        console.log("循环系统症状:", diagnosiscirculatorysymptoms);
+        console.log("神经系统症状:", diagnosisneurologicalsymptoms);
+        console.log("局部症状:", diagnosislocalsymptoms);
+        console.log("其他:", diagnosisothersymptoms);
         console.log("并发症:", DiagnosisComplicationsData);
         console.log("检测报告:", DiagnosistagData);
-        console.log("消化系统症状:", DigestiveSymptomsData);
+        console.log("消化系统症状:", diagnosisdigestivesymptoms);
   
 
         this.visible = false;
