@@ -419,6 +419,7 @@ export default {
   padding: 10px;
   background-color: #ffffff;
   border-radius: 5px;
+  width: 100%;
 }
 
 .custom-button {

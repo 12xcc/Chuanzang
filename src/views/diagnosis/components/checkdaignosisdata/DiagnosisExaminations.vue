@@ -1,68 +1,67 @@
 <template>
   <div>
     <el-form
-        :model="form"
-        label-width="100px"
-        class="form-container"
-        ref="form"
-        :rules="rules"
-        
-      >
-    <!-- 病原学及血清学检查标签 -->
-    <div class="select flex gap-2 mb-4">
-      <div class="title-container">
-        <div class="blue-box"></div>
-        <span class="title-text">病原学及血清学检查</span>
+      :model="form"
+      label-width="100px"
+      class="form-container"
+      ref="form"
+      :rules="rules"
+    >
+      <!-- 病原学及血清学检查标签 -->
+      <div class="select flex gap-2 mb-4">
+        <div class="title-container">
+          <div class="blue-box"></div>
+          <span class="title-text">病原学及血清学检查</span>
+        </div>
+
+        <el-check-tag
+          :checked="form.hasImaging"
+          type="primary"
+          @change="toggleTag('hasImaging')"
+        >
+          影像学检查报告
+        </el-check-tag>
+
+        <el-check-tag
+          :checked="form.hasUltrasound"
+          type="primary"
+          @change="toggleTag('hasUltrasound')"
+        >
+          B超报告
+        </el-check-tag>
+
+        <el-check-tag
+          :checked="form.hasBloodTest"
+          type="primary"
+          @change="toggleTag('hasBloodTest')"
+        >
+          血液检查报告
+        </el-check-tag>
+
+        <el-check-tag
+          :checked="form.hasStoolTest"
+          type="primary"
+          @change="toggleTag('hasStoolTest')"
+        >
+          粪便常规检查报告
+        </el-check-tag>
+
+        <el-check-tag
+          :checked="form.hasUrineTest"
+          type="primary"
+          @change="toggleTag('hasUrineTest')"
+        >
+          尿常规检查报告
+        </el-check-tag>
+
+        <el-check-tag
+          :checked="form.caseReport"
+          type="primary"
+          @change="toggleTag('caseReport')"
+        >
+          病案首页
+        </el-check-tag>
       </div>
-      
-      <el-check-tag
-        :checked="form.hasImaging"
-        type="primary"
-        @change="toggleTag('hasImaging')"
-      >
-        影像学检查报告
-      </el-check-tag>
-
-      <el-check-tag
-        :checked="form.hasUltrasound"
-        type="primary"
-        @change="toggleTag('hasUltrasound')"
-      >
-        B超报告
-      </el-check-tag>
-
-      <el-check-tag
-        :checked="form.hasBloodTest"
-        type="primary"
-        @change="toggleTag('hasBloodTest')"
-      >
-        血液检查报告
-      </el-check-tag>
-
-      <el-check-tag
-        :checked="form.hasStoolTest"
-        type="primary"
-        @change="toggleTag('hasStoolTest')"
-      >
-        粪便常规检查报告
-      </el-check-tag>
-
-      <el-check-tag
-        :checked="form.hasUrineTest"
-        type="primary"
-        @change="toggleTag('hasUrineTest')"
-      >
-        尿常规检查报告
-      </el-check-tag>
-
-      <el-check-tag
-        :checked="form.caseReport"
-        type="primary"
-        @change="toggleTag('caseReport')"
-      >
-        病案首页
-      </el-check-tag>
-    </div>
     </el-form>
     <!-- 影像学检查报告 -->
     <div class="title-container">
@@ -139,13 +138,13 @@
 </template>
 
 <script>
-import UploadSection from '@/components/UploadSection.vue';
+import UploadSection from "@/components/UploadSection.vue";
 
 export default {
   components: {
     UploadSection,
   },
-     props: {
+  props: {
     data: {
       type: Object,
       default: () => ({}),
@@ -154,38 +153,39 @@ export default {
   data() {
     return {
       form: {
-        hasImaging: false,       // 是否有影像学检查报告
-        hasUltrasound: false,    // 是否有B超报告
-        hasBloodTest: false,     // 是否有血液检查报告
-        hasStoolTest: false,     // 是否有粪便常规检查报告
-        hasUrineTest: false,     // 是否有尿常规检查报告
+        hasImaging: false, // 是否有影像学检查报告
+        hasUltrasound: false, // 是否有B超报告
+        hasBloodTest: false, // 是否有血液检查报告
+        hasStoolTest: false, // 是否有粪便常规检查报告
+        hasUrineTest: false, // 是否有尿常规检查报告
         // caseReport: false,       // 是否有病案首页
       },
       fileLists: {
-        imaging: [],         // 影像学检查报告的文件数组
-        ultrasound: [],      // B超报告的文件数组
-        bloodTest: [],       // 血液检查报告的文件数组
-        stoolTest: [],       // 粪便常规检查报告的文件数组
-        urineTest: [],       // 尿常规检查报告的文件数组
-        caseReport: [],      // 病案首页的文件数组
+        imaging: [], // 影像学检查报告的文件数组
+        ultrasound: [], // B超报告的文件数组
+        bloodTest: [], // 血液检查报告的文件数组
+        stoolTest: [], // 粪便常规检查报告的文件数组
+        urineTest: [], // 尿常规检查报告的文件数组
+        caseReport: [], // 病案首页的文件数组
       },
+      rules: {},
     };
   },
-      watch: {
-  data: {
-    immediate: true,
-    handler(newVal) {
-      if (newVal) {
-        // 先将所有数据映射到 form
-        this.form = { ...this.form, ...newVal };
+  watch: {
+    data: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal) {
+          // 先将所有数据映射到 form
+          this.form = { ...this.form, ...newVal };
 
-        this.$forceUpdate();
-      } else {
-        console.warn('Received null or undefined data');
-      }
+          this.$forceUpdate();
+        } else {
+          // console.warn("Received null or undefined data");
+        }
+      },
     },
   },
-},
   methods: {
     toggleTag(field) {
       // 切换布尔状态
@@ -199,7 +199,7 @@ export default {
       // 根据文件列表的长度更新布尔值，表示是否有报告
       this.form[field] = fileList.length > 0;
     },
-    getData(){
+    getData() {
       console.log(this.form);
       return this.form;
     },

@@ -423,10 +423,10 @@
                 prop="hasBloodPressureDrop"
               >
                 <el-input
-                  v-model="form.lowestBloodPressurer"
+                  v-model="form.lowestBloodPressure"
                   style="width: 200px"
                   placeholder="请输入最低血压"
-                  prop="lowestBloodPressurer"
+                  prop="lowestBloodPressure"
                 >
                 </el-input>
               </el-form-item>
@@ -445,7 +445,7 @@
           <el-check-tag
             :checked="form.hasHighIntracranialPressure"
             type="primary"
-            @change="toggleTag('hasHighIntracranialPressures')"
+            @change="toggleTag('hasHighIntracranialPressure')"
             :disabled="allDisabled"
           >
             颅压高
@@ -606,7 +606,7 @@ export default {
 
         hasWhiteBloodCells: false, //是否白细胞明显增高
         hasBloodPressureDrop: false, // 是否血压下降
-        lowestBloodPressurer: null, //最低血压（mmHg）
+        lowestBloodPressure: null, //最低血压（mmHg）
 
         hasShockSyndrome: false, //是否休克症候群
         hasHighIntracranialPressure: false, //是否颅压高
@@ -636,7 +636,7 @@ export default {
 
           this.$forceUpdate();
         } else {
-          console.warn("Received null or undefined data");
+          // console.warn("Received null or undefined data");
         }
       },
     },
@@ -670,7 +670,7 @@ export default {
       }
       // 清空血压下降子项
       if (field === "hasBloodPressureDrop" && !this.form[field]) {
-        this.form.lowestBloodPressurer = "";
+        this.form.lowestBloodPressure = "";
       }
       // 清空出血子项
       if (field === "hasBleeding" && !this.form[field]) {
@@ -717,7 +717,7 @@ export default {
         }
 
         // 验证血压下降
-        if (this.form.hasBloodPressureDrop && !this.form.lowestBloodPressurer) {
+        if (this.form.hasBloodPressureDrop && !this.form.lowestBloodPressure) {
           return reject(new Error("请输入最低血压"));
         }
 
@@ -798,7 +798,7 @@ export default {
 
         hasWhiteBloodCells: false, //是否白细胞明显增高
         hasBloodPressureDrop: false, // 是否血压下降
-        lowestBloodPressurer: null, //最低血压（mmHg）
+        lowestBloodPressure: null, //最低血压（mmHg）
 
         hasShockSyndrome: false, //是否休克症候群
         hasHighIntracranialPressure: false, //是否颅压高

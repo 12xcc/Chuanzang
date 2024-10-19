@@ -509,7 +509,7 @@ watch: {
         // 强制视图更新，确保渲染更新
         this.$forceUpdate();
       } else {
-        console.warn('Received null or undefined data');
+        // console.warn('Received null or undefined data');
       }
     },
   },

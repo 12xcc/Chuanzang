@@ -39,10 +39,18 @@ const getTitle = () => {
 <style lang="less" scoped>
 .aside-container {
   height: 100%;
-  width: 217px;
-  overflow-y:auto ;
-  overflow-x:hidden ;
+  width: auto;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  margin-right: -15px;
+  padding-right: 15px; 
 }
+
+/* 隐藏滚动条，但保留滚动功能 */
+.aside-container::-webkit-scrollbar {
+  display: none; /* 隐藏滚动条 */
+}
+
 .logo-lg {
   font-style: normal;
   font-size: 16px;

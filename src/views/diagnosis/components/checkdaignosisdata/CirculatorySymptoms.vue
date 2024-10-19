@@ -89,7 +89,7 @@ export default {
 
           this.$forceUpdate();
         } else {
-          console.warn("Received null or undefined data");
+          // console.warn("Received null or undefined data");
         }
       },
     },

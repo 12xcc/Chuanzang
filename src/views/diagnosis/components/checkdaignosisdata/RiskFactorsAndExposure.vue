@@ -497,7 +497,7 @@ export default {
 
           this.$forceUpdate();
         } else {
-          console.warn("Received null or undefined data");
+          // console.warn("Received null or undefined data");
         }
       },
     },
@@ -515,11 +515,12 @@ export default {
     handleCancel() {
       this.allDisabled = true;
     },
+
     validate() {
       return new Promise((resolve, reject) => {
         // 选择了有并发症，必须选择子选项
         if (this.form.hasComplications) {
-          this.form.hasViralPneumonia ||
+            this.form.hasViralPneumonia ||
             this.form.hasBacterialPneumonia ||
             this.form.hasFungalPneumonia ||
             this.form.hasRespiratoryFailure ||
@@ -565,7 +566,7 @@ export default {
             // this.form.hasSevereAnemia || // 新增字段
             this.form.hasSpontaneousRenalRupture || // 新增字段
             this.form.otherComplications; // 修正拼写
-          if (!hasComplications) {
+          if (!this.form.hasComplications) {
             return reject(new Error("请选择并发症"));
           }
         }

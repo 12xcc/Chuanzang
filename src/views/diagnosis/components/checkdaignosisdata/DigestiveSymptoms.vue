@@ -15,21 +15,27 @@
             <div class="blue-box"></div>
             <span class="title-text">腹泻情况</span>
           </div>
-          <el-radio-group v-model="form.diarrheaFrequencyGEThreeTimesPerDay">
-            <el-radio :value="1">腹泻 <3次/天</el-radio>
-            <el-radio :value="2">腹泻 ≥3 次/天</el-radio>
+          <el-radio-group
+            v-model="form.diarrheaFrequencyGEThreeTimesPerDay"
+            :disabled="allDisabled"
+          >
+            <el-radio :value="false">腹泻≤3次/天</el-radio>
+            <el-radio :value="true">腹泻≥3次/天</el-radio>
           </el-radio-group>
-
           <div class="NextContainer">
             <div
-              v-if="form.diarrheaFrequencyGEThreeTimesPerDay"
-              style="padding: 15px 0 15px 0"
+              v-if="
+                form.diarrheaFrequencyGEThreeTimesPerDay === true ||
+                form.diarrheaFrequencyGEThreeTimesPerDay === false
+              "
+              style="padding: 15px 0"
             >
-              <el-form-item label="腹泻次数" style="">
+              <el-form-item label="腹泻次数">
                 <el-input-number
                   v-model="form.diarrheaTimesPerDay"
                   :min="0"
                   placeholder="腹泻次数"
+                  :disabled="allDisabled"
                 />
                 &nbsp;&nbsp;&nbsp;次/天
               </el-form-item>
@@ -77,7 +83,10 @@
               </div>
 
               <el-form-item label="腹泻方式" style="margin-top: 20px">
-                <el-radio-group v-model="form.diarrheaMode">
+                <el-radio-group
+                  v-model="form.diarrheaMode"
+                  :disabled="allDisabled"
+                >
                   <el-radio value="里急后重">里急后重</el-radio>
                   <el-radio value="通畅">通畅</el-radio>
                   <el-radio value="失禁">失禁</el-radio>
@@ -86,7 +95,10 @@
               </el-form-item>
 
               <el-form-item label="粪便量" style="margin-top: 20px">
-                <el-radio-group v-model="form.stoolAmount">
+                <el-radio-group
+                  v-model="form.stoolAmount"
+                  :disabled="allDisabled"
+                >
                   <el-radio value="多">多</el-radio>
                   <el-radio value="少">少</el-radio>
                 </el-radio-group>
@@ -123,6 +135,7 @@
               <el-radio-group
                 v-model="form.vomitingMode"
                 style="margin-left: 20px"
+                :disabled="allDisabled"
               >
                 <el-radio value="喷射状">喷射状</el-radio>
                 <el-radio value="先泻后吐">先泻后吐</el-radio>
@@ -210,7 +223,7 @@
 <script>
 import { ElMessage } from "element-plus";
 export default {
-      props: {
+  props: {
     data: {
       type: Object,
       default: () => ({}),
@@ -219,7 +232,6 @@ export default {
   data() {
     return {
       allDisabled: true,
-
       form: {
         diarrheaFrequencyGEThreeTimesPerDay: null,
         diarrheaTimesPerDay: null,
@@ -244,42 +256,68 @@ export default {
       rules: {},
     };
   },
-      watch: {
-  data: {
-    immediate: true,
-    handler(newVal) {
-      if (newVal) {
-        // 先将所有数据映射到 form
-        this.form = { ...this.form, ...newVal };
+  watch: {
+    data: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal) {
+          // 先将所有数据映射到 form
+          this.form = { ...this.form, ...newVal };
 
-        this.$forceUpdate();
-      } else {
-        console.warn('Received null or undefined data');
-      }
+          this.$forceUpdate();
+        } else {
+          // console.warn('Received null or undefined data');
+        }
+      },
     },
   },
-},
   methods: {
     handleStoolTypeChange(type) {
       if (type === 1) {
         this.form.hasStoolType1 = !this.form.hasStoolType1;
         if (this.form.hasStoolType1) {
           this.form.hasStoolType2 = false; // 选择粪便性状1时，取消选择性状2
-          this.form.stoolType2Detail = ""; // 清空性状2详情
+          this.form.stoolType2Detail = null; // 清空性状2详情
         }
       } else {
         this.form.hasStoolType2 = !this.form.hasStoolType2;
         if (this.form.hasStoolType2) {
           this.form.hasStoolType1 = false; // 选择粪便性状2时，取消选择性状1
-          this.form.stoolType1Detail = ""; // 清空性状1详情
+          this.form.stoolType1Detail = null; // 清空性状1详情
         }
       }
     },
     handleAble() {
       this.allDisabled = false;
     },
+    handleCancel() {
+      this.allDisabled = true;
+    },
     toggleTag(field) {
       this.form[field] = !this.form[field];
+    },
+    getInitialForm() {
+      return {
+        diarrheaFrequencyGEThreeTimesPerDay: null,
+        diarrheaTimesPerDay: null,
+        hasStoolType1: false,
+        stoolType1Detail: null,
+        hasStoolType2: false,
+        stoolType2Detail: null,
+        diarrheaMode: null,
+        stoolAmount: null,
+        stoolOdor: null,
+        hasVomiting: false,
+        vomitingMode: null,
+        hasNausea: false,
+        hasAppetiteLoss: false,
+        hasAbdominalDistension: false,
+        hasAbdominalPain: false,
+        hasBorborygmus: false,
+        hasUpperAbdominalDiscomfort: false,
+        hasConstipation: false,
+        hasOliguriaOrAnuria: false,
+      };
     },
     getData() {
       return this.form; // 返回当前组件的表单数据
