@@ -13,21 +13,19 @@
         <h3>查找用户</h3>
         <div class="footer">
           <el-button @click="handleCancel">取消</el-button>
-          <!-- <el-button @click="handleReset">重置</el-button> -->
-          <!-- <el-button type="primary" @click="handleSubmit">提交</el-button> -->
         </div>
       </div>
-      <el-form
-        label-width="160px"
-        class="form-container"
-        ref="form"
-      >
+      <el-form label-width="160px" class="form-container" ref="form">
         <div>
           <el-form-item label="姓名">
             <el-input v-model="name" placeholder="请输入姓名" clearable />
           </el-form-item>
           <el-form-item label="联系电话">
-            <el-input v-model="phoneNumber" placeholder="请输入联系电话" clearable />
+            <el-input
+              v-model="phoneNumber"
+              placeholder="请输入联系电话"
+              clearable
+            />
           </el-form-item>
         </div>
 
@@ -45,13 +43,16 @@
       </el-form>
       <div style="margin-left: 620px">
         <el-form-item>
-          <el-button type="primary" @click="searchUsers">查找</el-button>
+          <el-button type="primary" @click="searchUsers" :loading="loading"
+            >查找</el-button
+          >
         </el-form-item>
       </div>
     </div>
 
+    <!-- 映射后的表格 -->
     <el-table
-      v-if="filteredUsers.length"
+      v-if="filteredUsers.length > 0"
       :data="filteredUsers"
       style="margin-top: 20px; margin-left: 40px; width: 700px"
     >
@@ -68,10 +69,10 @@
       </el-table-column>
     </el-table>
 
-    <div v-if="filteredUsers.length" style="margin-top: 20px">
-      <!-- <el-button type="success" @click="confirmSelection">确认提交</el-button> -->
-    </div>
-    <div v-if="filteredUsers.length === 0 " style="margin-top: 20px; font-size:13px;text-align: center; color: #999">
+    <div
+      v-if="filteredUsers.length === 0"
+      style="margin-top: 20px; font-size: 13px; text-align: center; color: #999"
+    >
       暂无数据
     </div>
   </el-drawer>
@@ -80,6 +81,8 @@
 
 <script>
 import Adddiagnosisdata from "./adddiagnosisdata/adddiagnosisdata.vue";
+import { getUserByBaseInfo } from "@/api/check/check";
+
 export default {
   components: {
     Adddiagnosisdata,
@@ -89,12 +92,7 @@ export default {
       type: Boolean,
       required: true,
     },
-    users: {
-      type: Array,
-      required: true,
-    },
   },
-
   emits: ["update:visible", "user-selected"],
   data() {
     return {
@@ -103,23 +101,45 @@ export default {
       gender: "",
       age: null,
       selectedUser: null,
-      filteredUsers: [],
+      filteredUsers: [], // 存储后端返回的用户数据
       dialogVisible: this.visible, // 初始状态与 props 绑定
+      loading: false, // 控制按钮的加载状态
     };
   },
   methods: {
     showDialog() {
       this.dialogVisible = true;
     },
-    searchUsers() {
-      this.filteredUsers = this.users.filter((user) => {
-        return (
-          (!this.name || user.name.includes(this.name)) &&
-          (!this.phoneNumber || user.phoneNumber.includes(this.phoneNumber)) &&
-          (!this.gender || user.gender === this.gender) &&
-          (!this.age || user.age === this.age)
-        );
-      });
+    // 查找用户
+    async searchUsers() {
+      this.loading = true;
+      try {
+        const params = {
+          name: this.name,
+          gender: this.gender,
+          phoneNumber: this.phoneNumber,
+          age: this.age,
+        };
+
+        const response = await getUserByBaseInfo(params);
+
+        const userData = response.data.data;
+        // userData 是对象而不是数组，将其转换为数组
+        if (response.data.code === 1 && userData) {
+          this.filteredUsers = [userData]; // 将对象放入数组中
+        } else {
+          this.filteredUsers = [];
+          this.$message.error(
+           response.data.msg
+      );
+        }
+        
+      } catch (error) {
+        console.error("查找用户时发生错误:", error);
+        this.$message.error("查找用户失败，请稍后重试");
+      } finally {
+        this.loading = false;
+      }
     },
     selectUser(row) {
       this.selectedUser = row;
@@ -152,6 +172,9 @@ export default {
   },
 };
 </script>
+
+
+
 
 <style scoped>
 .el-dialog {

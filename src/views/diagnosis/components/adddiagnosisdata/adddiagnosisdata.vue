@@ -13,7 +13,7 @@
         <div class="footer">
           <el-button @click="handleCancel">取消</el-button>
           <el-button @click="handleReset">重置</el-button>
-          <el-button type="primary" @click="handleSubmit">提交</el-button>
+          <el-button type="primary" @click="handleSubmit(this.userId)">提交</el-button>
         </div>
       </div>
       <el-form
@@ -22,7 +22,7 @@
         class="form-container"
         ref="form"
         :rules="rules"
-        disabled
+        :disabled="allDisabled"
       >
         <div class="BaseInfo">
           <div class="title-container">
@@ -30,18 +30,17 @@
             <span class="title-text">个人基本信息</span>
           </div>
           <div class="BaseInfoDetail">
-            <!------------------------------- 姓名 --------------------------------------->
+            <!-- 姓名 -->
             <el-form-item label="姓名" prop="name">
               <el-input
                 v-model="form.name"
                 style="width: 200px"
                 placeholder="请输入姓名"
-                @blur="$refs.form.validateField('name')"
                 clearable
               ></el-input>
             </el-form-item>
 
-            <!------------------------------- 性别 ----------------------------------------->
+            <!-- 性别 -->
             <el-form-item label="性别" prop="gender">
               <el-input
                 v-model="form.gender"
@@ -49,10 +48,6 @@
                 placeholder=""
                 clearable
               ></el-input>
-              <!-- <el-radio-group v-model="form.gender">
-                <el-radio value="男">男</el-radio>
-                <el-radio value="女">女</el-radio>
-              </el-radio-group> -->
             </el-form-item>
 
             <!-- 年龄 -->
@@ -73,12 +68,6 @@
                 placeholder=""
                 clearable
               ></el-input>
-              <!-- <el-radio-group v-model="form.ethnicity">
-                <el-radio value="汉族">汉族</el-radio>
-                <el-radio value="藏族">藏族</el-radio>
-                <el-radio value="彝族">彝族</el-radio>
-                <el-radio value="其他少数民族">其他少数民族</el-radio>
-              </el-radio-group> -->
             </el-form-item>
 
             <!-- 部门/工种 -->
@@ -89,23 +78,11 @@
                 placeholder=""
                 clearable
               ></el-input>
-              <!-- <el-radio-group v-model="form.department">
-                <el-radio value="安全部">安全部</el-radio>
-                <el-radio value="财务部">财务部</el-radio>
-                <el-radio value="测量队">测量队</el-radio>
-                <el-radio value="工程技术部">工程技术部</el-radio>
-                <el-radio value="合约部">合约部</el-radio>
-                <el-radio value="试验室">试验室</el-radio>
-                <el-radio value="物资设备部">物资设备部</el-radio>
-                <el-radio value="项目管理层">项目管理层</el-radio>
-                <el-radio value="征拆协调部">征拆协调部</el-radio>
-                <el-radio value="综合管理部">综合管理部</el-radio>
-              </el-radio-group> -->
             </el-form-item>
           </div>
         </div>
 
-        <!------------------------------------ 症状标签 ------------------------------->
+        <!-- 症状标签 -->
         <div class="select flex gap-2 mb-4">
           <div class="title-container">
             <div class="blue-box"></div>
@@ -113,149 +90,59 @@
           </div>
 
           <el-check-tag
-            :checked="selectedTag === 'DiagnosisResults'"
+            v-for="tag in tags"
+            :key="tag.name"
+            :checked="selectedTag === tag.name"
             type="primary"
-            @change="selectTag('DiagnosisResults')"
+            @change="selectTag(tag.name)"
           >
-            诊断信息
-          </el-check-tag>
-
-          <el-check-tag
-            :checked="selectedTag === 'DiagnosisPersonalInfo'"
-            type="primary"
-            @change="selectTag('DiagnosisPersonalInfo')"
-          >
-            基本信息
-          </el-check-tag>
-
-          <el-check-tag
-            :checked="selectedTag === 'GeneralSymptoms'"
-            type="primary"
-            @change="selectTag('GeneralSymptoms')"
-          >
-            全身症状
-          </el-check-tag>
-
-          <el-check-tag
-            :checked="selectedTag === 'RespiratorySymptoms'"
-            type="primary"
-            @change="selectTag('RespiratorySymptoms')"
-          >
-            呼吸系统症状
-          </el-check-tag>
-
-          <el-check-tag
-            :checked="selectedTag === 'DigestiveSymptoms'"
-            type="primary"
-            @change="selectTag('DigestiveSymptoms')"
-          >
-            消化系统症状
-          </el-check-tag>
-
-          <el-check-tag
-            :checked="selectedTag === 'CirculatorySymptoms'"
-            type="primary"
-            @change="selectTag('CirculatorySymptoms')"
-          >
-            循环系统症状
-          </el-check-tag>
-
-          <el-check-tag
-            :checked="selectedTag === 'NeurologicalSymptoms'"
-            type="primary"
-            @change="selectTag('NeurologicalSymptoms')"
-          >
-            神经系统症状
-          </el-check-tag>
-
-          <el-check-tag
-            :checked="selectedTag === 'LocalSymptoms'"
-            type="primary"
-            @change="selectTag('LocalSymptoms')"
-          >
-            局部症状
-          </el-check-tag>
-
-          <el-check-tag
-            :checked="selectedTag === 'OtherSymptoms'"
-            type="primary"
-            @change="selectTag('OtherSymptoms')"
-          >
-            其他
-          </el-check-tag>
-
-          <el-check-tag
-            :checked="selectedTag === 'DiagnosisComplications'"
-            type="primary"
-            @change="selectTag('DiagnosisComplications')"
-          >
-            并发症
-          </el-check-tag>
-
-          <el-check-tag
-            :checked="selectedTag === 'Diagnosistag'"
-            type="primary"
-            @change="selectTag('Diagnosistag')"
-          >
-            上传检测报告
+            {{ tag.label }}
           </el-check-tag>
         </div>
 
         <!-- 根据选择的标签显示不同内容 -->
-        <div>
-          <div v-show="selectedTag === 'DiagnosisResults'">
-            <p>诊断信息</p>
-            <DiagnosisResults ref="DiagnosisResults" />
-          </div>
+        <div v-show="selectedTag === 'DiagnosisResults'">
+          <DiagnosisResults ref="DiagnosisResults" />
+        </div>
 
-          <div v-show="selectedTag === 'DiagnosisPersonalInfo'">
-            <p>基本情况</p>
-            <DiagnosisPersonalInfo ref="DiagnosisPersonalInfo" />
-          </div>
+        <div v-show="selectedTag === 'DiagnosisPersonalInfo'">
+          <DiagnosisPersonalInfo ref="DiagnosisPersonalInfo" />
+        </div>
 
-          <div v-show="selectedTag === 'GeneralSymptoms'">
-            <p>全身症状</p>
-            <GeneralSymptoms ref="GeneralSymptoms" />
-          </div>
+        <div v-show="selectedTag === 'GeneralSymptoms'">
+          <GeneralSymptoms ref="GeneralSymptoms" />
+        </div>
 
-          <div v-show="selectedTag === 'RespiratorySymptoms'">
-            <p>呼吸系统症状</p>
-            <RespiratorySymptoms ref="RespiratorySymptoms" />
-          </div>
+        <div v-show="selectedTag === 'RespiratorySymptoms'">
+          <RespiratorySymptoms ref="RespiratorySymptoms" />
+        </div>
 
-          <div v-show="selectedTag === 'DigestiveSymptoms'">
-            <p>查看消化系统症状</p>
-            <DigestiveSymptoms ref="DigestiveSymptoms" />
-          </div>
+        <div v-show="selectedTag === 'DigestiveSymptoms'">
+          <DigestiveSymptoms ref="DigestiveSymptoms" />
+        </div>
 
-          <div v-show="selectedTag === 'CirculatorySymptoms'">
-            <p>循环系统症状</p>
-            <CirculatorySymptoms ref="CirculatorySymptoms" />
-          </div>
+        <div v-show="selectedTag === 'CirculatorySymptoms'">
+          <CirculatorySymptoms ref="CirculatorySymptoms" />
+        </div>
 
-          <div v-show="selectedTag === 'NeurologicalSymptoms'">
-            <p>神经系统症状</p>
-            <NeurologicalSymptoms ref="NeurologicalSymptoms" />
-          </div>
+        <div v-show="selectedTag === 'NeurologicalSymptoms'">
+          <NeurologicalSymptoms ref="NeurologicalSymptoms" />
+        </div>
 
-          <div v-show="selectedTag === 'LocalSymptoms'">
-            <p>局部症状</p>
-            <DiagnosisLocalSymptoms ref="DiagnosisLocalSymptoms" />
-          </div>
+        <div v-show="selectedTag === 'LocalSymptoms'">
+          <DiagnosisLocalSymptoms ref="DiagnosisLocalSymptoms" />
+        </div>
 
-          <div v-show="selectedTag === 'OtherSymptoms'">
-            <p>其他症状</p>
-            <OtherSymptoms ref="OtherSymptoms" />
-          </div>
+        <div v-show="selectedTag === 'OtherSymptoms'">
+          <OtherSymptoms ref="OtherSymptoms" />
+        </div>
 
-          <div v-show="selectedTag === 'DiagnosisComplications'">
-            <p>并发症</p>
-            <DiagnosisComplications ref="DiagnosisComplications" />
-          </div>
-          <div v-show="selectedTag === 'Diagnosistag'">
-            <p>上传检测报告</p>
-            <Diagnosistag ref="Diagnosistag" />
-          </div>
+        <div v-show="selectedTag === 'DiagnosisComplications'">
+          <DiagnosisComplications ref="DiagnosisComplications" />
+        </div>
+
+        <div v-show="selectedTag === 'Diagnosistag'">
+          <Diagnosistag ref="Diagnosistag" />
         </div>
       </el-form>
     </div>
@@ -264,7 +151,7 @@
 
 <script>
 import { ElMessage } from "element-plus";
-import Dateselection from "@/components/date_selection.vue";
+import { saveDiagnosis } from "@/api/diagnosis/diagnosis"; // 使用新的添加诊断信息接口
 import DiagnosisResults from "./DiagnosisResults.vue";
 import GeneralSymptoms from "./GeneralSymptoms.vue";
 import RespiratorySymptoms from "./RespiratorySymptoms.vue";
@@ -276,11 +163,10 @@ import DiagnosisComplications from "./DiagnosisComplications.vue";
 import DiagnosisPersonalInfo from "./DiagnosisPersonalInfo.vue";
 import Diagnosistag from "./Diagnosistag.vue";
 import DigestiveSymptoms from '../adddiagnosisdata/DigestiveSymptoms.vue';
+
 export default {
   components: {
-    Dateselection,
     DiagnosisResults,
-    DiagnosisPersonalInfo,
     GeneralSymptoms,
     RespiratorySymptoms,
     CirculatorySymptoms,
@@ -288,27 +174,41 @@ export default {
     DiagnosisLocalSymptoms,
     OtherSymptoms,
     DiagnosisComplications,
+    DiagnosisPersonalInfo,
     Diagnosistag,
     DigestiveSymptoms,
   },
   data() {
     return {
-      visible: false, // 控制弹窗显示
-      selectedTag: null, // 当前选中的标签
+      visible: false,
+      selectedTag: null,
       form: {},
       rules: {},
+      userId:null,
+      allDisabled: true, // 控制表单是否禁用
+      tags: [
+        { name: "DiagnosisResults", label: "诊断信息" },
+        { name: "DiagnosisPersonalInfo", label: "基本信息" },
+        { name: "GeneralSymptoms", label: "全身症状" },
+        { name: "RespiratorySymptoms", label: "呼吸系统症状" },
+        { name: "DigestiveSymptoms", label: "消化系统症状" },
+        { name: "CirculatorySymptoms", label: "循环系统症状" },
+        { name: "NeurologicalSymptoms", label: "神经系统症状" },
+        { name: "LocalSymptoms", label: "局部症状" },
+        { name: "OtherSymptoms", label: "其他症状" },
+        { name: "DiagnosisComplications", label: "并发症" },
+        { name: "Diagnosistag", label: "上传检测报告" },
+      ],
     };
   },
-
   methods: {
-    toggleTag(field) {
-      this.form[field] = !this.form[field];
-    },
-    selectTag(tag) {
-      this.selectedTag = tag;
+    selectTag(tagName) {
+      this.selectedTag = tagName;
     },
     showDrawer(user) {
       this.form = { ...user };
+      this.userId = user.userId;
+      console.log("userid:"+this.userId)
       this.visible = true;
     },
     handleCancel() {
@@ -316,92 +216,72 @@ export default {
       this.handleReset();
     },
 
-    async handleSubmit() {
-      console.log("触发");
-
+    async handleSubmit(userId) {
       try {
-        // 调用子组件的 validate 方法
-        // 诊断信息
-        await this.$refs.DiagnosisResults.validate();
-        // 基本信息
-        // 全身症状
-        await this.$refs.GeneralSymptoms.validate();
+        // 验证所有子组件
+        for (const tag of this.tags) {
+          const component = this.$refs[tag.name];
+          if (component && component.validate) {
+            await component.validate();
+          }
+        }
 
-        // 其他
-        await this.$refs.OtherSymptoms.validate();
-        // 并发症
-        await this.$refs.DiagnosisComplications.validate();
+        // 收集子组件的数据
+        const submitData = {};
+        for (const tag of this.tags) {
+          const component = this.$refs[tag.name];
+          if (component && component.getData) {
+            submitData[tag.name] = component.getData();
+          }
+        }
 
-        // 如果子组件验证通过，继续处理其他数据
-        const DiagnosisResultsData = this.$refs.DiagnosisResults.getData();
-        const diagnosisgeneralsymptoms = this.$refs.GeneralSymptoms.getData();
-        const diagnosispersonalinfo =
-          this.$refs.DiagnosisPersonalInfo.getData();
-        const diagnosisrespiratorysymptoms =
-          this.$refs.RespiratorySymptoms.getData();
-        const diagnosisneurologicalsymptoms =
-          this.$refs.NeurologicalSymptoms.getData();
-        const diagnosiscirculatorysymptoms =
-          this.$refs.CirculatorySymptoms.getData();
-        const diagnosislocalsymptoms =
-          this.$refs.DiagnosisLocalSymptoms.getData();
-        const diagnosisothersymptoms = this.$refs.OtherSymptoms.getData();
-        const DiagnosisComplicationsData =
-          this.$refs.DiagnosisComplications.getData();
-        const DiagnosistagData = this.$refs.Diagnosistag.getData();
-        const diagnosisdigestivesymptoms = this.$refs.DigestiveSymptoms.getData();
-        console.log("诊断信息:", DiagnosisResultsData);
-        console.log("基本信息：", diagnosispersonalinfo);
-        console.log("全身症状:", diagnosisgeneralsymptoms);
-        console.log("呼吸系统症状:", diagnosisrespiratorysymptoms);
-        console.log("循环系统症状:", diagnosiscirculatorysymptoms);
-        console.log("神经系统症状:", diagnosisneurologicalsymptoms);
-        console.log("局部症状:", diagnosislocalsymptoms);
-        console.log("其他:", diagnosisothersymptoms);
-        console.log("并发症:", DiagnosisComplicationsData);
-        console.log("检测报告:", DiagnosistagData);
-        console.log("消化系统症状:", diagnosisdigestivesymptoms);
-  
+        const mappedSubmitData = {
+          diagnosisresults: submitData.DiagnosisResults,
+          diagnosispersonalinfo: submitData.DiagnosisPersonalInfo,
+          diagnosisgeneralsymptoms: submitData.GeneralSymptoms,
+          diagnosisrespiratorysymptoms: submitData.RespiratorySymptoms,
+          diagnosiscirculatorysymptoms: submitData.CirculatorySymptoms,
+          diagnosisneurologicalsymptoms: submitData.NeurologicalSymptoms,
+          diagnosislocalsymptoms: submitData.DiagnosisLocalSymptoms,
+          diagnosisothersymptoms: submitData.OtherSymptoms,
+          diagnosiscomplications: submitData.DiagnosisComplications,
+          diagnosisexaminations: submitData.Diagnosistag,
+          diagnosisdigestivesymptoms: submitData.DigestiveSymptoms,
+        };
 
-        this.visible = false;
-        ElMessage({
-          message: "提交成功",
-          type: "success",
-        });
-        this.handleReset();
+        console.log("提交数据:", mappedSubmitData);
+        console.log("userid:"+this.userId)
+        const response = await saveDiagnosis(mappedSubmitData, userId);
+
+        if (response.data && response.data.code === 1) {
+          ElMessage.success("提交成功");
+          this.visible = false;
+          this.handleReset();
+        } else {
+          ElMessage.error("提交失败，请稍后重试");
+        }
       } catch (error) {
-        // 处理验证错误
-        console.error("验证失败:", error.message);
-        ElMessage({
-          message: error.message,
-          type: "error",
-        });
+        console.error("提交失败:", error.message);
+        ElMessage.error("提交失败，请稍后重试");
       }
     },
-
     handleReset() {
-      // this.form = this.getInitialForm();
-      this.message = "";
       this.selectedTag = null;
-      this.$refs.DiagnosisResults.handleReset();
-      this.$refs.GeneralSymptoms.handleReset();
-      this.$refs.RespiratorySymptoms.handleReset();
-      this.$refs.NeurologicalSymptoms.handleReset();
-      this.$refs.CirculatorySymptoms.handleReset();
-      this.$refs.DiagnosisLocalSymptoms.handleReset();
-      this.$refs.OtherSymptoms.handleReset();
-      this.$refs.DiagnosisComplications.handleReset();
-      this.$refs.DiagnosisPersonalInfo.handleReset();
-      this.$refs.Diagnosistag.handleReset();
-      this.$refs.DigestiveSymptoms.handleReset();
-      
-    },
-    getInitialForm() {
-      return {};
+      this.form = {};
+      // 重置所有子组件
+      this.tags.forEach((tag) => {
+        if (this.$refs[tag.name] && this.$refs[tag.name].handleReset) {
+          this.$refs[tag.name].handleReset();
+        }
+      });
     },
   },
 };
 </script>
+
+
+
+
 
 
 

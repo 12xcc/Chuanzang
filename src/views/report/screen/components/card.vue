@@ -9,7 +9,7 @@
             <div class="card-title">{{ item.title }}</div>
             <div class="card-bottom">
                 <div class="card-data" :id="'card-data-' + index">{{ item.data }}</div>
-                <img :src="item.imgSrc" alt="">
+                <img :src="item.imgSrc" alt=""/>
             </div>
         </div>
     </div>
@@ -17,7 +17,6 @@
 </template>
 
 <script>
-/* 为方便演示，暂时不用接口调用成功的代码*/
 import { onMounted } from 'vue';
 import { CountUp } from 'countup.js';
 import allusernumber from '@/assets/screenimgs/allusernumber.svg';
@@ -26,17 +25,18 @@ import todaycheckin from '@/assets/screenimgs/todaycheckin.svg';
 import todayhealth from '@/assets/screenimgs/todayhealth.svg';
 import todaydisease from '@/assets/screenimgs/todaydisease.svg';
 import todaynotcheckin from '@/assets/screenimgs/todaynotcheckin.svg';
+import { getStatisticsData } from '@/api/report/screen.js'; // 导入接口
 
 export default {
   data() {
     return {
       cardData: [
-        { title: "职工总人数 (人)", data: 2000, imgSrc: allusernumber },
-        { title: "打卡总次数 (次)", data: 339398, imgSrc: allcheckinnumber },
-        { title: "今日打卡人数 (人)", data: 1723, imgSrc: todaycheckin },
-        { title: "今日健康人数 (人)", data: 1700, imgSrc: todayhealth },
-        { title: "今日患病人数 (人)", data: 23, imgSrc: todaydisease },
-        { title: "今日未打卡人数 (人)", data: 277, imgSrc: todaynotcheckin }
+        { title: "职工总人数 (人)", data: 0, imgSrc: allusernumber },
+        { title: "打卡总次数 (次)", data: 0, imgSrc: allcheckinnumber },
+        { title: "今日打卡人数 (人)", data: 0, imgSrc: todaycheckin },
+        { title: "今日健康人数 (人)", data: 0, imgSrc: todayhealth },
+        { title: "今日患病人数 (人)", data: 0, imgSrc: todaydisease },
+        { title: "今日未打卡人数 (人)", data: 0, imgSrc: todaynotcheckin }
       ]
     };
   },
@@ -46,15 +46,37 @@ export default {
         const countUp = new CountUp(`card-data-${index}`, item.data);
         countUp.start();
       });
+    },
+
+    async fetchStatisticsData() {
+      try {
+        const response = await getStatisticsData();
+        if (response.data.code === 1) {
+          const statistics = response.data.data;
+          this.cardData[0].data = statistics.userNumber; // 总人数
+          this.cardData[1].data = statistics.checkInNumber; // 总打卡数
+          this.cardData[2].data = statistics.userHealthNumber + statistics.userDiseaseNumber; // 今日打卡人数
+          this.cardData[3].data = statistics.userHealthNumber; // 今日健康人数
+          this.cardData[4].data = statistics.userDiseaseNumber; // 今日患病人数
+          this.cardData[5].data = statistics.userNumber - (statistics.userHealthNumber + statistics.userDiseaseNumber); // 今日未打卡人数
+
+          this.startCountAnimation(); // 调用动画
+        } else {
+          this.$message.error("获取统计数据失败，请重试！");
+        }
+      } catch (error) {
+        console.error("Error fetching statistics data:", error);
+        this.$message.error("获取统计数据失败，请重试！");
+      }
     }
   },
   mounted() {
-    this.startCountAnimation();
+    this.fetchStatisticsData(); // 组件挂载时调用接口
   }
-}
+};
 </script>
 
-<style  scoped>
+<style scoped>
 .container {
     margin-top: 40px;
     width: 100%;
@@ -65,20 +87,20 @@ export default {
     margin-left: 0px;
     margin-bottom: 20px;
     margin-top: 20px;
-  }
-  
-  .blue-box {
+}
+
+.blue-box {
     width: 6px;
     height: 18px;
     background-color: #285ac8;
     margin-right: 10px;
-  }
-  
-  .title-text {
+}
+
+.title-text {
     font-size: 12px;
     font-weight: bold;
     color: #4a4a4a;
-  }
+}
 .card-container {
     display: flex;
 }
@@ -117,6 +139,4 @@ img {
     font-weight: bold;
     color: #333333;
 }
-
 </style>
-

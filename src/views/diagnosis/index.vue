@@ -13,6 +13,7 @@
           v-model="queryParams.choice"
           placeholder="请选择字段"
           clearable
+          @clear="handleQuery"
           size="default"
           style="width: 200px; margin-right: -15px"
         >
@@ -27,6 +28,7 @@
           v-model="queryParams.check"
           placeholder="请输入文本"
           clearable
+          @clear="handleQuery"
           size="default"
           @keyup.enter.native="handleQuery"
           style="width: 200px !important; margin-right: -15px"

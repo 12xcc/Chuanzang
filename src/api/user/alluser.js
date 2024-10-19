@@ -73,3 +73,6 @@ export const updateUserInfo = async (requestData) => {
   );
   return response;
 };
+
+// 修改密码
+`/medicalStaff/userpPassword/change`

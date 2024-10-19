@@ -50,7 +50,7 @@ export default {
         HasMusclePain: { weightScore: 0, symptomWeightingId: null },
         HasJointPain: { weightScore: 0, symptomWeightingId: null },
         HasLymphNodeSwelling: { weightScore: 0, symptomWeightingId: null },
-        hasCyanosis: { weightScore: 0, symptomWeightingId: null },
+        HasCyanosis: { weightScore: 0, symptomWeightingId: null },
         HasSubcutaneousAndMucosalBleedingSpots: {
           weightScore: 0,
           symptomWeightingId: null,
@@ -84,7 +84,7 @@ export default {
         { label: "肌肉酸痛", model: "HasMusclePain" },
         { label: "关节酸痛", model: "HasJointPain" },
         { label: "淋巴结肿大", model: "HasLymphNodeSwelling" },
-        { label: "发绀", model: "hasCyanosis" },
+        { label: "发绀", model: "HasCyanosis" },
         {
           label: "皮下及黏膜出血",
           model: "HasSubcutaneousAndMucosalBleedingSpots",

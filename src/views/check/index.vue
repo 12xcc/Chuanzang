@@ -27,21 +27,23 @@
           v-model="queryParams.check"
           placeholder="请输入文本"
           clearable
+          @clear="handleQuery"
           size="default"
           @keyup.enter.native="handleQuery"
           style="width: 200px !important; margin-right: -15px"
         />
       </el-form-item>
 
-       <el-form-item prop="date">
-      <el-date-picker
-        v-model="queryParams.date"
-        type="daterange"
-        range-separator="到"
-        start-placeholder="请选择"
-        end-placeholder="检测日期范围"
-        style="width:300px"
-      />
+      <el-form-item prop="date">
+        <el-date-picker
+          v-model="queryParams.date"
+          type="daterange"
+          range-separator="到"
+          start-placeholder="请选择"
+          end-placeholder="检测日期范围"
+          style="width: 300px"
+          @clear="handleQuery"
+        />
       </el-form-item>
 
       <el-form-item>
@@ -64,7 +66,7 @@
         <el-button
           type="warning"
           class="custom-button"
-          @click="handleDownload"
+          @click="handleExportAI"
           size="default"
           >含检测报告导出</el-button
         >
@@ -78,7 +80,6 @@
       </el-form-item>
     </el-form>
 
-
     <!-- 表格部分 -->
     <div class="usertable">
       <el-table
@@ -88,20 +89,20 @@
           color: '#333333',
         }"
         v-loading="loading"
-        :data="paginatedData"
+        :data="allData"
         style="width: 100%"
         :height="tableHeight"
-        show-overflow-tooltip="true"
+        :show-overflow-tooltip="true"
       >
         <el-table-column type="selection" width="55" />
         <el-table-column prop="serialNumber" label="序号" width="80" />
         <el-table-column prop="userType" label="用户类型" width="120" />
-         <el-table-column prop="name" label="姓名" width="100">
+        <el-table-column prop="name" label="姓名" width="100">
           <template #default="scope">
             <el-button
               v-if="isNurse()"
               type="text"
-              @click="handleCheckuser(scope.row)"
+              @click="handleCheckuser(scope.row.userId)"
             >
               {{ scope.row.name }}
             </el-button>
@@ -164,10 +165,18 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="checkInDate" label="检测日期" min-width="120" />
+        <el-table-column prop="uploadDate" label="上传日期" width="120">
+          <template #default="scope">
+            {{ scope.row.uploadDate }}
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作" min-width="260">
           <template #default="scope">
-            <el-button link type="primary" size="large" @click="handleCheck(scope.row)"
+            <el-button
+              link
+              type="primary"
+              size="large"
+              @click="handleCheck(scope.row)"
               >查看 / 编辑</el-button
             >
           </template>
@@ -184,7 +193,7 @@
     </div>
     <Checkuser
       ref="Checkuser"
-      :users="filteredData"
+      :users="allData"
       :visible="checkUserVisible"
     />
     <Checkcheckdata ref="Checkcheckdata" />
@@ -195,9 +204,15 @@
 <script>
 import { useUserStore } from "@/store/userrole.js"; // 引入用户角色存储
 import Checkuser from "./components/checkuser.vue";
-import Checkcheckdata from "./components/checkcheckdata/checkchekcdata.vue"
-import Checkuserdata from '../user/alluser/components/checkuserdata.vue';
-import {pageSelectLabTest,getDetectionInformationExportFormExcel,getUserByBaseInfo,saveLabTestReport,selectLabTest} from "@/api/check/check"
+import Checkcheckdata from "./components/checkcheckdata/checkchekcdata.vue";
+import Checkuserdata from "../user/alluser/components/checkuserdata.vue";
+import {
+  pageSelectLabTest,
+  getDetectionInformationExportFormExcel,
+  getUserByBaseInfo,
+  saveLabTestReport,
+  selectLabTest,
+} from "@/api/check/check";
 export default {
   components: {
     Checkuser,
@@ -210,175 +225,22 @@ export default {
       queryParams: {
         isHealth: "",
         check: "",
-        date:[],
+        date: [],
         pageNum: 1,
         pageSize: 15,
-        date:"",
+        date: "",
       },
-      allData: [
-        {
-          serialNumber: "1",
-          userType: "铁路职工",
-          name: "张伟",
-          phoneNumber: "13800000001",
-          gender: "男",
-          age: "44",
-          department: "工程技术部",
-          isVirusAntigenTestDone: true,
-          isVirusNucleicAcidTestDone: true,
-          isVirusCultureIsolationDone: true,
-          isSerologicalTestDone: true,
-          checkInDate: "2024-03-03",
-        },
-        {
-          serialNumber: "2",
-          userType: "铁路职工",
-          name: "李强",
-          phoneNumber: "13800000122",
-          gender: "男",
-          age: "35",
-          department: "测量队",
-          department: "工程技术部",
-          isVirusAntigenTestDone: false,
-          isVirusNucleicAcidTestDone: true,
-          isVirusCultureIsolationDone: true,
-          isSerologicalTestDone: true,
-          checkInDate: "2024-04-15",
-        },
-        {
-          serialNumber: "3",
-          userType: "铁路职工",
-          name: "王丽",
-          phoneNumber: "13800000003",
-          gender: "女",
-          age: "28",
-          department: "测量队",
-          department: "工程技术部",
-          isVirusAntigenTestDone: false,
-          isVirusNucleicAcidTestDone: true,
-          isVirusCultureIsolationDone: true,
-          isSerologicalTestDone: false,
-          checkInDate: "2024-05-10",
-        },
-        {
-          serialNumber: "4",
-          userType: "铁路职工",
-          name: "赵鹏",
-          phoneNumber: "13800340004",
-          gender: "男",
-          age: "39",
-          department: "工程技术部",
-          isVirusAntigenTestDone: true,
-          isVirusNucleicAcidTestDone: true,
-          isVirusCultureIsolationDone: false,
-          isSerologicalTestDone: true,
-          checkInDate: "2024-02-20",
-        },
-        {
-          serialNumber: "5",
-          userType: "铁路职工",
-          name: "陈梅",
-          phoneNumber: "13800000005",
-          gender: "女",
-          age: "41",
-          department: "合约部",
-          isVirusAntigenTestDone: true,
-          isVirusNucleicAcidTestDone: true,
-          isVirusCultureIsolationDone: true,
-          isSerologicalTestDone: true,
-          checkInDate: "2024-06-01",
-        },
-        {
-          serialNumber: "6",
-          userType: "铁路职工",
-          name: "刘洋",
-          phoneNumber: "13800000006",
-          gender: "男",
-          age: "32",
-          department: "工程技术部",
-          isVirusAntigenTestDone: false,
-          isVirusNucleicAcidTestDone:false,
-          isVirusCultureIsolationDone: true,
-          isSerologicalTestDone: false,
-          checkInDate: "2024-07-18",
-        },
-        {
-          serialNumber: "4",
-          userType: "铁路职工",
-          name: "赵鹏",
-          phoneNumber: "13800340004",
-          gender: "男",
-          age: "39",
-          department: "工程技术部",
-          isVirusAntigenTestDone: true,
-          isVirusNucleicAcidTestDone: true,
-          isVirusCultureIsolationDone: false,
-          isSerologicalTestDone: true,
-          checkInDate: "2024-02-20",
-        },
-        {
-          serialNumber: "5",
-          userType: "铁路职工",
-          name: "陈梅",
-          phoneNumber: "13800000005",
-          gender: "女",
-          age: "41",
-          department: "合约部",
-          isVirusAntigenTestDone: true,
-          isVirusNucleicAcidTestDone: false,
-          isVirusCultureIsolationDone: false,
-          isSerologicalTestDone: true,
-          checkInDate: "2024-06-01",
-        },
-      ],
+      allData: [],
       showSearch: true,
       loading: false,
+      total: 0,
     };
   },
-setup() {
+  setup() {
     const userStore = useUserStore(); // 使用用户角色存储
     return { userStore };
   },
   computed: {
-    filteredData() {
-      const { check ,date } = this.queryParams;
-      const lowerCaseCheck = check ? check.toLowerCase() : "";
-   // 如果没有筛选条件，直接返回所有数据
-      if (!check && (!date || date.length === 0)) {
-        return this.allData;
-      }
-      return this.allData.filter((item) => {
-        // const userTypeMatch = !userType || item.userType === this.convertuserType(userType);
-        const fieldsToSearch = ["name", "phoneNumber", "department",""];
-        const textMatch = check
-          ? fieldsToSearch.some((field) => {
-              const itemFieldValue =
-                item[field]?.toString().toLowerCase() || "";
-              return itemFieldValue.includes(lowerCaseCheck);
-            })
-          : true; // 如果没有输入文本，默认匹配为 true
-
-           const checkInDate = new Date(item.checkInDate);
-        const dateMatch =
-          Array.isArray(date) && date.length === 2
-            ? checkInDate >= new Date(date[0]) &&
-              checkInDate <= new Date(date[1])
-            : true; // 如果没有选择日期，默认匹配为 true
-
-
-        return textMatch && dateMatch;
-      });
-    },
-    paginatedData() {
-      const { pageNum, pageSize } = this.queryParams;
-      return this.filteredData.slice(
-        (pageNum - 1) * pageSize,
-        pageNum * pageSize
-      );
-    },
-    total() {
-      return this.filteredData.length;
-    },
     tableHeight() {
       return window.innerHeight - 300;
       // return `${this.filteredData.length > 0 ? this.filteredData.length * 48 : 500}px`; // 动态计算表格高度
@@ -386,54 +248,163 @@ setup() {
   },
 
   methods: {
-    handleQuery() {
-      // 查询逻辑
-    },
-    handleExport() {
-      // 导出逻辑
-    },
-    handleDownload() {
-      // 下载逻辑
-    },
-    handleClick() {
-      // 查看用户逻辑
-    },
-     isNurse() {
+    isNurse() {
       return this.userStore.isNurse(); // 用户角色存储的 isNurse 方法
     },
-    handleCheck(row) {
-      this.$refs.Checkcheckdata.showDrawer(row);
-    },
-        handleCheckuser(row){
-this.$refs.Checkuserdata.showDrawer(row);
-    },
-    handleSubmitCheck() {
-      if (this.filteredData.length > 0) {
-        this.checkUserVisible = true; // 显示 Checkuser
-        this.$refs.Checkuser.showDialog();
-      } else {
-        console.warn("用户数据为空");
+    async handleQuery() {
+      this.loading = true;
+      try {
+        let beginDate = "";
+        let endDate = "";
+
+        if (
+          Array.isArray(this.queryParams.date) &&
+          this.queryParams.date.length === 2
+        ) {
+          [beginDate, endDate] = this.queryParams.date;
+        }
+
+        const params = {
+          beginDate: beginDate || "",
+          endDate: endDate || "",
+          name: this.queryParams.choice === 1 ? this.queryParams.check : "",
+          phoneNumber:
+            this.queryParams.choice === 2 ? this.queryParams.check : "",
+          department:
+            this.queryParams.choice === 3 ? this.queryParams.check : "",
+          pageNo: this.queryParams.pageNum || 1,
+          pageSize: this.queryParams.pageSize || 15,
+        };
+
+        const response = await pageSelectLabTest(params);
+
+        if (response.data.code === 1) {
+          this.allData = response.data.data.records.map((item, index) => {
+            const serialNumber =
+              (this.queryParams.pageNum - 1) * this.queryParams.pageSize +
+              index +
+              1;
+
+            // 日期格式化，将数组转为 'YYYY-MM-DD'
+            const formatDate = (dateArray) => {
+              if (!Array.isArray(dateArray) || dateArray.length !== 3) {
+                return "";
+              }
+              const [year, month, day] = dateArray;
+              return `${year}-${String(month).padStart(2, "0")}-${String(
+                day
+              ).padStart(2, "0")}`;
+            };
+
+            // 深拷贝并格式化数据
+            const formattedItem = {
+              ...item,
+              serialNumber, // 自定义字段
+              uploadDate: formatDate(item.uploadDate),
+            };
+
+            return formattedItem; // 返回格式化后的数据
+          });
+
+          this.total = response.data.data.total;
+        } else {
+          ElMessage.error("获取诊断信息失败，请重试！" + response.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching diagnosis data:", error);
+        ElMessage.error("获取诊断信息失败，请重试！");
+      } finally {
+        this.loading = false;
       }
     },
 
-    convertisHealth(value) {
-      switch (value) {
-        case 1:
-          return "是";
-        case 2:
-          return "否";
-        default:
-          return "";
+    // 导出表格信息
+    async handleExport() {
+      try {
+        this.$message({
+          message: "正在导出，请稍候...",
+          type: "warning",
+        });
+        const response = await getDetectionInformationExportFormExcel();
+        if (response.status === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "检查信息导出表.xlsx");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          this.$message({
+            message: "导出成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            message: "导出失败，请重试",
+            type: "error",
+          });
+        }
+      } catch (error) {
+        console.error("导出出错:", error);
+        this.$message({
+          message: "导出出错，请重试",
+          type: "error",
+        });
       }
     },
+
+    // 含AI数据导出
+    async handleExportAI() {
+      try {
+        this.$message({
+          message: "正在导出，请稍候...",
+          type: "warning",
+        });
+        const response = await getDetectionInformationExportFormExcel();
+        if (response.status === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "检查信息导出表(AI).xlsx");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          this.$message({
+            message: "导出成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            message: "导出失败，请重试",
+            type: "error",
+          });
+        }
+      } catch (error) {
+        console.error("导出出错:", error);
+        this.$message({
+          message: "导出出错，请重试",
+          type: "error",
+        });
+      }
+    },
+    handleCheck(user) {
+      this.$refs.Checkcheckdata.showDrawer(user);
+    },
+    handleCheckuser(userId) {
+      this.$refs.Checkuserdata.showDrawer(userId);
+    },
+    handleSubmitCheck() {
+      this.$refs.Checkuser.showDialog();
+    },
+
     handlePagination({ page, limit }) {
       this.queryParams.pageNum = page;
       this.queryParams.pageSize = limit;
-      this.handleQuery(); // 更新分页数据
+      this.handleQuery();
     },
   },
   mounted() {
-    this.handleQuery(); // 初始数据
+    this.handleQuery();
   },
 };
 </script>
