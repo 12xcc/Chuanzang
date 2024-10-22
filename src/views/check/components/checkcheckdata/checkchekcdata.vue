@@ -197,15 +197,18 @@ export default {
     },
     handleCancel(){
     this.visible = false;
+    this.isEditing = false; 
+    this.allDisabled = true;
       this.refs.forEach((ref) => {
         this.$refs[ref].handleCancel();
       });
+      
       this.handleReset();
     },
 
     handleEdit() {
       this.allDisabled = false;
-      this.isEditing = true; // 进入编辑模式
+      this.isEditing = true; // 进入编辑模式s
       this.refs.forEach((ref) => {
        this.$refs[ref].handleAble();
       });

@@ -523,27 +523,27 @@ watch: {
     toggleDisease(disease) {
       this.form.diseaseType = this.form.diseaseType === disease ? "" : disease;
       if (this.form.diseaseType !== "鼠疫") {
-        this.form.plagueSubtype = ""; // 清空鼠疫子类
+        this.form.plagueSubtype = null; // 清空鼠疫子类
       }
       if (this.form.diseaseType !== "炭疽") {
-        this.form.anthraxSubtype = ""; // 清空炭疽子类
+        this.form.anthraxSubtype =null; // 清空炭疽子类
       }
       if (this.form.diseaseType !== "其他") {
-        this.form.otherDiseaseName = ""; // 清空其他疾病名称
+        this.form.otherDiseaseName = null; // 清空其他疾病名称
       }
     },
     togglePlagueSubtype(subtype) {
       this.form.plagueSubtype =
-        this.form.plagueSubtype === subtype ? "" : subtype;
+        this.form.plagueSubtype === subtype ? null : subtype;
     },
     toggleAnthraxSubtype(subtype) {
       this.form.anthraxSubtype =
-        this.form.anthraxSubtype === subtype ? "" : subtype;
+        this.form.anthraxSubtype === subtype ? null : subtype;
     },
     toggleDiscoveryMethod(value) {
       this.form.discoveryMethod = value;
       if (this.form.discoveryMethod !== "其他") {        
-        this.form.otherDiscoveryMethodName = ""; // 清空其他途径名称
+        this.form.otherDiscoveryMethodName = null; // 清空其他途径名称
       }
     },
     toggleOutcome(value) {
@@ -552,7 +552,7 @@ watch: {
     toggleRegistration(value) {
       this.form.registrationClassification = value;
       if (this.form.registrationClassification !== "其他") {
-        this.form.otherRegistrationDetails = ""; // 清空登记分类其他详情
+        this.form.otherRegistrationDetails = null; // 清空登记分类其他详情
       }
     },
     handleAble() {

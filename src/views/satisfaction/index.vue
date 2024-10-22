@@ -1,74 +1,5 @@
 <template>
   <div class="container">
-    <!-- 表单部分 -->
-    <el-form
-      :model="queryParams"
-      ref="queryForm"
-      size="default"
-      :inline="true"
-      v-show="showSearch"
-    >
-      <el-form-item label="" prop="diseaseTypeName" size="default">
-        <el-select
-          v-model="queryParams.diseaseTypeName"
-          placeholder="请选择疾病类型"
-          clearable
-          size="default"
-          style="width: 200px; margin-right: -15px"
-          @clear="handleQuery"
-        >
-          <el-option
-            value="新型冠状病毒感染"
-            label="新型冠状病毒感染"
-          ></el-option>
-          <el-option value="流感" label="流感"></el-option>
-          <el-option value="鼠疫" label="鼠疫"></el-option>
-          <el-option value="感染性腹泻" label="感染性腹泻"></el-option>
-          <el-option value="炭疽" label="炭疽"></el-option>
-          <el-option value="结核病" label="结核病"></el-option>
-          <el-option
-            value="登革热（蚊媒传染病）"
-            label="登革热（蚊媒传染病）"
-          ></el-option>
-          <el-option
-            value="疟疾（蚊媒传染病）"
-            label="疟疾（蚊媒传染病）"
-          ></el-option>
-          <el-option
-            value="森林脑炎（蜱媒传染病）"
-            label="森林脑炎（蜱媒传染病）"
-          ></el-option>
-          <el-option
-            value="发热伴血小板减少综合征（蜱媒传染病）"
-            label="发热伴血小板减少综合征（蜱媒传染病）"
-          ></el-option>
-          <el-option value="斑疹伤寒" label="斑疹伤寒"></el-option>
-          <el-option value="流行性出血热" label="流行性出血热"></el-option>
-          <el-option value="其他" label="其他"></el-option>
-        </el-select>
-      </el-form-item>
-
-      <el-form-item>
-        <el-button
-          type="primary"
-          class="custom-button"
-          @click="handleQuery"
-          plain
-          size="default"
-          style="margin-left: 5px"
-          >搜索</el-button
-        >
-        <el-button
-          type="primary"
-          class="custom-button"
-          @click="handleAdd"
-          size="default"
-          style="margin-left: 5px"
-          >添加宣传材料</el-button
-        >
-      </el-form-item>
-    </el-form>
-
     <!-- 表格部分 -->
     <div class="usertable">
       <el-table
@@ -97,12 +28,23 @@
             </el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="satisfaction" label="满意度" width="300">
-        <template #default="scope">
-            <el-tag :type="scope.row.satisfaction">
-              {{ scope.row.satisfaction }}
+        <el-table-column prop="materialId" label="满意度" width="300">
+          <template #default="scope">
+            <el-tag :type="scope.row.materialId">
+            <el-button
+              link
+              type="primary"
+              @click="handleCheckScore(scope.row.materialId,scope.row.Title)"
+            >
+              {{ scope.row.materialId }}
+            </el-button>
             </el-tag>
           </template>
+        <!-- <template #default="scope">
+            <el-tag :type="scope.row.materialId">
+              {{ scope.row.materialId }}
+            </el-tag>
+          </template> -->
         </el-table-column>
         <el-table-column fixed="right" label="操作" min-width="300">
           <template #default="scope">
@@ -128,6 +70,7 @@
       />
       <Checksatis ref="Checksatis" :form="queryParams" />
       <Addmaterials ref="Addmaterials" />
+      <CheckSatisScore ref="CheckSatisScore" />
     </div>
   </div>
 </template>
@@ -137,6 +80,7 @@ import { ref, onMounted } from "vue";
 import Pagination from "@/components/pagination.vue";
 import Checksatis from "./components/checksatis.vue";
 import Addmaterials from "../propaganda/components/addmaterials.vue";
+import CheckSatisScore from "./components/checksatisscore.vue"
 import {
   pageSelectDiseaseLearningMaterials,
   startOrStopMaterial,
@@ -147,6 +91,7 @@ export default {
     Pagination,
     Checksatis,
     Addmaterials,
+    CheckSatisScore,
   },
 
   data() {
@@ -214,12 +159,12 @@ export default {
           this.total = response.data.data.total;
         } else {
           this.$message.error(
-            "获取宣传材料数据失败，请重试！" + response.data.message
+            "获取满意度调查问卷数据失败，请重试！" + response.data.message
           );
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-        this.$message.error("获取宣传材料数据失败，请重试！");
+        this.$message.error("获取满意度调查问卷数据失败，请重试！");
       } finally {
         this.loading = false;
       }
@@ -229,40 +174,45 @@ export default {
       this.$refs.Addmaterials.showDrawer();
     },
 
-    // 切换宣传材料状态
-    toggleStatus(row) {
-      this.$confirm("您确定要切换材料状态吗？", "提示", {
+// 切换问卷状态
+  async toggleStatus(row) {
+    // 检查当前是否有其他开放中的问卷
+    const openSurvey = this.allData.find((item) => !item.isDeleted && item.materialId !== row.materialId);
+
+    // 如果有其他开放中的调查，并且当前要切换的调查是想要开放，则阻止操作
+    if (openSurvey && row.isDeleted) {
+      this.$message.warning('只能开放一个调查问卷，若要开放此问卷，请先关闭另一个');
+      return;
+    }
+
+    // 弹出确认框
+    try {
+      await this.$confirm("您确定要切换问卷状态吗？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
-      })
-        .then(async () => {
-          try {
-            const newStatus = !row.isDeleted;
-            const response = await startOrStopMaterial(
-              row.materialId,
-              newStatus
-            );
+      });
 
-            if (response.data.code === 1) {
-              row.isDeleted = newStatus;
-              this.handleQuery();
-              this.$message.success(
-                `宣传材料已${newStatus ? "禁用" : "启用"}！`
-              );
-            } else {
-              this.$message.error("切换状态失败：" + response.data.message);
-            }
-          } catch (error) {
-            console.error("Error toggling status:", error);
-            this.$message.error("切换状态失败，请重试！");
-          }
-        })
-        .catch(() => {
-          this.$message.info("已取消状态切换");
-        });
+      // 切换问卷状态
+      const newStatus = !row.isDeleted;
+      const response = await startOrStopMaterial(row.materialId, newStatus);
+
+      // 成功后刷新数据
+      if (response.data.code === 1) {
+        row.isDeleted = newStatus;
+        this.$message.success(`问卷已${newStatus ? "禁用" : "启用"}！`);
+        
+        // 更新 allData，确保视图刷新
+        this.$set(this.allData, this.allData.indexOf(row), { ...row });
+      } else {
+        this.$message.error("切换状态失败：" + response.data.message);
+      }
+    } catch (error) {
+    }
+  },
+    handleCheckScore(user,title){
+      this.$refs.CheckSatisScore.showDrawer(user,title);
     },
-
     handlePagination({ page, limit }) {
       this.queryParams.pageNum = page;
       this.queryParams.pageSize = limit;

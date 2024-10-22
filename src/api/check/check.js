@@ -28,13 +28,13 @@ export const getUserByBaseInfo = async (params) => {
 };
 
 // 添加检查信息
-export const saveLabTestReport = async (params) => {
+export const saveLabTestReport = async (params,userId) => {
   const response = await axiosInstance.post(
     "/medicalStaff/labTestManager/saveLabTestReport",
     params,
     {
       headers: {
-        userId: "your-user-id", // 请求头中传递 userId
+        userId: userId, // 请求头中传递 userId
       },
     }
   );
@@ -47,4 +47,13 @@ export const selectLabTest = async (labTestReportID) => {
     `/medicalStaff/labTestManager/selectLabTest/${labTestReportID}`
   );
   return response;
+};
+
+// 上传文件通用接口
+export const saveLabTestFile = (formData) => {
+  return axios.post('/common/file/saveLabTestFile', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 };
