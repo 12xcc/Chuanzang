@@ -216,7 +216,7 @@ async toggleStatus(row) {
     // 成功后刷新数据
     if (response.data.code === 1) {
       row.isOpen = row.isOpen === true ? '开放中' : '已关闭';
-      this.$message.success(`问卷已${row.isOpen === true ? "开放" : "关闭"}！`);
+      this.$message.success("问卷状态切换成功！");
       this.handleQuery();
     } else {
       this.$message.error("切换状态失败：" + response.data.msg);
