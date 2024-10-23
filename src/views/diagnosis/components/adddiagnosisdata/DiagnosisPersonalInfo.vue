@@ -142,8 +142,8 @@ export default {
       allDisabled: false,
       visible: false, // 控制弹窗显示
       form: {
-        Height: null,
-        Weight: null,
+        height: null,
+        weight: null,
         bloodPressure: '',
         bloodSugarFasting: null,
         bloodSugarRandom: null,
@@ -166,8 +166,8 @@ export default {
     },
     getInitialForm() {
       return {
-        Height: null,
-        Weight: null,
+        height: null,
+        weight: null,
         bloodPressure: '',
         bloodSugarFasting: null,
         bloodSugarRandom: null,

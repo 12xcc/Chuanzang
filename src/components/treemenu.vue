@@ -13,22 +13,26 @@
         <img src="../assets/menu_icons/user.svg" alt="" class="menu-icons" />
         <span>用户管理</span>
       </template>
-      <el-menu-item index="/user/alluser"  v-if="userStore.role === 'admin'" >
+      <!-- 仅系统管理员可见 -->
+      <el-menu-item index="/user/alluser" v-if="userStore.role === '系统管理员'">
         <img src="../assets/menu_icons/all-users.svg" alt="" class="menu-icons" />
         <span>所有用户管理</span>
       </el-menu-item>
-      <el-menu-item index="/user/password"  v-if="userStore.role === 'admin'||userStore.role === 'medicalStaff'||userStore.role === 'cdc'" >
+      <!-- 系统管理员、疾控中心工作人员、专职医护人员可见 -->
+      <el-menu-item index="/user/password" v-if="userStore.role === '系统管理员' || userStore.role === '专职医护人员' || userStore.role === '疾控中心工作人员'">
         <img src="../assets/menu_icons/password.svg" alt="" class="menu-icons" />
         <span>个人密码修改</span>
       </el-menu-item>
     </el-sub-menu>
 
-    <el-menu-item index="/work-env" v-if="userStore.role === 'cdc'||userStore.role === 'admin'">
+    <!-- 系统管理员和疾控中心工作人员可见 -->
+    <el-menu-item index="/work-env" v-if="userStore.role === '系统管理员' || userStore.role === '疾控中心工作人员'">
       <img src="../assets/menu_icons/work-env.svg" alt="" class="menu-icons" />
       <span>工作环境管理</span>
     </el-menu-item>
 
-    <el-sub-menu index="/report" v-if="userStore.role === 'admin' || userStore.role === 'cdc'">
+    <!-- 统计报表：系统管理员和疾控中心工作人员可见 -->
+    <el-sub-menu index="/report" v-if="userStore.role === '系统管理员' || userStore.role === '疾控中心工作人员'">
       <template #title>
         <img src="../assets/menu_icons/report.svg" alt="" class="menu-icons" />
         <span>统计报表</span>
@@ -47,17 +51,20 @@
       </el-menu-item>
     </el-sub-menu>
 
-    <el-menu-item index="/diagnosis" v-if="userStore.role === 'admin' || userStore.role === 'medicalStaff'||userStore.role === 'cdc'">
+    <!-- 诊断信息管理：系统管理员、专职医护人员、疾控中心工作人员可见 -->
+    <el-menu-item index="/diagnosis" v-if="userStore.role === '系统管理员' || userStore.role === '专职医护人员' || userStore.role === '疾控中心工作人员'">
       <img src="../assets/menu_icons/diagnosis.svg" alt="" class="menu-icons" />
       <span>诊断信息管理</span>
     </el-menu-item>
 
-    <el-menu-item index="/check" v-if="userStore.role === 'admin' || userStore.role === 'medicalStaff'||userStore.role === 'cdc'">
+    <!-- 检查信息管理：系统管理员、专职医护人员、疾控中心工作人员可见 -->
+    <el-menu-item index="/check" v-if="userStore.role === '系统管理员' || userStore.role === '专职医护人员' || userStore.role === '疾控中心工作人员'">
       <img src="../assets/menu_icons/check.svg" alt="" class="menu-icons" />
       <span>检查信息管理</span>
     </el-menu-item>
 
-    <el-sub-menu index="/system" v-if="userStore.role === 'admin'">
+    <!-- 系统管理：仅系统管理员可见 -->
+    <el-sub-menu index="/system" v-if="userStore.role === '系统管理员'">
       <template #title>
         <img src="../assets/menu_icons/system.svg" alt="" class="menu-icons" />
         <span>系统管理</span>
@@ -74,7 +81,7 @@
         <img src="../assets/menu_icons/auto_weight_update.svg" alt="" class="menu-icons" />
         <span>启动自动权重更新</span>
       </el-menu-item>
-      <el-menu-item index="/system/expert-AI" >
+      <el-menu-item index="/system/expert-AI">
         <img src="../assets/menu_icons/ExpertorAI_diagnosis_switching.svg" alt="" class="menu-icons" />
         <span>专家/AI诊断切换</span>
       </el-menu-item>
@@ -84,17 +91,20 @@
       </el-menu-item>
     </el-sub-menu>
 
-    <el-menu-item index="/feedback" v-if="userStore.role === 'admin'">
+    <!-- 用户反馈：仅系统管理员可见 -->
+    <el-menu-item index="/feedback" v-if="userStore.role === '系统管理员'">
       <img src="../assets/menu_icons/user_feedback.svg" alt="" class="menu-icons" />
       <span>用户反馈</span>
     </el-menu-item>
 
-    <el-menu-item index="/propaganda" v-if="userStore.role === 'admin'|| userStore.role === 'cdc'">
+    <!-- 宣传材料管理：系统管理员和疾控中心工作人员可见 -->
+    <el-menu-item index="/propaganda" v-if="userStore.role === '系统管理员' || userStore.role === '疾控中心工作人员'">
       <img src="../assets/menu_icons/study.svg" alt="" class="menu-icons" />
       <span>宣传材料管理</span>
     </el-menu-item>
 
-    <el-menu-item index="/satisfaction" v-if="userStore.role === 'admin'">
+    <!-- 满意度调查：仅系统管理员可见 -->
+    <el-menu-item index="/satisfaction" v-if="userStore.role === '系统管理员'">
       <img src="../assets/menu_icons/satisfaction.svg" alt="" class="menu-icons" />
       <span>满意度调查</span>
     </el-menu-item>
@@ -159,6 +169,7 @@ export default {
   }
 };
 </script>
+
 
 
 <style scoped>

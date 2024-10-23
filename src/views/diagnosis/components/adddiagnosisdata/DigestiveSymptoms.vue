@@ -7,7 +7,6 @@
       ref="form"
       :rules="rules"
       :disabled="allDisabled"
-       
       label-position="left"
     >
       <div class="GeneralSymptoms">
@@ -16,43 +15,78 @@
             <div class="blue-box"></div>
             <span class="title-text">腹泻情况</span>
           </div>
-          <el-radio-group v-model="form.diarrheaFrequencyGEThreeTimesPerDay">
-            <el-radio :value="1">腹泻 <3次/天</el-radio>
-            <el-radio :value="2">腹泻 ≥3 次/天</el-radio>
+          <el-radio-group
+            v-model="form.diarrheaFrequencyGEThreeTimesPerDay"
+            :disabled="allDisabled"
+          >
+            <el-radio :value="false">腹泻≤3次/天</el-radio>
+            <el-radio :value="true">腹泻≥3次/天</el-radio>
           </el-radio-group>
-
           <div class="NextContainer">
             <div
-              v-if="form.diarrheaFrequencyGEThreeTimesPerDay"
-              style="padding: 15px 0 15px 0"
+              v-if="
+                form.diarrheaFrequencyGEThreeTimesPerDay === true ||
+                form.diarrheaFrequencyGEThreeTimesPerDay === false
+              "
+              style="padding: 15px 0"
             >
-              <el-form-item label="腹泻次数" style="">
+              <el-form-item label="腹泻次数">
                 <el-input-number
                   v-model="form.diarrheaTimesPerDay"
                   :min="0"
                   placeholder="腹泻次数"
+                  :disabled="allDisabled"
                 />
                 &nbsp;&nbsp;&nbsp;次/天
               </el-form-item>
 
-              <el-form-item label="粪便性状" style="">
-                <el-radio-group
-                  v-model="form.hasStoolType1"
+              <div style="margin-left: 10px; display: block">
+                <el-check-tag
+                  :checked="form.hasStoolType1"
+                  @change="handleStoolTypeChange(1)"
                   type="primary"
                   :disabled="allDisabled"
-                   
+                >
+                  粪便性状1
+                </el-check-tag>
+
+                <el-check-tag
+                  :checked="form.hasStoolType2"
+                  @change="handleStoolTypeChange(2)"
+                  type="primary"
+                  :disabled="allDisabled"
+                >
+                  粪便性状2
+                </el-check-tag>
+              </div>
+
+              <div v-if="form.hasStoolType1" style="margin-left: 40px">
+                <el-radio-group
+                  v-model="form.stoolType1Detail"
+                  :disabled="allDisabled"
                 >
                   <el-radio value="水样">水样</el-radio>
                   <el-radio value="米泔样">米泔样</el-radio>
                   <el-radio value="洗肉水样">洗肉水样</el-radio>
+                </el-radio-group>
+              </div>
+
+              <div v-if="form.hasStoolType2" style="margin-left: 40px">
+                <el-radio-group
+                  v-model="form.stoolType2Detail"
+                  :disabled="allDisabled"
+                >
                   <el-radio value="大块黏膜">大块黏膜</el-radio>
                   <el-radio value="脓血">脓血</el-radio>
                   <el-radio value="黑便">黑便</el-radio>
                 </el-radio-group>
-              </el-form-item>
+              </div>
 
               <el-form-item label="腹泻方式" style="margin-top: 20px">
-                <el-radio-group v-model="form.diarrheaMode">
+                <el-radio-group
+                  v-model="form.diarrheaMode"
+                  :disabled="allDisabled"
+                >
                   <el-radio value="里急后重">里急后重</el-radio>
                   <el-radio value="通畅">通畅</el-radio>
                   <el-radio value="失禁">失禁</el-radio>
@@ -61,7 +95,10 @@
               </el-form-item>
 
               <el-form-item label="粪便量" style="margin-top: 20px">
-                <el-radio-group v-model="form.stoolAmount">
+                <el-radio-group
+                  v-model="form.stoolAmount"
+                  :disabled="allDisabled"
+                >
                   <el-radio value="多">多</el-radio>
                   <el-radio value="少">少</el-radio>
                 </el-radio-group>
@@ -86,7 +123,6 @@
               @change="toggleTag('hasVomiting')"
               type="primary"
               :disabled="allDisabled"
-               
             >
               呕吐
             </el-check-tag>
@@ -99,6 +135,7 @@
               <el-radio-group
                 v-model="form.vomitingMode"
                 style="margin-left: 20px"
+                :disabled="allDisabled"
               >
                 <el-radio value="喷射状">喷射状</el-radio>
                 <el-radio value="先泻后吐">先泻后吐</el-radio>
@@ -118,7 +155,6 @@
             @change="toggleTag('hasNausea')"
             type="primary"
             :disabled="allDisabled"
-             
           >
             恶心
           </el-check-tag>
@@ -127,7 +163,6 @@
             @change="toggleTag('hasAppetiteLoss')"
             type="primary"
             :disabled="allDisabled"
-             
           >
             食欲减退
           </el-check-tag>
@@ -136,7 +171,6 @@
             @change="toggleTag('hasAbdominalDistension')"
             type="primary"
             :disabled="allDisabled"
-             
           >
             腹胀
           </el-check-tag>
@@ -145,7 +179,6 @@
             @change="toggleTag('hasAbdominalPain')"
             type="primary"
             :disabled="allDisabled"
-             
           >
             腹痛
           </el-check-tag>
@@ -154,7 +187,6 @@
             @change="toggleTag('hasBorborygmus')"
             type="primary"
             :disabled="allDisabled"
-             
           >
             腹鸣
           </el-check-tag>
@@ -163,7 +195,6 @@
             @change="toggleTag('hasUpperAbdominalDiscomfort')"
             type="primary"
             :disabled="allDisabled"
-             
           >
             上腹部不适
           </el-check-tag>
@@ -172,7 +203,6 @@
             @change="toggleTag('hasConstipation')"
             type="primary"
             :disabled="allDisabled"
-             
           >
             便秘
           </el-check-tag>
@@ -181,7 +211,6 @@
             @change="toggleTag('hasOliguriaOrAnuria')"
             type="primary"
             :disabled="allDisabled"
-             
           >
             少尿或无尿
           </el-check-tag>
@@ -190,7 +219,6 @@
     </el-form>
   </div>
 </template>
-
 <script>
 import { ElMessage } from "element-plus";
 export default {
@@ -199,17 +227,17 @@ export default {
       allDisabled: false,
        
       form: {
-        diarrheaFrequencyGEThreeTimesPerDay: "",
-        diarrheaTimesPerDay: "",
+        diarrheaFrequencyGEThreeTimesPerDay: null,
+        diarrheaTimesPerDay: null,
         hasStoolType1: false,
-        stoolType1Detail: "",
+        stoolType1Detail: null,
         hasStoolType2: false,
-        stoolType2Detail: "",
-        diarrheaMode: "",
-        stoolAmount: "",
-        stoolOdor: "",
+        stoolType2Detail: null,
+        diarrheaMode: null,
+        stoolAmount: null,
+        stoolOdor: null,
         hasVomiting: false,
-        vomitingMode: "",
+        vomitingMode: null,
         hasNausea: false,
         hasAppetiteLoss: false,
         hasAbdominalDistension: false,
@@ -223,7 +251,6 @@ export default {
     };
   },
   methods: {
-
     toggleTag(field) {
       this.form[field] = !this.form[field];
     },
@@ -231,19 +258,34 @@ export default {
       this.form = this.getInitialForm();
       this.message = "";
     },
+    handleStoolTypeChange(type) {
+      if (type === 1) {
+        this.form.hasStoolType1 = !this.form.hasStoolType1;
+        if (this.form.hasStoolType1) {
+          this.form.hasStoolType2 = false; // 选择粪便性状1时，取消选择性状2
+          this.form.stoolType2Detail = null; // 清空性状2详情
+        }
+      } else {
+        this.form.hasStoolType2 = !this.form.hasStoolType2;
+        if (this.form.hasStoolType2) {
+          this.form.hasStoolType1 = false; // 选择粪便性状2时，取消选择性状1
+          this.form.stoolType1Detail = null; // 清空性状1详情
+        }
+      }
+    },
     getInitialForm() {
       return {
-         diarrheaFrequencyGEThreeTimesPerDay: "",
-        diarrheaTimesPerDay: "",
+        diarrheaFrequencyGEThreeTimesPerDay: null,
+        diarrheaTimesPerDay: null,
         hasStoolType1: false,
-        stoolType1Detail: "",
+        stoolType1Detail: null,
         hasStoolType2: false,
-        stoolType2Detail: "",
-        diarrheaMode: "",
-        stoolAmount: "",
-        stoolOdor: "",
+        stoolType2Detail: null,
+        diarrheaMode: null,
+        stoolAmount: null,
+        stoolOdor: null,
         hasVomiting: false,
-        vomitingMode: "",
+        vomitingMode: null,
         hasNausea: false,
         hasAppetiteLoss: false,
         hasAbdominalDistension: false,

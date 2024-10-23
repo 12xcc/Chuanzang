@@ -19,33 +19,20 @@
 <script>
 import { onMounted } from 'vue';
 import { CountUp } from 'countup.js';
-// import allusernumber from '@/assets/screenimgs/allusernumber.svg';
-// import satisone from '@/assets/satisfaction/satisone.svg';
-// import todaycheckin from '@/assets/screenimgs/todaycheckin.svg';
-// import todayhealth from '@/assets/screenimgs/todayhealth.svg';
-// import todaydisease from '@/assets/screenimgs/todaydisease.svg';
-// import todaynotcheckin from '@/assets/screenimgs/todaynotcheckin.svg';
-import { getStatisticsData } from '@/api/report/screen.js'; // 导入接口
+import { getSatisfactionNumberInfo } from '@/api/satisfaction/satisfaction.js'; // 引入满意度统计接口
 
 export default {
   data() {
     return {
-      // cardData: [
-      //   { title: "总提交人数", data: 0, imgSrc: allusernumber },
-      //   { title: "非常满意", data: 0, imgSrc: satisone },
-      //   { title: "满意", data: 0, imgSrc: todaycheckin },
-      //   { title: "一般", data: 0, imgSrc: todayhealth },
-      //   { title: "不满意", data: 0, imgSrc: todaydisease },
-      //   { title: "非常不满意", data: 0, imgSrc: todaynotcheckin }
-      // ]
-       cardData: [
-        { title: "总提交人数", data: 0, },
-        { title: "非常满意", data: 0,  },
-        { title: "满意", data: 0,  },
-        { title: "一般", data: 0,  },
-        { title: "不满意", data: 0,  },
-        { title: "非常不满意", data: 0,  }
-      ]
+      cardData: [
+        { title: "总提交人数", data: 0 },
+        { title: "非常满意", data: 0 },
+        { title: "满意", data: 0 },
+        { title: "一般", data: 0 },
+        { title: "不满意", data: 0 },
+        { title: "非常不满意", data: 0 }
+      ],
+      surveyID: 1,  // 示例，实际使用时请替换为动态 surveyID
     };
   },
   methods: {
@@ -56,32 +43,34 @@ export default {
       });
     },
 
-    async fetchStatisticsData() {
+    async fetchSatisfactionData() {
       try {
-        const response = await getStatisticsData();
+        const response = await getSatisfactionNumberInfo(this.surveyID);
         if (response.data.code === 1) {
-          const statistics = response.data.data;
-          this.cardData[0].data = statistics.userNumber; // 总人数
-          this.cardData[1].data = statistics.checkInNumber; // 总打卡数
-          this.cardData[5].data = statistics.userHealthNumber + statistics.userDiseaseNumber; // 今日打卡人数
-          this.cardData[3].data = statistics.userHealthNumber; // 今日健康人数
-          this.cardData[4].data = statistics.userDiseaseNumber; // 今日患病人数
-          this.cardData[2].data = statistics.userNumber - (statistics.userHealthNumber + statistics.userDiseaseNumber); // 今日未打卡人数
+          const data = response.data.data;
+          this.cardData[0].data = 
+            data.veryHappy + data.happy + data.normal + data.noHappy + data.veryNoHappy; // 总提交人数
+          this.cardData[1].data = data.veryHappy; // 非常满意人数
+          this.cardData[2].data = data.happy; // 满意人数
+          this.cardData[3].data = data.normal; // 一般人数
+          this.cardData[4].data = data.noHappy; // 不满意人数
+          this.cardData[5].data = data.veryNoHappy; // 非常不满意人数
 
-          this.startCountAnimation(); // 调用动画
+          this.startCountAnimation(); // 启动动画
         } else {
-          this.$message.error("获取统计数据失败，请重试！");
+          this.$message.error("获取满意度统计数据失败，请重试！");
         }
       } catch (error) {
-        console.error("Error fetching statistics data:", error);
-        this.$message.error("获取统计数据失败，请重试！");
+        console.error("Error fetching satisfaction data:", error);
+        this.$message.error("获取满意度统计数据失败，请重试！");
       }
     }
   },
   mounted() {
-    this.fetchStatisticsData(); // 组件挂载时调用接口
+    this.fetchSatisfactionData(); // 组件挂载时调用接口
   }
 };
+
 </script>
 
 <style scoped>

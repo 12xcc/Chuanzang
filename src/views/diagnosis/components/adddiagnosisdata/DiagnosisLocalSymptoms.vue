@@ -157,10 +157,10 @@ export default {
     return {
       visible: false, // 控制弹窗显示
       form: {
-        hasConjunctivitis: false,
-        hasConjunctivalCongestion: false,
-        hasEyelidEdema: false,
-        hasSmellTasteLoss: false,
+        hasConjunctivitis: false, // 是否结膜炎
+        hasConjunctivalCongestion: false, // 是否眼结膜充血、肿胀疼痛
+        hasEyelidEdema: false, // 是否上下眼睑水肿
+        hasSmellTasteLoss: false, // 是否味觉丧失或减退
         hasFacialRednessOrPallor: false,
         hasRednessNeckChest: false,
         hasLipCyanosis: false,
@@ -218,10 +218,10 @@ export default {
     },
     getInitialForm() {
       return {
-        hasConjunctivitis: false,
-        hasConjunctivalCongestion: false,
-        hasEyelidEdema: false,
-        hasSmellTasteLoss: false,
+        hasConjunctivitis: false, // 是否结膜炎
+        hasConjunctivalCongestion: false, // 是否眼结膜充血、肿胀疼痛
+        hasEyelidEdema: false, // 是否上下眼睑水肿
+        hasSmellTasteLoss: false, // 是否味觉丧失或减退
         hasFacialRednessOrPallor: false,
         hasRednessNeckChest: false,
         hasLipCyanosis: false,
@@ -232,10 +232,12 @@ export default {
         hasOrbitalPain: false,
         hasMucosalBleedingInOralOrNasal: false,
         hasSkinBleedingPoints: false,
+        hasHepatomegaly: false, // BOOLEAN, -- 是否肝肿大
+        hasSplenomegaly: false, // BOOLEAN, -- 是否脾肿大
       };
     },
     getData() {
-      return this.form; // 返回当前组件的表单数据
+      return this.form; 
     },
   },
 };

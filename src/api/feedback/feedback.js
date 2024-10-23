@@ -1,10 +1,10 @@
 import axiosInstance from "@/utils/axiosInstance.js";
 
 // 获取反馈信息列表
-export const fetchFeedbackData = async (params) => {
+export const fetchFeedbackData = async (data) => {
   const response = await axiosInstance.post(
     "/admin/feedBackManager/pageSelectFeedBack",
-    params
+    data,
   );
   return response;
 };

@@ -14,123 +14,135 @@
             <span class="title-text">症状</span>
           </div>
           <el-check-tag
-      :checked="form.hasDelirium"
-      type="primary"
-      @change="toggleTag('hasDelirium')"
-    >
-      儋妄
-    </el-check-tag>
+            :checked="form.hasDelirium"
+            type="primary"
+            @change="toggleTag('hasDelirium')"
+            :disabled="allDisabled"
+          >
+            儋妄
+          </el-check-tag>
 
-    <el-check-tag
-      :checked="form.hasConvulsion"
-      type="primary"
-      @change="toggleTag('hasConvulsion')"
-    >
-      抽搐
-    </el-check-tag>
+          <el-check-tag
+            :checked="form.hasConvulsion"
+            type="primary"
+            @change="toggleTag('hasConvulsion')"
+            :disabled="allDisabled"
+          >
+            抽搐
+          </el-check-tag>
 
-    <el-check-tag
-      :checked="form.hasDrowsiness"
-      type="primary"
-      @change="toggleTag('hasDrowsiness')"
-    >
-      昏睡
-    </el-check-tag>
+          <el-check-tag
+            :checked="form.hasDrowsiness"
+            type="primary"
+            @change="toggleTag('hasDrowsiness')"
+            :disabled="allDisabled"
+          >
+            昏睡
+          </el-check-tag>
 
-    <el-check-tag
-      :checked="form.hasComa"
-      type="primary"
-      @change="toggleTag('hasComa')"
-    >
-      昏迷
-    </el-check-tag>
+          <el-check-tag
+            :checked="form.hasComa"
+            type="primary"
+            @change="toggleTag('hasComa')"
+            :disabled="allDisabled"
+          >
+            昏迷
+          </el-check-tag>
 
-    <el-check-tag
-      :checked="form.hasStiffNeck"
-      type="primary"
-      @change="toggleTag('hasStiffNeck')"
-    >
-      颈部强直
-    </el-check-tag>
+          <el-check-tag
+            :checked="form.hasStiffNeck"
+            type="primary"
+            @change="toggleTag('hasStiffNeck')"
+            :disabled="allDisabled"
+          >
+            颈部强直
+          </el-check-tag>
 
-    <el-check-tag
-      :checked="form.hasRestlessness"
-      type="primary"
-      @change="toggleTag('hasRestlessness')"
-    >
-      烦躁不安
-    </el-check-tag>
+          <el-check-tag
+            :checked="form.hasRestlessness"
+            type="primary"
+            @change="toggleTag('hasRestlessness')"
+            :disabled="allDisabled"
+          >
+            烦躁不安
+          </el-check-tag>
 
-    <el-check-tag
-      :checked="form.hasMuscleParalysisNeckShoulder"
-      type="primary"
-      @change="toggleTag('hasMuscleParalysisNeckShoulder')"
-    >
-      颈肩部肌肉迟缓性瘫痪
-    </el-check-tag>
+          <el-check-tag
+            :checked="form.hasMuscleParalysisNeckShoulder"
+            type="primary"
+            @change="toggleTag('hasMuscleParalysisNeckShoulder')"
+            :disabled="allDisabled"
+          >
+            颈肩部肌肉迟缓性瘫痪
+          </el-check-tag>
 
-    <el-check-tag
-      :checked="form.hasMuscleParalysisLimbs"
-      type="primary"
-      @change="toggleTag('hasMuscleParalysisLimbs')"
-    >
-      肢体肌肉迟缓性瘫痪
-    </el-check-tag>
+          <el-check-tag
+            :checked="form.hasMuscleParalysisLimbs"
+            type="primary"
+            @change="toggleTag('hasMuscleParalysisLimbs')"
+            :disabled="allDisabled"
+          >
+            肢体肌肉迟缓性瘫痪
+          </el-check-tag>
 
-    <el-check-tag
-      :checked="form.hasSwallowingDifficulty"
-      type="primary"
-      @change="toggleTag('hasSwallowingDifficulty')"
-    >
-      吞咽困难
-    </el-check-tag>
+          <el-check-tag
+            :checked="form.hasSwallowingDifficulty"
+            type="primary"
+            @change="toggleTag('hasSwallowingDifficulty')"
+            :disabled="allDisabled"
+          >
+            吞咽困难
+          </el-check-tag>
 
-    <el-check-tag
-      :checked="form.hasSpeechDisorder"
-      type="primary"
-      @change="toggleTag('hasSpeechDisorder')"
-    >
-      语言障碍
-    </el-check-tag>
+          <el-check-tag
+            :checked="form.hasSpeechDisorder"
+            type="primary"
+            @change="toggleTag('hasSpeechDisorder')"
+            :disabled="allDisabled"
+          >
+            语言障碍
+          </el-check-tag>
 
-    <el-check-tag
-      :checked="form.hasConsciousnessDisorder"
-      type="primary"
-      @change="toggleTag('hasConsciousnessDisorder')"
-    >
-      意识障碍或惊厥
-    </el-check-tag>
+          <el-check-tag
+            :checked="form.hasConsciousnessDisorder"
+            type="primary"
+            @change="toggleTag('hasConsciousnessDisorder')"
+            :disabled="allDisabled"
+          >
+            意识障碍或惊厥
+          </el-check-tag>
 
-    <el-check-tag
-      :checked="form.hasDizziness"
-      type="primary"
-      @change="toggleTag('hasDizziness')"
-    >
-      头晕
-    </el-check-tag>
+          <el-check-tag
+            :checked="form.hasDizziness"
+            type="primary"
+            @change="toggleTag('hasDizziness')"
+            :disabled="allDisabled"
+          >
+            头晕
+          </el-check-tag>
 
-    <el-check-tag
-      :checked="form.hasTinnitus"
-      type="primary"
-      @change="toggleTag('hasTinnitus')"
-    >
-      耳鸣
-    </el-check-tag>
+          <el-check-tag
+            :checked="form.hasTinnitus"
+            type="primary"
+            @change="toggleTag('hasTinnitus')"
+            :disabled="allDisabled"
+          >
+            耳鸣
+          </el-check-tag>
 
-    <el-check-tag
-      :checked="form.hasHearingLoss"
-      type="primary"
-      @change="toggleTag('hasHearingLoss')"
-    >
-      听力减退
-    </el-check-tag>
-
+          <el-check-tag
+            :checked="form.hasHearingLoss"
+            type="primary"
+            @change="toggleTag('hasHearingLoss')"
+            :disabled="allDisabled"
+          >
+            听力减退
+          </el-check-tag>
         </div>
       </div>
     </el-form>
   </div>
 </template>
-
 <script>
 import { ElMessage } from "element-plus";
 import Dateselection from "@/components/date_selection.vue";
@@ -140,9 +152,10 @@ export default {
   },
   data() {
     return {
+      allDisabled:false,
       visible: false, // 控制弹窗显示
       form: {
-         hasDelirium: false,
+        hasDelirium: false,
         hasConvulsion: false,
         hasDrowsiness: false,
         hasComa: false,
@@ -155,7 +168,7 @@ export default {
         hasConsciousnessDisorder: false,
         hasDizziness: false,
         hasTinnitus: false,
-        hasHearingLoss: false
+        hasHearingLoss: false,
       },
 
       rules: {},
@@ -203,7 +216,7 @@ export default {
     },
     getInitialForm() {
       return {
-         hasDelirium: false,
+        hasDelirium: false,
         hasConvulsion: false,
         hasDrowsiness: false,
         hasComa: false,
@@ -216,7 +229,7 @@ export default {
         hasConsciousnessDisorder: false,
         hasDizziness: false,
         hasTinnitus: false,
-        hasHearingLoss: false
+        hasHearingLoss: false,
       };
     },
 

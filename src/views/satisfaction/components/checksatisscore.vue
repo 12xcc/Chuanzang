@@ -1,5 +1,5 @@
 <template>
-<el-drawer
+  <el-drawer
     :model-value="visible"
     direction="rtl"
     size="800px"
@@ -7,73 +7,80 @@
     custom-class="custom-drawer"
     @close="handleCancel"
   >
-  <div class="container">
-    <div class="title">
+    <div class="container">
+      <div class="title">
         <h3>具体满意度反馈列表——{{ title }}</h3>
       </div>
-    <!-- 表格部分 -->
-    <Card ref="Card" />
-    <div class="usertable">
-       <div class="title-container">
-        <div class="blue-box"></div>
-        <span class="title-text">满意度统计列表</span>
-      </div>
-      <el-table
-        :header-cell-style="{
-          height: '40px',
-          background: '#f5f7fa',
-          color: '#333333',
-        }"
-        v-loading="loading"
-        :data="allData"
-        style="width: 100%"
-        :height="tableHeight"
-        :show-overflow-tooltip="true"
-      >
-        <el-table-column type="selection" width="55" />
-        <el-table-column prop="serialNumber" label="序号" width="150" />
-        <el-table-column prop="phoneNumber" label="用户名" width="200" />
-         <el-table-column prop="satisfactionScore" label="满意度打分" width="180">
-          <template #default="scope">
-            <el-tag
-              :type="
-                scope.row.diseaseOutcome === '非常满意'
-                  ? 'danger'
-                  : scope.row.diseaseOutcome === '满意'
-                  ? 'warning'
-                  :  scope.row.diseaseOutcome === '一般'
-                  ? 'success'
-                  :  scope.row.diseaseOutcome === '不满意'
-                  ? 'primary'
-                  : 'info'
-              "
-            >
-              {{ scope.row.diseaseOutcome }}
-            </el-tag>
-          </template>
-        </el-table-column>
-         <el-table-column prop="WorkOnPlateauStartDatet" label="提交时间" width="120" />
-      </el-table>
+      <!-- 表格部分 -->
+      <Card ref="Card" />
+      <div class="usertable">
+        <div class="title-container">
+          <div class="blue-box"></div>
+          <span class="title-text">满意度统计列表</span>
+        </div>
+        <el-table
+          :header-cell-style="{
+            height: '40px',
+            background: '#f5f7fa',
+            color: '#333333',
+          }"
+          v-loading="loading"
+          :data="allData"
+          style="width: 100%"
+          :height="tableHeight"
+          :show-overflow-tooltip="true"
+        >
+          <el-table-column type="selection" width="55" />
+          <el-table-column prop="serialNumber" label="序号" width="150" />
+          <el-table-column
+            prop="phoneNumber"
+            label="用户手机号码"
+            width="200"
+          />
+          <el-table-column
+            prop="satisfactionLevel"
+            label="满意度等级"
+            width="180"
+          >
+            <template #default="scope">
+              <el-tag
+                :type="
+                  scope.row.satisfactionLevel === '非常满意'
+                    ? 'success'
+                    : scope.row.satisfactionLevel === '满意'
+                    ? 'primary'
+                    : scope.row.satisfactionLevel === '一般'
+                    ? 'warning'
+                    : scope.row.satisfactionLevel === '不满意'
+                    ? 'danger'
+                    : 'info'
+                "
+              >
+                {{ scope.row.satisfactionLevel }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="ratingTime" label="打分时间" width="180" />
+        </el-table>
 
-      <!-- 分页组件 -->
-      <pagination
-        v-show="total > 0"
-        :total="total"
-        v-model:current-page="queryParams.pageNum"
-        v-model:page-size="queryParams.pageSize"
-        @pagination="handlePagination"
-      />
+        <!-- 分页组件 -->
+        <pagination
+          v-show="total > 0"
+          :total="total"
+          v-model:current-page="queryParams.pageNum"
+          v-model:page-size="queryParams.pageSize"
+          @pagination="handlePagination"
+        />
+      </div>
     </div>
-  </div>
   </el-drawer>
 </template>
+
 
 <script>
 import Pagination from "@/components/pagination.vue";
 import Card from "./card.vue";
-import {
-  fetchUserData,
-} from "@/api/user/alluser.js"; // 导入封装的 API
+import { pageSelectSatisfactionRating } from "@/api/satisfaction/satisfaction.js"; // 导入封装的 API
 
 export default {
   components: {
@@ -84,114 +91,99 @@ export default {
   data() {
     return {
       queryParams: {
-        userType: "",
-        choice: "", // 选择的字段
-        check: "", // 搜索关键词
         pageNum: 1,
         pageSize: 15,
+        surveyID: null, // 调查ID，需要传入
       },
-      visible:false,
+      visible: false,
       allData: [],
       total: 0,
-      showSearch: true,
       loading: false,
-      title:null,
+      title: null,
     };
   },
 
   computed: {
     tableHeight() {
-      return window.innerHeight -460;
+      return window.innerHeight - 460;
     },
   },
 
   methods: {
-    showDrawer(user,title) {
+    showDrawer(surveyID, title) {
       this.visible = true;
-      // 调用接口获取数据
-      this.form = { ...user };
-      this.title=title;
+      this.title = title;
+      this.queryParams.surveyID = surveyID; // 设置调查ID
+      this.fetchSatisfactionData();
     },
 
-    // 获取用户列表
-    async fetchUserData() {
-      // console.log("Fetching user data...");
+    // 分页查询满意度打分列表
+    async fetchSatisfactionData() {
       this.loading = true;
       try {
         const params = {
-          userType: this.queryParams.userType || "",
-          pageNo: this.queryParams.pageNum || 1,
-          pageSize: this.queryParams.pageSize || 15,
+          pageNo: this.queryParams.pageNum,
+          pageNumber: this.queryParams.pageSize,
+          surveyID: this.queryParams.surveyID, // 传递调查ID
         };
 
-        if (this.queryParams.choice && this.queryParams.check) {
-          params[this.queryParams.choice] = this.queryParams.check;
-        }
-
-        // 封装的api
-        const response = await fetchUserData(params);
+        const response = await pageSelectSatisfactionRating(params);
 
         if (response.data.code === 1) {
-          this.allData = response.data.data.records.map((item, index) => ({
-            serialNumber:
-              (this.queryParams.pageNum - 1) * this.queryParams.pageSize +
-              index +
-              1,
-            userType: item.userType,
-            name: item.name,
-            phoneNumber: item.phoneNumber,
-            gender: item.gender,
-            age: item.age,
-            ethnicity: item.ethnicity,
-            EducationLevel: item.educationLevel,
+          this.allData = response.data.data.records.map((item, index) => {
+            const formattedRatingTime = this.formatRatingTime(item.ratingTime); // 调用格式化函数
 
-            // 日期格式转换
-            WorkOnPlateauStartDate: item.workOnPlateauStartDate
-              ? `${item.workOnPlateauStartDate[0]}-${String(
-                  item.workOnPlateauStartDate[1]
-                ).padStart(2, "0")}-${String(
-                  item.workOnPlateauStartDate[2]
-                ).padStart(2, "0")}`
-              : "",
-
-            department: item.department,
-            SpecificOccupation: item.specificOccupation,
-            isActive: item.isActived,
-            userId: item.userId,
-          }));
+            return {
+              serialNumber:
+                (this.queryParams.pageNum - 1) * this.queryParams.pageSize +
+                index +
+                1,
+              phoneNumber: item.phoneNumber,
+              satisfactionLevel: item.satisfactionLevel, // 满意度等级
+              ratingTime: formattedRatingTime, // 使用格式化后的打分时间
+            };
+          });
           this.total = response.data.data.total;
         } else {
-          this.$message.error(
-            "获取用户数据失败，请重试！" + response.data.message
-          );
+          this.$message.error("获取满意度数据失败，请重试！");
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-        this.$message.error("获取用户数据失败，请重试！");
+        this.$message.error("获取满意度数据失败，请重试！");
       } finally {
         this.loading = false;
       }
     },
 
+    // 格式化打分时间函数
+    formatRatingTime(ratingTimeArray) {
+      if (!ratingTimeArray || ratingTimeArray.length < 6) return ""; // 处理无效的时间数组
+
+      const [year, month, day, hour, minute, second] = ratingTimeArray;
+
+      // 格式化为 YYYY-MM-DD HH:mm:ss
+      return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(
+        2,
+        "0"
+      )} ${String(hour).padStart(2, "0")}:${String(minute).padStart(
+        2,
+        "0"
+      )}:${String(second).padStart(2, "0")}`;
+    },
 
     handleCancel() {
       this.visible = false;
     },
+
     // 分页
     handlePagination({ page, limit }) {
       this.queryParams.pageNum = page;
       this.queryParams.pageSize = limit;
-      this.fetchUserData();
+      this.fetchSatisfactionData(); // 分页时重新获取数据
     },
-
-  },
-
-  mounted() {
-    this.fetchUserData();
   },
 };
 </script>
-
 
 
 <style scoped>
@@ -218,23 +210,23 @@ export default {
   margin-bottom: 10px;
 }
 .title-container {
-    display: flex;
-    margin-left: 0px;
-    margin-bottom: 20px;
-    margin-top: 20px;
+  display: flex;
+  margin-left: 0px;
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .blue-box {
-    width: 6px;
-    height: 18px;
-    background-color: #285ac8;
-    margin-right: 10px;
+  width: 6px;
+  height: 18px;
+  background-color: #285ac8;
+  margin-right: 10px;
 }
 
 .title-text {
-    font-size: 12px;
-    font-weight: bold;
-    color: #4a4a4a;
+  font-size: 12px;
+  font-weight: bold;
+  color: #4a4a4a;
 }
 </style>
  

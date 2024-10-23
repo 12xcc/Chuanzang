@@ -21,20 +21,20 @@ const handleOpen = () => {};
 
 // 根据角色返回不同的标题
 const getTitle = () => {
-  const userStore = useUserStore();
   const name = userStore.name || ''; 
 
-  if (userStore.role === 'admin') {
+  if (userStore.role === '系统管理员') {
     return `系统管理员-${name}`;
-  } else if (userStore.role === 'medicalStaff') {
+  } else if (userStore.role === '专职医护人员') {
     return `专职医护人员-${name}`; 
-  } else if (userStore.role === 'cdc') {
+  } else if (userStore.role === '疾控中心工作人员') {
     return `疾控中心工作人员-${name}`;
   }
 
   return `用户-${name}`; // 默认标题
 };
 </script>
+
 
 <style lang="less" scoped>
 .aside-container {

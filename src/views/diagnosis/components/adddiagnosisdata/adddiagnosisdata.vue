@@ -13,7 +13,9 @@
         <div class="footer">
           <el-button @click="handleCancel">取消</el-button>
           <el-button @click="handleReset">重置</el-button>
-          <el-button type="primary" @click="handleSubmit(this.userId)">提交</el-button>
+          <el-button type="primary" @click="handleSubmit(this.userId)"
+            >提交</el-button
+          >
         </div>
       </div>
       <el-form
@@ -129,7 +131,7 @@
           <NeurologicalSymptoms ref="NeurologicalSymptoms" />
         </div>
 
-        <div v-show="selectedTag === 'LocalSymptoms'">
+        <div v-show="selectedTag === 'DiagnosisLocalSymptoms'">
           <DiagnosisLocalSymptoms ref="DiagnosisLocalSymptoms" />
         </div>
 
@@ -162,7 +164,7 @@ import OtherSymptoms from "./OtherSymptoms.vue";
 import DiagnosisComplications from "./DiagnosisComplications.vue";
 import DiagnosisPersonalInfo from "./DiagnosisPersonalInfo.vue";
 import Diagnosistag from "./Diagnosistag.vue";
-import DigestiveSymptoms from '../adddiagnosisdata/DigestiveSymptoms.vue';
+import DigestiveSymptoms from "../adddiagnosisdata/DigestiveSymptoms.vue";
 
 export default {
   components: {
@@ -184,7 +186,7 @@ export default {
       selectedTag: null,
       form: {},
       rules: {},
-      userId:null,
+      userId: null,
       allDisabled: true, // 控制表单是否禁用
       tags: [
         { name: "DiagnosisResults", label: "诊断信息" },
@@ -194,10 +196,23 @@ export default {
         { name: "DigestiveSymptoms", label: "消化系统症状" },
         { name: "CirculatorySymptoms", label: "循环系统症状" },
         { name: "NeurologicalSymptoms", label: "神经系统症状" },
-        { name: "LocalSymptoms", label: "局部症状" },
+        { name: "DiagnosisLocalSymptoms", label: "局部症状" },
         { name: "OtherSymptoms", label: "其他症状" },
         { name: "DiagnosisComplications", label: "并发症" },
         { name: "Diagnosistag", label: "上传检测报告" },
+      ],
+      refs: [
+        "DiagnosisResults",
+        "GeneralSymptoms",
+        "RespiratorySymptoms",
+        "CirculatorySymptoms",
+        "NeurologicalSymptoms",
+        "DiagnosisLocalSymptoms",
+        "OtherSymptoms",
+        "DiagnosisComplications",
+        "DiagnosisPersonalInfo",
+        "Diagnosistag",
+        "DigestiveSymptoms",
       ],
     };
   },
@@ -208,7 +223,7 @@ export default {
     showDrawer(user) {
       this.form = { ...user };
       this.userId = user.userId;
-      console.log("userid:"+this.userId)
+      console.log("userid:" + this.userId);
       this.visible = true;
     },
     handleCancel() {
@@ -236,7 +251,7 @@ export default {
         }
 
         const mappedSubmitData = {
-          diagnosisresults: submitData.DiagnosisResults,
+          diagnosisResultsEmpDTO: submitData.DiagnosisResults,
           diagnosispersonalinfo: submitData.DiagnosisPersonalInfo,
           diagnosisgeneralsymptoms: submitData.GeneralSymptoms,
           diagnosisrespiratorysymptoms: submitData.RespiratorySymptoms,
@@ -250,7 +265,7 @@ export default {
         };
 
         console.log("提交数据:", mappedSubmitData);
-        console.log("userid:"+this.userId)
+        console.log("userid:" + this.userId);
         const response = await saveDiagnosis(mappedSubmitData, userId);
 
         if (response.data && response.data.code === 1) {

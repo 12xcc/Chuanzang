@@ -20,18 +20,17 @@ export const getExcelClinicalInformationExportForm = async () => {
 };
 
 // 添加诊断信息
-export const saveDiagnosis = async (params,userId) => {
+export const saveDiagnosis = async (data, userId) => {
   const response = await axiosInstance.post(
     "/medicalStaff/diagnosisManager/saveDiagnosis",
-    params,
+    data, // 请求体中的JSON数据
     {
-      headers: {
-        userId: userId, // userId通过请求头方式请求
-      },
+      params: { userId: userId }, // userId通过URL参数传递
     }
   );
   return response;
 };
+
 
 // 根据诊断ID查询诊断信息
 export const selectDiagnosis = async (diagnosisResultsID) => {

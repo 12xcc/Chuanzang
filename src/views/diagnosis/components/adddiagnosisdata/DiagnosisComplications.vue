@@ -374,14 +374,9 @@
               >
                 颅内出血
               </el-check-tag>
-              <el-check-tag
-                :checked="form.hasSevereAnemia"
-                type="primary"
-                @change="toggleTag('hasSevereAnemia')"
-                :disabled="allDisabled"
-              >
+              <!-- <el-check-tag :checked="form.hasSevereAnemia" type="primary" @change="toggleTag('hasSevereAnemia')" :disabled="allDisabled">
                 严重贫血
-              </el-check-tag>
+              </el-check-tag> -->
               <el-check-tag
                 :checked="form.hasSpontaneousRenalRupture"
                 type="primary"
@@ -421,6 +416,7 @@
     </el-form>
   </div>
 </template>
+
 
 
 <script>
@@ -467,7 +463,7 @@ export default {
         hasMyocardialDamage: false, // 新增
         hasLiverDamage: false, // 新增
         hasIntracranialHemorrhage: false, // 新增
-        hasSevereAnemia: false, // 新增
+        // hasSevereAnemia: false, // 新增
         hasSpontaneousRenalRupture: false, // 新增
         hasBronchitis: false, // 新增
         hasBronchopneumonia: false, // 新增
@@ -476,28 +472,27 @@ export default {
         hasNasalBleeding: false, // 新增
         hasVaginalBleeding: false, // 新增
         otherComplications: false, // 修正: 小写
-        otherComplicationsName: "", // 修正: 小写
+        otherComplicationsName: null, // 修正: 小写
       },
       rules: {
         otherComplicationsName: [
           { required: true, message: "请输入其他并发症" },
         ],
       },
-      allDisabled: false,
     };
   },
   methods: {
     toggleTag(field) {
       this.form[field] = !this.form[field];
       if (field === "otherComplications" && !this.form[field]) {
-        this.form.otherComplicationsName = "";
+        this.form.otherComplicationsName = null;
       }
     },
     validate() {
       return new Promise((resolve, reject) => {
         // 选择了有并发症，必须选择子选项
         if (this.form.hasComplications) {
-          const hasComplications =
+          const hasComplication =
             this.form.hasViralPneumonia ||
             this.form.hasBacterialPneumonia ||
             this.form.hasFungalPneumonia ||
@@ -541,10 +536,10 @@ export default {
             this.form.hasMyocardialDamage || // 新增字段
             this.form.hasLiverDamage || // 新增字段
             this.form.hasIntracranialHemorrhage || // 新增字段
-            this.form.hasSevereAnemia || // 新增字段
+            // this.form.hasSevereAnemia || // 新增字段
             this.form.hasSpontaneousRenalRupture || // 新增字段
             this.form.otherComplications; // 修正拼写
-          if (!hasComplications) {
+          if (!hasComplication) {
             return reject(new Error("请选择并发症"));
           }
         }
@@ -602,7 +597,7 @@ export default {
         hasMyocardialDamage: false, // 新增
         hasLiverDamage: false, // 新增
         hasIntracranialHemorrhage: false, // 新增
-        hasSevereAnemia: false, // 新增
+        // hasSevereAnemia: false, // 新增
         hasSpontaneousRenalRupture: false, // 新增
         hasBronchitis: false, // 新增
         hasBronchopneumonia: false, // 新增
@@ -611,7 +606,7 @@ export default {
         hasNasalBleeding: false, // 新增
         hasVaginalBleeding: false, // 新增
         otherComplications: false, // 修正: 小写
-        otherComplicationsName: "", // 修正: 小写
+        otherComplicationsName: null, // 修正: 小写
       };
     },
   },

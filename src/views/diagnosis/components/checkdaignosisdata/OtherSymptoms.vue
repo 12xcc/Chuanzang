@@ -152,7 +152,7 @@ export default {
     toggleTag(field) {
       this.form[field] = !this.form[field];
       if (!this.form.hasOtherSymptoms) {
-        this.form.otherSymptomsName = "";
+        this.form.otherSymptomsName = null;
       }
     },
     showDrawer(user) {

@@ -7,6 +7,7 @@
       ref="form"
       :rules="rules"
       label-position="left"
+      :disabled="allDisabled"  
     >
       <div class="GeneralSymptoms">
         <div class="Condition">
@@ -236,7 +237,6 @@
                 v-if="form.diseaseType === '其他'"
                 label="其他疾病"
                 style="margin-left: 20px; padding: 15px 0 15px 0"
-                prop="otherDiseaseName"
               >
                 <el-input
                   v-model="form.otherDiseaseName"
@@ -272,7 +272,6 @@
               v-if="form.discoveryMethod === '其他'"
               label="其他途径"
               style="margin-left: 20px; padding: 15px 0 15px 0"
-              prop="otherDiscoveryMethodName"
             >
               <el-input
                 v-model="form.otherDiscoveryMethodName"
@@ -324,6 +323,7 @@
               <el-date-picker
                 v-model="form.admissionDate"
                 type="date"
+                format="YYYY-MM-DD"
                 placeholder="请选择就诊/入院日期"
                 :disabled="allDisabled"  
               />
@@ -334,6 +334,7 @@
               <el-date-picker
                 v-model="form.dischargeDate"
                 type="date"
+                format="YYYY-MM-DD"
                 placeholder="请选择出院日期"
                 :disabled="allDisabled"  
               />
@@ -344,6 +345,7 @@
               <el-date-picker
                 v-model="form.deathDate"
                 type="date"
+                format="YYYY-MM-DD"
                 placeholder="请选择死亡日期"
                 :disabled="allDisabled"  
               />
@@ -414,7 +416,6 @@
                 v-if="form.registrationClassification === '其他'"
                 label="其他"
                 style="margin-left: 20px; padding: 15px 0 15px 0"
-                prop="otherRegistrationDetails"
               >
                 <el-input
                   v-model="form.otherRegistrationDetails"
@@ -443,20 +444,20 @@ export default {
       allDisabled: false,
       visible: false, // 控制弹窗显示
       form: {
-        diseaseType: "", // 确诊疾病
-        plagueSubtype: "", //鼠疫子类
-        anthraxSubtype: "", //炭疽子类
-        otherDiseaseName: "", // 其他疾病名称
-        discoveryMethod: "", // 病例发现途径
-        otherDiscoveryMethodName: "", // 其他途径名称
-        diseaseOutcome: "", // 疾病转归
-        hospitalName: "", // 确诊医院名称
-        admissionDate: "", // 就诊/入院日期
-        dischargeDate: "", // 出院日期
-        deathDate: "", // 死亡日期
-        admissionSymptomsAndSigns: "", // 就诊/入院时症状和体征
-        registrationClassification: "", // 登记分类
-        otherRegistrationDetails: "", // 登记分类其他详情
+        diseaseType: null, // 确诊疾病
+        otherDiseaseName: null, // 其他疾病名称
+        discoveryMethod:null, // 病例发现途径
+        otherDiscoveryMethodName: null, // 其他途径名称
+        diseaseOutcome: null, // 疾病转归
+        hospitalName: null, // 确诊医院名称
+        admissionDate: null, // 就诊/入院日期
+        dischargeDate:null, // 出院日期
+        deathDate: null, // 死亡日期
+        admissionSymptomsAndSigns: null, // 就诊/入院时症状和体征
+        registrationClassification: null, // 登记分类
+        otherRegistrationDetails: null, // 登记分类其他详情
+        plagueSubtype: null, // 鼠疫子类
+        anthraxSubtype: null, // 炭疽子类
       },
 
       rules: {
@@ -472,36 +473,39 @@ export default {
     toggleDisease(disease) {
       this.form.diseaseType = this.form.diseaseType === disease ? "" : disease;
       if (this.form.diseaseType !== "鼠疫") {
-        this.form.plagueSubtype = ""; // 清空鼠疫子类
+        this.form.plagueSubtype = null; // 清空鼠疫子类
       }
       if (this.form.diseaseType !== "炭疽") {
-        this.form.anthraxSubtype = ""; // 清空炭疽子类
+        this.form.anthraxSubtype =null; // 清空炭疽子类
       }
       if (this.form.diseaseType !== "其他") {
-        this.form.otherDiseaseName = ""; // 清空其疾病输入框
+        this.form.otherDiseaseName = null; // 清空其他疾病名称
       }
     },
     togglePlagueSubtype(subtype) {
       this.form.plagueSubtype =
-        this.form.plagueSubtype === subtype ? "" : subtype;
+        this.form.plagueSubtype === subtype ? null : subtype;
     },
     toggleAnthraxSubtype(subtype) {
       this.form.anthraxSubtype =
-        this.form.anthraxSubtype === subtype ? "" : subtype;
+        this.form.anthraxSubtype === subtype ? null : subtype;
     },
     toggleDiscoveryMethod(value) {
       this.form.discoveryMethod = value;
-      if (this.form.discoveryMethod !== "其他") {
-        this.form.otherDiscoveryMethodName = ""; // 清空其他途径名称
+      if (this.form.discoveryMethod !== "其他") {        
+        this.form.otherDiscoveryMethodName = null; // 清空其他途径名称
       }
     },
 
-    toggleOutcome() {
-      // this.form.diseaseOutcome = value;
+    toggleOutcome(value) {
+      this.form.diseaseOutcome = value;
     },
 
     toggleRegistration(value) {
       this.form.registrationClassification = value;
+      if (this.form.registrationClassification !== "其他") {
+        this.form.otherRegistrationDetails = null; // 清空登记分类其他详情
+      }
     },
     validate() {
       return new Promise((resolve, reject) => {
@@ -540,20 +544,20 @@ export default {
     },
     getInitialForm() {
       return {
-        diseaseType: "", // 确诊疾病
-        plagueSubtype: "", //鼠疫子类
-        anthraxSubtype: "", //炭疽子类
-        otherDiseaseName: "", // 其他疾病名称
-        discoveryMethod: "", // 病例发现途径
-        otherDiscoveryMethodName: "", // 其他途径名称
-        diseaseOutcome: "", // 疾病转归
-        hospitalName: "", // 确诊医院名称
-        admissionDate: "", // 就诊/入院日期
-        dischargeDate: "", // 出院日期
-        deathDate: "", // 死亡日期
-        admissionSymptomsAndSigns: "", // 就诊/入院时症状和体征
-        registrationClassification: "", // 登记分类
-        otherRegistrationDetails: "", // 登记分类其他详情
+        diseaseType: null, // 确诊疾病
+        otherDiseaseName: null, // 其他疾病名称
+        discoveryMethod:null, // 病例发现途径
+        otherDiscoveryMethodName: null, // 其他途径名称
+        diseaseOutcome: null, // 疾病转归
+        hospitalName: null, // 确诊医院名称
+        admissionDate: null, // 就诊/入院日期
+        dischargeDate:null, // 出院日期
+        deathDate: null, // 死亡日期
+        admissionSymptomsAndSigns: null, // 就诊/入院时症状和体征
+        registrationClassification: null, // 登记分类
+        otherRegistrationDetails: null, // 登记分类其他详情
+        plagueSubtype: null, // 鼠疫子类
+        anthraxSubtype: null, // 炭疽子类
       };
     },
     getData() {

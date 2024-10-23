@@ -1,5 +1,24 @@
 <template>
   <div class="container">
+    <!-- 表单部分 -->
+    <el-form
+      :model="queryParams"
+      ref="queryForm"
+      size="default"
+      :inline="true"
+      v-show="showSearch"
+    >
+      <!-- 操作按钮 -->
+      <el-form-item>
+        <el-button
+          type="primary"
+          class="custom-button"
+          @click="handleAdd"
+          size="default"
+          >发布满意度调查问卷</el-button
+        >
+      </el-form-item>
+    </el-form>
     <!-- 表格部分 -->
     <div class="usertable">
       <el-table
@@ -17,47 +36,55 @@
       >
         <el-table-column type="selection" width="55" />
         <el-table-column prop="SequenceNumber" label="序号" width="200" />
-        <el-table-column link type="primary" prop="Title" label="满意度调查标题" width="300">
-        <template #default="scope">
-            <el-button
-              link
-              type="primary"
-              @click="handleClick(scope.row.materialId)"
-            >
-              {{ scope.row.Title }}
-            </el-button>
-          </template>
-        </el-table-column>
-        <el-table-column prop="materialId" label="满意度" width="300">
+        <el-table-column
+          link
+          type="primary"
+          prop="surveyTitle"
+          label="满意度调查标题"
+          width="300"
+        >
           <template #default="scope">
-            <el-tag :type="scope.row.materialId">
-            <el-button
-              link
-              type="primary"
-              @click="handleCheckScore(scope.row.materialId,scope.row.Title)"
-            >
-              {{ scope.row.materialId }}
+            <el-button link type="primary" @click="handleClick(scope.row)">
+              {{ scope.row.surveyTitle }}
             </el-button>
+          </template>
+        </el-table-column>
+        <el-table-column prop="satisfaction" label="满意度" width="300">
+          <template #default="scope">
+            <el-tag
+              :type="scope.row.satisfaction === null ? 'primary' : 'danger'"
+            >
+              <el-button
+                link
+                 :type="scope.row.satisfaction === null ? 'primary' : 'danger'"
+                @click="
+                  handleCheckScore(scope.row.surveyID, scope.row.surveyTitle)
+                "
+              >
+                <!-- 当 satisfaction 为 null 时显示 "暂无满意度"，否则显示实际的满意度 -->
+                {{
+                  scope.row.satisfaction === null
+                    ? "暂无满意度"
+                    : scope.row.satisfaction + "%"
+                }}
+              </el-button>
             </el-tag>
           </template>
-        <!-- <template #default="scope">
-            <el-tag :type="scope.row.materialId">
-              {{ scope.row.materialId }}
-            </el-tag>
-          </template> -->
         </el-table-column>
+
         <el-table-column fixed="right" label="操作" min-width="300">
-          <template #default="scope">
-            <el-button
-              link
-              :type="scope.row.isDeleted ? 'danger' : 'primary'"
-              size="large"
-              @click="toggleStatus(scope.row)"
-            >
-              {{ scope.row.isDeleted ? "已关闭" : "开放中" }}
-            </el-button>
-          </template>
-        </el-table-column>
+  <template #default="scope">
+    <el-button
+      link
+      :type="scope.row.isOpen === true ? 'primary' : 'danger'"
+      size="large"
+      @click="toggleStatus(scope.row)"
+    >
+      {{ scope.row.isOpen === true ? '开放中' : '已关闭'}}
+    </el-button>
+  </template>
+</el-table-column>
+
       </el-table>
 
       <!-- 分页组件 -->
@@ -68,8 +95,8 @@
         v-model:page-size="queryParams.pageSize"
         @pagination="handlePagination"
       />
-      <Checksatis ref="Checksatis" :form="queryParams" />
-      <Addmaterials ref="Addmaterials" />
+      <Checksatis ref="Checksatis" :form="queryParams" @updateSatisfaction="handleQuery"/>
+      <Addsatis ref="Addsatis" @addsatis="handleQuery"/>
       <CheckSatisScore ref="CheckSatisScore" />
     </div>
   </div>
@@ -79,18 +106,20 @@
 import { ref, onMounted } from "vue";
 import Pagination from "@/components/pagination.vue";
 import Checksatis from "./components/checksatis.vue";
-import Addmaterials from "../propaganda/components/addmaterials.vue";
-import CheckSatisScore from "./components/checksatisscore.vue"
+import Addsatis from "./components/addsatis.vue";
+import CheckSatisScore from "./components/checksatisscore.vue";
 import {
-  pageSelectDiseaseLearningMaterials,
-  startOrStopMaterial,
-} from "@/api/propaganda/propaganda.js";
+  pageSelectSatisfactionRating,
+  pageSelectSatisfactionSurvey,
+  closeSatisfaction,
+  openSatisfaction,
+} from "@/api/satisfaction/satisfaction";
 
 export default {
   components: {
     Pagination,
     Checksatis,
-    Addmaterials,
+    Addsatis,
     CheckSatisScore,
   },
 
@@ -100,6 +129,7 @@ export default {
         diseaseTypeName: "",
         pageNum: 1,
         pageSize: 15,
+        surveyId: null,
       },
       allData: [],
       loading: false,
@@ -115,21 +145,20 @@ export default {
   },
 
   methods: {
-    handleClick(materialId) {
-      this.$refs.Checksatis.showDrawer(materialId);
+    handleClick(survey) {
+      this.$refs.Checksatis.showDrawer(survey);
     },
 
-    // 获取宣传材料列表
+    // 分页查询满意度调查列表
     async handleQuery() {
       this.loading = true;
       try {
         const params = {
-          diseaseTypeName: this.queryParams.diseaseTypeName || "",
           pageNo: this.queryParams.pageNum || 1,
-          pageSize: this.queryParams.pageSize || 15,
+          pageNumber: this.queryParams.pageSize || 15,
         };
 
-        const response = await pageSelectDiseaseLearningMaterials(params);
+        const response = await pageSelectSatisfactionSurvey(params);
 
         if (response.data.code === 1) {
           this.allData = response.data.data.records.map((item, index) => ({
@@ -137,24 +166,11 @@ export default {
               (this.queryParams.pageNum - 1) * this.queryParams.pageSize +
               index +
               1,
-            MaterialType: item.materialType || "未知类型",
-            Title: item.title || "-",
-            FilePath: item.filePath || "-",
-            Link: item.link || "-",
-            PublishDate: item.publishDate
-              ? `${item.publishDate[0]}-${String(item.publishDate[1]).padStart(
-                  2,
-                  "0"
-                )}-${String(item.publishDate[2]).padStart(2, "0")} ${String(
-                  item.publishDate[3]
-                ).padStart(2, "0")}:${String(item.publishDate[4]).padStart(
-                  2,
-                  "0"
-                )}:${String(item.publishDate[5]).padStart(2, "0")}`
-              : "无发布日期",
-            LearningNumber: item.studyCount || 0,
-            isDeleted: item.isDeleted,
-            materialId: item.materialId,
+            surveyID: item.surveyID,
+            satisfaction: item.satisfaction,
+            surveyTitle: item.surveyTitle,
+            surveyContent: item.surveyContent,
+            isOpen :item.isOpen,
           }));
           this.total = response.data.data.total;
         } else {
@@ -171,47 +187,48 @@ export default {
     },
 
     handleAdd() {
-      this.$refs.Addmaterials.showDrawer();
+      this.$refs.Addsatis.showDrawer();
     },
 
-// 切换问卷状态
-  async toggleStatus(row) {
-    // 检查当前是否有其他开放中的问卷
-    const openSurvey = this.allData.find((item) => !item.isDeleted && item.materialId !== row.materialId);
-
-    // 如果有其他开放中的调查，并且当前要切换的调查是想要开放，则阻止操作
-    if (openSurvey && row.isDeleted) {
-      this.$message.warning('只能开放一个调查问卷，若要开放此问卷，请先关闭另一个');
-      return;
-    }
-
+async toggleStatus(row) {
+  try {
+    const confirmMessage = row.isOpen === true
+      ? '您确定要关闭此问卷吗？'  // 当问卷开放时显示关闭确认
+      : '您确定要开放此问卷吗？';  // 当问卷关闭时显示开放确认
+    
     // 弹出确认框
-    try {
-      await this.$confirm("您确定要切换问卷状态吗？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      });
+    await this.$confirm(confirmMessage, "提示", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    });
 
-      // 切换问卷状态
-      const newStatus = !row.isDeleted;
-      const response = await startOrStopMaterial(row.materialId, newStatus);
-
-      // 成功后刷新数据
-      if (response.data.code === 1) {
-        row.isDeleted = newStatus;
-        this.$message.success(`问卷已${newStatus ? "禁用" : "启用"}！`);
-        
-        // 更新 allData，确保视图刷新
-        this.$set(this.allData, this.allData.indexOf(row), { ...row });
-      } else {
-        this.$message.error("切换状态失败：" + response.data.message);
-      }
-    } catch (error) {
+    // 根据状态调用不同的接口
+    let response;
+    if (row.isOpen === true) {
+      // 如果问卷是开放状态，调用关闭接口
+      response = await closeSatisfaction(row.surveyID);
+    } else {
+      // 如果问卷是关闭状态，调用开放接口
+      response = await openSatisfaction(row.surveyID);
     }
-  },
-    handleCheckScore(user,title){
-      this.$refs.CheckSatisScore.showDrawer(user,title);
+
+    // 成功后刷新数据
+    if (response.data.code === 1) {
+      row.isOpen = row.isOpen === true ? '开放中' : '已关闭';
+      this.$message.success(`问卷已${row.isOpen === true ? "开放" : "关闭"}！`);
+      this.handleQuery();
+    } else {
+      this.$message.error("切换状态失败：" + response.data.msg);
+    }
+  } catch (error) {
+    
+  }
+},
+
+
+    handleCheckScore(user, title) {
+      this.$refs.CheckSatisScore.showDrawer(user, title);
     },
     handlePagination({ page, limit }) {
       this.queryParams.pageNum = page;

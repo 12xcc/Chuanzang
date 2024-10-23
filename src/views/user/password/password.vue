@@ -3,51 +3,45 @@
     <div class="login-container">
       <div class="login-title">修改密码</div>
       <form @submit.prevent="handleSubmit">
+        <!-- 原密码输入框 -->
         <div class="input-group">
-          <label for="phoneNumber">原密码</label>
-          <input
-            v-model="phoneNumber"
-            type="text"
-            id="phoneNumber"
-            placeholder="······"
-            maxlength="16"
-            @input="validateAndFormatphoneNumber"
-            disabled
-          />
-          <span v-if="phoneNumberError" class="error-message">{{
-            phoneNumberError
-          }}</span>
-        </div>
-
-        <div class="input-group">
-          <label for="password">新密码</label>
+          <label for="oldPassword">原密码</label>
           <div class="password-wrapper">
-            <input
-              :type="passwordFieldType"
-              v-model="password"
-              id="password"
-              placeholder="请输入新密码"
-              maxlength="16"
-              @input="validateAndFormatPassword"
-            />
-            <span
-              class="eye-icon"
-              @click="togglePasswordVisibility('password')"
-            >
-              <img
-                :src="
-                  passwordFieldType === 'password'
-                    ? passwordClose
-                    : passwordOpen
-                "
-              />
-            </span>
-            <span v-if="passwordError" class="error-message">{{
-              passwordError
-            }}</span>
+          <input
+            :type="oldPasswordFieldType"
+            v-model="oldPassword"
+            id="oldPassword"
+            placeholder="请输入原密码"
+            maxlength="16"
+            @input="validateAndFormatOldPassword"
+          />
+          <span class="eye-icon" @click="togglePasswordVisibility('oldPassword')">
+            <img :src="oldPasswordFieldType === 'password' ? passwordCloseIcon : passwordOpenIcon" />
+          </span>
+          <span v-if="oldPasswordError" class="error-message">{{ oldPasswordError }}</span>
           </div>
         </div>
 
+        <!-- 新密码输入框 -->
+        <div class="input-group">
+          <label for="newPassword">新密码</label>
+          <div class="password-wrapper">
+            <input
+              :type="newPasswordFieldType"
+              v-model="newPassword"
+              id="newPassword"
+              placeholder="请输入新密码"
+              maxlength="16"
+              @input="validateAndFormatNewPassword"
+            />
+            <span class="eye-icon" @click="togglePasswordVisibility('newPassword')">
+              <img :src="newPasswordFieldType === 'password' ? passwordCloseIcon : passwordOpenIcon" />
+            </span>
+            <span v-if="newPasswordError" class="error-message">{{ newPasswordError }}</span>
+          </div>
+        </div>
+
+        <!-- 确认密码输入框 -->
         <div class="input-group">
           <label for="confirm-password">确认密码</label>
           <div class="password-wrapper">
@@ -59,18 +53,10 @@
               maxlength="16"
               @input="validateAndFormatConfirmPassword"
             />
-            <span class="eye-icon" @click="togglePasswordVisibility('confirm')">
-              <img
-                :src="
-                  confirmPasswordFieldType === 'password'
-                    ? passwordClose
-                    : passwordOpen
-                "
-              />
+            <span class="eye-icon" @click="togglePasswordVisibility('confirmPassword')">
+              <img :src="confirmPasswordFieldType === 'password' ? passwordCloseIcon : passwordOpenIcon" />
             </span>
-            <span v-if="confirmPasswordError" class="error-message">{{
-              confirmPasswordError
-            }}</span>
+            <span v-if="confirmPasswordError" class="error-message">{{ confirmPasswordError }}</span>
           </div>
         </div>
 
@@ -82,107 +68,104 @@
 
 <script>
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
-import passwordOpen from "@/assets/password_close.png";
-import passwordClose from "@/assets/password_open.png";
+import { changePassword } from "@/api/login.js"; // 引入修改密码 API
+import passwordOpenIcon from "@/assets/password_open.png";  // 确保路径正确
+import passwordCloseIcon from "@/assets/password_close.png";  // 确保路径正确
 
 export default {
   setup() {
-    const router = useRouter();
-    const phoneNumber = ref("");
-    const password = ref("");
+    const oldPassword = ref("");
+    const newPassword = ref("");
     const confirmPassword = ref("");
-    const passwordFieldType = ref("password");
-    const confirmPasswordFieldType = ref("password");
-    const phoneNumberError = ref("");
-    const passwordError = ref("");
+    const oldPasswordFieldType = ref("password"); // 原密码的字段类型
+    const newPasswordFieldType = ref("password"); // 新密码的字段类型
+    const confirmPasswordFieldType = ref("password"); // 确认密码的字段类型
+    const oldPasswordError = ref("");
+    const newPasswordError = ref("");
     const confirmPasswordError = ref("");
 
+    // 切换密码可见性
     const togglePasswordVisibility = (type) => {
-      if (type === "password") {
-        passwordFieldType.value =
-          passwordFieldType.value === "password" ? "text" : "password";
-      } else if (type === "confirm") {
-        confirmPasswordFieldType.value =
-          confirmPasswordFieldType.value === "password" ? "text" : "password";
+      if (type === "oldPassword") {
+        oldPasswordFieldType.value = oldPasswordFieldType.value === "password" ? "text" : "password";
+      } else if (type === "newPassword") {
+        newPasswordFieldType.value = newPasswordFieldType.value === "password" ? "text" : "password";
+      } else if (type === "confirmPassword") {
+        confirmPasswordFieldType.value = confirmPasswordFieldType.value === "password" ? "text" : "password";
       }
     };
 
-    const handleSubmit = () => {
-      console.log("called");
-      if (password.value === confirmPassword.value) {
-        if (validatePassword(password.value)) {
-          ElMessage.success("修改密码成功");
-        } else {
-          ElMessage.error("密码不符合要求");
+    // 提交表单
+    const handleSubmit = async () => {
+      if (validatePasswords()) {
+        const changePasswordDTO = {
+          oldPassword: oldPassword.value,
+          newPassword: newPassword.value,
+          confirmPassword: confirmPassword.value
+        };
+
+        try {
+          const response = await changePassword(changePasswordDTO);
+          const { code, msg } = response.data;
+          if (code === 1) {
+            ElMessage.success("密码修改成功");
+          } else {
+            ElMessage.error(msg || "密码修改失败");
+          }
+        } catch (error) {
+          ElMessage.error("网络错误或服务器异常，请稍后再试");
         }
-      } else {
-        confirmPasswordError.value = "两次密码请输入不一致";
       }
     };
 
-    const validatePassword = (password) => {
-      const passwordPattern =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
-      return passwordPattern.test(password);
+    // 验证密码
+    const validatePasswords = () => {
+      validateAndFormatOldPassword();
+      validateAndFormatNewPassword();
+      validateAndFormatConfirmPassword();
+      return !oldPasswordError.value && !newPasswordError.value && !confirmPasswordError.value;
     };
 
-    const validateAndFormatphoneNumber = () => {
-      const phonePattern = /^[1-9]\d{0,10}$/;
-      if (!phonePattern.test(phoneNumber.value)) {
-        phoneNumber.value = phoneNumber.value.slice(0, -1);
-      }
-      phoneNumberError.value =
-        phoneNumber.value.length === 11 && phonePattern.test(phoneNumber.value)
-          ? ""
-          : "请输入正确的用户名";
+    const validateAndFormatOldPassword = () => {
+      oldPasswordError.value = oldPassword.value ? "" : "请输入原密码";
     };
 
-    const validateAndFormatPassword = () => {
-      passwordError.value = validatePassword(password.value)
+    const validateAndFormatNewPassword = () => {
+      const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
+      newPasswordError.value = passwordPattern.test(newPassword.value)
         ? ""
         : "密码必须为8-16位字符，包括大小写字母、数字和特殊符号";
     };
 
     const validateAndFormatConfirmPassword = () => {
-      confirmPasswordError.value =
-        confirmPassword.value === password.value ? "" : "两次密码请输入不一致";
-    };
-
-    const isSubmitDisabled = ref(true);
-    const checkFormValidity = () => {
-      isSubmitDisabled.value =
-        !phoneNumber.value ||
-        !password.value ||
-        !confirmPassword.value ||
-        phoneNumberError.value ||
-        passwordError.value ||
-        confirmPasswordError.value;
+      confirmPasswordError.value = confirmPassword.value === newPassword.value ? "" : "两次密码不一致";
     };
 
     return {
-      phoneNumber,
-      password,
+      oldPassword,
+      newPassword,
       confirmPassword,
-      passwordFieldType,
+      oldPasswordFieldType,
+      newPasswordFieldType,
       confirmPasswordFieldType,
-      passwordOpen,
-      passwordClose,
-      phoneNumberError,
-      passwordError,
+      oldPasswordError,
+      newPasswordError,
       confirmPasswordError,
+      passwordOpenIcon, // 确保模板中引用了正确的变量
+      passwordCloseIcon, // 确保模板中引用了正确的变量
       togglePasswordVisibility,
       handleSubmit,
-      validateAndFormatphoneNumber,
-      validateAndFormatPassword,
-      validateAndFormatConfirmPassword,
-      isSubmitDisabled,
-      checkFormValidity,
+      validateAndFormatOldPassword,
+      validateAndFormatNewPassword,
+      validateAndFormatConfirmPassword
     };
-  },
+  }
 };
 </script>
+
+
+
 
 <style scoped>
 .login-wrapper {

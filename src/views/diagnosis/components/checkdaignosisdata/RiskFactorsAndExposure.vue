@@ -506,7 +506,7 @@ export default {
     toggleTag(field) {
       this.form[field] = !this.form[field];
       if (field === "otherComplications" && !this.form[field]) {
-        this.form.otherComplicationsName = "";
+        this.form.otherComplicationsName = null;
       }
     },
     handleAble() {
@@ -520,6 +520,7 @@ export default {
       return new Promise((resolve, reject) => {
         // 选择了有并发症，必须选择子选项
         if (this.form.hasComplications) {
+          const hasComplication =
             this.form.hasViralPneumonia ||
             this.form.hasBacterialPneumonia ||
             this.form.hasFungalPneumonia ||
@@ -566,7 +567,7 @@ export default {
             // this.form.hasSevereAnemia || // 新增字段
             this.form.hasSpontaneousRenalRupture || // 新增字段
             this.form.otherComplications; // 修正拼写
-          if (!this.form.hasComplications) {
+          if (!hasComplication) {
             return reject(new Error("请选择并发症"));
           }
         }

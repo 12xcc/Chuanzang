@@ -623,7 +623,20 @@ export default {
         hasBrudzinskiSign: false, //是否Brudzinski征
       },
 
-      rules: {},
+      rules: {
+        feverDuration: [
+          { required: true, message: "请输入持续时间", trigger: "blur" },
+        ],
+        highestTemperature: [
+          { required: true, message: "请输入最高体温", trigger: "blur" },
+        ],
+        Dehydration: [
+          { required: true, message: "请选择失水程度", trigger: "blur" },
+        ],
+        hasBloodPressureDrop: [{ required: true, message: "请输入最低血压" }],
+        bleedingVolume: [{ required: true }],
+        bleedingCavity: [{ required: true }],
+      },
     };
   },
   watch: {

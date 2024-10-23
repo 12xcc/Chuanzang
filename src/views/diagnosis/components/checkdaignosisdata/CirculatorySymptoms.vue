@@ -84,9 +84,9 @@ export default {
       immediate: true,
       handler(newVal) {
         if (newVal) {
-          // 先将所有数据映射到 form
+          // 将所有数据映射到 form
           this.form = { ...this.form, ...newVal };
-
+          // 强制更新渲染视图
           this.$forceUpdate();
         } else {
           // console.warn("Received null or undefined data");

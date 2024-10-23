@@ -5,6 +5,7 @@
       :checked="form.hasCough"
       type="primary"
       @change="toggleTag('hasCough')"
+      :disabled="allDisabled"  
     >
       咳嗽
     </el-check-tag>
@@ -12,6 +13,7 @@
       :checked="form.hasSputum"
       type="primary"
       @change="toggleTag('hasSputum')"
+      :disabled="allDisabled"  
     >
       咳痰
     </el-check-tag>
@@ -19,6 +21,7 @@
       :checked="form.hasBloodySputum"
       type="primary"
       @change="toggleTag('hasBloodySputum')"
+      :disabled="allDisabled"  
     >
       血痰
     </el-check-tag>
@@ -26,6 +29,7 @@
       :checked="form.hasHemoptysis"
       type="primary"
       @change="toggleTag('hasHemoptysis')"
+      :disabled="allDisabled"  
     >
       咳血
     </el-check-tag>
@@ -33,6 +37,7 @@
       :checked="form.hasSoreThroat"
       type="primary"
       @change="toggleTag('hasSoreThroat')"
+      :disabled="allDisabled"  
     >
       咽痛
     </el-check-tag>
@@ -40,6 +45,7 @@
       :checked="form.hasDryThroat"
       type="primary"
       @change="toggleTag('hasDryThroat')"
+      :disabled="allDisabled"  
     >
       咽干
     </el-check-tag>
@@ -47,6 +53,7 @@
       :checked="form.hasNasalCongestion"
       type="primary"
       @change="toggleTag('hasNasalCongestion')"
+      :disabled="allDisabled"  
     >
       鼻塞
     </el-check-tag>
@@ -54,6 +61,7 @@
       :checked="form.hasRunnyNose"
       type="primary"
       @change="toggleTag('hasRunnyNose')"
+      :disabled="allDisabled"  
     >
       流涕
     </el-check-tag>
@@ -61,6 +69,7 @@
       :checked="form.hasPharyngealHyperemia"
       type="primary"
       @change="toggleTag('hasPharyngealHyperemia')"
+      :disabled="allDisabled"  
     >
       咽充血
     </el-check-tag>
@@ -68,6 +77,7 @@
       :checked="form.hasChestTightness"
       type="primary"
       @change="toggleTag('hasChestTightness')"
+      :disabled="allDisabled"  
     >
       胸闷
     </el-check-tag>
@@ -75,6 +85,7 @@
       :checked="form.hasShortnessOfBreath"
       type="primary"
       @change="toggleTag('hasShortnessOfBreath')"
+      :disabled="allDisabled"  
     >
       气促
     </el-check-tag>
@@ -82,6 +93,7 @@
       :checked="form.hasBreathingDifficulty"
       type="primary"
       @change="toggleTag('hasBreathingDifficulty')"
+      :disabled="allDisabled"  
     >
       呼吸困难
     </el-check-tag>
@@ -89,6 +101,7 @@
       :checked="form.hasHoarseness"
       type="primary"
       @change="toggleTag('hasHoarseness')"
+      :disabled="allDisabled"  
     >
       声音嘶哑
     </el-check-tag>
@@ -96,6 +109,7 @@
       :checked="form.hasBronchitis"
       type="primary"
       @change="toggleTag('hasBronchitis')"
+      :disabled="allDisabled"  
     >
       支气管炎或支气管肺炎
     </el-check-tag>
@@ -103,16 +117,19 @@
       :checked="form.hasLungRales"
       type="primary"
       @change="toggleTag('hasLungRales')"
+      :disabled="allDisabled"  
     >
       听诊肺部有散在湿性罗音
     </el-check-tag>
   </div>
 </template>
 
+
 <script>
 export default {
   data() {
     return {
+      allDisabled:false,
       form: {
         hasCough: false,
         hasSputum: false,
@@ -143,7 +160,7 @@ export default {
     },
     getInitialForm() {
       return {
-         hasCough: false,
+        hasCough: false,
         hasSputum: false,
         hasBloodySputum: false,
         hasHemoptysis: false,
@@ -155,7 +172,9 @@ export default {
         hasShortnessOfBreath: false,
         hasBreathingDifficulty: false,
         hasHoarseness: false,
-        hasBronchitis: false
+        hasBronchitis: false,
+        hasPharyngealHyperemia: false, //咽充血
+        hasLungRales: false, //是否听诊肺部有散在湿性罗音
       };
     },
     getData() {

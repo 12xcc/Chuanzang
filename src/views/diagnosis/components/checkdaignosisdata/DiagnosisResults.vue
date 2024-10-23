@@ -589,17 +589,33 @@ watch: {
     },
     validate() {
       return new Promise((resolve, reject) => {
-        if (this.$refs.form) {
-          this.$refs.form.validate((valid) => {
-            if (valid) {
-              resolve();
-            } else {
-              reject(new Error("诊断信息验证失败"));
-            }
-          });
-        } else {
-          resolve();
+        // 选择了鼠疫，必须选择子选项
+        if (this.form.diseaseType === "鼠疫") {
+          if (!this.form.plagueSubtype) {
+            return reject(new Error("请选择鼠疫子类"));
+          }
         }
+
+        // 选择了炭疽，必须选择子选项
+        if (this.form.diseaseType === "炭疽") {
+          if (!this.form.anthraxSubtype) {
+            return reject(new Error("请选择炭疽子类"));
+          }
+        }
+
+        // 选择了其他，必须选择填写
+        if (this.form.diseaseType === "其他") {
+          if (!this.form.otherDiseaseName) {
+            return reject(new Error("请填写其他疾病名称"));
+          }
+        }
+
+        // 验证通过
+        this.$refs.form.validate((valid) => {
+          valid
+            ? resolve()
+            : reject(new Error("表单提交失败，请检查必填字段是否未填写"));
+        });
       });
     },
   },

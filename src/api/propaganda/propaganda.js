@@ -16,7 +16,7 @@ export const pageSelectDiseaseLearningMaterials = async (params) => {
 // 切换材料状态
 export const startOrStopMaterial = async (materialId, isDelete) => {
   const response = await axiosInstance.put("/cdcStaff/promotionalMaterialsManager/startOrStopMaterial", 
-    null, // 使用 PUT 方法时，通常没有 body
+    null,
     {
       params: { materialId, isDelete }, // 传递参数
       headers: {
@@ -55,10 +55,10 @@ export const getLearningMaterialFile = async (filename) => {
 };
 
 // 添加宣传材料
-export const saveMaterial = async (formData) => {
+export const saveMaterial = async (data) => {
   const response = await axiosInstance.post(
     "/cdcStaff/promotionalMaterialsManager/saveMaterial",
-    formData,
+    data,
     {
       headers: {
         "Content-Type": "multipart/form-data",

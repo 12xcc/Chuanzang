@@ -6,6 +6,7 @@
       class="form-container"
       ref="form"
       :rules="rules"
+      :disabled="allDisabled"
     >
       <div class="GeneralSymptoms">
         <div class="Condition">
@@ -17,6 +18,7 @@
             :checked="form.hasSuddenOnset"
             type="primary"
             @change="toggleTag('hasSuddenOnset')"
+            :disabled="allDisabled"
           >
             突然发病
           </el-check-tag>
@@ -25,6 +27,7 @@
             :checked="form.hasRapidProgress"
             type="primary"
             @change="toggleTag('hasRapidProgress')"
+            :disabled="allDisabled"
           >
             病情进展迅速
           </el-check-tag>
@@ -33,6 +36,7 @@
             :checked="form.hasPeriodicAttack"
             type="primary"
             @change="toggleTag('hasPeriodicAttack')"
+            :disabled="allDisabled"
           >
             周期性发作
           </el-check-tag>
@@ -41,6 +45,7 @@
             :checked="form.hasForcedPosture"
             type="primary"
             @change="toggleTag('hasForcedPosture')"
+            :disabled="allDisabled"
           >
             强迫体位
           </el-check-tag>
@@ -49,6 +54,7 @@
             :checked="form.hasCalfMusclePain"
             type="primary"
             @change="toggleTag('hasCalfMusclePain')"
+            :disabled="allDisabled"
           >
             腓肠肌疼痛
           </el-check-tag>
@@ -63,24 +69,30 @@
             :checked="form.hasOtherSymptoms"
             type="primary"
             @change="toggleTag('hasOtherSymptoms')"
+            :disabled="allDisabled"
           >
             其他
           </el-check-tag>
           <div class="NextContainer">
-          <el-form-item
-            v-if="form.hasOtherSymptoms"
-            label="其他症状"
-            style=" margin-left:-100px;margin-top: 10px;padding:15px 0 15px 0"
-            prop="otherSymptomsName"
-          >
-            <el-input
-              v-model="form.otherSymptomsName"
-              placeholder="请输入其他症状"
-              clearable
-              size="default"
-              style="margin-left:100px;width: 250px"
-            />
-          </el-form-item>
+            <el-form-item
+              v-if="form.hasOtherSymptoms"
+              label="其他症状"
+              style="
+                margin-left: -100px;
+                margin-top: 10px;
+                padding: 15px 0 15px 0;
+              "
+              prop="otherSymptomsName"
+            >
+              <el-input
+                v-model="form.otherSymptomsName"
+                placeholder="请输入其他症状"
+                clearable
+                size="default"
+                style="margin-left: 100px; width: 250px"
+                :disabled="allDisabled"
+              />
+            </el-form-item>
           </div>
         </div>
       </div>
@@ -97,6 +109,7 @@ export default {
   },
   data() {
     return {
+      allDisabled: true,
       visible: false, // 控制弹窗显示
       form: {
         hasSuddenOnset: false,
@@ -105,7 +118,7 @@ export default {
         hasForcedPosture: false,
         hasCalfMusclePain: false,
         hasOtherSymptoms: false,
-        otherSymptomsName: "",
+        otherSymptomsName: null,
       },
 
       rules: {
@@ -119,7 +132,7 @@ export default {
     toggleTag(field) {
       this.form[field] = !this.form[field];
       if (!this.form.hasOtherSymptoms) {
-        this.form.otherSymptomsName = "";
+        this.form.otherSymptomsName = null;
       }
     },
     showDrawer(user) {
@@ -177,7 +190,7 @@ export default {
         hasForcedPosture: false,
         hasCalfMusclePain: false,
         hasOtherSymptoms: false,
-        otherSymptomsName: "",
+        otherSymptomsName: null,
       };
     },
     getData() {

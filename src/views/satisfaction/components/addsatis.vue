@@ -9,9 +9,12 @@
   >
     <div class="container">
       <div class="title">
-        <h3>查看/编辑满意度问卷信息</h3>
-        <div class="footer">
-          <el-button type="primary" @click="handleSubmit">提交</el-button>
+        <div class="title">
+          <h3>发布满意度问卷</h3>
+          <div class="footer">
+            <el-button @click="handleCancel">取消</el-button>
+            <el-button type="primary" @click="handleSubmit">提交</el-button>
+          </div>
         </div>
       </div>
       <el-form
@@ -20,8 +23,7 @@
         class="form-container"
         ref="form"
       >
-        <!-- 调查标题 -->
-        <div class="BaseInfo">
+        <div class="BaseInofo">
           <div class="title-container">
             <div class="blue-box"></div>
             <span class="title-text">满意度调查标题</span>
@@ -30,14 +32,13 @@
             <el-input
               v-model="form.surveyTitle"
               style="width: 500px; margin-left: -60px"
-              placeholder="请输入满意度调查标题"
+              placeholder=""
               clearable
             ></el-input>
           </el-form-item>
         </div>
 
-        <!-- 调查内容 -->
-        <div class="BaseInfo">
+        <div class="BaseInofo">
           <div class="title-container">
             <div class="blue-box"></div>
             <span class="title-text">满意度调查内容</span>
@@ -46,7 +47,7 @@
             <el-input
               v-model="form.surveyContent"
               style="width: 500px; margin-left: -60px"
-              placeholder="请输入满意度调查内容"
+              placeholder=""
               type="textarea"
               clearable
               row="4"
@@ -60,44 +61,68 @@
 
 <script>
 import { ElMessage } from "element-plus";
-import { updateSatisfaction } from "@/api/satisfaction/satisfaction.js"; // 引入API
-
+import Dateselection from "@/components/date_selection.vue";
+import { addSatisfactionSurvey } from "@/api/satisfaction/satisfaction";
 export default {
+  components: {
+    Dateselection,
+  },
   data() {
     return {
       visible: false, // 控制弹窗显示
       form: {
-        surveyID: null,
+        name: "",
+        phoneNumber: "",
         surveyTitle: "",
         surveyContent: "",
       },
     };
   },
   methods: {
-    showDrawer(survey) {
+    showDrawer(feedbackId) {
       this.visible = true;
-      this.form = { ...survey };
+      this.fetchFeedbackById(feedbackId);
     },
     handleCancel() {
       this.visible = false;
     },
+
     async handleSubmit() {
       try {
-        const response = await updateSatisfaction(this.form);
+        const requestData = {
+          surveyContent: this.form.surveyContent,
+          surveyTitle: this.form.surveyTitle,
+        };
+
+        // 调用接口提交用户信息
+        const response = await addSatisfactionSurvey(requestData);
+
+        // 判断响应
         if (response.data.code === 1) {
-          ElMessage.success("提交成功");
-          this.visible = false;
-          this.$emit("updateSatisfaction"); // 提交后向父组件发送事件
+          ElMessage({
+            message: "提交成功",
+            type: "success",
+          });
+          this.visible = false; // 关闭弹窗
+          this.$emit("addsatis"); // 提交后向父组件发送事件
         } else {
-          ElMessage.error(response.data.msg || "提交失败");
+          ElMessage({
+            message: "提交失败：" + response.data.msg,
+            type: "error",
+          });
         }
       } catch (error) {
-        ElMessage.error("网络错误，请稍后重试");
+        console.error("提交出错:", error);
+        ElMessage({
+          message: "提交出错，请重试",
+          type: "error",
+        });
       }
     },
   },
 };
 </script>
+
 
 
 <style  scoped>
@@ -118,6 +143,7 @@ export default {
   z-index: 100;
   border: 3px solid #fafafa;
 }
+
 .footer {
   display: flex;
   justify-content: flex-end;
