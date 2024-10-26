@@ -163,7 +163,8 @@ export default {
           this.form.MaterialType = data.materialType;
           this.form.Link = data.link;
 
-          const baseUrl = "http://43.138.213.55:8080";
+          // const baseUrl = "http://43.138.213.55:8080";
+          const baseUrl = "https://ds.sccdc.cn:8080/";
 
           // 判断文件后缀并拼接文件路径
           if (data.filePath) {

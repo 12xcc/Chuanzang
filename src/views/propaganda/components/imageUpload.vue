@@ -2,19 +2,20 @@
   <div>
     <!-- 上传组件，控制是否可编辑 -->
     <el-upload
-      v-model:file-list="files"
-      action="#"
-      list-type="picture-card"
-      :auto-upload="false"
-      :on-preview="handlePictureCardPreview"
-      :on-remove="handleRemove"
-      :before-upload="handleBeforeUpload"
-      :disabled="!editable" 
-      accept=".jpg,.jpeg,.png"
-    >
-      <!-- 如果是可编辑状态，显示上传按钮 -->
-      <el-icon v-if="editable"><Plus /></el-icon>
-    </el-upload>
+  v-model:file-list="files"
+  action="#"
+  list-type="picture-card"
+  :auto-upload="false"
+  :on-preview="handlePictureCardPreview"
+  :on-remove="handleRemove"
+  :before-upload="handleBeforeUpload"
+  :on-change="handleFileChange" 
+  :disabled="!editable"
+  accept=".jpg,.jpeg,.png"
+>
+  <el-icon v-if="editable"><Plus /></el-icon>
+</el-upload>
+
 
     <!-- 预览图片弹窗 -->
     <el-dialog v-model="dialogVisible" class="custom-dialog" :modal="true">
@@ -24,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, defineEmits, defineProps, watch, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
 import { Plus, Delete, ZoomIn } from '@element-plus/icons-vue';
 
@@ -35,14 +36,12 @@ const props = defineProps({
   },
   editable: {
     type: Boolean,
-    default: false,  // 父组件传递的状态，决定是否允许编辑
+    default: false,  // 控制是否可编辑
   },
 });
+const emits = defineEmits(['file-selected']);
 
-// 已上传的文件列表
 const files = ref([]);
-
-// 用于控制预览弹窗
 const dialogVisible = ref(false);
 const dialogImageUrl = ref('');
 
@@ -50,13 +49,13 @@ const dialogImageUrl = ref('');
 onMounted(() => {
   if (props.filePath) {
     files.value.push({
-      name: props.filePath.split('/').pop(),  // 从 filePath 提取文件名
-      url: props.filePath,  // 使用完整的 URL 进行显示
+      name: props.filePath.split('/').pop(),
+      url: props.filePath,
     });
   }
 });
 
-// 当文件路径变化时，更新已上传的文件列表
+// 当 filePath 变化时更新文件列表
 watch(() => props.filePath, (newFilePath) => {
   if (newFilePath) {
     files.value = [
@@ -74,7 +73,7 @@ const handlePictureCardPreview = (file) => {
   dialogVisible.value = true;
 };
 
-// 删除图片
+// 删除文件
 const handleRemove = (file, fileList) => {
   const index = fileList.indexOf(file);
   if (index !== -1) {
@@ -83,7 +82,7 @@ const handleRemove = (file, fileList) => {
   }
 };
 
-// 防止未在编辑模式时上传文件
+// 上传文件限制
 const handleBeforeUpload = () => {
   if (!props.editable) {
     ElMessage.warning('请先进入编辑模式');
@@ -91,6 +90,14 @@ const handleBeforeUpload = () => {
   }
   return true;
 };
+
+// 选择文件后将文件对象传递到父组件
+const handleFileChange = (file) => {
+  if (file.raw) {
+    emits('file-selected', file.raw); // 直接传递原始文件对象
+  }
+};
+
 </script>
 
 

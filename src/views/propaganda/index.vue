@@ -128,7 +128,7 @@
         @pagination="handlePagination"
       />
       <Checkmaterials ref="Checkmaterials" :form="queryParams" />
-      <Addmaterials ref="Addmaterials" />
+      <Addmaterials ref="Addmaterials" @update-materails="handleQuery"/>
     </div>
   </div>
 </template>

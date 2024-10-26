@@ -8,12 +8,13 @@
       :on-preview="handlePictureCardPreview"
       :on-remove="handleRemove"
       :before-upload="handleBeforeUpload"
+      :on-change="handleFileChange"
       :disabled="!editable"
       accept=".mp4"
-      :on-change="handleFileChange"  
     >
       <el-icon v-if="editable"><Plus /></el-icon>
 
+      <!-- 自定义缩略图显示和操作按钮 -->
       <template #file="{ file }">
         <div class="filestyle">
           <img 
@@ -23,14 +24,16 @@
             alt="Video Thumbnail" 
           />
           <span class="el-upload-list__item-actions">
+            <!-- 预览按钮 -->
             <span
               class="el-upload-list__item-preview"
               @click="() => handlePictureCardPreview(file)"
             >
               <el-icon><ZoomIn /></el-icon>
             </span>
+            <!-- 删除按钮，仅在可编辑模式下显示 -->
             <span
-              v-if="!disabled"
+              v-if="editable"
               class="el-upload-list__item-delete"
               @click="() => handleRemove(file, files)"
             >
@@ -47,6 +50,7 @@
       </div>
     </div>
 
+    <!-- 视频预览对话框 -->
     <el-dialog 
       v-model="dialogVisible" 
       class="custom-dialog" 
@@ -75,15 +79,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted } from 'vue'
-import { ElMessage } from 'element-plus'
-import { Delete, Plus, ZoomIn } from '@element-plus/icons-vue'
-import type { UploadFile, UploadProps } from 'element-plus'
-
-// 扩展 UploadFile 类型
-interface ExtendedUploadFile extends UploadFile {
-  thumbnailUrl?: string;
-}
+import { ref, defineEmits, defineProps, watch, onMounted } from 'vue';
+import { ElMessage } from 'element-plus';
+import { Plus, Delete, ZoomIn } from '@element-plus/icons-vue';
 
 const props = defineProps({
   filePath: {
@@ -95,60 +93,46 @@ const props = defineProps({
     default: false, // 控制是否处于编辑模式
   },
 });
+const emits = defineEmits(['file-selected']);
 
-// 用于控制文件上传和预览
+// 控制文件上传和预览
 const dialogImageUrl = ref('');
 const dialogVisible = ref(false);
-const disabled = ref(false);
-const files = ref<ExtendedUploadFile[]>([]);
+const files = ref([]);
 const currentFilename = ref('');
-const isVideo = ref(false); // 判断是否为视频
-const videoPlayer = ref<HTMLVideoElement | null>(null); // 视频播放器引用
+const isVideo = ref(false);
+const videoPlayer = ref(null);
 
 // 初始化文件
 onMounted(() => {
   if (props.filePath) {
     files.value.push({
-      name: props.filePath.split('/').pop(),  // 提取文件名
-      url: props.filePath,  // 设置完整的 URL 用于预览
-      status: 'success',  // 状态为已成功上传
-      uid: Date.now(),  // 使用当前时间戳生成唯一的 uid
+      name: props.filePath.split('/').pop(),
+      url: props.filePath,
+      status: 'success',
+      uid: Date.now(),
     });
   }
 });
 
-// 当 filePath 改变时更新文件列表
-watch(() => props.filePath, (newFilePath) => {
-  if (newFilePath) {
-    files.value = [
-      {
-        name: newFilePath.split('/').pop(),  // 提取文件名
-        url: newFilePath,  // 设置完整的 URL 用于预览
-        status: 'success',  // 设置状态为已成功上传
-        uid: Date.now(),  // 使用时间戳作为唯一 ID
-      }
-    ];
-  }
-});
-
 // 预览视频
-const handlePictureCardPreview = (file: ExtendedUploadFile) => {
+const handlePictureCardPreview = (file) => {
   dialogImageUrl.value = file.url || URL.createObjectURL(file.raw);
-  isVideo.value = file.raw && file.raw.type === 'video/mp4'; // 判断是否为视频
-  currentFilename.value = file.name; // 获取当前文件名
-  dialogVisible.value = true; // 打开对话框
-}
+  isVideo.value = file.raw && file.raw.type === 'video/mp4';
+  currentFilename.value = file.name;
+  dialogVisible.value = true;
+};
 
-// 处理文件删除
-const handleRemove: UploadProps['onRemove'] = (file, fileList) => {
+// 删除文件
+const handleRemove = (file, fileList) => {
   const index = fileList.indexOf(file);
   if (index !== -1) {
     fileList.splice(index, 1);
     ElMessage.success('视频已删除');
   }
-}
+};
 
-// 处理文件上传时的限制逻辑
+// 文件上传前的检查
 const handleBeforeUpload = () => {
   if (!props.editable) {
     ElMessage.warning('请先进入编辑模式');
@@ -157,48 +141,30 @@ const handleBeforeUpload = () => {
   return true;
 };
 
-// 处理文件更改时生成视频缩略图
-const handleFileChange = (file: ExtendedUploadFile) => {
-  if (file.raw && file.raw.type === 'video/mp4') {
-    const videoElement = document.createElement('video');
-    const reader = new FileReader();
-    
-    reader.onload = (e) => {
-      videoElement.src = e.target.result as string;
-      videoElement.addEventListener('loadedmetadata', () => {
-        // 设置适当的延时以确保视频准备就绪
-        setTimeout(() => {
-          videoElement.currentTime = 0; // 跳到视频的开头
-          videoElement.addEventListener('seeked', () => {
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            if (context) {
-              canvas.width = 120; // 缩略图宽度
-              canvas.height = 90;  // 缩略图高度
-              context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-              file.thumbnailUrl = canvas.toDataURL(); // 存储缩略图 URL
-            }
-          });
-        }, 200); // 设置适当的延时
-      });
-    };
-    reader.readAsDataURL(file.raw);
+// 处理文件更改并生成缩略图，将视频文件对象传递给父组件
+const handleFileChange = (file) => {
+  if (file.raw) {
+    files.value.push({
+      name: file.name,
+      url: URL.createObjectURL(file.raw),
+    });
+    emits('file-selected', file.raw); // 传递视频文件对象给父组件
   }
 };
 
 // 停止视频播放
 const stopVideo = () => {
   if (videoPlayer.value) {
-    videoPlayer.value.pause(); // 停止播放
-    videoPlayer.value.currentTime = 0; // 重置到开头
+    videoPlayer.value.pause();
+    videoPlayer.value.currentTime = 0;
   }
-  isVideo.value = false; // 重置视频状态
+  isVideo.value = false;
 };
 
-// 处理视频错误
+// 处理视频播放错误
 const handleVideoError = () => {
   console.error('视频播放错误，无法加载视频。');
-}
+};
 </script>
 
 <style scoped>

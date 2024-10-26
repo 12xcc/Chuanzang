@@ -17,10 +17,11 @@
       </div>
       <el-form
         :model="form"
-        label-width="100px"
+        label-width="200px"
         class="form-container"
         ref="form"
         :rules="rules"
+        label-position="left"
       >
         <div class="BaseInfo">
           <div class="title-container">
@@ -40,14 +41,55 @@
 
             <!-- 材料类型 -->
             <el-form-item label="材料类型" prop="MaterialType">
-              <el-radio-group
-                v-model="form.MaterialType"
-              >
+              <el-radio-group v-model="form.MaterialType">
                 <el-radio value="图片">图片</el-radio>
                 <el-radio value="文章">文章</el-radio>
                 <el-radio value="视频">视频</el-radio>
                 <el-radio value="网页链接">网页链接</el-radio>
               </el-radio-group>
+            </el-form-item>
+
+            <el-form-item label="材料所属疾病类型" prop="diseaseTypeName" size="default">
+              <el-select
+                v-model="form.diseaseTypeName"
+                placeholder="请选择疾病类型"
+                clearable
+                size="default"
+                style="width: 200px; margin-right: -15px"
+                @clear="handleQuery"
+              >
+                <el-option
+                  value="新型冠状病毒感染"
+                  label="新型冠状病毒感染"
+                ></el-option>
+                <el-option value="流感" label="流感"></el-option>
+                <el-option value="鼠疫" label="鼠疫"></el-option>
+                <el-option value="感染性腹泻" label="感染性腹泻"></el-option>
+                <el-option value="炭疽" label="炭疽"></el-option>
+                <el-option value="结核病" label="结核病"></el-option>
+                <el-option
+                  value="登革热（蚊媒传染病）"
+                  label="登革热（蚊媒传染病）"
+                ></el-option>
+                <el-option
+                  value="疟疾（蚊媒传染病）"
+                  label="疟疾（蚊媒传染病）"
+                ></el-option>
+                <el-option
+                  value="森林脑炎（蜱媒传染病）"
+                  label="森林脑炎（蜱媒传染病）"
+                ></el-option>
+                <el-option
+                  value="发热伴血小板减少综合征（蜱媒传染病）"
+                  label="发热伴血小板减少综合征（蜱媒传染病）"
+                ></el-option>
+                <el-option value="斑疹伤寒" label="斑疹伤寒"></el-option>
+                <el-option
+                  value="流行性出血热"
+                  label="流行性出血热"
+                ></el-option>
+                <el-option value="其他" label="其他"></el-option>
+              </el-select>
             </el-form-item>
           </div>
         </div>
@@ -64,27 +106,29 @@
             :file-path="form.filePath"
             :editable="true"
             ref="PdfUpload"
+            @file-selected="handleFileUpload"
           />
 
           <!-- 图片时启用 ImageUpload -->
           <ImageUpload
             v-if="form.MaterialType === '图片'"
             :file-path="form.filePath"
-             :editable="true"
+            :editable="true"
             ref="ImageUpload"
+            @file-selected="handleFileUpload"
           />
-
           <!-- 视频时启用 VedioUpload -->
           <VedioUpload
             v-if="form.MaterialType === '视频'"
             :file-path="form.filePath"
-             :editable="true"
+            :editable="true"
             ref="VedioUpload"
+            @file-selected="handleFileUpload"
           />
 
           <!-- 网页链接时 -->
           <el-input
-            v-model="form.Link"
+            v-model="form.link"
             v-if="form.MaterialType === '网页链接'"
             style="width: 400px"
           />
@@ -99,7 +143,8 @@ import { ElMessage } from "element-plus";
 import PdfUpload from "./pdfUpload.vue";
 import ImageUpload from "./imageUpload.vue";
 import VedioUpload from "./VideoUpload.vue";
-import { saveMaterial } from "@/api/propaganda/propaganda.js"
+import { saveMaterial } from "@/api/propaganda/propaganda.js";
+
 export default {
   components: {
     PdfUpload,
@@ -110,12 +155,20 @@ export default {
     return {
       visible: false, // 控制弹窗显示
       form: {
-        Title: '',
-        MaterialType: '',
+        Title: null,
+        MaterialType: null,
+        diseaseTypeName: null, // 疾病类型名称
+        file: null, // 文件对象
+        link: null, // 链接
       },
       rules: {
-        Title: [{ required: true, message: '请填写标题', trigger: 'blur' }],
-        MaterialType: [{ required: true, message: '请选择材料类型', trigger: 'change' }],
+        Title: [{ required: true, message: "请填写标题", trigger: "blur" }],
+        MaterialType: [
+          { required: true, message: "请选择材料类型", trigger: "change" },
+        ],
+        diseaseTypeName: [
+          { required: true, message: "请选择材料所属疾病类型", trigger: "change" },
+        ],
       },
     };
   },
@@ -130,28 +183,61 @@ export default {
     async handleSubmit() {
       try {
         await this.$refs.form.validate();
-        this.visible = false;
-        ElMessage({
-          message: "提交成功",
-          type: "success",
-        });
-        this.handleReset();
+
+        const formData = new FormData();
+        formData.append("title", this.form.Title);
+        formData.append("materialType", this.form.MaterialType);
+        formData.append("diseaseTypeName", this.form.diseaseTypeName);
+
+        // 根据材料类型判断是文件上传还是链接
+        if (this.form.MaterialType === "网页链接") {
+          if (!this.form.link) throw new Error("链接不能为空");
+          formData.append("link", this.form.link);
+        } else {
+          if (!this.form.file) throw new Error("文件不能为空");
+          formData.append("file", this.form.file);
+        }
+
+        // 调试代码：打印 FormData 内容
+        for (const pair of formData.entries()) {
+          console.log(`${pair[0]}:`, pair[1]);
+        }
+        const response = await saveMaterial(formData);
+        if (response.data.code === 1) {
+          ElMessage.success("提交成功");
+          this.visible = false;
+          this.$emit("update-materails");
+          this.handleReset();
+        } else {
+          throw new Error(response.data.msg || "提交失败");
+        }
       } catch (error) {
-        ElMessage({
-          message: "提交失败",
-          type: "error",
-        });
+        ElMessage.error(error.message || "提交失败");
       }
     },
     handleReset() {
       this.form = {
-        Title: '',
-        MaterialType: '',
+        Title: null,
+        MaterialType: null,
+        diseaseTypeName: null,
+        file: null,
+        link: null,
       };
+    },
+    // 接收子组件传递的文件，并确保它是一个有效的 File 对象
+    handleFileUpload(file) {
+      if (file instanceof File) {
+        this.form.file = file;
+        console.log("文件已上传:", this.form.file); // 调试信息
+      } else {
+        console.error("上传的文件无效");
+      }
     },
   },
 };
 </script>
+
+
 
 <style scoped>
 .custom-drawer {

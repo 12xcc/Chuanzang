@@ -16,7 +16,7 @@ import '@/styles/NextContainer.css';
 const app = createApp(App)
 
 // 配置 axios
-axios.defaults.baseURL = 'https://api.example.com'; 
+axios.defaults.baseURL = 'https://ds.sccdc.cn:8080/'; 
 app.config.globalProperties.$http = axios;
 
 // 路由挂载

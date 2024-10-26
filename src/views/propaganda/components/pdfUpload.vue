@@ -8,23 +8,63 @@
       :on-preview="handlePdfPreview"
       :on-remove="handleRemove"
       :before-upload="handleBeforeUpload"
-      :disabled="!editable"
       accept=".pdf"
+      :disabled="!editable"
     >
       <el-icon v-if="editable"><Plus /></el-icon>
+
+      <!-- 使用 slot 自定义文件显示 -->
+      <template #file="{ file }">
+        <div class="filestyle">
+          <!-- PDF 缩略图图标 -->
+          <img 
+            v-if="file.raw && file.raw.type === 'application/pdf'" 
+            class="el-upload-list__item-thumbnail_pdf" 
+            :src="pdfIconUrl" 
+            alt="PDF Icon" 
+          />
+          <span class="el-upload-list__item-actions">
+            <!-- 预览按钮 -->
+            <span class="el-upload-list__item-preview" @click="handlePdfPreview(file)">
+              <el-icon><ZoomIn /></el-icon>
+            </span>
+            <!-- 删除按钮，仅在编辑模式下显示 -->
+            <span
+              v-if="editable"
+              class="el-upload-list__item-delete"
+              @click="() => handleRemove(file, files)"
+            >
+              <el-icon><Delete /></el-icon>
+            </span>
+          </span>
+        </div>
+      </template>
     </el-upload>
+
+    <!-- 文件名显示在上传框下方 -->
+    <div class="file-names">
+      <div v-for="file in files" :key="file.uid" class="file-name">
+        {{ file.name }}
+      </div>
+    </div>
 
     <!-- PDF 预览弹窗 -->
     <el-dialog v-model="dialogVisible" class="custom-dialog" :modal="true">
-      <iframe v-if="dialogPdfUrl" :src="dialogPdfUrl" class="pdf-preview" frameborder="0"></iframe>
+      <iframe
+        v-if="dialogPdfUrl"
+        :src="dialogPdfUrl"
+        class="pdf-preview"
+        frameborder="0"
+      ></iframe>
     </el-dialog>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted } from 'vue';
+import { ref, defineProps, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
 import { Plus, Delete, ZoomIn } from '@element-plus/icons-vue';
+import pdfIcon from "@/assets/filesicon-PDF.svg";
 
 const props = defineProps({
   filePath: {
@@ -40,26 +80,15 @@ const props = defineProps({
 const files = ref([]);
 const dialogVisible = ref(false);
 const dialogPdfUrl = ref('');
+const pdfIconUrl = pdfIcon;
 
 // 初始化文件
 onMounted(() => {
   if (props.filePath) {
     files.value.push({
-      name: props.filePath.split('/').pop(),
+      name: props.filePath.split("/").pop(),
       url: props.filePath,
     });
-  }
-});
-
-// 监听 filePath 的变化
-watch(() => props.filePath, (newFilePath) => {
-  if (newFilePath) {
-    files.value = [
-      {
-        name: newFilePath.split('/').pop(),
-        url: newFilePath,
-      }
-    ];
   }
 });
 
@@ -72,70 +101,93 @@ const handlePdfPreview = (file) => {
 // 删除 PDF
 const handleRemove = (file, fileList) => {
   const index = fileList.indexOf(file);
-  if (index !== -1) {
+  if (index !== -1 && props.editable) {
     fileList.splice(index, 1);
-    ElMessage.success('PDF文件已删除');
+    ElMessage.success("PDF文件已删除");
+  } else if (!props.editable) {
+    ElMessage.warning("编辑模式下才能删除文件");
   }
 };
 
 // 防止未在编辑模式时上传文件
 const handleBeforeUpload = () => {
   if (!props.editable) {
-    ElMessage.warning('请先进入编辑模式');
+    ElMessage.warning("请先进入编辑模式");
     return false;
   }
   return true;
 };
 </script>
 
+
 <style scoped>
 .filestyle {
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-    position: relative; 
-    width: 100%;
-    height: 100%; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .el-upload-list__item-thumbnail_pdf {
-    width: 60%;
-    height: 60%;
+  width: 60%;
+  height: 60%;
 }
 
 .el-upload-list__item-thumbnail_jpg {
-    width: 70%;
-    height: 70%;
-    object-fit: contain; 
-    border-radius: 5px;
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+  border-radius: 5px;
 }
 
 .file-names {
-    margin-top: 10px; 
+  margin-top: 10px;
 }
 
 .file-name {
-    text-align: left; 
-    font-size: 14px; 
+  text-align: left;
+  font-size: 14px;
 }
 
 .custom-dialog {
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-    width: auto; 
-    height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  height: auto;
 }
 
 .dialog-image {
-    margin: 10px 0; 
-    max-width: 100%; 
-    max-height: 100%; 
-    object-fit: contain; 
+  margin: 10px 0;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 .pdf-preview {
-    width: 100%; 
-    height: 500px;
+  width: 100%;
+  height: 500px;
+}
+.custom-thumbnail-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.pdf-thumbnail {
+  width: 60%;
+  height: auto;
+  object-fit: contain;
+}
+
+.file-name {
+  margin-top: 8px;
+  font-size: 12px;
+  text-align: center;
+  color: #333;
 }
 </style>
