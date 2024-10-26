@@ -4,7 +4,6 @@ import { resolve } from 'path';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
-import commonjs from '@rollup/plugin-commonjs';
 export default defineConfig({
   plugins: [
     vue(),
@@ -14,7 +13,6 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()],
     }),
-    [commonjs()],
   ],
   resolve: {
     alias: {
@@ -31,27 +29,27 @@ export default defineConfig({
   server: {
     proxy: {
       '/admin': {
-        target: 'https://ds.sccdc.cn:8080/',
+        target: 'https://ds.sccdc.cn',
         changeOrigin: true,
         logLevel: 'debug',
       },
       '/cdcStaff': {
-        target: 'https://ds.sccdc.cn:8080/',
+        target: 'https://ds.sccdc.cn',
         changeOrigin: true,
         logLevel: 'debug',
       },
       '/medicalStaff': {
-        target: 'https://ds.sccdc.cn:8080/',
+        target: 'https://ds.sccdc.cn',
         changeOrigin: true,
         logLevel: 'debug',
       },
       '/common': {
-        target: 'https://ds.sccdc.cn:8080/',
+        target: 'https://ds.sccdc.cn',
         changeOrigin: true,
         logLevel: 'debug',
       },
       '/user': {
-        target: 'https://ds.sccdc.cn:8080/',
+        target: 'https://ds.sccdc.cn',
         changeOrigin: true,
         logLevel: 'debug',
       },
