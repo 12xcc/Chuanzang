@@ -30,26 +30,31 @@ export default defineConfig({
     proxy: {
       '/admin': {
         target: 'https://ds.sccdc.cn',
+        // target: 'http://43.138.213.54:8080',
         changeOrigin: true,
         logLevel: 'debug',
       },
       '/cdcStaff': {
         target: 'https://ds.sccdc.cn',
+        // target: 'http://43.138.213.54:8080',
         changeOrigin: true,
         logLevel: 'debug',
       },
       '/medicalStaff': {
         target: 'https://ds.sccdc.cn',
+        // target: 'http://43.138.213.54:8080',
         changeOrigin: true,
         logLevel: 'debug',
       },
       '/common': {
         target: 'https://ds.sccdc.cn',
+        // target: 'http://43.138.213.54:8080',
         changeOrigin: true,
         logLevel: 'debug',
       },
       '/user': {
         target: 'https://ds.sccdc.cn',
+        // target: 'http://43.138.213.54:8080',
         changeOrigin: true,
         logLevel: 'debug',
       },

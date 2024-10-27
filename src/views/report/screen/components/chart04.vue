@@ -60,7 +60,7 @@ export default {
           // 遍历每个时间段的数据
           response.data.data.forEach((item) => {
             item.list.forEach((dataPoint) => {
-              const diseaseTypeName = dataPoint.diseaseTypeName;
+              const diseaseTypeName = dataPoint.diseaseTypeName || "健康";
               const count = dataPoint.count;
 
               // 如果疾病类型已经在 xAxisData 中，更新对应的 seriesData

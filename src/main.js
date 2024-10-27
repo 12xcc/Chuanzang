@@ -17,6 +17,8 @@ const app = createApp(App)
 
 // 配置 axios
 axios.defaults.baseURL = 'https://ds.sccdc.cn'; 
+// axios.defaults.baseURL = 'http://43.138.213.54:8080'; 
+
 app.config.globalProperties.$http = axios;
 
 // 路由挂载

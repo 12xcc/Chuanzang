@@ -57,3 +57,13 @@ export const saveLabTestFile = (formData) => {
     },
   });
 };
+
+
+// 根据检查文件id获取检查文件
+export const getLabTestFile = async (labTestId) => {
+  const response = await axiosInstance.get(
+    `/common/file/getLabTestFile/${labTestId}`,
+    { responseType: "blob" }
+  );
+  return response;
+};

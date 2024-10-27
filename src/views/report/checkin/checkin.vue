@@ -139,7 +139,7 @@
         <el-table-column fixed="right" label="操作" min-width="260">
           <template #default="scope">
             <el-button
-              v-if="scope.row.isHealth === true"
+              v-if="scope.row.isHealth === false"
               class="checksymptom"
               link
               type="primary"

@@ -33,3 +33,19 @@ export const getChickInInfoByText = async (params) => {
   );
   return response;
 };
+
+// 重点人员跟踪
+export const getImportantUserInfo = async () => {
+  const response = await axiosInstance.get(
+    "/cdcStaff/statisticsDataView/getImportantUserInfo"
+  );
+  return response;
+};
+
+// 获取全部用户地理位置信息
+export const getUserStation = async () => {
+  const response = await axiosInstance.get(
+    "/cdcStaff/statisticsDataView/getUserStation"
+  );
+  return response;
+};

@@ -13,25 +13,25 @@ import { GridComponent, TooltipComponent } from 'echarts/components';
 import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { ref, onMounted } from 'vue';
-import { getDiseaseDataToday } from '@/api/report/screen.js'; // 导入接口
+import { getDiseaseDataToday } from '@/api/report/screen.js';
+import { useDiseaseStore } from '@/store/diseaseStore';
 
 echarts.use([GridComponent, BarChart, CanvasRenderer, TooltipComponent]);
 const chart = ref(null);
+const diseaseStore = useDiseaseStore();
 
 onMounted(async () => {
   const myChart = echarts.init(chart.value);
 
   try {
-    // 调用接口获取数据
     const response = await getDiseaseDataToday();
     if (response.data.code === 1) {
       const data = response.data.data;
+      diseaseStore.setDiseaseData(data); // 将数据存储到 pinia 的全局状态
 
-      // 提取疾病名称和患病人数
-      const xAxisData = data.map(item => item.diagnosisdiseaseTypeName);
+      const xAxisData = data.map(item => item.diagnosisdiseaseTypeName || "健康");
       const seriesData = data.map(item => item.count);
 
-      // 更新图表配置
       const option = {
         color: ['#D43030'],
         grid: {
@@ -66,8 +66,8 @@ onMounted(async () => {
           textStyle: {
             color: '#333333',        
             fontSize: 14,          
-            },
-            extraCssText: 'border-radius: 4px;'  
+          },
+          extraCssText: 'border-radius: 4px;'  
         },
         series: [
           {

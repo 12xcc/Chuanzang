@@ -33,32 +33,48 @@
 import { ref, onMounted } from 'vue';
 import maleAvatar from '@/assets/avatar/male.png';
 import femaleAvatar from '@/assets/avatar/female.png';
+import { getImportantUserInfo } from '@/api/report/screen.js';
 
 const getAvatarUrl = (gender) => {
-  return gender === '男' 
-    ? maleAvatar 
-    : femaleAvatar; 
+  return gender === '男' ? maleAvatar : femaleAvatar; 
 };
 
-const data = ref([
-  { id: 1, name: '张三', department: '测量队', statu: '健康', gender: '男' },
-  { id: 2, name: '李四', department: '测量队', statu: '鼠疫', gender: '女' },
-  { id: 3, name: '王五', department: '合约部', statu: '健康', gender: '男' },
-  { id: 4, name: '赵六', department: '合约部', statu: '新型冠状病毒感染', gender: '女' },
-  { id: 5, name: '钱七', department: '测量队', statu: '炭疽', gender: '男' }
-]);
+const data = ref([]);
+const displayedData = ref([]);
 
-const displayedData = ref([...data.value]);
+// 获取重点人员数据并初始化表格数据
+const fetchImportantUserData = async () => {
+  try {
+    const response = await getImportantUserInfo();
+    if (response.data.code === 1) {
+      data.value = response.data.data.map(item => ({
+        id: item.userId,
+        name: item.name,
+        department: item.department,
+        statu: item.isHealth ? '健康' : item.diagnosisDiseaseTypeName || '不健康',
+        gender: item.gender
+      }));
+      displayedData.value = [...data.value];
+    } else {
+      console.error("获取重点人员数据失败:", response.data.msg);
+    }
+  } catch (error) {
+    console.error("请求出错:", error);
+  }
+};
 
+// 轮播数据
 const rotateData = () => {
   const firstItem = displayedData.value.shift(); // 删除并获取第一个元素
   displayedData.value.push(firstItem); // 将其添加到数组末尾
 };
 
 onMounted(() => {
+  fetchImportantUserData(); // 调用接口获取数据
   setInterval(rotateData, 3000); // 每3秒轮播一次
 });
 </script>
+
 
 <style scoped>
 .container {

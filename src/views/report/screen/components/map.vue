@@ -4,8 +4,8 @@
       <div class="chart-title">地理位置分布</div>
       <div id="mapContainer" class="chart"></div>
       <div class="legend-label">
-            <img src="@/assets/map.svg" alt="">
-            <div class="legend-title">患病人数多的高风险地区</div>
+        <img src="@/assets/map.svg" alt="">
+        <div class="legend-title">患病人数多的高风险地区</div>
       </div>
     </div>
   </div>
@@ -13,38 +13,43 @@
 
 <script setup>
 import { onMounted } from 'vue';
+import { getUserStation } from "@/api/report/screen.js";
 
-onMounted(() => {
+onMounted(async () => {
   const map = new AMap.Map('mapContainer', {
     zoom: 3.6, 
     center: [104.0668, 30.5728]  
   });
 
-  map.plugin(['AMap.HeatMap'], () => {
+  map.plugin(['AMap.HeatMap'], async () => {
     const heatmap = new AMap.HeatMap(map, {
       radius: 25,
       opacity: [0, 0.8]
     });
 
-    // 热力点
-    heatmap.setDataSet({
-      data: [
-        { lng: 104.0668, lat: 30.5728, count: 100 },
-        { lng: 90.3715, lat: 29.6624, count: 100 },   
-        { lng: 93.3454, lat: 30.6555, count: 90 },    
-        { lng: 103.0864, lat: 32.2344, count: 230 },    
-        { lng: 102.8284, lat: 30.2051, count: 220 },   
-        { lng: 101.7242, lat: 36.6527, count: 85 },   
-        { lng: 91.3457, lat: 29.6756, count: 300 },    
-        { lng: 94.2500, lat: 31.0000, count: 200 },  
-        { lng: 94.0000, lat: 32.0000, count: 200 },
-        { lng: 95.0000, lat: 33.0000, count: 200 }    
-      ],
-      max: 100
-    });
+    try {
+      const response = await getUserStation();
+      if (response.data.code === 1) {
+        const heatmapData = response.data.data.map(item => ({
+          lng: item.longitude,
+          lat: item.latitude,
+          count: 100  // 示例数量，您可以根据实际数据调整
+        }));
+
+        heatmap.setDataSet({
+          data: heatmapData,
+          max: 100
+        });
+      } else {
+        console.error("获取用户地理位置数据失败:", response.data.msg);
+      }
+    } catch (error) {
+      console.error("请求出错:", error);
+    }
   });
 });
 </script>
+
 
 <style scoped>
 .container {

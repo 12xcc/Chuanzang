@@ -16,81 +16,92 @@ import * as echarts from 'echarts/core';
 import { GridComponent, TooltipComponent } from 'echarts/components';
 import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
+import { useDiseaseStore } from '@/store/diseaseStore';
+
 echarts.use([GridComponent, BarChart, CanvasRenderer, TooltipComponent]);
 const chart = ref(null);
+const diseaseStore = useDiseaseStore();
 
 onMounted(() => {
   const myChart = echarts.init(chart.value);
 
-  // 原始数据
-  const rawData = [120, 200, 150, 80, 70, 110, 130, 150, 80, 70, 110, 130];
-  // 计算总和
-  const total = rawData.reduce((acc, val) => acc + val, 0);
-  // 计算百分比
-  const percentData = rawData.map(value => ((value / total) * 100).toFixed(2));
+  watch(
+    () => diseaseStore.diseaseData,
+    (newData) => {
+      if (newData.length > 0) {
+        const total = newData.reduce((acc, item) => acc + item.count, 0);
+        const percentData = newData.map(item => ({
+          name: item.diagnosisdiseaseTypeName || "健康",
+          value: ((item.count / total) * 100).toFixed(2)
+        }));
 
+        const option = {
+          color: ['#285AC8'],
+          grid: {
+            top: '25%',
+            bottom: '5%',
+          },
+          xAxis: {
+            type: 'category',
+            data: percentData.map(item => item.name),
+            axisLabel: {
+              show: false
+            },
+            axisLine: { show: false },
+            axisTick: { show: false },
+            splitLine: { show: false }
+          },
+          yAxis: {
+            type: 'value',
+            axisLine: { show: false },
+            axisTick: { show: false },
+            splitLine: { show: false }
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: function(params) {
+              return `${params.name}  ${percentData[params.dataIndex].value}%`;
+            },
+            backgroundColor: '#FFFFFF',
+            borderColor: '#FFFFFF',
+            borderWidth: 1,
+            padding: [10, 10],
+            textStyle: {
+              color: '#333333',
+              fontSize: 14,
+            },
+            extraCssText: 'border-radius: 4px;'
+          },
+          series: [
+            {
+              data: percentData.map(item => item.value),
+              type: 'bar',
+              barWidth: '40%',
+              itemStyle: {
+                borderRadius: [3, 3, 0, 0]
+              },
+              showBackground: true,
+              backgroundStyle: {
+                color: '#F4F4F4'
+              }
+            }
+          ]
+        };
 
-  const option = {
-    color: ['#285AC8'],
-    grid: {
-      top: '25%',
-      bottom: '5%',
-    },
-    xAxis: {
-      type: 'category',
-      data: ['新型冠状病毒感染', '流感', '鼠疫', '感染性腹泻', '炭疽', '结核病', '登革热（蚊媒传染病）', '疟疾（蚊媒传染病）', '森林脑炎（蜱媒传染病）', '发热伴血小板减少综合征（蜱媒传染病）', '斑疹伤寒', '流行性出血热'],
-      axisLabel: {
-        show: false
-      },
-      axisLine: { show: false },
-      axisTick: { show: false },
-      splitLine: { show: false }
-    },
-    yAxis: {
-      type: 'value',
-      axisLine: { show: false },
-      axisTick: { show: false },
-      splitLine: { show: false }
-    },
-    tooltip: {
-      trigger: 'item',
-      formatter: function(params) {
-        return `${params.name}  ${percentData[params.dataIndex]}%`;
-      },
-      backgroundColor: '#FFFFFF',
-      borderColor: '#FFFFFF',
-      borderWidth: 1,
-      padding: [10, 10],
-      textStyle: {
-        color: '#333333',
-        fontSize: 14,
-      },
-      extraCssText: 'border-radius: 4px;'
-    },
-    series: [
-      {
-        data: percentData,
-        type: 'bar',
-        barWidth: '40%',
-        itemStyle: {
-          borderRadius: [3, 3, 0, 0]
-        },
-        showBackground: true,
-        backgroundStyle: {
-          color: '#F4F4F4'
-        }
+        myChart.setOption(option);
       }
-    ]
-  };
-
-  myChart.setOption(option);
+    },
+    { immediate: true }
+  );
 
   window.addEventListener('resize', () => {
     myChart.resize();
   });
 });
 </script>
+
+
 
 <style  scoped>
 .container {
