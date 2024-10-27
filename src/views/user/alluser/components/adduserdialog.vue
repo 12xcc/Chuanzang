@@ -23,21 +23,21 @@
         ref="form"
         :rules="rules"
       >
-         <!-- 用户类型 -->
+        <!-- 用户类型 -->
         <el-form-item label="用户类型" prop="userType" size="default">
-        <el-select
-          v-model="form.userType"
-          placeholder="请选择用户类型"
-          clearable
-          size="default"
-          style="width: 200px"
-        >
-          <el-option :key="1" label="系统管理员" :value="1"></el-option>
-          <el-option :key="2" label="铁路职工" :value="2"></el-option>
-          <el-option :key="3" label="疾控中心工作人员" :value="3"></el-option>
-          <el-option :key="4" label="专职医护" :value="4"></el-option>
-        </el-select>
-      </el-form-item>
+          <el-select
+            v-model="form.userType"
+            placeholder="请选择用户类型"
+            clearable
+            size="default"
+            style="width: 200px"
+          >
+            <el-option :key="1" label="系统管理员" :value="1"></el-option>
+            <el-option :key="2" label="铁路职工" :value="2"></el-option>
+            <el-option :key="3" label="疾控中心工作人员" :value="3"></el-option>
+            <el-option :key="4" label="专职医护" :value="4"></el-option>
+          </el-select>
+        </el-form-item>
 
         <!-- 姓名 -->
         <el-form-item label="姓名" prop="name">
@@ -57,7 +57,7 @@
           </el-radio-group>
         </el-form-item>
 
-          <!-- 是否为孕妇 -->
+        <!-- 是否为孕妇 -->
         <el-form-item
           v-if="form.gender === '女'"
           label="是否为孕妇"
@@ -67,7 +67,7 @@
             <el-radio :value="true">是</el-radio>
             <el-radio :value="false">否</el-radio>
           </el-radio-group>
-          <el-form-item  v-if="form.IsPregnant === true" label="孕周">
+          <el-form-item v-if="form.IsPregnant === true" label="孕周">
             <el-input
               v-model="form.PregnancyWeeks"
               placeholder="孕周"
@@ -76,13 +76,13 @@
           </el-form-item>
         </el-form-item>
 
-
         <!-- 身份证号 -->
         <el-form-item label="身份证号" prop="IDNumber">
           <el-input
             v-model="form.IDNumber"
             style="width: 200px"
             placeholder="请输入身份证号"
+            @change="handleAge"
           ></el-input>
         </el-form-item>
 
@@ -115,7 +115,7 @@
             <el-radio value="硕士及以上">硕士及以上</el-radio>
           </el-radio-group>
         </el-form-item>
- <!-- 来高原工作时间 -->
+        <!-- 来高原工作时间 -->
         <el-form-item
           label="来高原工作时间"
           style="display: flex; align-items: center"
@@ -176,14 +176,13 @@
             </el-radio-group>
           </el-form-item>
         </el-form-item>
-         <el-form-item
+        <el-form-item
           v-if="form.MedicalPersonnelType === '其他'"
           label="其他工作性质名称"
           prop="OtherPositionname"
         >
           <el-input v-model="form.OtherPositionname" style="width: 200px" />
         </el-form-item>
-
 
         <!-- 联系电话 -->
         <el-form-item label="联系电话" prop="phoneNumber">
@@ -423,7 +422,7 @@ export default {
     return {
       visible: false, // 控制弹窗显示
       form: {
-           userType: null, // 用户类型
+        userType: null, // 用户类型
         name: null, // 姓名
         gender: null, // 性别
         IsPregnant: false, // 是否怀孕
@@ -501,19 +500,23 @@ export default {
           { pattern: /^[0-9]+$/, message: "年龄必须为数字", trigger: "blur" },
         ],
         ethnicity: [
-          {required: true, message: "请选择民族", trigger: "change"},
+          { required: true, message: "请选择民族", trigger: "change" },
         ],
         EducationLevel: [
-          {required: true, message: "请选择受教育程度", trigger: "change"},
+          { required: true, message: "请选择受教育程度", trigger: "change" },
         ],
         WorkStart: [
-          {required: true, message: "请选择来高原工作时间", trigger: "blur"},
+          { required: true, message: "请选择来高原工作时间", trigger: "blur" },
         ],
         department: [
-          {required: true, message: "请选择部门/工种", trigger: "change"},
+          { required: true, message: "请选择部门/工种", trigger: "change" },
         ],
         SpecificOccupation: [
-          {required: true, message: "请选择是否为特定职业", trigger: "change"},
+          {
+            required: true,
+            message: "请选择是否为特定职业",
+            trigger: "change",
+          },
         ],
         phoneNumber: [
           { required: true, message: "请输入联系电话", trigger: "blur" },
@@ -561,7 +564,7 @@ export default {
           },
         ],
         OtherDiseasesname: [
-          { required: false, message: "请输入其他疾病名称", trigger: "blur" },
+          { required: true, message: "请输入其他疾病名称", trigger: "blur" },
         ],
         SmokingStatus: [
           { required: true, message: "请选择吸烟史", trigger: "blur" },
@@ -580,112 +583,141 @@ export default {
       this.visible = false;
       this.handleReset();
     },
- // 调用增加用户api
-handleSubmit() {
-  this.$refs.form.validate(async (valid) => {
-    if (valid) {
-      try {
-        // 处理必要数据，构造请求体
-        const requestData = {
-          age: this.form.age,
-          birthDate: this.form.BirthDate,
-          department: this.form.department,
-          drinkingStatus: this.form.DrinkingStatus,
-          educationLevel: this.form.EducationLevel,
-          emergencyContactname: this.form.EmergencyContactname,
-          emergencyContactphoneNumber: this.form.EmergencyContactphoneNumber,
-          emergencyContactRelation: this.form.EmergencyContactRelation,
-          ethnicity: this.form.ethnicity,
-          gender: this.form.gender,
-          hasAsthma: this.form.hasAsthma,
-          hasCOPD: this.form.hasCOPD,
-          hasChronicKidneyDisease: this.form.hasChronicKidneyDisease,
-          hasChronicLiverDisease: this.form.hasChronicLiverDisease,
-          hasCoronaryHeartDisease: this.form.hasCoronaryHeartDisease,
-          hasDiabetes: this.form.hasDiabetes,
-          hasDustExposure: this.form.hasDustExposure,
-          hasHepatitis: this.form.hasHepatitis,
-          hasHyperlipidemia: this.form.hasHyperlipidemia,
-          hasHypertension: this.form.hasHypertension,
-          hasHyperuricemia: this.form.hasHyperuricemia,
-          hasImmunodeficiency: this.form.hasImmunodeficiency,
-          hasLungCancer: this.form.hasLungCancer,
-          hasMalignantTumor: this.form.hasMalignantTumor,
-          hasMedicalHistory: this.form.hasMedicalHistory,
-          hasOccupationalDisease: this.form.hasOccupationalDisease,
-          hasOtherCancer: this.form.hasOtherCancer,
-          hasOtherCardiovascularDiseases: this.form.hasOtherCardiovascularDiseases,
-          hasOtherDiseases: this.form.hasOtherDiseases,
-          hasPepticUlcer: this.form.hasPepticUlcer,
-          hasSevereMentalDisorders: this.form.hasSevereMentalDisorders,
-          hasStroke: this.form.hasStroke,
-          hasTuberculosis: this.form.hasTuberculosis,
-          hasTyphus: this.form.hasTyphus,
-          height: this.form.Height,
-          idNumber: this.form.IDNumber,
-          isActived: this.form.IsActived,
-          isPostpartumInSixWeeks: this.form.IsPostpartumInSixWeeks,
-          isPregnant: this.form.IsPregnant,
-          isVaccinatedForBCG: this.form.IsVaccinatedForBCG,
-          isVaccinatedForCOVID: this.form.IsVaccinatedForCOVID,
-          isVaccinatedForFlu: this.form.IsVaccinatedForFlu,
-          isVaccinatedForHepatitis: this.form.IsVaccinatedForHepatitis,
-          isVaccinatedForPlague: this.form.IsVaccinatedForPlague,
-          medicalPersonnelType: this.form.MedicalPersonnelType,
-          name: this.form.name,
-          otherCancername: this.form.OtherCancername,
-          otherDiseasesname: this.form.OtherDiseasesname,
-          otherphoneNumber: this.form.OtherphoneNumber,
-          otherPositionname: this.form.OtherPositionname,
-          phoneNumber: this.form.phoneNumber,
-          pregnancyWeeks: this.form.PregnancyWeeks,
-          smokingStatus: this.form.SmokingStatus,
-          specificOccupation: this.form.SpecificOccupation,
-          userType: this.form.userType,
-          weight: this.form.Weight,
-          workOnPlateauStartDate: this.form.WorkOnPlateauStartDate
-        };
+    // 调用增加用户api
+    handleSubmit() {
+      this.$refs.form.validate(async (valid) => {
+        if (valid) {
+          try {
+            // 处理必要数据，构造请求体
+            const requestData = {
+              age: this.form.age,
+              birthDate: this.form.BirthDate,
+              department: this.form.department,
+              drinkingStatus: this.form.DrinkingStatus,
+              educationLevel: this.form.EducationLevel,
+              emergencyContactname: this.form.EmergencyContactname,
+              emergencyContactphoneNumber:
+                this.form.EmergencyContactphoneNumber,
+              emergencyContactRelation: this.form.EmergencyContactRelation,
+              ethnicity: this.form.ethnicity,
+              gender: this.form.gender,
+              hasAsthma: this.form.hasAsthma,
+              hasCOPD: this.form.hasCOPD,
+              hasChronicKidneyDisease: this.form.hasChronicKidneyDisease,
+              hasChronicLiverDisease: this.form.hasChronicLiverDisease,
+              hasCoronaryHeartDisease: this.form.hasCoronaryHeartDisease,
+              hasDiabetes: this.form.hasDiabetes,
+              hasDustExposure: this.form.hasDustExposure,
+              hasHepatitis: this.form.hasHepatitis,
+              hasHyperlipidemia: this.form.hasHyperlipidemia,
+              hasHypertension: this.form.hasHypertension,
+              hasHyperuricemia: this.form.hasHyperuricemia,
+              hasImmunodeficiency: this.form.hasImmunodeficiency,
+              hasLungCancer: this.form.hasLungCancer,
+              hasMalignantTumor: this.form.hasMalignantTumor,
+              hasMedicalHistory: this.form.hasMedicalHistory,
+              hasOccupationalDisease: this.form.hasOccupationalDisease,
+              hasOtherCancer: this.form.hasOtherCancer,
+              hasOtherCardiovascularDiseases:
+                this.form.hasOtherCardiovascularDiseases,
+              hasOtherDiseases: this.form.hasOtherDiseases,
+              hasPepticUlcer: this.form.hasPepticUlcer,
+              hasSevereMentalDisorders: this.form.hasSevereMentalDisorders,
+              hasStroke: this.form.hasStroke,
+              hasTuberculosis: this.form.hasTuberculosis,
+              hasTyphus: this.form.hasTyphus,
+              height: this.form.Height,
+              idNumber: this.form.IDNumber,
+              isActived: this.form.IsActived,
+              isPostpartumInSixWeeks: this.form.IsPostpartumInSixWeeks,
+              isPregnant: this.form.IsPregnant,
+              isVaccinatedForBCG: this.form.IsVaccinatedForBCG,
+              isVaccinatedForCOVID: this.form.IsVaccinatedForCOVID,
+              isVaccinatedForFlu: this.form.IsVaccinatedForFlu,
+              isVaccinatedForHepatitis: this.form.IsVaccinatedForHepatitis,
+              isVaccinatedForPlague: this.form.IsVaccinatedForPlague,
+              medicalPersonnelType: this.form.MedicalPersonnelType,
+              name: this.form.name,
+              otherCancername: this.form.OtherCancername,
+              otherDiseasesname: this.form.OtherDiseasesname,
+              otherphoneNumber: this.form.OtherphoneNumber,
+              otherPositionname: this.form.OtherPositionname,
+              phoneNumber: this.form.phoneNumber,
+              pregnancyWeeks: this.form.PregnancyWeeks,
+              smokingStatus: this.form.SmokingStatus,
+              specificOccupation: this.form.SpecificOccupation,
+              userType: this.form.userType,
+              weight: this.form.Weight,
+              workOnPlateauStartDate: this.form.WorkOnPlateauStartDate,
+            };
 
-        // 调用接口提交用户信息
-        const response = await axiosInstance.post(
-          "/admin/userManager/addOneUser",
-          requestData, // 请求体
-          {
-            headers: {
-              "Content-Type": "application/json", // 请求头
-            },
+            // 调用接口提交用户信息
+            const response = await axiosInstance.post(
+              "/admin/userManager/addOneUser",
+              requestData, // 请求体
+              {
+                headers: {
+                  "Content-Type": "application/json", // 请求头
+                },
+              }
+            );
+
+            // 判断响应
+            if (response.data.code === 1) {
+              ElMessage({
+                message: "提交成功",
+                type: "success",
+              });
+              this.visible = false; // 关闭弹窗
+            } else {
+              ElMessage({
+                message: "提交失败：" + response.data.msg,
+                type: "error",
+              });
+            }
+          } catch (error) {
+            console.error("提交出错:", error);
+            ElMessage({
+              message: "提交出错，请重试",
+              type: "error",
+            });
           }
-        );
-
-        // 判断响应
-        if (response.data.code === 1) {
-          ElMessage({
-            message: "提交成功",
-            type: "success",
-          });
-          this.visible = false; // 关闭弹窗
         } else {
+          console.log("表单验证失败");
           ElMessage({
-            message: "提交失败：" + response.data.msg,
+            message: "提交失败，表单验证未通过",
             type: "error",
           });
         }
-      } catch (error) {
-        console.error("提交出错:", error);
-        ElMessage({
-          message: "提交出错，请重试",
-          type: "error",
-        });
-      }
-    } else {
-      console.log("表单验证失败");
-      ElMessage({
-        message: "提交失败，表单验证未通过",
-        type: "error",
       });
-    }
-  });
-},
+    },
+
+    handleAge() {
+      const idNumber = this.form.IDNumber;
+      if (idNumber.length === 18) {
+        // 从身份证号中提取出生年月日
+        const birthYear = parseInt(idNumber.slice(6, 10));
+        const birthMonth = parseInt(idNumber.slice(10, 12)) - 1; // 月份从0开始
+        const birthDay = parseInt(idNumber.slice(12, 14));
+
+        const birthDate = new Date(birthYear, birthMonth, birthDay);
+        const today = new Date();
+
+        // 计算年龄
+        let age = today.getFullYear() - birthYear;
+        if (
+          today.getMonth() < birthMonth ||
+          (today.getMonth() === birthMonth && today.getDate() < birthDay)
+        ) {
+          age--;
+        }
+
+        this.form.age = age;
+      } else {
+        this.form.age = "身份证号格式不正确";
+      }
+    },
+
     handleMedicalHistoryChange() {
       if (!this.form.hasMedicalHistory) {
         // 如果选择“无”，清空所有疾病选项
@@ -735,11 +767,11 @@ handleSubmit() {
     },
     handleReset() {
       this.form = this.getInitialForm();
-      this.message="";
+      this.message = "";
     },
     getInitialForm() {
       return {
-           userType: null, // 用户类型
+        userType: null, // 用户类型
         name: null, // 姓名
         gender: null, // 性别
         IsPregnant: false, // 是否怀孕

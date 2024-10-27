@@ -116,9 +116,9 @@
         <el-table-column prop="gender" label="性别" width="100" />
         <el-table-column prop="age" label="年龄" width="100" />
         <el-table-column prop="department" label="部门/工种" width="120" />
-        <el-table-column prop="isHealth" label="患病" width="120">
+        <el-table-column prop="isHealth" label="是否健康" width="120">
           <template #default="scope">
-            <el-tag :type="scope.row.isHealth === false ? 'success' : 'danger'">
+            <el-tag :type="scope.row.isHealth === false ? 'danger' : 'success'">
               {{ scope.row.isHealth === false ? "否" : "是" }}
             </el-tag>
           </template>
@@ -131,7 +131,7 @@
           min-width="160"
         >
           <template #default="scope">
-            <el-tag type="danger">
+            <el-tag v-if="scope.row.isHealth === false" type="danger">
               {{ scope.row.diseaseTypeName }}
             </el-tag>
           </template>
@@ -139,7 +139,7 @@
         <el-table-column fixed="right" label="操作" min-width="260">
           <template #default="scope">
             <el-button
-              v-if="scope.row.isHealth === true "
+              v-if="scope.row.isHealth === true"
               class="checksymptom"
               link
               type="primary"
@@ -210,69 +210,72 @@ export default {
     },
   },
   methods: {
-    async handleQuery() {
-      this.loading = true;
-      try {
-        // 检查 this.queryParams.date 是否存在且是数组
-        let checkInDateBegin = "";
-        let checkInDateEnd = "";
+   async handleQuery() {
+  this.loading = true;
+  try {
+    // 检查 this.queryParams.date 是否存在且是数组
+    let checkInDateBegin = "";
+    let checkInDateEnd = "";
 
-        if (
-          Array.isArray(this.queryParams.date) &&
-          this.queryParams.date.length === 2
-        ) {
-          [checkInDateBegin, checkInDateEnd] = this.queryParams.date;
-        }
+    if (
+      Array.isArray(this.queryParams.date) &&
+      this.queryParams.date.length === 2
+    ) {
+      [checkInDateBegin, checkInDateEnd] = this.queryParams.date;
+    }
 
-        const params = {
-          checkInDateBegin: checkInDateBegin || "",
-          checkInDateEnd: checkInDateEnd || "",
-          pageNo: this.queryParams.pageNum || 1,
-          pageSize: this.queryParams.pageSize || 15,
-          isHealth: this.queryParams.isHealth || "",
+    const params = {
+      checkInDateBegin: checkInDateBegin || "",
+      checkInDateEnd: checkInDateEnd || "",
+      pageNo: this.queryParams.pageNum || 1,
+      pageSize: this.queryParams.pageSize || 15,
+      isHealth: this.queryParams.isHealth || "",
+    };
+
+    if (this.queryParams.choice && this.queryParams.check) {
+      params[this.queryParams.choice] = this.queryParams.check;
+    }
+
+    // 封装的api
+    const response = await pageSelectCheckin(params);
+
+    if (response.data.code === 1) {
+      this.allData = response.data.data.records.map((item, index) => {
+        // 计算序号
+        const serialNumber =
+          (this.queryParams.pageNum - 1) * this.queryParams.pageSize +
+          index +
+          1;
+
+        // 格式化 checkInDate 为 YYYY-MM-DD 格式
+        const checkInDate = item.checkInDate
+          ? `${item.checkInDate[0]}-${String(item.checkInDate[1]).padStart(
+              2,
+              "0"
+            )}-${String(item.checkInDate[2]).padStart(2, "0")}`
+          : "";
+
+        return {
+          serialNumber,
+          checkInDate,
+          isHealth: item.isHealth,
+          ...item, // 其他字段直接解构，不做映射
         };
+      });
+      this.total = response.data.data.total;
+    } else {
+      this.$message.error(
+        "获取用户数据失败，请重试！" + response.data.message
+      );
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    this.$message.error("获取用户数据失败，请重试！");
+  } finally {
+    this.loading = false;
+  }
+},
 
-        if (this.queryParams.choice && this.queryParams.check) {
-          params[this.queryParams.choice] = this.queryParams.check;
-        }
-
-        // 封装的api
-        const response = await pageSelectCheckin(params);
-
-        if (response.data.code === 1) {
-          this.allData = response.data.data.records.map((item, index) => {
-            // 特殊处理 serialNumber、checkInDate
-            const serialNumber =
-              (this.queryParams.pageNum - 1) * this.queryParams.pageSize +
-              index +
-              1;
-            const checkInDate = item.checkInDate
-              ? `${item.checkInDate[0]}-${String(item.checkInDate[1]).padStart(
-                  2,
-                  "0"
-                )}-${String(item.checkInDate[2]).padStart(2, "0")}`
-              : "";
-            // 通过解构获取其他字段
-            return {
-              serialNumber,
-              checkInDate,
-              isHealth: item.isHealth,
-              ...item, //其他字段直接解构，不做映射
-            };
-          });
-          this.total = response.data.data.total;
-        } else {
-          this.$message.error(
-            "获取用户数据失败，请重试！" + response.data.message
-          );
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        this.$message.error("获取用户数据失败，请重试！");
-      } finally {
-        this.loading = false;
-      }
-    },
 
     // 职工打卡信息导出表
     async handleExport() {

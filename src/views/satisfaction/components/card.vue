@@ -1,4 +1,13 @@
 <template>
+<!-- 暂时弃用 -->
+  <el-drawer
+    :model-value="visible"
+    direction="rtl"
+    size="800px"
+    :with-header="false"
+    custom-class="custom-drawer"
+    @close="handleCancel"
+  >
   <div class="container">
     <div class="title-container">
         <div class="blue-box"></div>
@@ -14,6 +23,7 @@
         </div>
     </div>
   </div>
+    </el-drawer>
 </template>
 
 <script>
@@ -32,7 +42,6 @@ export default {
         { title: "不满意", data: 0 },
         { title: "非常不满意", data: 0 }
       ],
-      surveyID: 1,  // 示例，实际使用时请替换为动态 surveyID
     };
   },
   methods: {
@@ -43,9 +52,9 @@ export default {
       });
     },
 
-    async fetchSatisfactionData() {
+    async fetchCardSatisfactionData(surveyID) {
       try {
-        const response = await getSatisfactionNumberInfo(this.surveyID);
+        const response = await getSatisfactionNumberInfo(surveyID);
         if (response.data.code === 1) {
           const data = response.data.data;
           this.cardData[0].data = 
@@ -66,9 +75,6 @@ export default {
       }
     }
   },
-  mounted() {
-    this.fetchSatisfactionData(); // 组件挂载时调用接口
-  }
 };
 
 </script>

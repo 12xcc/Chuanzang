@@ -10,7 +10,7 @@
     <div class="container">
       <div class="title">
         <h3>查看/编辑检测信息</h3>
-         <div class="footer">
+        <div class="footer">
           <!-- <el-button v-if="isEditing" @click="handleQuit">取消</el-button> -->
           <el-button v-if="!isEditing" @click="handleEdit">编辑</el-button>
           <el-button v-if="isEditing" type="primary" @click="handleSubmit"
@@ -24,7 +24,6 @@
         class="form-container"
         ref="form"
         :rules="rules"
-        
       >
         <div class="BaseInfo">
           <div class="title-container">
@@ -40,7 +39,7 @@
                 placeholder="请输入姓名"
                 @blur="$refs.form.validateField('name')"
                 clearable
-                :disabled="allDisabled"  
+                :disabled="InfoDisabled"
               ></el-input>
             </el-form-item>
 
@@ -51,7 +50,7 @@
                 style="width: 200px"
                 placeholder=""
                 clearable
-                :disabled="allDisabled"  
+                :disabled="InfoDisabled"
               ></el-input>
               <!-- <el-radio-group v-model="form.gender">
                 <el-radio value="男">男</el-radio>
@@ -66,7 +65,7 @@
                 style="width: 200px"
                 placeholder="根据身份证号生成"
                 clearable
-                :disabled="allDisabled"  
+                :disabled="InfoDisabled"
               ></el-input>
             </el-form-item>
 
@@ -77,7 +76,7 @@
                 style="width: 200px"
                 placeholder=""
                 clearable
-                :disabled="allDisabled"  
+                :disabled="InfoDisabled"
               ></el-input>
               <!-- <el-radio-group v-model="form.ethnicity">
                 <el-radio value="汉族">汉族</el-radio>
@@ -94,7 +93,7 @@
                 style="width: 200px"
                 placeholder=""
                 clearable
-                :disabled="allDisabled"  
+                :disabled="InfoDisabled"
               ></el-input>
               <!-- <el-radio-group v-model="form.department">
                 <el-radio value="安全部">安全部</el-radio>
@@ -123,6 +122,7 @@
             :checked="form.isVirusAntigenTestDone"
             type="primary"
             @change="toggleTag('isVirusAntigenTestDone')"
+            :disabled="allDisabled"
           >
             病毒抗原检测
           </el-check-tag>
@@ -131,6 +131,7 @@
             :checked="form.isVirusNucleicAcidTestDone"
             type="primary"
             @change="toggleTag('isVirusNucleicAcidTestDone')"
+            :disabled="allDisabled"
           >
             病毒核酸检测
           </el-check-tag>
@@ -139,6 +140,7 @@
             :checked="form.isVirusCultureIsolationDone"
             type="primary"
             @change="toggleTag('isVirusCultureIsolationDone')"
+            :disabled="allDisabled"
           >
             病毒培养分离
           </el-check-tag>
@@ -147,15 +149,15 @@
             :checked="form.isSerologicalTestDone"
             type="primary"
             @change="toggleTag('isSerologicalTestDone')"
+            :disabled="allDisabled"
           >
             血清学检测
           </el-check-tag>
         </div>
 
-            <div class="LabTestReport">
-                <LabTestReport ref="LabTestReport" />
-            </div>
-
+        <div class="LabTestReport">
+          <LabTestReport ref="LabTestReport" />
+        </div>
       </el-form>
     </div>
   </el-drawer>
@@ -163,7 +165,7 @@
 
 <script>
 import { ElMessage } from "element-plus";
-import LabTestReport from './LabTestReport.vue';
+import LabTestReport from "./LabTestReport.vue";
 
 export default {
   components: {
@@ -171,7 +173,8 @@ export default {
   },
   data() {
     return {
-    allDisabled:true, 
+      InfoDisabled: true,
+      allDisabled: true,
       visible: false, // 控制弹窗显示
       isEditing: false,
       form: {
@@ -180,9 +183,7 @@ export default {
         isVirusCultureIsolationDone: false, // BOOLEAN, -- 是否已进行病毒培养分离
         isSerologicalTestDone: false, // BOOLEAN, -- 是否已进行血清学检测
       },
-      refs: [
-        "LabTestReport"
-      ],
+      refs: ["LabTestReport"],
       rules: {},
     };
   },
@@ -195,14 +196,14 @@ export default {
       this.form = { ...user };
       this.visible = true;
     },
-    handleCancel(){
-    this.visible = false;
-    this.isEditing = false; 
-    this.allDisabled = true;
+    handleCancel() {
+      this.visible = false;
+      this.isEditing = false;
+      this.allDisabled = true;
       this.refs.forEach((ref) => {
         this.$refs[ref].handleCancel();
       });
-      
+
       this.handleReset();
     },
 
@@ -210,7 +211,7 @@ export default {
       this.allDisabled = false;
       this.isEditing = true; // 进入编辑模式s
       this.refs.forEach((ref) => {
-       this.$refs[ref].handleAble();
+        this.$refs[ref].handleAble();
       });
     },
     async handleSubmit() {
@@ -337,8 +338,8 @@ h3 {
   margin-top: 10px;
   margin-bottom: 20px;
 }
-.LabTestReport{
-    /* margin-left: -60px; */
-    margin-top: 20px;
+.LabTestReport {
+  /* margin-left: -60px; */
+  margin-top: 20px;
 }
 </style>

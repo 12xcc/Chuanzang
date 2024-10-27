@@ -77,13 +77,19 @@ export default {
     showDrawer(survey) {
       this.visible = true;
       this.form = { ...survey };
+      this.surveyID= survey.surveyID;
     },
     handleCancel() {
       this.visible = false;
     },
     async handleSubmit() {
       try {
-        const response = await updateSatisfaction(this.form);
+        const data={
+          surveyID:this.form.surveyID,
+          surveyContent:this.form.surveyContent,
+          surveyTitle:this.form.surveyTitle,
+        };
+        const response = await updateSatisfaction(data);
         if (response.data.code === 1) {
           ElMessage.success("提交成功");
           this.visible = false;

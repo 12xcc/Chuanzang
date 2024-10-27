@@ -190,7 +190,7 @@
     </div>
 
     <Checkuser ref="Checkuser" :users="allData" :visible="checkUserVisible" />
-    <Checkdaignosisdata ref="Checkdaignosisdata" />
+    <Checkdaignosisdata ref="Checkdaignosisdata" @update="handleQuery"/>
     <Checkuserdata ref="Checkuserdata" />
   </div>
 </template>
@@ -235,6 +235,7 @@ export default {
       showSearch: true,
       loading: false,
       total: 0,
+      diagnosisResultsId:null,
     };
   },
   computed: {
@@ -300,6 +301,7 @@ export default {
               admissionDate: formatDate(item.admissionDate),
               dischargeDate: formatDate(item.dischargeDate),
               deathDate: formatDate(item.deathDate),
+              diagnosisResultsId:item.diagnosisResultsId,
             };
 
             return formattedItem; // 返回格式化后的数据

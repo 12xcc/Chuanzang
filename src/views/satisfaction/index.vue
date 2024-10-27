@@ -227,8 +227,10 @@ async toggleStatus(row) {
 },
 
 
-    handleCheckScore(user, title) {
-      this.$refs.CheckSatisScore.showDrawer(user, title);
+    handleCheckScore(surveyID, title) {
+      console.log(surveyID);
+      this.$refs.CheckSatisScore.showDrawer(surveyID, title);
+      
     },
     handlePagination({ page, limit }) {
       this.queryParams.pageNum = page;

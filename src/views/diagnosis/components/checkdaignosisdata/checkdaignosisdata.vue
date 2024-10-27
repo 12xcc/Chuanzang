@@ -22,7 +22,7 @@
         class="form-container"
         ref="form"
         :data="allData"
-        :disabled="allDisabled"
+        :disabled="InfoDisabled"
       >
         <div class="BaseInfo">
           <div class="title-container">
@@ -249,6 +249,7 @@ export default {
   data() {
     return {
       allData:[],
+      InfoDisabled:true,
       allDisabled: true,
       visible: false, // 控制弹窗显示
       selectedTag: null, // 当前选中的标签
@@ -307,7 +308,7 @@ export default {
       this.visible = true;
       // 调用接口获取数据
       this.form = { ...user };
-      await this.fetchDiagnosisData(user.userId);
+      await this.fetchDiagnosisData(user.diagnosisResultsId);
     },
 
     // 调用接口获取诊断数据，并分发给子组件
@@ -468,6 +469,7 @@ export default {
       ElMessage.success("提交成功");
       this.visible = false;
       this.handleReset();
+      this.$emit("update");
     } else {
       ElMessage.error(response.data.msg || "提交失败");
     }
