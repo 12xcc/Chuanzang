@@ -76,7 +76,7 @@
       暂无数据
     </div>
   </el-drawer>
-  <Addcheckdata ref="Addcheckdata" />
+  <Addcheckdata ref="Addcheckdata" @updatecheck="handleQuery"/>
 </template>
 
 <script>
@@ -156,6 +156,9 @@ props: {
       this.age = null;
       this.filteredUsers = [];
       this.selectedUser = null;
+    },
+    handleQuery(){
+      this.$emit("updatecheck");
     },
     handleCancel() {
       this.dialogVisible = false;

@@ -8,7 +8,7 @@
       :inline="true"
       v-show="showSearch"
     >
-      <el-form-item label="是否患病" prop="isHealth" size="default">
+      <el-form-item label="是否健康" prop="isHealth" size="default">
         <el-select
           v-model="queryParams.isHealth"
           placeholder="请选择"
@@ -256,10 +256,12 @@ export default {
           : "";
 
         return {
+          // 先解构，再映射，不然有的字段就算经过处理，也会被原始返回的数据覆盖
+          ...item, // 其他字段直接解构，不做映射
           serialNumber,
           checkInDate,
           isHealth: item.isHealth,
-          ...item, // 其他字段直接解构，不做映射
+          
         };
       });
       this.total = response.data.data.total;

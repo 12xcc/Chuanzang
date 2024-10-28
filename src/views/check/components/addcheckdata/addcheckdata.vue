@@ -162,7 +162,7 @@
 <script>
 import { ElMessage } from "element-plus";
 import LabTestReport from './LabTestReport.vue';
-
+import { saveLabTestReport } from "@/api/check/check.js";
 export default {
   components: {
     LabTestReport,
@@ -178,6 +178,7 @@ export default {
         isSerologicalTestDone: false, // BOOLEAN, -- 是否已进行血清学检测
       },
       rules: {},
+      userId:null,
     };
   },
 
@@ -188,42 +189,67 @@ export default {
     showDrawer(user) {
       this.form = { ...user };
       this.visible = true;
+      this.userId=user.userId;
     },
     handleCancel() {
       this.visible = false;
       this.handleReset();
     },
 
-    async handleSubmit() {
-      console.log("触发");
+async handleSubmit() {
+  console.log("提交触发");
 
-      try {
-        // 调用子组件的 validate 方法
-        // 诊断信息
-        // await this.$refs.DiagnosisResults.validate();
-        // 基本信息
-        // 全身症状
+  try {
+    // 获取 userId 参数
+    const userId = this.userId;
+    
+    // 判断 pathogenicTestResults 值
+    const isAnyTestDone = this.form.isSerologicalTestDone ||
+                          this.form.isVirusAntigenTestDone ||
+                          this.form.isVirusCultureIsolationDone ||
+                          this.form.isVirusNucleicAcidTestDone;
+    const pathogenicTestResults = isAnyTestDone ? "阳性" : "阴性";
 
-        // 如果子组件验证通过，继续处理其他数据
-        // const DiagnosisResultsData = this.$refs.DiagnosisResults.getData();
+    // 构建提交数据
+    const data = {
+      labTestFileIds: this.form.labTestFileIds || [],
+      pathogenicTestResults: pathogenicTestResults,
+      isSerologicalTestDone: this.form.isSerologicalTestDone,
+      isVirusAntigenTestDone: this.form.isVirusAntigenTestDone,
+      isVirusCultureIsolationDone: this.form.isVirusCultureIsolationDone,
+      isVirusNucleicAcidTestDone: this.form.isVirusNucleicAcidTestDone,
+    };
 
-        // console.log("诊断信息:", DiagnosisResultsData);
+    // 调用 saveLabTestReport API
+    const response = await saveLabTestReport(data, userId);
 
-        this.visible = false;
-        ElMessage({
-          message: "提交成功",
-          type: "success",
-        });
-        this.handleReset();
-      } catch (error) {
-        // 处理验证错误
-        console.error("验证失败:", error.message);
-        ElMessage({
-          message: error.message,
-          type: "error",
-        });
-      }
-    },
+    // 检查响应的 code
+    if (response.data.code === 1) {
+      // 提交成功
+      this.visible = false;
+      ElMessage({
+        message: "提交成功",
+        type: "success",
+      });
+      this.$emit("updatecheck");
+      this.handleReset();
+    } else if (response.data.code === 0) {
+      // 提交失败，显示后端返回的 msg
+      ElMessage({
+        message: response.data.msg || "提交失败",
+        type: "error",
+      });
+    }
+
+  } catch (error) {
+    // 处理 API 调用错误
+    console.error("提交失败:", error.message);
+    ElMessage({
+      message: error.message,
+      type: "error",
+    });
+  }
+},
 
     handleReset() {
       // this.form = this.getInitialForm();

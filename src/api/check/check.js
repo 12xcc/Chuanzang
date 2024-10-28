@@ -1,10 +1,10 @@
 import axiosInstance from "@/utils/axiosInstance.js";
 
 // 根据用户名，电话，部门，时间分页查询用户检查信息
-export const pageSelectLabTest = async (params) => {
+export const pageSelectLabTest = async (data) => {
   const response = await axiosInstance.post(
     "/medicalStaff/labTestManager/pageSelectLabTest",
-    params
+    data
   );
   return response;
 };
@@ -19,21 +19,21 @@ export const getDetectionInformationExportFormExcel = async () => {
 };
 
 // 根据用户名，性别，联系电话，年龄查找对应用户信息
-export const getUserByBaseInfo = async (params) => {
+export const getUserByBaseInfo = async (data) => {
   const response = await axiosInstance.post(
     "/medicalStaff/labTestManager/getUserByBaseInfo",
-    params
+    data
   );
   return response;
 };
 
 // 添加检查信息
-export const saveLabTestReport = async (params,userId) => {
+export const saveLabTestReport = async (data,userId) => {
   const response = await axiosInstance.post(
     "/medicalStaff/labTestManager/saveLabTestReport",
-    params,
+    data,
     {
-      headers: {
+      params: {
         userId: userId, // 请求头中传递 userId
       },
     }
@@ -64,6 +64,15 @@ export const getLabTestFile = async (labTestId) => {
   const response = await axiosInstance.get(
     `/common/file/getLabTestFile/${labTestId}`,
     { responseType: "blob" }
+  );
+  return response;
+};
+
+// 根据id更新检查信息
+export const updateLabTest = async (data) => {
+  const response = await axiosInstance.post(
+    "/medicalStaff/labTestManager/updateLabTest",
+    data
   );
   return response;
 };

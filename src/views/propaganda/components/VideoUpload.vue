@@ -79,7 +79,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineEmits, defineProps, watch, onMounted } from 'vue';
+import { ref, defineEmits,watch, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
 import { Plus, Delete, ZoomIn } from '@element-plus/icons-vue';
 

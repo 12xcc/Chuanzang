@@ -28,7 +28,7 @@
             <el-input
               v-model="form.WorkStationAltitude"
               style="width: 200px"
-              placeholder="工务段海拔高度"
+              
               clearable
             ></el-input>
           </el-form-item>
@@ -37,7 +37,7 @@
             <el-input
               v-model="form.workStationName"
               style="width: 200px"
-              placeholder="工务段所在名称"
+              
               clearable
             ></el-input>
           </el-form-item>
@@ -47,7 +47,7 @@
               <el-input
                 v-model="form.DormitoryBuildingNumber"
                 style="width: 80px"
-                placeholder="宿舍幢数"
+                
                 clearable
               ></el-input>
             </el-form-item>
@@ -59,7 +59,7 @@
               <el-input
                 v-model="form.DormitoryRoomNumber"
                 style="width: 80px"
-                placeholder="宿舍室数"
+               
                 clearable
               ></el-input>
             </el-form-item>
@@ -72,7 +72,7 @@
               <el-input
                 v-model="form.DormitoryOccupants"
                 style="width: 80px"
-                placeholder="宿舍同居人数"
+                
                 clearable
               ></el-input>
             </el-form-item>
@@ -82,7 +82,7 @@
             <el-input
               v-model="form.DormitoryArea"
               style="width: 200px"
-              placeholder="宿舍面积"
+              
               clearable
             ></el-input>
           </el-form-item>
@@ -90,7 +90,7 @@
             <el-input
               v-model="form.WindowOpenArea"
               style="width: 200px"
-              placeholder="宿舍窗户可打开面积"
+              
               clearable
             ></el-input>
           </el-form-item>
@@ -102,7 +102,7 @@
           >
             <el-select
               v-model="form.VentilationCondition"
-              placeholder="宿舍通风"
+              
               clearable
               size="default"
               style="width: 200px"
@@ -126,21 +126,21 @@
               工作时间段，平均大约和
               <el-input
                 v-model="form.AvgWorkRoomPeople"
-                placeholder="请输入"
+                
                 size="small"
                 class="Monthsocial"
               />
               人处于同一房间/空间，大约和
               <el-input
                 v-model="form.AvgWorkFaceToFace"
-                placeholder="请输入"
+                
                 size="small"
                 class="Monthsocial"
               />
               人进行了面对面语言交流（1米以内），大约和
               <el-input
                 v-model="form.AvgWorkPhysicalContact"
-                placeholder="请输入"
+                
                 size="small"
                 class="Monthsocial"
               />
@@ -156,21 +156,21 @@
               时间段，平均大约和
               <el-input
                 v-model="form.AvgBreakfastRoomPeople"
-                placeholder="请输入"
+                
                 size="small"
                 class="Monthsocial"
               />
               人处于同一房间/空间，大约和
               <el-input
                 v-model="form.AvgBreakfastFaceToFace"
-                placeholder="请输入"
+                
                 size="small"
                 class="Monthsocial"
               />
               人进行了面对面语言交流（1米以内），大约和
               <el-input
                 v-model="form.AvgBreakfastPhysicalContact"
-                placeholder="请输入"
+                
                 size="small"
                 class="Monthsocial"
               />
@@ -186,21 +186,21 @@
               时间段，平均大约和
               <el-input
                 v-model="form.AvgLunchRoomPeople"
-                placeholder="请输入"
+                
                 size="small"
                 class="Monthsocial"
               />
               人处于同一房间/空间，大约和
               <el-input
                 v-model="form.AvgLunchFaceToFace"
-                placeholder="请输入"
+                
                 size="small"
                 class="Monthsocial"
               />
               人进行了面对面语言交流（1米以内），大约和
               <el-input
                 v-model="form.AvgLunchPhysicalContact"
-                placeholder="请输入"
+                
                 size="small"
                 class="Monthsocial"
               />
@@ -216,21 +216,21 @@
               时间段，平均大约和
               <el-input
                 v-model="form.AvgDinnerRoomPeople"
-                placeholder="请输入"
+                
                 size="small"
                 class="Monthsocial"
               />
               人处于同一房间/空间，大约和
               <el-input
                 v-model="form.AvgDinnerFaceToFace"
-                placeholder="请输入"
+                
                 size="small"
                 class="Monthsocial"
               />
               人进行了面对面语言交流（1米以内），大约和
               <el-input
                 v-model="form.AvgDinnerPhysicalContact"
-                placeholder="请输入"
+                
                 size="small"
                 class="Monthsocial"
               />
@@ -245,28 +245,28 @@
               <span class="highlight">共参加</span>
               <el-input
                 v-model="form.CollectiveActivitiesCount"
-                placeholder="请输入"
+                
                 size="small"
                 class="Monthsocial"
               />
               次集体性活动（如开会），每次平均大约和
               <el-input
                 v-model="form.AvgActivityRoomPeople"
-                placeholder="请输入"
+                
                 size="small"
                 class="Monthsocial"
               />
               人处于同一房间/空间，大约和
               <el-input
                 v-model="form.AvgActivityFaceToFace"
-                placeholder="请输入"
+                
                 size="small"
                 class="Monthsocial"
               />
               人进行了语言交流（1米以内），大约和
               <el-input
                 v-model="form.AvgActivityPhysicalContact"
-                placeholder="请输入"
+                
                 size="small"
                 class="Monthsocial"
               />
@@ -284,7 +284,7 @@
             <el-input
               v-model="form.AvgMonthlyPressure"
               style="width: 200px"
-              placeholder="当月平均气压"
+              
               clearable
             ></el-input>
           </el-form-item>
@@ -293,7 +293,7 @@
             <el-input
               v-model="form.MaxTemperature"
               style="width: 200px"
-              placeholder="当月平均气压"
+              
               clearable
             ></el-input>
           </el-form-item>
@@ -302,7 +302,7 @@
             <el-input
               v-model="form.MinTemperature"
               style="width: 200px"
-              placeholder="当月平均气压"
+              
               clearable
             ></el-input>
           </el-form-item>

@@ -5,7 +5,7 @@
       <div id="mapContainer" class="chart"></div>
       <div class="legend-label">
         <img src="@/assets/map.svg" alt="">
-        <div class="legend-title">患病人数多的高风险地区</div>
+        <div class="legend-title">打卡地理位置分布</div>
       </div>
     </div>
   </div>

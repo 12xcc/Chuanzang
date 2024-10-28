@@ -162,7 +162,7 @@
 <script>
 import { ElMessage } from "element-plus";
 import UploadSection from '@/components/UploadSection.vue';
-import { getLabTestFile } from "@/api/check/check.js"; // 修改为接口所在的文件路径
+import { getLabTestFile,updateLabTest } from "@/api/check/check.js"; 
 
 export default {
   components: {
@@ -209,14 +209,37 @@ export default {
     },
     async handleSubmit() {
       try {
-        this.visible = false;
-        ElMessage({
-          message: "提交成功",
-          type: "success",
-        });
-        this.handleReset();
+        const data = {
+          labTestReportId: this.form.labTestReportId,
+          userId: this.form.userId,
+          uploadDate: this.form.uploadDate,
+          isVirusAntigenTestDone: this.form.isVirusAntigenTestDone,
+          isVirusNucleicAcidTestDone: this.form.isVirusNucleicAcidTestDone,
+          isVirusCultureIsolationDone: this.form.isVirusCultureIsolationDone,
+          isSerologicalTestDone: this.form.isSerologicalTestDone,
+          pathogenicTestResults: this.form.pathogenicTestResults,
+          fileIds: this.form.fileIds,
+        };
+
+        const response = await updateLabTest(data);
+
+        if (response.data.code === 1) {
+          // 提交成功处理
+          this.visible = false;
+          ElMessage({
+            message: "提交成功",
+            type: "success",
+          });
+          this.$emit("updatecheck");
+          this.handleReset();
+        } else if (response.data.code === 0) {
+          ElMessage({
+            message: response.data.msg || "提交失败",
+            type: "error",
+          });
+        }
       } catch (error) {
-        console.error("验证失败:", error.message);
+        console.error("提交失败:", error.message);
         ElMessage({
           message: error.message,
           type: "error",

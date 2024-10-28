@@ -196,7 +196,7 @@
       :users="allData"
       :visible="checkUserVisible"
     />
-    <Checkcheckdata ref="Checkcheckdata" />
+    <Checkcheckdata ref="Checkcheckdata" @updatecheck="handleQuery"/>
     <Checkuserdata ref="Checkuserdata" />
   </div>
 </template>

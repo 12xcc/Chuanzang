@@ -281,6 +281,13 @@ export default {
 
 
   handleSubmit() {
+    // 总分不是100不让交
+     if (this.form.WeightScore !== 100) {
+        this.$message.error("所有分数总和必须为100，无法提交！");
+        return;
+      }
+
+      this.$message.warning("正在提交，请稍候...");
       // 收集所有子组件的数据
       const components = [
         this.$refs.GeneralSymptomsScore,
@@ -311,6 +318,7 @@ export default {
       // 调用接口
       updateBatchWeightScoring(requestData)
         .then((response) => {
+          
           if (response.data.code === 1) {
             this.$message.success("提交成功");
             this.visible = false;

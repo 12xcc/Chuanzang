@@ -1,7 +1,7 @@
 <template> 
   <div class="container">
     <div class="chart-container">
-      <div class="chart-title">疾病人数统计图</div>
+      <div class="chart-title">当日疾病人数统计图</div>
       <div ref="chart" class="chart"></div>
     </div>
   </div>
