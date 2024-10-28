@@ -374,44 +374,44 @@ export default {
           const data = response.data.data;
 
           // 将后端返回的数据映射到表单数据 (form) 中
-          this.form.WorkStationAltitude = data.workStationAltitude || "";
-          this.form.workStationName = data.workStationName || "";
+          this.form.WorkStationAltitude = data.workStationAltitude;
+          this.form.workStationName = data.workStationName;
           this.form.DormitoryBuildingNumber =
-            data.dormitoryBuildingNumber || "";
-          this.form.DormitoryRoomNumber = data.dormitoryRoomNumber || "";
-          this.form.DormitoryOccupants = data.dormitoryOccupants || "";
-          this.form.DormitoryArea = data.dormitoryArea || "";
-          this.form.WindowOpenArea = data.windowOpenArea || "";
-          this.form.VentilationCondition = data.ventilationCondition || "";
-          this.form.AvgWorkRoomPeople = data.avgWorkRoomPeople || "";
-          this.form.AvgWorkFaceToFace = data.avgWorkFaceToFace || "";
-          this.form.AvgWorkPhysicalContact = data.avgWorkPhysicalContact || "";
+            data.dormitoryBuildingNumber;
+          this.form.DormitoryRoomNumber = data.dormitoryRoomNumber;
+          this.form.DormitoryOccupants = data.dormitoryOccupants;
+          this.form.DormitoryArea = data.dormitoryArea;
+          this.form.WindowOpenArea = data.windowOpenArea;
+          this.form.VentilationCondition = data.ventilationCondition;
+          this.form.AvgWorkRoomPeople = data.avgWorkRoomPeople;
+          this.form.AvgWorkFaceToFace = data.avgWorkFaceToFace;
+          this.form.AvgWorkPhysicalContact = data.avgWorkPhysicalContact;
 
-          this.form.AvgBreakfastRoomPeople = data.avgBreakfastRoomPeople || "";
-          this.form.AvgBreakfastFaceToFace = data.avgBreakfastFaceToFace || "";
+          this.form.AvgBreakfastRoomPeople = data.avgBreakfastRoomPeople;
+          this.form.AvgBreakfastFaceToFace = data.avgBreakfastFaceToFace;
           this.form.AvgBreakfastPhysicalContact =
-            data.avgBreakfastPhysicalContact || "";
+            data.avgBreakfastPhysicalContact;
 
-          this.form.AvgLunchRoomPeople = data.avgLunchRoomPeople || "";
-          this.form.AvgLunchFaceToFace = data.avgLunchFaceToFace || "";
+          this.form.AvgLunchRoomPeople = data.avgLunchRoomPeople;
+          this.form.AvgLunchFaceToFace = data.avgLunchFaceToFace;
           this.form.AvgLunchPhysicalContact =
-            data.avgLunchPhysicalContact || "";
+            data.avgLunchPhysicalContact;
 
-          this.form.AvgDinnerRoomPeople = data.avgDinnerRoomPeople || "";
-          this.form.AvgDinnerFaceToFace = data.avgDinnerFaceToFace || "";
+          this.form.AvgDinnerRoomPeople = data.avgDinnerRoomPeople;
+          this.form.AvgDinnerFaceToFace = data.avgDinnerFaceToFace;
           this.form.AvgDinnerPhysicalContact =
-            data.avgDinnerPhysicalContact || "";
+            data.avgDinnerPhysicalContact;
 
           this.form.CollectiveActivitiesCount =
-            data.collectiveActivitiesCount || "";
-          this.form.AvgActivityRoomPeople = data.avgActivityRoomPeople || "";
-          this.form.AvgActivityFaceToFace = data.avgActivityFaceToFace || "";
+            data.collectiveActivitiesCount;
+          this.form.AvgActivityRoomPeople = data.avgActivityRoomPeople;
+          this.form.AvgActivityFaceToFace = data.avgActivityFaceToFace;
           this.form.AvgActivityPhysicalContact =
-            data.avgActivityPhysicalContact || "";
+            data.avgActivityPhysicalContact;
 
-          this.form.AvgMonthlyPressure = data.avgMonthlyPressure || "";
-          this.form.MaxTemperature = data.maxTemperature || "";
-          this.form.MinTemperature = data.minTemperature || "";
+          this.form.AvgMonthlyPressure = data.avgMonthlyPressure;
+          this.form.MaxTemperature = data.maxTemperature;
+          this.form.MinTemperature = data.minTemperature;
         } else {
           console.error("获取用户信息失败:", response.data.msg);
         }
