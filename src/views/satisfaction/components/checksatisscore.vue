@@ -63,8 +63,7 @@
               <template #default="scope">
                 <el-tag
                   :type="
-                    scope.row.satisfactionLevel === '非常满意'
-                      ? 'success'
+                    scope.row.satisfactionLevel === '非常满意'? 'success'
                       : scope.row.satisfactionLevel === '满意'
                       ? 'primary'
                       : scope.row.satisfactionLevel === '一般'

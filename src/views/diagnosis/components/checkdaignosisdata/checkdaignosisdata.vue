@@ -317,7 +317,7 @@ export default {
         const response = await selectDiagnosis(userId);
         if (response && response.data && response.data.code === 1) {
           const data = response.data.data;
-
+          console.log("后端响应：", data);
           // 分发数据到各个子组件，若数据为 null，则赋值为 null
           this.diagnosisResults = data.diagnosisresults || null;
           this.diagnosispersonalinfo = data.diagnosispersonalinfo || null;
@@ -330,7 +330,7 @@ export default {
           this.diagnosiscomplications = data.diagnosiscomplications || null;
           this.diagnosisdigestivesymptoms = data.diagnosisdigestivesymptoms || null;
           this.diagnosisexaminations = data.diagnosisexaminations || null;
-
+          console.log("data:",data.diagnosisresults);
           // 更新标签的 enabled 状态
           this.updateTagEnabledStatus();
 

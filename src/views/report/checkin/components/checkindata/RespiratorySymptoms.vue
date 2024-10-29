@@ -5,7 +5,7 @@
       :checked="form.hasCough"
       type="primary"
       @change="toggleTag('hasCough')"
-      :disabled="allDisabled"  
+      :disabled="allDisabled"
     >
       咳嗽
     </el-check-tag>
@@ -13,7 +13,7 @@
       :checked="form.hasSputum"
       type="primary"
       @change="toggleTag('hasSputum')"
-      :disabled="allDisabled"  
+      :disabled="allDisabled"
     >
       咳痰
     </el-check-tag>
@@ -21,7 +21,7 @@
       :checked="form.hasBloodySputum"
       type="primary"
       @change="toggleTag('hasBloodySputum')"
-      :disabled="allDisabled"  
+      :disabled="allDisabled"
     >
       血痰
     </el-check-tag>
@@ -29,7 +29,7 @@
       :checked="form.hasHemoptysis"
       type="primary"
       @change="toggleTag('hasHemoptysis')"
-      :disabled="allDisabled"  
+      :disabled="allDisabled"
     >
       咳血
     </el-check-tag>
@@ -37,7 +37,7 @@
       :checked="form.hasSoreThroat"
       type="primary"
       @change="toggleTag('hasSoreThroat')"
-      :disabled="allDisabled"  
+      :disabled="allDisabled"
     >
       咽痛
     </el-check-tag>
@@ -45,7 +45,7 @@
       :checked="form.hasDryThroat"
       type="primary"
       @change="toggleTag('hasDryThroat')"
-      :disabled="allDisabled"  
+      :disabled="allDisabled"
     >
       咽干
     </el-check-tag>
@@ -53,7 +53,7 @@
       :checked="form.hasNasalCongestion"
       type="primary"
       @change="toggleTag('hasNasalCongestion')"
-      :disabled="allDisabled"  
+      :disabled="allDisabled"
     >
       鼻塞
     </el-check-tag>
@@ -61,7 +61,7 @@
       :checked="form.hasRunnyNose"
       type="primary"
       @change="toggleTag('hasRunnyNose')"
-      :disabled="allDisabled"  
+      :disabled="allDisabled"
     >
       流涕
     </el-check-tag>
@@ -69,7 +69,7 @@
       :checked="form.hasPharyngealHyperemia"
       type="primary"
       @change="toggleTag('hasPharyngealHyperemia')"
-      :disabled="allDisabled"  
+      :disabled="allDisabled"
     >
       咽充血
     </el-check-tag>
@@ -77,7 +77,7 @@
       :checked="form.hasChestTightness"
       type="primary"
       @change="toggleTag('hasChestTightness')"
-      :disabled="allDisabled"  
+      :disabled="allDisabled"
     >
       胸闷
     </el-check-tag>
@@ -85,7 +85,7 @@
       :checked="form.hasShortnessOfBreath"
       type="primary"
       @change="toggleTag('hasShortnessOfBreath')"
-      :disabled="allDisabled"  
+      :disabled="allDisabled"
     >
       气促
     </el-check-tag>
@@ -93,7 +93,7 @@
       :checked="form.hasBreathingDifficulty"
       type="primary"
       @change="toggleTag('hasBreathingDifficulty')"
-      :disabled="allDisabled"  
+      :disabled="allDisabled"
     >
       呼吸困难
     </el-check-tag>
@@ -101,7 +101,7 @@
       :checked="form.hasHoarseness"
       type="primary"
       @change="toggleTag('hasHoarseness')"
-      :disabled="allDisabled"  
+      :disabled="allDisabled"
     >
       声音嘶哑
     </el-check-tag>
@@ -109,7 +109,7 @@
       :checked="form.hasBronchitis"
       type="primary"
       @change="toggleTag('hasBronchitis')"
-      :disabled="allDisabled"  
+      :disabled="allDisabled"
     >
       支气管炎或支气管肺炎
     </el-check-tag>
@@ -118,9 +118,15 @@
 
 <script>
 export default {
+  props: {
+    data: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data() {
     return {
-      allDisabled:true, 
+      allDisabled: true,
       form: {
         hasCough: false,
         hasSputum: false,
@@ -134,13 +140,30 @@ export default {
         hasShortnessOfBreath: false,
         hasBreathingDifficulty: false,
         hasHoarseness: false,
-        hasBronchitis: false
-      }
+        hasBronchitis: false,
+      },
     };
+  },
+
+    watch: {
+    data: {
+      immediate: true,
+      handler(newVal) {
+        console.log("呼吸系统接收:", newVal); // 打印传入的数据
+        if (newVal) {
+          // 将所有数据映射到 form
+          this.form = { ...this.form, ...newVal };
+          // 强制更新渲染视图
+          this.$forceUpdate();
+        } else {
+          // console.warn("Received null or undefined data");
+        }
+      },
+    },
   },
   methods: {
     toggleTag(field) {
-     this.form[field] = !this.form[field];
+      this.form[field] = !this.form[field];
     },
 
     handleReset() {
@@ -149,7 +172,7 @@ export default {
     },
     getInitialForm() {
       return {
-         hasCough: false,
+        hasCough: false,
         hasSputum: false,
         hasBloodySputum: false,
         hasHemoptysis: false,
@@ -161,20 +184,20 @@ export default {
         hasShortnessOfBreath: false,
         hasBreathingDifficulty: false,
         hasHoarseness: false,
-        hasBronchitis: false
+        hasBronchitis: false,
       };
     },
     getData() {
       return this.form; // 返回当前组件的表单数据
     },
-  }
+  },
 };
 </script>
 
 <style scoped>
-.el-check-tag{
-    margin: 10px;
-    font-weight: normal;
+.el-check-tag {
+  margin: 10px;
+  font-weight: normal;
 }
 .el-check-tag.is-checked {
   background-color: var(--el-color-primary) !important;

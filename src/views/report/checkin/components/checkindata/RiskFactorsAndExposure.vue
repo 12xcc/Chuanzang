@@ -23,9 +23,9 @@
           >
             <div>
               <el-radio-group v-model="form.ContactWithFeverPatient">
-                <el-radio :value="'是'">是</el-radio>
-                <el-radio :value="'否'">否</el-radio>
-                <el-radio :value="'不清楚'">不清楚</el-radio>
+                <el-radio value="是">是</el-radio>
+                <el-radio value="否">否</el-radio>
+                <el-radio value="不清楚">不清楚</el-radio>
               </el-radio-group>
             </div>
           </el-form-item>
@@ -37,9 +37,9 @@
           >
             <div>
               <el-radio-group v-model="form.ContactWithDiarrheaPatient">
-                <el-radio :value="'是'">是</el-radio>
-                <el-radio :value="'否'">否</el-radio>
-                <el-radio :value="'不清楚'">不清楚</el-radio>
+                <el-radio value="是">是</el-radio>
+                <el-radio value="否">否</el-radio>
+                <el-radio value="不清楚">不清楚</el-radio>
               </el-radio-group>
             </div>
           </el-form-item>
@@ -621,15 +621,21 @@ export default {
     Dateselection,
     Adduserdialog,
   },
+    props: {
+    data: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data() {
     return {
       allDisabled:true, 
       visible: false, // 控制弹窗显示
       form: {
-        ContactWithFeverPatient: "", // 与发热患者接触情况
-        ContactWithDiarrheaPatient: "", // 与腹泻患者接触情况
-        ContactWithRashPatient: "", // 与皮疹患者接触情况
-        ContactWithTuberculosisPatient: "", // 与结核病患者接触情况
+        ContactWithFeverPatient:null, // 与发热患者接触情况
+        ContactWithDiarrheaPatient:null, // 与腹泻患者接触情况
+        ContactWithRashPatient: null, // 与皮疹患者接触情况
+        ContactWithTuberculosisPatient:null, // 与结核病患者接触情况
 
         IsGroupDining: false, // 5天内是否集体堂食就餐
         IsDiningOut: false, // 5天内是否外出就餐
@@ -640,28 +646,28 @@ export default {
         hasEatingColdCookedFood: false, // 是否熟食冷吃
         hasEatingSeafood: false, // 是否吃海水产品
 
-        Foodnames: "", // 食物名字
-        DiningPlace: "", // 就餐地点
+        Foodnames: null, // 食物名字
+        DiningPlace: null, // 就餐地点
 
-        GroupOutbreak: "", // 同一家庭、办公室、车间等集体单位是否有聚集性发病
-        OutdoorStayOrWorkWithinMonth: "", // 发病前1月内是否在野外住宿或工作
-        WildActivityHistory: "", // 野外/户外活动史
-        OtherWildActivityname: "", // 其他活动名称
+        GroupOutbreak: null, // 同一家庭、办公室、车间等集体单位是否有聚集性发病
+        OutdoorStayOrWorkWithinMonth: null, // 发病前1月内是否在野外住宿或工作
+        WildActivityHistory: null, // 野外/户外活动史
+        OtherWildActivityname: null, // 其他活动名称
 
-        PlagueArea: "", // 是否到过鼠疫流行区
-        SpecificPlagueLocation: "", // 具体地点
+        PlagueArea: null, // 是否到过鼠疫流行区
+        SpecificPlagueLocation:null, // 具体地点
 
-        AnthraxArea: "", // 是否到过炭疽流行区
-        SpecificAnthraxLocation: "", // 具体地点
+        AnthraxArea:null, // 是否到过炭疽流行区
+        SpecificAnthraxLocation: null, // 具体地点
 
-        MalariaArea: "", // 是否到过疟疾流行区
-        SpecificMalariaLocation: "", // 具体地点
+        MalariaArea: null, // 是否到过疟疾流行区
+        SpecificMalariaLocation: null, // 具体地点
 
-        ContactWithAnimalProducts: "", // 是否接触过动物制品
-        ContactDate: "", //接触时间
+        ContactWithAnimalProducts: null, // 是否接触过动物制品
+        ContactDate: null, //接触时间
 
-        ContactWithAnimals: "", // 是否接触过动物
-        ContactPlace: "", //  接触地点
+        ContactWithAnimals: null, // 是否接触过动物
+        ContactPlace: null, //  接触地点
         hasContactWithRat: false,
         hasContactWithMarmot: false,
         hasContactWithLice: false,
@@ -679,28 +685,46 @@ export default {
         hasContactWithWolf: false,
         hasContactWithTiger: false,
         hasContactWithOtherAnimal: false, // 是否接触其他动物
-        OtherAnimalname: "",
+        OtherAnimalname:null,
 
-        IsHillyOrMountainous: false, // 是否居住在丘陵或山区
-        IsPlain: false, //是否居住在平原
+        hillyOrMountainous: false, // 是否居住在丘陵或山区
+        plain: false, //是否居住在平原
         IsOtherResidenceType: false, // 是否居住在其他地区
 
         // 如果这里设置成null，那么这个选项必选
         hasMosquitoBite: null, // 14天内是否明确被蚊虫叮咬过
-        TickBite: "", //发病前2周内是否被蜱叮咬过
-        FleaBite: "", // 发病是否被跳蚤叮咬过
-        ContactWithRatIn2Months: "", // 发病前2个月内是否接触鼠类
-        RatContactMethod: "", // 接触方式
-        EatenFoodContaminatedByRatFeces: "", //发病前1月内是否吃过被鼠排泄物污染的食物
-        DrunkWaterFromDitchesOrPonds: "", // ENUM('是', '否', '不清楚'), -- 19. 发病前1月内是否在野外喝过沟（塘）水
-        RestedNearRatHoles: "", // ENUM('是', '否', '不清楚'), -- 20. 发病前9天内是否在鼠洞附近坐卧
-        RatOrRatDroppingsAtWorkplace: "", // ENUM('是', '否', '不清楚'), -- 21. 工作场所有无鼠或鼠排泄物
-        ContactWithPatientExcreta: "", // ENUM('是', '否', '不清楚') -- 22. 发病前1月内是否接触过病人排泄物（血、尿、便等）
+        TickBite:null, //发病前2周内是否被蜱叮咬过
+        FleaBite: null, // 发病是否被跳蚤叮咬过
+        ContactWithRatIn2Months: null, // 发病前2个月内是否接触鼠类
+        RatContactMethod: null, // 接触方式
+        EatenFoodContaminatedByRatFeces: null, //发病前1月内是否吃过被鼠排泄物污染的食物
+        DrunkWaterFromDitchesOrPonds: null, // ENUM('是', '否', '不清楚'), -- 19. 发病前1月内是否在野外喝过沟（塘）水
+        RestedNearRatHoles: null, // ENUM('是', '否', '不清楚'), -- 20. 发病前9天内是否在鼠洞附近坐卧
+        RatOrRatDroppingsAtWorkplace: null, // ENUM('是', '否', '不清楚'), -- 21. 工作场所有无鼠或鼠排泄物
+        ContactWithPatientExcreta: null, // ENUM('是', '否', '不清楚') -- 22. 发病前1月内是否接触过病人排泄物（血、尿、便等）
       },
 
       rules: {},
     };
   },
+
+    watch: {
+    data: {
+      immediate: true,
+      handler(newVal) {
+        console.log("危险因素与暴露史接收:", newVal); // 打印传入的数据
+        if (newVal) {
+          // 将所有数据映射到 form
+          this.form = { ...this.form, ...newVal };
+          // 强制更新渲染视图
+          this.$forceUpdate();
+        } else {
+          // console.warn("Received null or undefined data");
+        }
+      },
+    },
+  },
+
   methods: {
     toggleTag(field) {
       this.form[field] = !this.form[field];
@@ -790,10 +814,10 @@ export default {
     },
     getInitialForm() {
       return {
-        ContactWithFeverPatient: "", // 与发热患者接触情况
-        ContactWithDiarrheaPatient: "", // 与腹泻患者接触情况
-        ContactWithRashPatient: "", // 与皮疹患者接触情况
-        ContactWithTuberculosisPatient: "", // 与结核病患者接触情况
+        ContactWithFeverPatient:null, // 与发热患者接触情况
+        ContactWithDiarrheaPatient:null, // 与腹泻患者接触情况
+        ContactWithRashPatient: null, // 与皮疹患者接触情况
+        ContactWithTuberculosisPatient:null, // 与结核病患者接触情况
 
         IsGroupDining: false, // 5天内是否集体堂食就餐
         IsDiningOut: false, // 5天内是否外出就餐
@@ -804,28 +828,28 @@ export default {
         hasEatingColdCookedFood: false, // 是否熟食冷吃
         hasEatingSeafood: false, // 是否吃海水产品
 
-        Foodnames: "", // 食物名字
-        DiningPlace: "", // 就餐地点
+        Foodnames: null, // 食物名字
+        DiningPlace: null, // 就餐地点
 
-        GroupOutbreak: "", // 同一家庭、办公室、车间等集体单位是否有聚集性发病
-        OutdoorStayOrWorkWithinMonth: "", // 发病前1月内是否在野外住宿或工作
-        WildActivityHistory: "", // 野外/户外活动史
-        OtherWildActivityname: "", // 其他活动名称
+        GroupOutbreak: null, // 同一家庭、办公室、车间等集体单位是否有聚集性发病
+        OutdoorStayOrWorkWithinMonth: null, // 发病前1月内是否在野外住宿或工作
+        WildActivityHistory: null, // 野外/户外活动史
+        OtherWildActivityname: null, // 其他活动名称
 
-        PlagueArea: "", // 是否到过鼠疫流行区
-        SpecificPlagueLocation: "", // 具体地点
+        PlagueArea: null, // 是否到过鼠疫流行区
+        SpecificPlagueLocation:null, // 具体地点
 
-        AnthraxArea: "", // 是否到过炭疽流行区
-        SpecificAnthraxLocation: "", // 具体地点
+        AnthraxArea:null, // 是否到过炭疽流行区
+        SpecificAnthraxLocation: null, // 具体地点
 
-        MalariaArea: "", // 是否到过疟疾流行区
-        SpecificMalariaLocation: "", // 具体地点
+        MalariaArea: null, // 是否到过疟疾流行区
+        SpecificMalariaLocation: null, // 具体地点
 
-        ContactWithAnimalProducts: "", // 是否接触过动物制品
-        ContactDate: "", //接触时间
+        ContactWithAnimalProducts: null, // 是否接触过动物制品
+        ContactDate: null, //接触时间
 
-        ContactWithAnimals: "", // 是否接触过动物
-        ContactPlace: "", //  接触地点
+        ContactWithAnimals: null, // 是否接触过动物
+        ContactPlace: null, //  接触地点
         hasContactWithRat: false,
         hasContactWithMarmot: false,
         hasContactWithLice: false,
@@ -843,7 +867,7 @@ export default {
         hasContactWithWolf: false,
         hasContactWithTiger: false,
         hasContactWithOtherAnimal: false, // 是否接触其他动物
-        OtherAnimalname: "",
+        OtherAnimalname:null,
 
         IsHillyOrMountainous: false, // 是否居住在丘陵或山区
         IsPlain: false, //是否居住在平原
@@ -851,15 +875,15 @@ export default {
 
         // 如果这里设置成null，那么这个选项必选
         hasMosquitoBite: null, // 14天内是否明确被蚊虫叮咬过
-        TickBite: "", //发病前2周内是否被蜱叮咬过
-        FleaBite: "", // 发病是否被跳蚤叮咬过
-        ContactWithRatIn2Months: "", // 发病前2个月内是否接触鼠类
-        RatContactMethod: "", // 接触方式
-        EatenFoodContaminatedByRatFeces: "", //发病前1月内是否吃过被鼠排泄物污染的食物
-        DrunkWaterFromDitchesOrPonds: "", // ENUM('是', '否', '不清楚'), -- 19. 发病前1月内是否在野外喝过沟（塘）水
-        RestedNearRatHoles: "", // ENUM('是', '否', '不清楚'), -- 20. 发病前9天内是否在鼠洞附近坐卧
-        RatOrRatDroppingsAtWorkplace: "", // ENUM('是', '否', '不清楚'), -- 21. 工作场所有无鼠或鼠排泄物
-        ContactWithPatientExcreta: "", // ENUM('是', '否', '不清楚') -- 22. 发病前1月内是否接触过病人排泄物（血、尿、便等）
+        TickBite:null, //发病前2周内是否被蜱叮咬过
+        FleaBite: null, // 发病是否被跳蚤叮咬过
+        ContactWithRatIn2Months: null, // 发病前2个月内是否接触鼠类
+        RatContactMethod: null, // 接触方式
+        EatenFoodContaminatedByRatFeces: null, //发病前1月内是否吃过被鼠排泄物污染的食物
+        DrunkWaterFromDitchesOrPonds: null, // ENUM('是', '否', '不清楚'), -- 19. 发病前1月内是否在野外喝过沟（塘）水
+        RestedNearRatHoles: null, // ENUM('是', '否', '不清楚'), -- 20. 发病前9天内是否在鼠洞附近坐卧
+        RatOrRatDroppingsAtWorkplace: null, // ENUM('是', '否', '不清楚'), -- 21. 工作场所有无鼠或鼠排泄物
+        ContactWithPatientExcreta: null, // ENUM('是', '否', '不清楚') -- 22. 发病前1月内是否接触过病人排泄物（血、尿、便等）
       };
     },
 

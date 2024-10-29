@@ -6,7 +6,7 @@
       class="form-container"
       ref="form"
       :rules="rules"
-      :disabled="allDisabled"  
+      :disabled="allDisabled"
     >
       <div class="GeneralSymptoms">
         <div class="Condition">
@@ -18,7 +18,7 @@
             :checked="form.hasSuddenOnset"
             type="primary"
             @change="toggleTag('hasSuddenOnset')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             突然发病
           </el-check-tag>
@@ -27,7 +27,7 @@
             :checked="form.hasRapidProgress"
             type="primary"
             @change="toggleTag('hasRapidProgress')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             病情进展迅速
           </el-check-tag>
@@ -36,7 +36,7 @@
             :checked="form.hasPeriodicAttack"
             type="primary"
             @change="toggleTag('hasPeriodicAttack')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             周期性发作
           </el-check-tag>
@@ -45,7 +45,7 @@
             :checked="form.hasForcedPosture"
             type="primary"
             @change="toggleTag('hasForcedPosture')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             强迫体位
           </el-check-tag>
@@ -54,7 +54,7 @@
             :checked="form.hasCalfMusclePain"
             type="primary"
             @change="toggleTag('hasCalfMusclePain')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             腓肠肌疼痛
           </el-check-tag>
@@ -107,7 +107,7 @@
             :checked="form.hasOtherSymptoms"
             type="primary"
             @change="toggleTag('hasOtherSymptoms')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             其他
           </el-check-tag>
@@ -143,9 +143,15 @@ export default {
   components: {
     Dateselection,
   },
+  props: {
+    data: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data() {
     return {
-      allDisabled:true, 
+      allDisabled: true,
       visible: false, // 控制弹窗显示
       form: {
         hasSuddenOnset: false,
@@ -163,6 +169,23 @@ export default {
 
       rules: {},
     };
+  },
+
+  watch: {
+    data: {
+      immediate: true,
+      handler(newVal) {
+        console.log("子组件接收:", newVal); // 打印传入的数据
+        if (newVal) {
+          // 将所有数据映射到 form
+          this.form = { ...this.form, ...newVal };
+          // 强制更新渲染视图
+          this.$forceUpdate();
+        } else {
+          // console.warn("Received null or undefined data");
+        }
+      },
+    },
   },
   methods: {
     toggleTag(field) {

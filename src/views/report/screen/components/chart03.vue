@@ -51,7 +51,7 @@ const fetchImportantUserData = async () => {
         id: item.userId,
         name: item.name,
         department: item.department,
-        statu: item.isHealth ? '健康' : item.diagnosisDiseaseTypeName || '不健康',
+        statu: item.isHealth ? false : item.diagnosisDiseaseTypeName || '健康',
         gender: item.gender
       }));
       displayedData.value = [...data.value];

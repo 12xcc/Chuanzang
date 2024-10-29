@@ -44,13 +44,22 @@ export const getEmployeeCheckInExcelAI = async () => {
 
 // 根据id获取用户打卡位置信息
 export const selectCheckinInfoById = async (dailyHealthId) => {
-    const response = await axiosInstance.get(
-      `/cdcStaff/statisticsCheckin/selectCheckinInfoById/${dailyHealthId}`,
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }
-    );
-    return response;
-  };
+  const response = await axiosInstance.get(
+    `/cdcStaff/statisticsCheckin/selectCheckinInfoById/${dailyHealthId}`,
+    {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    }
+  );
+  return response;
+};
+
+// 根据id获取打卡信息
+
+export const selectCheckinById = async (dailyHealthId) => {
+  const response = await axiosInstance.get(
+    `/cdcStaff/statisticsCheckin/selectCheckinById/${dailyHealthId}`
+  );
+  return response;
+};

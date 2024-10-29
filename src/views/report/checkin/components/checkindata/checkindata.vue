@@ -38,8 +38,8 @@
 
             <!------------------------------- 性别 ----------------------------------------->
             <el-form-item label="性别" prop="gender">
-               <el-input
-                 v-model="form.gender"
+              <el-input
+                v-model="form.gender"
                 style="width: 200px"
                 placeholder=""
                 clearable
@@ -78,7 +78,7 @@
 
             <!-- 部门/工种 -->
             <el-form-item label="部门/工种" prop="department">
-            <el-input
+              <el-input
                 v-model="form.department"
                 style="width: 200px"
                 placeholder=""
@@ -109,7 +109,6 @@
             </el-form-item>
           </div>
         </div>
-
 
         <!------------------------------------ 症状标签 ------------------------------->
         <div class="select flex gap-2 mb-4">
@@ -186,42 +185,63 @@
         <div>
           <div v-show="selectedTag === 'GeneralSymptoms'">
             <p>查看全身症状</p>
-            <GeneralSymptoms ref="GeneralSymptoms" />
+            <GeneralSymptoms
+              ref="GeneralSymptoms"
+              :data="generalSymptomsData"
+            />
           </div>
 
           <div v-show="selectedTag === 'RespiratorySymptoms'">
             <p>查看呼吸系统症状</p>
-            <RespiratorySymptoms ref="RespiratorySymptoms" />
+            <RespiratorySymptoms
+              ref="RespiratorySymptoms"
+              :data="respiratorySymptomsData"
+            />
           </div>
 
           <div v-show="selectedTag === 'DigestiveSymptoms'">
             <p>查看消化系统症状</p>
-            <DigestiveSymptoms ref="DigestiveSymptoms" />
+            <DigestiveSymptoms
+              ref="DigestiveSymptoms"
+              :data="digestiveSymptomsData"
+            />
           </div>
 
           <div v-show="selectedTag === 'CirculatorySymptoms'">
             <p>查看循环系统症状</p>
-            <CirculatorySymptoms ref="CirculatorySymptoms" />
+            <CirculatorySymptoms
+              ref="CirculatorySymptoms"
+              :data="circulatorySymptomsData"
+            />
           </div>
 
           <div v-show="selectedTag === 'NeurologicalSymptoms'">
             <p>查看神经系统症状</p>
-            <NeurologicalSymptoms ref="NeurologicalSymptoms"/>
+            <NeurologicalSymptoms
+              ref="NeurologicalSymptoms"
+              :data="neurologicalSymptomsData"
+            />
           </div>
 
           <div v-show="selectedTag === 'LocalSymptoms'">
             <p>查看局部症状</p>
-            <DiagnosisLocalSymptoms ref="DiagnosisLocalSymptoms"/>
+            <DiagnosisLocalSymptoms
+              ref="DiagnosisLocalSymptoms"
+              :data="localSymptomsData"
+            />
           </div>
 
           <div v-show="selectedTag === 'OtherSymptoms'">
             <p>查看其他症状</p>
-            <OtherSymptoms ref="OtherSymptoms"/>
+            <OtherSymptoms ref="OtherSymptoms" :data="otherSymptomsData" />
           </div>
 
           <div v-show="selectedTag === 'RiskFactorsAndExposure'">
             <p>查看危险因素与暴露史</p>
-            <RiskFactorsAndExposure ref="RiskFactorsAndExposure"/>
+            <RiskFactorsAndExposure
+              ref="RiskFactorsAndExposure"
+              :data="riskFactorsData"
+            />
           </div>
         </div>
       </el-form>
@@ -235,12 +255,12 @@ import Dateselection from "@/components/date_selection.vue";
 import GeneralSymptoms from "./GeneralSymptoms.vue";
 import RespiratorySymptoms from "./RespiratorySymptoms.vue";
 import CirculatorySymptoms from "./CirculatorySymptoms.vue";
-import NeurologicalSymptoms from './NeurologicalSymptoms.vue';
-import DiagnosisLocalSymptoms from './DiagnosisLocalSymptoms.vue';
-import OtherSymptoms from './OtherSymptoms.vue';
-import RiskFactorsAndExposure from './RiskFactorsAndExposure.vue';
-import DigestiveSymptoms from './DigestiveSymptoms.vue';
-
+import NeurologicalSymptoms from "./NeurologicalSymptoms.vue";
+import DiagnosisLocalSymptoms from "./DiagnosisLocalSymptoms.vue";
+import OtherSymptoms from "./OtherSymptoms.vue";
+import RiskFactorsAndExposure from "./RiskFactorsAndExposure.vue";
+import DigestiveSymptoms from "./DigestiveSymptoms.vue";
+import { selectCheckinById } from "@/api/report/checkin.js";
 export default {
   components: {
     Dateselection,
@@ -259,9 +279,20 @@ export default {
       selectedTag: null, // 当前选中的标签
       form: {},
       rules: {},
+
+      generalSymptomsData: null, // 全身症状数据
+      respiratorySymptomsData: null, // 呼吸系统症状数据
+      digestiveSymptomsData: null, // 消化系统症状数据
+      circulatorySymptomsData: null, // 循环系统症状数据
+      neurologicalSymptomsData: null, // 神经系统症状数据
+      localSymptomsData: null, // 局部症状数据
+      otherSymptomsData: null, // 其他症状数据
+      riskFactorsData: null, // 危险因素与暴露史数据
+
+      dailyHealthId: null,
     };
   },
-  
+
   methods: {
     toggleTag(field) {
       this.form[field] = !this.form[field];
@@ -272,74 +303,72 @@ export default {
     showDrawer(user) {
       this.form = { ...user };
       this.visible = true;
+      this.dailyHealthId = user.statusId;
+      this.handleQuery(this.dailyHealthId);
     },
     handleCancel() {
       this.visible = false;
       this.handleReset();
 
-      if (this.$refs.GeneralSymptoms) {
-        this.$refs.GeneralSymptoms.handleReset();
-      }
-      if (this.$refs.RespiratorySymptoms) {
-        this.$refs.RespiratorySymptoms.handleReset();
-      }
-      if (this.$refs.CirculatorySymptoms) {
-        this.$refs.CirculatorySymptoms.handleReset();
-      }
-      if (this.$refs.NeurologicalSymptoms) {
-        this.$refs.NeurologicalSymptoms.handleReset();
-      }
-      if (this.$refs.DiagnosisLocalSymptoms) {
-        this.$refs.DiagnosisLocalSymptoms.handleReset();
-      }
-      if (this.$refs.OtherSymptoms) {
-        this.$refs.OtherSymptoms.handleReset();
-      }
-      if (this.$refs.RiskFactorsAndExposure) {
-        this.$refs.RiskFactorsAndExposure.handleReset();
-      }
+      // if (this.$refs.GeneralSymptoms) {
+      //   this.$refs.GeneralSymptoms.handleReset();
+      // }
+      // if (this.$refs.RespiratorySymptoms) {
+      //   this.$refs.RespiratorySymptoms.handleReset();
+      // }
+      // if (this.$refs.CirculatorySymptoms) {
+      //   this.$refs.CirculatorySymptoms.handleReset();
+      // }
+      // if (this.$refs.NeurologicalSymptoms) {
+      //   this.$refs.NeurologicalSymptoms.handleReset();
+      // }
+      // if (this.$refs.DiagnosisLocalSymptoms) {
+      //   this.$refs.DiagnosisLocalSymptoms.handleReset();
+      // }
+      // if (this.$refs.OtherSymptoms) {
+      //   this.$refs.OtherSymptoms.handleReset();
+      // }
+      // if (this.$refs.RiskFactorsAndExposure) {
+      //   this.$refs.RiskFactorsAndExposure.handleReset();
+      // }
     },
 
-    
-    handleSubmit() {
-      console.log("触发");
-      if (this.$refs.form) {
-        this.$refs.form.validate((valid) => {
-          console.log("Form is valid:", valid);
-          if (valid) {
-            console.log("个人基本信息:", this.form);
-            const diagnosisgeneralsymptoms = this.$refs.GeneralSymptoms.getData();
-            const diagnosisrespiratorysymptoms =this.$refs.RespiratorySymptoms.getData();
-            const diagnosisneurologicalsymptoms = this.$refs.NeurologicalSymptoms.getData();
-            const diagnosiscirculatorysymptoms = this.$refs.CirculatorySymptoms.getData();
-            const diagnosislocalsymptoms = this.$refs.DiagnosisLocalSymptoms.getData();
-            const diagnosisothersymptoms = this.$refs.OtherSymptoms.getData();
-            const RiskFactorsAndExposureData = this.$refs.RiskFactorsAndExposure.getData();
-            console.log("全身症状:",  diagnosisgeneralsymptoms);
-            console.log("呼吸系统症状:",diagnosisrespiratorysymptoms);         
-            console.log("循环系统症状:", diagnosiscirculatorysymptoms);
-            console.log("神经系统症状:" ,diagnosisneurologicalsymptoms);
-            console.log("局部症状:", diagnosislocalsymptoms);
-            console.log("其他:",diagnosisothersymptoms);
-            console.log("危险因素与暴露史:", RiskFactorsAndExposureData);
+ async handleQuery(dailyHealthId) {
+      try {
+        const response = await selectCheckinById(dailyHealthId);
 
-            this.visible = false;
-            ElMessage({
-              message: "提交成功",
-              type: "success",
-            });
-            this.handleReset();
-          } else {
-            console.log("表单验证失败");
-            ElMessage({
-              message: "提交失败",
-              type: "error",
-            });
-            return false;
-          }
-        });
-      } else {
-        console.error("Form reference is null");
+        if (response && response.data && response.data.code === 1) {
+          const data = response.data.data;
+
+          console.log("完整的后端响应：", data);
+
+          //  调试
+          // console.log("全身症状:", data.generalsymptoms);
+          // console.log("呼吸系统症状:", data.respiratorysymptoms);
+          // console.log("消化系统症状:", data.digestivesymptoms);
+          // console.log("循环系统症状:", data.circulatorysymptoms);
+          // console.log("神经系统症状:", data.neurologicalSymptoms);
+          // console.log("局部症状:", data.localSymptoms);
+          // console.log("其他症状:", data.otherSymptoms);
+          // console.log("风险因素和暴露史:", data.riskFactorsAndExposure);
+
+          // 分发数据到相应的属性
+          this.generalSymptomsData = data.generalsymptoms || {};
+          this.respiratorySymptomsData = data.respiratorysymptoms || {};
+          this.digestiveSymptomsData = data.digestivesymptoms || {};
+          this.circulatorySymptomsData = data.circulatorysymptoms || {};
+          this.neurologicalSymptomsData = data.neurologicalSymptoms || {};
+          this.localSymptomsData = data.localSymptoms || {};
+          this.otherSymptomsData = data.otherSymptoms || {};
+          this.riskFactorsData = data.riskFactorsAndExposure || {};
+
+          console.log("分发后的循环系统数据:", this.circulatorySymptomsData);
+        } else {
+          console.error("获取数据失败或无效的响应:", response);
+        }
+      } catch (error) {
+        console.error("获取打卡信息出错:", error);
+        ElMessage.error("获取打卡信息失败");
       }
     },
 
@@ -349,9 +378,7 @@ export default {
       this.selectedTag = null;
     },
     getInitialForm() {
-      return {
-
-      };
+      return {};
     },
   },
 };
@@ -392,24 +419,24 @@ h3 {
 }
 
 .title-container {
-    display: flex;
-    margin-left: 0px;
-    margin-bottom: 20px;
-    margin-top: 20px;
-  }
-  
-  .blue-box {
-    width: 6px;
-    height: 18px;
-    background-color: #285ac8;
-    margin-right: 10px;
-  }
-  
-  .title-text {
-    font-size: 12px;
-    font-weight: bold;
-    color: #4a4a4a;
-  }
+  display: flex;
+  margin-left: 0px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.blue-box {
+  width: 6px;
+  height: 18px;
+  background-color: #285ac8;
+  margin-right: 10px;
+}
+
+.title-text {
+  font-size: 12px;
+  font-weight: bold;
+  color: #4a4a4a;
+}
 
 .BaseInfo {
   margin-bottom: 50px;

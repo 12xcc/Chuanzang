@@ -67,6 +67,12 @@ export default {
   components: {
     Dateselection,
   },
+  props: {
+    data: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data() {
     return {
       allDisabled:true, 
@@ -81,6 +87,22 @@ export default {
 
       rules: {},
     };
+  },
+  watch: {
+    data: {
+      immediate: true,
+      handler(newVal) {
+        console.log("子组件接收:", newVal); // 打印传入的数据
+        if (newVal) {
+          // 将所有数据映射到 form
+          this.form = { ...this.form, ...newVal };
+          // 强制更新渲染视图
+          this.$forceUpdate();
+        } else {
+          // console.warn("Received null or undefined data");
+        }
+      },
+    },
   },
   methods: {
     toggleTag(field) {
