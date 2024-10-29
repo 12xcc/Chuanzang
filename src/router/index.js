@@ -33,6 +33,7 @@ const hospital = () =>import('@/views/system/hospital/hospital.vue')
 const feedback = () =>import('@/views/feedback/index.vue')
 const propaganda = () => import('@/views/propaganda/index.vue')
 const satisfaction = () => import('@/views/satisfaction/index.vue')
+const accuracy = () => import('@/views/report/accuracy/accuracy.vue')
 // 1.定义路由数据
 const routes=[
     {
@@ -94,6 +95,11 @@ const routes=[
                         path: 'screen',
                         component: screen,
                         name: 'screen'
+                    },
+                    {
+                        path:'accuracy',
+                        component:accuracy,
+                        name:'accuracy'
                     }
                 ]
             },

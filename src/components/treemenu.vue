@@ -45,6 +45,10 @@
         <img src="../assets/menu_icons/virus.svg" alt="" class="menu-icons" />
         <span>疾病统计报表</span>
       </el-menu-item>
+      <el-menu-item index="/report/accuracy">
+        <img src="../assets/menu_icons/screen.svg" alt="" class="menu-icons" />
+        <span>疾病诊断准确率报表</span>
+      </el-menu-item>
       <el-menu-item index="/report/screen">
         <img src="../assets/menu_icons/screen.svg" alt="" class="menu-icons" />
         <span>数据大屏</span>

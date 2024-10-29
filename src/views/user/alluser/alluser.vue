@@ -201,6 +201,7 @@ import {
   toggleUserStatus,
   initializeUserPassword,
   exportUserData,
+  queryAllUserToExcel,
 } from "@/api/user/alluser.js"; // 导入封装的 API
 
 export default {
@@ -306,19 +307,47 @@ export default {
     },
 
     // 下载导入模板
-    handleDownload() {
-      const link = document.createElement("a");
-      link.href = "/template.xlsx"; // 指向 public 目录下的文件
-      link.download = "用户信息导入模板.xlsx"; // 下载时的文件名
-      document.body.appendChild(link); // 将链接添加到文档中
-      link.click(); // 触发点击事件下载文件
-      document.body.removeChild(link); // 下载后移除链接
-      this.$message({
-        message: "下载成功",
-        type: "success",
-      });
+    // handleDownload() {
+    //   const link = document.createElement("a");
+    //   link.href = "/template.xlsx"; // 指向 public 目录下的文件
+    //   link.download = "用户信息导入模板.xlsx"; // 下载时的文件名
+    //   document.body.appendChild(link); // 将链接添加到文档中
+    //   link.click(); // 触发点击事件下载文件
+    //   document.body.removeChild(link); // 下载后移除链接
+    //   this.$message({
+    //     message: "下载成功",
+    //     type: "success",
+    //   });
+    // },
+    async handleDownload() {
+      try {
+        const response = await queryAllUserToExcel();
+        if (response.status === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "用户导入模板.xlsx");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          this.$message({
+            message: "下载成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            message: "下载失败，请重试",
+            type: "error",
+          });
+        }
+      } catch (error) {
+        console.error("下载出错:", error);
+        this.$message({
+          message: "下载出错，请重试",
+          type: "error",
+        });
+      }
     },
-
     // 导出用户信息
     async handleExport() {
       try {

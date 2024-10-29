@@ -56,8 +56,7 @@
             <el-radio value="女">女</el-radio>
           </el-radio-group>
         </el-form-item>
-
-        <!-- 是否为孕妇 -->
+                <!-- 是否为孕妇 -->
         <el-form-item
           v-if="form.gender === '女'"
           label="是否为孕妇"
@@ -75,7 +74,6 @@
             ></el-input>
           </el-form-item>
         </el-form-item>
-
         <!-- 身份证号 -->
         <el-form-item label="身份证号" prop="IDNumber">
           <el-input
@@ -692,32 +690,54 @@ export default {
       });
     },
 
-    handleAge() {
-      const idNumber = this.form.IDNumber;
-      if (idNumber.length === 18) {
-        // 从身份证号中提取出生年月日
-        const birthYear = parseInt(idNumber.slice(6, 10));
-        const birthMonth = parseInt(idNumber.slice(10, 12)) - 1; // 月份从0开始
-        const birthDay = parseInt(idNumber.slice(12, 14));
+handleAge() {
+  const idNumber = this.form.IDNumber;
+  // 长度必须为18位
+  if (idNumber.length !== 18) {
+    this.form.age = "身份证号格式不正确";
+    return;
+  }
 
-        const birthDate = new Date(birthYear, birthMonth, birthDay);
-        const today = new Date();
+  // 验证生日格式
+  const birthYear = parseInt(idNumber.slice(6, 10));
+  const birthMonth = parseInt(idNumber.slice(10, 12)) - 1; // 月份从0开始
+  const birthDay = parseInt(idNumber.slice(12, 14));
 
-        // 计算年龄
-        let age = today.getFullYear() - birthYear;
-        if (
-          today.getMonth() < birthMonth ||
-          (today.getMonth() === birthMonth && today.getDate() < birthDay)
-        ) {
-          age--;
-        }
+  const birthDate = new Date(birthYear, birthMonth, birthDay);
+  if (
+    birthDate.getFullYear() !== birthYear ||
+    birthDate.getMonth() !== birthMonth ||
+    birthDate.getDate() !== birthDay
+  ) {
+    this.form.age = "身份证号中出生日期无效";
+    return;
+  }
 
-        this.form.age = age;
-      } else {
-        this.form.age = "身份证号格式不正确";
-      }
-    },
+  // 验证校验码
+  const weights = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+  const checkCodes = "10X98765432";
+  const sum = idNumber
+    .slice(0, 17)
+    .split("")
+    .reduce((acc, num, index) => acc + parseInt(num) * weights[index], 0);
+  const calculatedCheckCode = checkCodes[sum % 11];
+  if (calculatedCheckCode !== idNumber[17].toUpperCase()) {
+    this.form.age = "身份证号校验码无效";
+    return;
+  }
 
+  // 计算年龄
+  const today = new Date();
+  let age = today.getFullYear() - birthYear;
+  if (
+    today.getMonth() < birthMonth ||
+    (today.getMonth() === birthMonth && today.getDate() < birthDay)
+  ) {
+    age--;
+  }
+
+  this.form.age = age;
+},
     handleMedicalHistoryChange() {
       if (!this.form.hasMedicalHistory) {
         // 如果选择“无”，清空所有疾病选项

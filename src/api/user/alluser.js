@@ -76,3 +76,14 @@ export const updateUserInfo = async (requestData) => {
 
 // 修改密码
 `/medicalStaff/userpPassword/change`
+
+// 下载导入模板
+export const queryAllUserToExcel = async () => {
+  const response = await axiosInstance.get("/admin/userManager/queryAllUserToExcel", {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    responseType: "blob",
+  });
+  return response;
+};

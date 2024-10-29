@@ -6,7 +6,7 @@
       class="form-container"
       ref="form"
       :rules="rules"
-      :disabled="allDisabled"  
+      :disabled="allDisabled"
     >
       <div class="GeneralSymptoms">
         <div class="Condition">
@@ -18,7 +18,7 @@
             :checked="form.hasConjunctivitis"
             type="primary"
             @change="toggleTag('hasConjunctivitis')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             结膜炎
           </el-check-tag>
@@ -27,7 +27,7 @@
             :checked="form.hasConjunctivalCongestion"
             type="primary"
             @change="toggleTag('hasConjunctivalCongestion')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             眼结膜充血、肿胀疼痛
           </el-check-tag>
@@ -36,7 +36,7 @@
             :checked="form.hasEyelidEdema"
             type="primary"
             @change="toggleTag('hasEyelidEdema')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             上下眼睑水肿
           </el-check-tag>
@@ -45,7 +45,7 @@
             :checked="form.hasSmellTasteLoss"
             type="primary"
             @change="toggleTag('hasSmellTasteLoss')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             嗅觉味觉减退或丧失
           </el-check-tag>
@@ -54,7 +54,7 @@
             :checked="form.hasFacialRednessOrPallor"
             type="primary"
             @change="toggleTag('hasFacialRednessOrPallor')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             颜面潮红或苍白
           </el-check-tag>
@@ -63,7 +63,7 @@
             :checked="form.hasRednessNeckChest"
             type="primary"
             @change="toggleTag('hasRednessNeckChest')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             潮红（颈部、胸部）
           </el-check-tag>
@@ -72,7 +72,7 @@
             :checked="form.hasLipCyanosis"
             type="primary"
             @change="toggleTag('hasLipCyanosis')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             口唇发绀
           </el-check-tag>
@@ -81,7 +81,7 @@
             :checked="form.hasSkinPallorOrBruising"
             type="primary"
             @change="toggleTag('hasSkinPallorOrBruising')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             皮肤苍白或带青紫
           </el-check-tag>
@@ -90,7 +90,7 @@
             :checked="form.hasGumBleeding"
             type="primary"
             @change="toggleTag('hasGumBleeding')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             牙龈出血
           </el-check-tag>
@@ -99,7 +99,7 @@
             :checked="form.hasKidneyPain"
             type="primary"
             @change="toggleTag('hasKidneyPain')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             肾区疼痛
           </el-check-tag>
@@ -108,7 +108,7 @@
             :checked="form.hasLowBackPain"
             type="primary"
             @change="toggleTag('hasLowBackPain')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             腰痛
           </el-check-tag>
@@ -117,7 +117,7 @@
             :checked="form.hasOrbitalPain"
             type="primary"
             @change="toggleTag('hasOrbitalPain')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             眼眶痛
           </el-check-tag>
@@ -126,7 +126,7 @@
             :checked="form.hasMucosalBleedingInOralOrNasal"
             type="primary"
             @change="toggleTag('hasMucosalBleedingInOralOrNasal')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             口腔、鼻腔等处黏膜有出血点
           </el-check-tag>
@@ -135,7 +135,7 @@
             :checked="form.hasSkinBleedingPoints"
             type="primary"
             @change="toggleTag('hasSkinBleedingPoints')"
-            :disabled="allDisabled"  
+            :disabled="allDisabled"
           >
             腋下/上臂/胸部或其它部位有皮肤出血点
           </el-check-tag>
@@ -152,7 +152,7 @@ export default {
   components: {
     Dateselection,
   },
-    props: {
+  props: {
     data: {
       type: Object,
       default: () => ({}),
@@ -160,7 +160,7 @@ export default {
   },
   data() {
     return {
-      allDisabled:true, 
+      allDisabled: true,
       visible: false, // 控制弹窗显示
       form: {
         hasConjunctivitis: false,
@@ -183,7 +183,7 @@ export default {
     };
   },
 
-    watch: {
+  watch: {
     data: {
       immediate: true,
       handler(newVal) {
