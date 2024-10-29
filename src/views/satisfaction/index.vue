@@ -65,7 +65,7 @@
                 {{
                   scope.row.satisfaction === null
                     ? "暂无满意度"
-                    : scope.row.satisfaction + "%"
+                    : (scope.row.satisfaction*100).toFixed(4) + "%"
                 }}
               </el-button>
             </el-tag>
@@ -172,6 +172,7 @@ export default {
             surveyContent: item.surveyContent,
             isOpen :item.isOpen,
           }));
+        
           this.total = response.data.data.total;
         } else {
           this.$message.error(
