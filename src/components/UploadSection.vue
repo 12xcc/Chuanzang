@@ -16,7 +16,7 @@
           <img 
             v-if="file.raw && file.raw.type === 'application/pdf'" 
             class="el-upload-list__item-thumbnail_pdf" 
-            src="@/assets/filesicon-PDF.svg" 
+            src="@/assets/filesiconPDF.svg" 
             alt="PDF Icon" 
           />
           <img 
