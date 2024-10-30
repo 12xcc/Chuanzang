@@ -107,6 +107,25 @@
                 <el-radio value="综合管理部">综合管理部</el-radio>
               </el-radio-group> -->
             </el-form-item>
+
+          </div>
+        </div>
+        <div class="BaseInfo">
+          <div class="title-container">
+            <div class="blue-box"></div>
+            <span class="title-text">提交日期（报告日期）</span>
+          </div>
+          <div class="BaseInfoDetail">
+              <el-form-item label="提交日期">
+              <el-date-picker
+                v-model="form.checkDate"
+                type="date"
+                format="YYYY-MM-DD"
+                placeholder="请选择提交日期"  
+                style="width:200px"
+                :dieabled="disabledAfterDate"
+              />
+            </el-form-item>
           </div>
         </div>
 

@@ -35,7 +35,7 @@
             <el-form-item label="标题" prop="Title">
               <el-input
                 v-model="form.Title"
-                style="width: 300px"
+                style="width: 400px"
                 placeholder="请输入标题"
                 @blur="$refs.form.validateField('Title')"
                 clearable
@@ -61,7 +61,7 @@
                 placeholder=""
                 clearable
                 size="default"
-                style="width: 300px; margin-right: -15px"
+                style="width: 400px; margin-right: -15px"
                 @clear="handleQuery"
                 :disabled="allDisabled"
               >

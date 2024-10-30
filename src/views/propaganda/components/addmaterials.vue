@@ -32,7 +32,7 @@
             <el-form-item label="标题" prop="Title">
               <el-input
                 v-model="form.Title"
-                style="width: 200px"
+                style="width: 400px"
                 placeholder="请输入标题"
                 @blur="$refs.form.validateField('Title')"
                 clearable
@@ -59,7 +59,7 @@
                 placeholder="请选择疾病类型"
                 clearable
                 size="default"
-                style="width: 200px; margin-right: -15px"
+                style="width: 400px; margin-right: -15px"
                 @clear="handleQuery"
               >
                 <el-option

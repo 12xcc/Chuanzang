@@ -46,7 +46,7 @@
         <span>疾病统计报表</span>
       </el-menu-item>
       <el-menu-item index="/report/accuracy">
-        <img src="../assets/menu_icons/screen.svg" alt="" class="menu-icons" />
+        <img src="../assets/menu_icons/accuracy.svg" alt="" class="menu-icons" />
         <span>疾病诊断准确率报表</span>
       </el-menu-item>
       <el-menu-item index="/report/screen">
@@ -156,7 +156,8 @@ export default {
         '/system/hospital': '医院基础数据管理',
         '/feedback': '用户反馈',
         '/propaganda': '宣传材料管理',
-        '/satisfaction': '满意度调查'
+        '/satisfaction': '满意度调查',
+        '/report/accuracy' : '疾病诊断准确率报表'
       };
       return menuMap[path] || '未知标题';
     }

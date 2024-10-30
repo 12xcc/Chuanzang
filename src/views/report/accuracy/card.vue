@@ -1,9 +1,5 @@
 <template>
-  <div class="container">
-    <div class="title-container">
-        <div class="blue-box"></div>
-        <span class="title-text">数据</span>
-    </div>
+  <div class="cards-container">
     <div class="card-container">
         <div class="card" v-for="(item, index) in cardData" :key="index">
             <div class="card-title">{{ item.title }}</div>
@@ -75,15 +71,15 @@ export default {
 </script>
 
 <style scoped>
-.container {
-    margin-top: 40px;
+.cards-container {
+    margin-top: 50px;
     width: 100%;
-    height: auto;
+    height: 150px;
+    margin-bottom: 5px;
 }
 .title-container {
     display: flex;
     margin-left: 0px;
-    margin-bottom: 20px;
     margin-top: 20px;
 }
 
@@ -108,7 +104,7 @@ export default {
     border-radius: 10px;
     height: 130px;
     width: 420px;
-    margin: 8px;
+    margin: 10px;
 }
 
 .card-title {

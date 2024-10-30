@@ -70,7 +70,7 @@ const rotateData = () => {
 };
 
 onMounted(() => {
-  fetchImportantUserData(); // 调用接口获取数据
+  fetchImportantUserData();
   setInterval(rotateData, 3000); // 每3秒轮播一次
 });
 </script>

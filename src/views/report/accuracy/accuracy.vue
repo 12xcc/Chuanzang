@@ -4,19 +4,8 @@
     <div>
       <Card />
     </div>
-    <div class="elsedata">
-      <div class="chartspartone">
-      <!-- <Chart01 /> -->
-      <!-- <Chart02 /> -->
-      <!-- <Chart03 /> -->
-    </div>
-    <div class="Map">
-      <Map />
-    </div>
-    <div class=chartspartthree>
-      <!-- <Chart04 /> -->
-      <!-- <Chart05 /> -->
-    </div>
+    <div>
+      <Chart01 />
     </div>
   </div>
 </template>
@@ -24,9 +13,11 @@
 <script>
 import { ref } from "vue";
 import Card from "./card.vue"
+import Chart01 from "./chart01.vue"
 export default {
     components:{
     Card,
+    Chart01,
   },
 }
 </script>
@@ -35,8 +26,10 @@ export default {
 .container {
   padding-top: 10px;
   width: 100%;
-  height: 900px;
+  height: 400px;
   background-color: #ffffff;
+  padding-bottom: 5px;
+  padding-right: 5px;
 }
 
 .title-container {

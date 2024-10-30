@@ -88,8 +88,14 @@
         <el-table-column prop="SequenceNumber" label="序号" width="80" />
         <el-table-column prop="MaterialType" label="宣传材料类型" width="120" />
         <el-table-column prop="Title" label="标题" width="220" />
-        <el-table-column prop="FilePath" label="文件路径" width="180" />
-        <el-table-column prop="Link" label="网页链接" width="180" />
+        <el-table-column prop="FilePath" label="文件路径" width="120" />
+        <el-table-column prop="Link" label="网页链接" width="200" >
+        <template #default="scope">
+            <el-button link type="primary">
+              {{scope.row.Link}}
+            </el-button>
+        </template>
+        </el-table-column>
         <el-table-column prop="PublishDate" label="发布日期" width="200" />
         <el-table-column
           prop="LearningNumber"
@@ -194,9 +200,9 @@ export default {
               index +
               1,
             MaterialType: item.materialType || "未知类型",
-            Title: item.title || "-",
-            FilePath: item.filePath || "-",
-            Link: item.link || "-",
+            Title: item.title || "",
+            FilePath: item.filePath || "",
+            Link: item.link || "",
             PublishDate: item.publishDate
               ? `${item.publishDate[0]}-${String(item.publishDate[1]).padStart(
                   2,
