@@ -6,7 +6,7 @@
       class="form-container"
       ref="form"
       :rules="rules"
-      :disabled="allDisabled"  
+      :disabled="allDisabled"
     >
       <div class="GeneralSymptoms">
         <!------------------------------- 接触情况 ---------------------------------->
@@ -22,7 +22,7 @@
             style="margin-left: 15px"
           >
             <div>
-              <el-radio-group v-model="form.ContactWithFeverPatient">
+              <el-radio-group v-model="form.contactWithFeverPatient">
                 <el-radio value="是">是</el-radio>
                 <el-radio value="否">否</el-radio>
                 <el-radio value="不清楚">不清楚</el-radio>
@@ -36,7 +36,7 @@
             style="margin-left: 15px"
           >
             <div>
-              <el-radio-group v-model="form.ContactWithDiarrheaPatient">
+              <el-radio-group v-model="form.contactWithDiarrheaPatient">
                 <el-radio value="是">是</el-radio>
                 <el-radio value="否">否</el-radio>
                 <el-radio value="不清楚">不清楚</el-radio>
@@ -50,7 +50,7 @@
             style="margin-left: 15px"
           >
             <div>
-              <el-radio-group v-model="form.ContactWithRashPatient">
+              <el-radio-group v-model="form.contactWithRashPatient">
                 <el-radio :value="'是'">是</el-radio>
                 <el-radio :value="'否'">否</el-radio>
                 <el-radio :value="'不清楚'">不清楚</el-radio>
@@ -64,7 +64,7 @@
             style="margin-left: 15px"
           >
             <div>
-              <el-radio-group v-model="form.ContactWithTuberculosisPatient">
+              <el-radio-group v-model="form.contactWithTuberculosisPatient">
                 <el-radio :value="'是'">是</el-radio>
                 <el-radio :value="'否'">否</el-radio>
                 <el-radio :value="'不清楚'">不清楚</el-radio>
@@ -80,13 +80,13 @@
             </div>
 
             <el-form-item label="" style="display: flex; margin-left: -340px">
-              <el-checkbox v-model="form.IsGroupDining" value="集体堂食就餐"
+              <el-checkbox v-model="form.isGroupDining" value="集体堂食就餐"
                 >集体堂食就餐</el-checkbox
               >
-              <el-checkbox v-model="form.IsDiningOut" value="外出就餐"
+              <el-checkbox v-model="form.isDiningOut" value="外出就餐"
                 >外出就餐</el-checkbox
               >
-              <el-checkbox v-model="form.IsDiningUnclear" value="不清楚"
+              <el-checkbox v-model="form.isDiningUnclear" value="不清楚"
                 >不清楚</el-checkbox
               >
             </el-form-item>
@@ -115,8 +115,8 @@
 
           <el-form-item label="食物名字" style="margin-left: -270px">
             <el-input
-              v-model="form.Foodnames"
-              placeholder="请输入食物名字"
+              v-model="form.foodnames"
+              placeholder="无"
               style="width: 200px"
               clearable
             ></el-input>
@@ -124,8 +124,8 @@
 
           <el-form-item label="就餐地点" style="margin-left: -270px">
             <el-input
-              v-model="form.DiningPlace"
-              placeholder="请输入就餐地点"
+              v-model="form.diningPlace"
+              placeholder="无"
               style="width: 200px"
               clearable
             ></el-input>
@@ -144,7 +144,7 @@
             style="margin-left: 20px"
           >
             <div>
-              <el-radio-group v-model="form.ContactWithRashPatient">
+              <el-radio-group v-model="form.contactWithRashPatient">
                 <el-radio :value="'是'">是</el-radio>
                 <el-radio :value="'否'">否</el-radio>
                 <el-radio :value="'不清楚'">不清楚</el-radio>
@@ -165,7 +165,7 @@
             style="margin-left: 20px"
           >
             <el-radio-group
-              v-model="form.OutdoorStayOrWorkWithinMonth"
+              v-model="form.outdoorStayOrWorkWithinMonth"
               @change="handleOutdoorChange"
             >
               <el-radio value="是">是</el-radio>
@@ -175,43 +175,42 @@
           </el-form-item>
 
           <div class="NextContainer">
-          <el-form-item
-            v-if="form.OutdoorStayOrWorkWithinMonth === '是'"
-            label="野外/户外活动史"
-            label-position="left"
-            style="display: block; margin-left: 40px; padding:15px 0 5px 0"
-          >
-            <div>
-              <el-radio-group
-                v-model="form.WildActivityHistory"
-                style="width: 600px"
-                @change="handleOtherActivityChange"
-              >
-                <el-radio value="种地">种地</el-radio>
-                <el-radio value="割草">割草</el-radio>
-                <el-radio value="打猎">打猎</el-radio>
-                <el-radio value="采茶">采茶</el-radio>
-                <el-radio value="放牧">放牧</el-radio>
-                <el-radio value="采伐">采伐</el-radio>
-                <el-radio value="旅游">旅游</el-radio>
-                <el-radio value="其他">其他</el-radio>
-              </el-radio-group>
-            </div>
-          </el-form-item>
-           <el-form-item
-            label="其他活动名称"
-            v-if="form.WildActivityHistory === '其他'"
-            label-position="left"
-            style="margin-left: 60px;padding-bottom:15px"
-          >
-            <el-input
-              v-model="form.OtherWildActivityname"
-              placeholder="请输入其他活动名称"
-              style="width: 200px; margin-left: -60px"
-            ></el-input>
-          </el-form-item>
+            <el-form-item
+              v-if="form.outdoorStayOrWorkWithinMonth === '是'"
+              label="野外/户外活动史"
+              label-position="left"
+              style="display: block; margin-left: 40px; padding: 15px 0 5px 0"
+            >
+              <div>
+                <el-radio-group
+                  v-model="form.wildActivityHistory"
+                  style="width: 600px"
+                  @change="handleOtherActivityChange"
+                >
+                  <el-radio value="种地">种地</el-radio>
+                  <el-radio value="割草">割草</el-radio>
+                  <el-radio value="打猎">打猎</el-radio>
+                  <el-radio value="采茶">采茶</el-radio>
+                  <el-radio value="放牧">放牧</el-radio>
+                  <el-radio value="采伐">采伐</el-radio>
+                  <el-radio value="旅游">旅游</el-radio>
+                  <el-radio value="其他">其他</el-radio>
+                </el-radio-group>
+              </div>
+            </el-form-item>
+            <el-form-item
+              label="其他活动名称"
+              v-if="form.wildActivityHistory === '其他'"
+              label-position="left"
+              style="margin-left: 60px; padding-bottom: 15px"
+            >
+              <el-input
+                v-model="form.otherWildActivityname"
+                placeholder="无"
+                style="width: 200px; margin-left: -60px"
+              ></el-input>
+            </el-form-item>
           </div>
-
         </div>
 
         <!------------------------------- 疾病流行区 ---------------------------------->
@@ -227,7 +226,7 @@
             style="margin-left: 20px"
           >
             <el-radio-group
-              v-model="form.PlagueArea"
+              v-model="form.plagueArea"
               @change="clearPlagueLocation"
             >
               <el-radio value="是">是</el-radio>
@@ -239,17 +238,17 @@
           <div class="NextContainer">
             <el-form-item
               label="具体地点"
-              v-if="form.PlagueArea === '是'"
+              v-if="form.plagueArea === '是'"
               label-position="left"
-              style="margin-left:40px;padding-top:15px;padding-bottom:15px"
+              style="margin-left: 40px; padding-top: 15px; padding-bottom: 15px"
             >
               <el-input
-                v-model="form.SpecificPlagueLocation"
-                placeholder="请输入具体地点"
+                v-model="form.specificPlagueLocation"
+                placeholder="无"
                 style="width: 200px; margin-left: -40px"
               ></el-input>
             </el-form-item>
-            </div>
+          </div>
 
           <el-form-item
             label="是否到过炭疽流行区"
@@ -257,7 +256,7 @@
             style="margin-left: 20px"
           >
             <el-radio-group
-              v-model="form.AnthraxArea"
+              v-model="form.anthraxArea"
               @change="clearAnthraxLocation"
             >
               <el-radio value="是">是</el-radio>
@@ -265,22 +264,21 @@
               <el-radio value="不清楚">不清楚</el-radio>
             </el-radio-group>
           </el-form-item>
-          
-           <div class="NextContainer">
+
+          <div class="NextContainer">
             <el-form-item
               label="具体地点"
-              v-if="form.AnthraxArea === '是'"
+              v-if="form.anthraxArea === '是'"
               label-position="left"
-              style="margin-left:40px;padding-top:15px;padding-bottom:15px"
+              style="margin-left: 40px; padding-top: 15px; padding-bottom: 15px"
             >
               <el-input
-                v-model="form.SpecificAnthraxLocation"
-                placeholder="请输入具体地点"
+                v-model="form.specificAnthraxLocation"
+                placeholder="无"
                 style="width: 200px; margin-left: -40px"
               ></el-input>
             </el-form-item>
-            </div>
-
+          </div>
 
           <el-form-item
             label="是否到过疟疾流行区"
@@ -288,7 +286,7 @@
             style="margin-left: 20px"
           >
             <el-radio-group
-              v-model="form.MalariaArea"
+              v-model="form.malariaArea"
               @change="clearMalariaLocation"
             >
               <el-radio value="是">是</el-radio>
@@ -299,18 +297,17 @@
           <div class="NextContainer">
             <el-form-item
               label="具体地点"
-              v-if="form.MalariaArea === '是'"
+              v-if="form.malariaArea === '是'"
               label-position="left"
-              style="margin-left:40px;padding-top:15px;padding-bottom:15px"
+              style="margin-left: 40px; padding-top: 15px; padding-bottom: 15px"
             >
               <el-input
-                v-model="form.SpecificMalariaLocation"
-                placeholder="请输入具体地点"
+                v-model="form.specificMalariaLocation"
+                placeholder="无"
                 style="width: 200px; margin-left: -40px"
               ></el-input>
             </el-form-item>
-            </div>
-
+          </div>
         </div>
 
         <!------------------------------- 动物接触史 ---------------------------------->
@@ -326,25 +323,30 @@
             style="margin-left: 20px"
           >
             <el-radio-group
-              v-model="form.ContactWithAnimalProducts"
+              v-model="form.contactWithAnimalProducts"
               @change="clearContactDate"
             >
               <el-radio value="是">是</el-radio>
               <el-radio value="否">否</el-radio>
               <el-radio value="不清楚">不清楚</el-radio>
             </el-radio-group>
-            </el-form-item>
-            <div class="NextContainer">
+          </el-form-item>
+          <div class="NextContainer">
             <el-form-item
-              v-if="form.ContactWithAnimalProducts === '是'"
-              v-model="form.ContactDate"
-              style="width: 200px; padding:15px 0 15px 0"
+              v-if="form.contactWithAnimalProducts === '是'"
+              style="margin-left: 40px; padding: 15px 0 15px 0"
               label="接触时间"
               label-position="left"
             >
-              <Dateselection />
+              <el-date-picker
+                v-model="form.contactDate"
+                type="date"
+                value-format="YYYY-MM-DD"
+                placeholder="无"
+                style="margin-left: -40px; width:200px"
+              />
             </el-form-item>
-            </div>
+          </div>
 
           <el-form-item
             label="接触过动物"
@@ -352,7 +354,7 @@
             style="margin-left: 20px"
           >
             <el-radio-group
-              v-model="form.ContactWithAnimals"
+              v-model="form.contactWithAnimals"
               @change="clearContactPlace"
             >
               <el-radio value="是">是</el-radio>
@@ -363,20 +365,20 @@
           <div class="NextContainer">
             <el-form-item
               label="接触地点"
-              v-if="form.ContactWithAnimals === '是'"
+              v-if="form.contactWithAnimals === '是'"
               label-position="left"
               style="margin-left: 40px; padding-top: 15px"
             >
               <el-input
-                v-model="form.ContactPlace"
-                placeholder="请输入接触地点"
+                v-model="form.contactPlace"
+                placeholder="无"
                 style="width: 200px; margin-left: -40px"
               >
               </el-input>
             </el-form-item>
             <div>
               <el-form-item
-                v-if="form.ContactWithAnimals === '是'"
+                v-if="form.contactWithAnimals === '是'"
                 label="接触动物名"
                 label-position="left"
                 style="
@@ -450,7 +452,7 @@
             >
               <el-input
                 v-model="form.OtherAnimalname"
-                placeholder="请填写其他动物名称"
+                placeholder="无"
                 style="width: 200px; margin-left: -60px; padding-bottom: 15px"
               ></el-input>
             </el-form-item>
@@ -469,11 +471,11 @@
             label-position="left"
             style="margin-left: 20px"
           >
-            <el-checkbox value="丘陵或山区" v-model="form.IsHillyOrMountainous"
+            <el-checkbox value="丘陵或山区" v-model="form.isHillyOrMountainous"
               >丘陵或山区</el-checkbox
             >
-            <el-checkbox value="平原" v-model="form.IsPlain">平原</el-checkbox>
-            <el-checkbox value="其他" v-model="form.IsOtherResidenceType"
+            <el-checkbox value="平原" v-model="form.isPlain">平原</el-checkbox>
+            <el-checkbox value="其他" v-model="form.isOtherResidenceType"
               >其他</el-checkbox
             >
           </el-form-item>
@@ -494,7 +496,7 @@
             label-position="left"
             style="margin-left: 20px"
           >
-            <el-radio-group v-model="form.TickBite">
+            <el-radio-group v-model="form.tickBite">
               <el-radio value="是">是</el-radio>
               <el-radio value="否">否</el-radio>
               <el-radio value="不知道">不知道</el-radio>
@@ -506,7 +508,7 @@
             label-position="left"
             style="margin-left: 20px"
           >
-            <el-radio-group v-model="form.FleaBite">
+            <el-radio-group v-model="form.fleaBite">
               <el-radio value="是">是</el-radio>
               <el-radio value="否">否</el-radio>
               <el-radio value="不知道">不知道</el-radio>
@@ -519,7 +521,7 @@
             style="margin-left: 20px"
           >
             <el-radio-group
-              v-model="form.ContactWithRatIn2Months"
+              v-model="form.contactWithRatIn2Months"
               @change="clearRatContactMethod"
             >
               <el-radio value="是">是</el-radio>
@@ -528,23 +530,23 @@
             </el-radio-group>
           </el-form-item>
           <div class="NextContainer">
-          <el-form-item
-            label="接触方式"
-            label-position="left"
-            style="margin-left: 40px; display: block;padding:15px 0 15px 0"
-            v-if="form.ContactWithRatIn2Months === '是'"
-          >
-            <el-radio-group v-model="form.RatContactMethod">
-              <el-radio value="挖鼠洞">挖鼠洞</el-radio>
-              <el-radio value="拿鼠">拿鼠</el-radio>
-              <el-radio value="鼠咬">鼠咬</el-radio>
-              <el-radio value="鼠尿">鼠尿</el-radio>
-              <el-radio value="鼠粪">鼠粪</el-radio>
-              <el-radio value="鼠血污染手">鼠血污染手</el-radio>
-              <el-radio value="手被鼠夹打伤">手被鼠夹打伤</el-radio>
-              <el-radio value="其他">其他</el-radio>
-            </el-radio-group>
-          </el-form-item>
+            <el-form-item
+              label="接触方式"
+              label-position="left"
+              style="margin-left: 40px; display: block; padding: 15px 0 15px 0"
+              v-if="form.contactWithRatIn2Months === '是'"
+            >
+              <el-radio-group v-model="form.ratContactMethod">
+                <el-radio value="挖鼠洞">挖鼠洞</el-radio>
+                <el-radio value="拿鼠">拿鼠</el-radio>
+                <el-radio value="鼠咬">鼠咬</el-radio>
+                <el-radio value="鼠尿">鼠尿</el-radio>
+                <el-radio value="鼠粪">鼠粪</el-radio>
+                <el-radio value="鼠血污染手">鼠血污染手</el-radio>
+                <el-radio value="手被鼠夹打伤">手被鼠夹打伤</el-radio>
+                <el-radio value="其他">其他</el-radio>
+              </el-radio-group>
+            </el-form-item>
           </div>
 
           <el-form-item
@@ -552,7 +554,7 @@
             label-position="left"
             style="margin-left: 20px"
           >
-            <el-radio-group v-model="form.EatenFoodContaminatedByRatFeces">
+            <el-radio-group v-model="form.eatenFoodContaminatedByRatFeces">
               <el-radio value="是">是</el-radio>
               <el-radio value="否">否</el-radio>
               <el-radio value="不清楚">不清楚</el-radio>
@@ -564,7 +566,7 @@
             label-position="left"
             style="margin-left: 20px"
           >
-            <el-radio-group v-model="form.DrunkWaterFromDitchesOrPonds">
+            <el-radio-group v-model="form.drunkWaterFromDitchesOrPonds">
               <el-radio value="是">是</el-radio>
               <el-radio value="否">否</el-radio>
               <el-radio value="不清楚">不清楚</el-radio>
@@ -576,7 +578,7 @@
             label-position="left"
             style="margin-left: 20px"
           >
-            <el-radio-group v-model="form.RestedNearRatHoles">
+            <el-radio-group v-model="form.restedNearRatHoles">
               <el-radio value="是">是</el-radio>
               <el-radio value="否">否</el-radio>
               <el-radio value="不清楚">不清楚</el-radio>
@@ -588,7 +590,7 @@
             label-position="left"
             style="margin-left: 20px"
           >
-            <el-radio-group v-model="form.RatOrRatDroppingsAtWorkplace">
+            <el-radio-group v-model="form.ratOrRatDroppingsAtWorkplace">
               <el-radio value="是">是</el-radio>
               <el-radio value="否">否</el-radio>
               <el-radio value="不清楚">不清楚</el-radio>
@@ -600,7 +602,7 @@
             label-position="left"
             style="margin-left: 20px"
           >
-            <el-radio-group v-model="form.ContactWithPatientExcreta">
+            <el-radio-group v-model="form.contactWithPatientExcreta">
               <el-radio value="是">是</el-radio>
               <el-radio value="否">否</el-radio>
               <el-radio value="不清楚">不清楚</el-radio>
@@ -621,7 +623,7 @@ export default {
     Dateselection,
     Adduserdialog,
   },
-    props: {
+  props: {
     data: {
       type: Object,
       default: () => ({}),
@@ -629,45 +631,45 @@ export default {
   },
   data() {
     return {
-      allDisabled:true, 
+      allDisabled: true,
       visible: false, // 控制弹窗显示
       form: {
-        ContactWithFeverPatient:null, // 与发热患者接触情况
-        ContactWithDiarrheaPatient:null, // 与腹泻患者接触情况
-        ContactWithRashPatient: null, // 与皮疹患者接触情况
-        ContactWithTuberculosisPatient:null, // 与结核病患者接触情况
+        contactWithFeverPatient: null, // 与发热患者接触情况
+        contactWithDiarrheaPatient: null, // 与腹泻患者接触情况
+        contactWithRashPatient: null, // 与皮疹患者接触情况
+        contactWithTuberculosisPatient: null, // 与结核病患者接触情况
 
-        IsGroupDining: false, // 5天内是否集体堂食就餐
-        IsDiningOut: false, // 5天内是否外出就餐
-        IsDiningUnclear: false, // 5天内就餐情况不清楚
+        isGroupDining: false, // 5天内是否集体堂食就餐
+        isDiningOut: false, // 5天内是否外出就餐
+        isDiningUnclear: false, // 5天内就餐情况不清楚
 
         hasDrinkingRawWater: false, // 是否饮生水
         hasEatingRawFood: false, // 是否吃生冷食品
         hasEatingColdCookedFood: false, // 是否熟食冷吃
         hasEatingSeafood: false, // 是否吃海水产品
 
-        Foodnames: null, // 食物名字
-        DiningPlace: null, // 就餐地点
+        foodnames: null, // 食物名字
+        diningPlace: null, // 就餐地点
 
-        GroupOutbreak: null, // 同一家庭、办公室、车间等集体单位是否有聚集性发病
-        OutdoorStayOrWorkWithinMonth: null, // 发病前1月内是否在野外住宿或工作
-        WildActivityHistory: null, // 野外/户外活动史
-        OtherWildActivityname: null, // 其他活动名称
+        groupOutbreak: null, // 同一家庭、办公室、车间等集体单位是否有聚集性发病
+        outdoorStayOrWorkWithinMonth: null, // 发病前1月内是否在野外住宿或工作
+        wildActivityHistory: null, // 野外/户外活动史
+        otherWildActivityname: null, // 其他活动名称
 
-        PlagueArea: null, // 是否到过鼠疫流行区
-        SpecificPlagueLocation:null, // 具体地点
+        plagueArea: null, // 是否到过鼠疫流行区
+        specificPlagueLocation: null, // 具体地点
 
-        AnthraxArea:null, // 是否到过炭疽流行区
-        SpecificAnthraxLocation: null, // 具体地点
+        anthraxArea: null, // 是否到过炭疽流行区
+        specificAnthraxLocation: null, // 具体地点
 
-        MalariaArea: null, // 是否到过疟疾流行区
-        SpecificMalariaLocation: null, // 具体地点
+        malariaArea: null, // 是否到过疟疾流行区
+        specificMalariaLocation: null, // 具体地点
 
-        ContactWithAnimalProducts: null, // 是否接触过动物制品
-        ContactDate: null, //接触时间
+        contactWithAnimalProducts: null, // 是否接触过动物制品
+        contactDate: null, //接触时间
 
-        ContactWithAnimals: null, // 是否接触过动物
-        ContactPlace: null, //  接触地点
+        contactWithAnimals: null, // 是否接触过动物
+        contactPlace: null, //  接触地点
         hasContactWithRat: false,
         hasContactWithMarmot: false,
         hasContactWithLice: false,
@@ -685,45 +687,51 @@ export default {
         hasContactWithWolf: false,
         hasContactWithTiger: false,
         hasContactWithOtherAnimal: false, // 是否接触其他动物
-        OtherAnimalname:null,
+        otherAnimalname: null,
 
         hillyOrMountainous: false, // 是否居住在丘陵或山区
         plain: false, //是否居住在平原
-        IsOtherResidenceType: false, // 是否居住在其他地区
+        isOtherResidenceType: false, // 是否居住在其他地区
 
         // 如果这里设置成null，那么这个选项必选
         hasMosquitoBite: null, // 14天内是否明确被蚊虫叮咬过
-        TickBite:null, //发病前2周内是否被蜱叮咬过
-        FleaBite: null, // 发病是否被跳蚤叮咬过
-        ContactWithRatIn2Months: null, // 发病前2个月内是否接触鼠类
-        RatContactMethod: null, // 接触方式
-        EatenFoodContaminatedByRatFeces: null, //发病前1月内是否吃过被鼠排泄物污染的食物
-        DrunkWaterFromDitchesOrPonds: null, // ENUM('是', '否', '不清楚'), -- 19. 发病前1月内是否在野外喝过沟（塘）水
-        RestedNearRatHoles: null, // ENUM('是', '否', '不清楚'), -- 20. 发病前9天内是否在鼠洞附近坐卧
-        RatOrRatDroppingsAtWorkplace: null, // ENUM('是', '否', '不清楚'), -- 21. 工作场所有无鼠或鼠排泄物
-        ContactWithPatientExcreta: null, // ENUM('是', '否', '不清楚') -- 22. 发病前1月内是否接触过病人排泄物（血、尿、便等）
+        tickBite: null, //发病前2周内是否被蜱叮咬过
+        fleaBite: null, // 发病是否被跳蚤叮咬过
+        contactWithRatIn2Months: null, // 发病前2个月内是否接触鼠类
+        ratContactMethod: null, // 接触方式
+        eatenFoodContaminatedByRatFeces: null, //发病前1月内是否吃过被鼠排泄物污染的食物
+        drunkWaterFromDitchesOrPonds: null, // ENUM('是', '否', '不清楚'), -- 19. 发病前1月内是否在野外喝过沟（塘）水
+        restedNearRatHoles: null, // ENUM('是', '否', '不清楚'), -- 20. 发病前9天内是否在鼠洞附近坐卧
+        ratOrRatDroppingsAtWorkplace: null, // ENUM('是', '否', '不清楚'), -- 21. 工作场所有无鼠或鼠排泄物
+        contactWithPatientExcreta: null, // ENUM('是', '否', '不清楚') -- 22. 发病前1月内是否接触过病人排泄物（血、尿、便等）
       },
 
       rules: {},
     };
   },
-
-    watch: {
-    data: {
-      immediate: true,
-      handler(newVal) {
-        console.log("危险因素与暴露史接收:", newVal); // 打印传入的数据
-        if (newVal) {
-          // 将所有数据映射到 form
-          this.form = { ...this.form, ...newVal };
-          // 强制更新渲染视图
-          this.$forceUpdate();
-        } else {
-          // console.warn("Received null or undefined data");
+watch: {
+  data: {
+    immediate: true,
+    handler(newVal) {
+      console.log("危险因素与暴露史接收:", newVal); // 打印传入的数据
+      if (newVal) {
+        // 处理 contactDate 格式
+        if (Array.isArray(newVal.contactDate) && newVal.contactDate.length === 3) {
+          const [year, month, day] = newVal.contactDate;
+          // 手动格式化为 YYYY-MM-DD
+          newVal.contactDate = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         }
-      },
+
+        // 将所有数据映射到 form
+        this.form = { ...this.form, ...newVal };
+        // 强制更新渲染视图
+        this.$forceUpdate();
+      } else {
+      }
     },
   },
+},
+
 
   methods: {
     toggleTag(field) {
@@ -740,43 +748,43 @@ export default {
 
     // 是否在野外活动，若否/不清楚，则野外活动史清除
     handleOutdoorChange() {
-      if (this.form.OutdoorStayOrWorkWithinMonth != "是") {
-        this.form.WildActivityHistory = "";
-        this.form.OtherWildActivityname = "";
+      if (this.form.outdoorStayOrWorkWithinMonth != "是") {
+        this.form.wildActivityHistory = "";
+        this.form.otherWildActivityname = "";
       }
     },
 
     handleOtherActivityChange() {
-      if (this.form.WildActivityHistory != "其他") {
+      if (this.form.wildActivityHistory != "其他") {
         // this.WildActivityHistory="";
-        this.form.OtherWildActivityname = "";
+        this.form.otherWildActivityname = "";
       }
     },
 
     // 疾病流行区
     clearPlagueLocation() {
-      if (this.form.PlagueArea !== "是") {
-        this.form.SpecificPlagueLocation = ""; // 清空具体地点
+      if (this.form.plagueArea !== "是") {
+        this.form.specificPlagueLocation = ""; // 清空具体地点
       }
     },
     clearAnthraxLocation() {
-      if (this.form.AnthraxArea !== "是") {
-        this.form.SpecificAnthraxLocation = ""; // 清空具体地点
+      if (this.form.anthraxArea !== "是") {
+        this.form.specificAnthraxLocation = ""; // 清空具体地点
       }
     },
     clearMalariaLocation() {
-      if (this.form.MalariaArea !== "是") {
-        this.form.SpecificMalariaLocation = ""; // 清空具体地点
+      if (this.form.malariaArea !== "是") {
+        this.form.secificMalariaLocation = ""; // 清空具体地点
       }
     },
     clearContactDate() {
-      if (this.form.ContactWithAnimalProducts !== "是") {
-        this.form.ContactDate = "";
+      if (this.form.contactWithAnimalProducts !== "是") {
+        this.form.contactDate = "";
       }
     },
     clearContactPlace() {
-      if (this.form.ContactWithAnimals !== "是") {
-        this.form.ContactPlace = "";
+      if (this.form.contactWithAnimals !== "是") {
+        this.form.contactPlace = "";
         this.form.hasContactWithRat = false;
         this.form.hasContactWithMarmot = false;
         this.form.hasContactWithLice = false;
@@ -814,42 +822,42 @@ export default {
     },
     getInitialForm() {
       return {
-        ContactWithFeverPatient:null, // 与发热患者接触情况
-        ContactWithDiarrheaPatient:null, // 与腹泻患者接触情况
-        ContactWithRashPatient: null, // 与皮疹患者接触情况
-        ContactWithTuberculosisPatient:null, // 与结核病患者接触情况
+        contactWithFeverPatient: null, // 与发热患者接触情况
+        contactWithDiarrheaPatient: null, // 与腹泻患者接触情况
+        contactWithRashPatient: null, // 与皮疹患者接触情况
+        contactWithTuberculosisPatient: null, // 与结核病患者接触情况
 
-        IsGroupDining: false, // 5天内是否集体堂食就餐
-        IsDiningOut: false, // 5天内是否外出就餐
-        IsDiningUnclear: false, // 5天内就餐情况不清楚
+        isGroupDining: false, // 5天内是否集体堂食就餐
+        isDiningOut: false, // 5天内是否外出就餐
+        isDiningUnclear: false, // 5天内就餐情况不清楚
 
         hasDrinkingRawWater: false, // 是否饮生水
         hasEatingRawFood: false, // 是否吃生冷食品
         hasEatingColdCookedFood: false, // 是否熟食冷吃
         hasEatingSeafood: false, // 是否吃海水产品
 
-        Foodnames: null, // 食物名字
-        DiningPlace: null, // 就餐地点
+        foodnames: null, // 食物名字
+        diningPlace: null, // 就餐地点
 
-        GroupOutbreak: null, // 同一家庭、办公室、车间等集体单位是否有聚集性发病
-        OutdoorStayOrWorkWithinMonth: null, // 发病前1月内是否在野外住宿或工作
-        WildActivityHistory: null, // 野外/户外活动史
-        OtherWildActivityname: null, // 其他活动名称
+        groupOutbreak: null, // 同一家庭、办公室、车间等集体单位是否有聚集性发病
+        outdoorStayOrWorkWithinMonth: null, // 发病前1月内是否在野外住宿或工作
+        wildActivityHistory: null, // 野外/户外活动史
+        otherWildActivityname: null, // 其他活动名称
 
-        PlagueArea: null, // 是否到过鼠疫流行区
-        SpecificPlagueLocation:null, // 具体地点
+        plagueArea: null, // 是否到过鼠疫流行区
+        specificPlagueLocation: null, // 具体地点
 
-        AnthraxArea:null, // 是否到过炭疽流行区
-        SpecificAnthraxLocation: null, // 具体地点
+        anthraxArea: null, // 是否到过炭疽流行区
+        specificAnthraxLocation: null, // 具体地点
 
-        MalariaArea: null, // 是否到过疟疾流行区
-        SpecificMalariaLocation: null, // 具体地点
+        malariaArea: null, // 是否到过疟疾流行区
+        specificMalariaLocation: null, // 具体地点
 
-        ContactWithAnimalProducts: null, // 是否接触过动物制品
-        ContactDate: null, //接触时间
+        contactWithAnimalProducts: null, // 是否接触过动物制品
+        contactDate: null, //接触时间
 
-        ContactWithAnimals: null, // 是否接触过动物
-        ContactPlace: null, //  接触地点
+        contactWithAnimals: null, // 是否接触过动物
+        contactPlace: null, //  接触地点
         hasContactWithRat: false,
         hasContactWithMarmot: false,
         hasContactWithLice: false,
@@ -867,23 +875,23 @@ export default {
         hasContactWithWolf: false,
         hasContactWithTiger: false,
         hasContactWithOtherAnimal: false, // 是否接触其他动物
-        OtherAnimalname:null,
+        otherAnimalname: null,
 
-        IsHillyOrMountainous: false, // 是否居住在丘陵或山区
-        IsPlain: false, //是否居住在平原
-        IsOtherResidenceType: false, // 是否居住在其他地区
+        hillyOrMountainous: false, // 是否居住在丘陵或山区
+        plain: false, //是否居住在平原
+        isOtherResidenceType: false, // 是否居住在其他地区
 
         // 如果这里设置成null，那么这个选项必选
         hasMosquitoBite: null, // 14天内是否明确被蚊虫叮咬过
-        TickBite:null, //发病前2周内是否被蜱叮咬过
-        FleaBite: null, // 发病是否被跳蚤叮咬过
-        ContactWithRatIn2Months: null, // 发病前2个月内是否接触鼠类
-        RatContactMethod: null, // 接触方式
-        EatenFoodContaminatedByRatFeces: null, //发病前1月内是否吃过被鼠排泄物污染的食物
-        DrunkWaterFromDitchesOrPonds: null, // ENUM('是', '否', '不清楚'), -- 19. 发病前1月内是否在野外喝过沟（塘）水
-        RestedNearRatHoles: null, // ENUM('是', '否', '不清楚'), -- 20. 发病前9天内是否在鼠洞附近坐卧
-        RatOrRatDroppingsAtWorkplace: null, // ENUM('是', '否', '不清楚'), -- 21. 工作场所有无鼠或鼠排泄物
-        ContactWithPatientExcreta: null, // ENUM('是', '否', '不清楚') -- 22. 发病前1月内是否接触过病人排泄物（血、尿、便等）
+        tickBite: null, //发病前2周内是否被蜱叮咬过
+        fleaBite: null, // 发病是否被跳蚤叮咬过
+        contactWithRatIn2Months: null, // 发病前2个月内是否接触鼠类
+        ratContactMethod: null, // 接触方式
+        eatenFoodContaminatedByRatFeces: null, //发病前1月内是否吃过被鼠排泄物污染的食物
+        drunkWaterFromDitchesOrPonds: null, // ENUM('是', '否', '不清楚'), -- 19. 发病前1月内是否在野外喝过沟（塘）水
+        restedNearRatHoles: null, // ENUM('是', '否', '不清楚'), -- 20. 发病前9天内是否在鼠洞附近坐卧
+        ratOrRatDroppingsAtWorkplace: null, // ENUM('是', '否', '不清楚'), -- 21. 工作场所有无鼠或鼠排泄物
+        contactWithPatientExcreta: null, // ENUM('是', '否', '不清楚') -- 22. 发病前1月内是否接触过病人排泄物（血、尿、便等）
       };
     },
 
@@ -946,24 +954,22 @@ export default {
 }
 
 .title-container {
-    display: flex;
-    margin-left: 0px;
-    margin-bottom: 20px;
-    margin-top: 20px;
-  }
-  
-  .blue-box {
-    width: 6px;
-    height: 18px;
-    background-color: #285ac8;
-    margin-right: 10px;
-  }
-  
-  .title-text {
-    font-size: 12px;
-    font-weight: bold;
-    color: #4a4a4a;
-  }
+  display: flex;
+  margin-left: 0px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
 
+.blue-box {
+  width: 6px;
+  height: 18px;
+  background-color: #285ac8;
+  margin-right: 10px;
+}
 
+.title-text {
+  font-size: 12px;
+  font-weight: bold;
+  color: #4a4a4a;
+}
 </style>

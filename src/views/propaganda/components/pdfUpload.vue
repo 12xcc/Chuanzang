@@ -7,6 +7,7 @@
       :auto-upload="false"
       :on-preview="handlePdfPreview"
       :on-remove="handleRemove"
+      :on-change="handleFileChange"
       :before-upload="handleBeforeUpload"
       accept=".pdf"
       :disabled="!editable"
@@ -60,12 +61,11 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import { ref, defineProps, onMounted } from 'vue';
+<script lang="js" setup>
+import { ref, defineProps, defineEmits, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
 import { Plus, Delete, ZoomIn } from '@element-plus/icons-vue';
-import pdfIcon from "@/assets/filesicon-PDF.svg";
-
+import pdfIcon from "@/assets/filesiconPDF.svg"
 const props = defineProps({
   filePath: {
     type: String,
@@ -76,6 +76,9 @@ const props = defineProps({
     default: false,
   },
 });
+
+// 定义 emits
+const emits = defineEmits(['file-selected']);
 
 const files = ref([]);
 const dialogVisible = ref(false);
@@ -117,19 +120,34 @@ const handleBeforeUpload = () => {
   }
   return true;
 };
+
+// 选择文件后将文件对象传递到父组件，同时限制上传数量
+const handleFileChange = (file, fileList) => {
+  // 检查文件列表中是否已有文件
+  if (files.value.length >= 1) {
+    ElMessage.warning('该宣传材料只能上传一个文件');
+    fileList.pop(); // 移除新添加的文件
+    return;
+  }
+
+  // 更新文件列表并生成缩略图
+  files.value = fileList.map(f => ({
+    name: f.name,
+    url: URL.createObjectURL(f.raw),
+    raw: f.raw,
+    uid: f.uid,
+  }));
+
+  // 将文件传递给父组件
+  if (file.raw) {
+    emits('file-selected', file.raw);
+  }
+};
 </script>
 
 
-<style scoped>
-.filestyle {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
 
+<style scoped>
 .el-upload-list__item-thumbnail_pdf {
   width: 60%;
   height: 60%;
@@ -142,15 +160,39 @@ const handleBeforeUpload = () => {
   border-radius: 5px;
 }
 
+.filestyle {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    position: relative; 
+    width: 100%;
+    height: 100%; 
+}
+
+.el-upload-list__item-thumbnail {
+    width: 100%;
+    height: auto;
+    object-fit: cover; 
+    border-radius: 5px;
+}
+
 .file-names {
-  margin-top: 10px;
+    margin-top: 10px; 
+    text-align: left;
 }
 
 .file-name {
-  text-align: left;
-  font-size: 14px;
+    text-align: left; 
+    font-size: 14px; 
 }
 
+.custom-dialog {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    width: auto; 
+    height: auto;
+}
 .custom-dialog {
   display: flex;
   justify-content: center;
@@ -184,10 +226,4 @@ const handleBeforeUpload = () => {
   object-fit: contain;
 }
 
-.file-name {
-  margin-top: 8px;
-  font-size: 12px;
-  text-align: center;
-  color: #333;
-}
 </style>

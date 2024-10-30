@@ -66,7 +66,7 @@
             <span class="title-text">生活情况</span>
           </div>
           <el-form-item label="睡眠状况" label-position="left">
-            <el-radio-group v-model="form.SleepQuality">
+            <el-radio-group v-model="form.sleepQuality">
               <el-radio :value="'好'">好</el-radio>
               <el-radio :value="'一般'">一般</el-radio>
               <el-radio :value="'差'">差</el-radio>
@@ -74,7 +74,7 @@
           </el-form-item>
 
           <el-form-item label="营养状况" label-position="left">
-            <el-radio-group v-model="form.NutritionStatus">
+            <el-radio-group v-model="form.nutritionStatus">
               <el-radio :value="'好'">好</el-radio>
               <el-radio :value="'一般'">一般</el-radio>
               <el-radio :value="'差'">差</el-radio>
@@ -82,7 +82,7 @@
           </el-form-item>
 
           <el-form-item label="工作和生活压力" label-position="left">
-            <el-radio-group v-model="form.WorkLifeStress">
+            <el-radio-group v-model="form.workLifeStress">
               <el-radio :value="'大'">大</el-radio>
               <el-radio :value="'一般'">一般</el-radio>
               <el-radio :value="'小'">小</el-radio>
@@ -90,7 +90,7 @@
           </el-form-item>
 
           <el-form-item label="自我感觉症状的严重程度" label-position="left">
-            <el-radio-group v-model="form.SymptomSeverity">
+            <el-radio-group v-model="form.symptomSeverity">
               <el-radio :value="'轻'">轻</el-radio>
               <el-radio :value="'中'">中</el-radio>
               <el-radio :value="'重'">重</el-radio>
@@ -154,17 +154,17 @@ export default {
       allDisabled: true,
       visible: false, // 控制弹窗显示
       form: {
-        hasSuddenOnset: false,
+         hasSuddenOnset: false,
         hasRapidProgress: false,
         hasPeriodicAttack: false,
         hasForcedPosture: false,
         hasCalfMusclePain: false,
-        SleepQuality: "",
-        NutritionStatus: "",
-        WorkLifeStress: "",
-        SymptomSeverity: "",
+        sleepQuality:null,
+        nutritionStatus: null,
+        workLifeStress: null,
+        symptomSeverity:null,
         hasOtherSymptoms: false,
-        otherSymptomsName: "",
+        otherSymptomsName: null,
       },
 
       rules: {},
@@ -231,17 +231,17 @@ export default {
     },
     getInitialForm() {
       return {
-        hasSuddenOnset: false,
+         hasSuddenOnset: false,
         hasRapidProgress: false,
         hasPeriodicAttack: false,
         hasForcedPosture: false,
         hasCalfMusclePain: false,
-        SleepQuality: "",
-        NutritionStatus: "",
-        WorkLifeStress: "",
-        SymptomSeverity: "",
+        sleepQuality:null,
+        nutritionStatus: null,
+        workLifeStress: null,
+        symptomSeverity:null,
         hasOtherSymptoms: false,
-        otherSymptomsName: "",
+        otherSymptomsName: null,
       };
     },
     getData() {

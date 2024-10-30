@@ -78,7 +78,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="js" setup>
 import { ref, defineEmits,watch, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
 import { Plus, Delete, ZoomIn } from '@element-plus/icons-vue';
@@ -132,26 +132,44 @@ const handleRemove = (file, fileList) => {
   }
 };
 
-// 文件上传前的检查
+// 上传文件限制
 const handleBeforeUpload = () => {
   if (!props.editable) {
     ElMessage.warning('请先进入编辑模式');
     return false;
   }
+
+  // 检查文件列表中是否已有文件
+  if (files.value.length >= 1) {
+    ElMessage.warning('该宣传材料只能上传一个文件');
+    return false; // 取消上传
+  }
+
   return true;
 };
 
-// 处理文件更改并生成缩略图，将视频文件对象传递给父组件
-const handleFileChange = (file) => {
+// 选择文件后将文件对象传递到父组件，同时限制上传数量
+const handleFileChange = (file, fileList) => {
+  // 检查文件列表中是否已有文件
+  if (files.value.length >= 1) {
+    ElMessage.warning('该宣传材料只能上传一个文件');
+    fileList.pop(); // 移除新添加的文件
+    return;
+  }
+
+  // 更新文件列表并生成缩略图
+  files.value = fileList.map(f => ({
+    name: f.name,
+    url: URL.createObjectURL(f.raw),
+    raw: f.raw,
+    uid: f.uid,
+  }));
+
+  // 将文件传递给父组件
   if (file.raw) {
-    files.value.push({
-      name: file.name,
-      url: URL.createObjectURL(file.raw),
-    });
-    emits('file-selected', file.raw); // 传递视频文件对象给父组件
+    emits('file-selected', file.raw);
   }
 };
-
 // 停止视频播放
 const stopVideo = () => {
   if (videoPlayer.value) {

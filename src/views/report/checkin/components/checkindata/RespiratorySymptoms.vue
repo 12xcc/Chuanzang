@@ -65,14 +65,14 @@
     >
       流涕
     </el-check-tag>
-    <el-check-tag
+    <!-- <el-check-tag
       :checked="form.hasPharyngealHyperemia"
       type="primary"
       @change="toggleTag('hasPharyngealHyperemia')"
       :disabled="allDisabled"
     >
       咽充血
-    </el-check-tag>
+    </el-check-tag> -->
     <el-check-tag
       :checked="form.hasChestTightness"
       type="primary"

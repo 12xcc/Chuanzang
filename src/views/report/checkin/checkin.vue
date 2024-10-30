@@ -54,6 +54,7 @@
         <el-date-picker
           v-model="queryParams.date"
           type="daterange"
+          value-format="YYYY-MM-DD"
           range-separator="到"
           start-placeholder="请选择"
           end-placeholder="打卡日期范围"

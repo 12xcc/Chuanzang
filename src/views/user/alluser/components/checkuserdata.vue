@@ -117,6 +117,7 @@
             <el-date-picker
               type="date"
               placeholder=""
+              value-format="YYYY-MM-DD"
               v-model="form.WorkOnPlateauStartDate"
               style="width: 200px"
             />

@@ -41,6 +41,7 @@
           range-separator="到"
           start-placeholder="请选择"
           end-placeholder="检测日期范围"
+          value-format="YYYY-MM-DD"
           style="width: 300px"
           @clear="handleQuery"
         />

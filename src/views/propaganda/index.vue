@@ -86,11 +86,11 @@
       >
         <el-table-column type="selection" width="55" />
         <el-table-column prop="SequenceNumber" label="序号" width="80" />
-        <el-table-column prop="MaterialType" label="宣传材料类型" width="150" />
-        <el-table-column prop="Title" label="标题" width="100" />
-        <el-table-column prop="FilePath" label="文件路径" width="160" />
-        <el-table-column prop="Link" label="网页链接" width="160" />
-        <el-table-column prop="PublishDate" label="发布日期" width="150" />
+        <el-table-column prop="MaterialType" label="宣传材料类型" width="120" />
+        <el-table-column prop="Title" label="标题" width="220" />
+        <el-table-column prop="FilePath" label="文件路径" width="180" />
+        <el-table-column prop="Link" label="网页链接" width="180" />
+        <el-table-column prop="PublishDate" label="发布日期" width="200" />
         <el-table-column
           prop="LearningNumber"
           label="学习总次数"

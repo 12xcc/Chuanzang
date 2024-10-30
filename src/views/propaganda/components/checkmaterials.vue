@@ -20,10 +20,11 @@
       </div>
       <el-form
         :model="form"
-        label-width="100px"
+        label-width="200px"
         class="form-container"
         ref="form"
         :rules="rules"
+        label-position="left"
       >
         <div class="BaseInfo">
           <div class="title-container">
@@ -34,7 +35,7 @@
             <el-form-item label="标题" prop="Title">
               <el-input
                 v-model="form.Title"
-                style="width: 200px"
+                style="width: 300px"
                 placeholder="请输入标题"
                 @blur="$refs.form.validateField('Title')"
                 clearable
@@ -52,6 +53,50 @@
                 <el-radio value="视频">视频</el-radio>
                 <el-radio value="网页链接">网页链接</el-radio>
               </el-radio-group>
+            </el-form-item>
+
+            <el-form-item label="材料所属疾病类型" prop="diseaseTypeName" size="default">
+              <el-select
+                v-model="form.diseaseTypeName"
+                placeholder=""
+                clearable
+                size="default"
+                style="width: 300px; margin-right: -15px"
+                @clear="handleQuery"
+                :disabled="allDisabled"
+              >
+                <el-option
+                  value="新型冠状病毒感染"
+                  label="新型冠状病毒感染"
+                ></el-option>
+                <el-option value="流感" label="流感"></el-option>
+                <el-option value="鼠疫" label="鼠疫"></el-option>
+                <el-option value="感染性腹泻" label="感染性腹泻"></el-option>
+                <el-option value="炭疽" label="炭疽"></el-option>
+                <el-option value="结核病" label="结核病"></el-option>
+                <el-option
+                  value="登革热（蚊媒传染病）"
+                  label="登革热（蚊媒传染病）"
+                ></el-option>
+                <el-option
+                  value="疟疾（蚊媒传染病）"
+                  label="疟疾（蚊媒传染病）"
+                ></el-option>
+                <el-option
+                  value="森林脑炎（蜱媒传染病）"
+                  label="森林脑炎（蜱媒传染病）"
+                ></el-option>
+                <el-option
+                  value="发热伴血小板减少综合征（蜱媒传染病）"
+                  label="发热伴血小板减少综合征（蜱媒传染病）"
+                ></el-option>
+                <el-option value="斑疹伤寒" label="斑疹伤寒"></el-option>
+                <el-option
+                  value="流行性出血热"
+                  label="流行性出血热"
+                ></el-option>
+                <el-option value="其他" label="其他"></el-option>
+              </el-select>
             </el-form-item>
           </div>
         </div>
@@ -119,6 +164,7 @@ export default {
       isEditing: false, // 控制编辑状态
       form: {}, // 表单数据
       rules: {}, // 表单验证规则
+      diseaseTypeName: null, // 疾病类型名称
     };
   },
   watch: {
@@ -162,6 +208,7 @@ export default {
           this.form.Title = data.title;
           this.form.MaterialType = data.materialType;
           this.form.Link = data.link;
+          this.form.diseaseTypeName = data.diseaseTypeName;
 
           // const baseUrl = "http://43.138.213.55:8080";
           const baseUrl = "https://ds.sccdc.cn";

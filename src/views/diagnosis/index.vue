@@ -165,6 +165,13 @@
           </template>
         </el-table-column>
 
+        <el-table-column prop="submissionTime" label="提交时间" width="120">
+          <template #default="scope">
+            {{ scope.row.submissionTime}}
+          </template>
+        </el-table-column>
+
+
         <el-table-column fixed="right" label="操作" min-width="260">
           <template #default="scope">
             <el-button
@@ -301,6 +308,7 @@ export default {
               admissionDate: formatDate(item.admissionDate),
               dischargeDate: formatDate(item.dischargeDate),
               deathDate: formatDate(item.deathDate),
+              submissionTime :formatDate(item.submissionTime),
               diagnosisResultsId:item.diagnosisResultsId,
             };
 

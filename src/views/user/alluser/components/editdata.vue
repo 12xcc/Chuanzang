@@ -25,19 +25,19 @@
       >
         <!-- 用户类型 -->
         <el-form-item label="用户类型" prop="userType" size="default">
-        <el-select
-          v-model="form.userType"
-          placeholder="请选择用户类型"
-          clearable
-          size="default"
-          style="width: 200px"
-        >
-          <el-option :key="1" label="系统管理员" :value="1"></el-option>
-          <el-option :key="2" label="铁路职工" :value="2"></el-option>
-          <el-option :key="3" label="疾控中心工作人员" :value="3"></el-option>
-          <el-option :key="4" label="专职医护" :value="4"></el-option>
-        </el-select>
-      </el-form-item>
+          <el-select
+            v-model="form.userType"
+            placeholder="请选择用户类型"
+            clearable
+            size="default"
+            style="width: 200px"
+          >
+            <el-option :key="1" label="系统管理员" :value="1"></el-option>
+            <el-option :key="2" label="铁路职工" :value="2"></el-option>
+            <el-option :key="3" label="疾控中心工作人员" :value="3"></el-option>
+            <el-option :key="4" label="专职医护" :value="4"></el-option>
+          </el-select>
+        </el-form-item>
 
         <!-- 姓名 -->
         <el-form-item label="姓名" prop="name">
@@ -58,7 +58,6 @@
           </el-radio-group>
         </el-form-item>
 
-       
         <!-- 是否为孕妇 -->
         <el-form-item
           v-if="form.gender === '女'"
@@ -69,7 +68,7 @@
             <el-radio :value="true">是</el-radio>
             <el-radio :value="false">否</el-radio>
           </el-radio-group>
-          <el-form-item  v-if="form.IsPregnant === true" label="孕周">
+          <el-form-item v-if="form.IsPregnant === true" label="孕周">
             <el-input
               v-model="form.PregnancyWeeks"
               placeholder="孕周"
@@ -136,7 +135,6 @@
           </div>
         </el-form-item>
 
-
         <!-- 部门/工种 -->
         <el-form-item label="部门/工种" prop="department">
           <el-radio-group v-model="form.department">
@@ -182,7 +180,7 @@
             </el-radio-group>
           </el-form-item>
         </el-form-item>
-         <el-form-item
+        <el-form-item
           v-if="form.MedicalPersonnelType === '其他'"
           label="其他工作性质名称"
           prop="OtherPositionname"
@@ -519,14 +517,20 @@ export default {
           this.form.phoneNumber = data.phoneNumber;
           this.form.OtherphoneNumber = data.otherphoneNumber;
           this.form.EmergencyContactname = data.emergencyContactname;
-          this.form.EmergencyContactphoneNumber = data.emergencyContactphoneNumber;
+          this.form.EmergencyContactphoneNumber =
+            data.emergencyContactphoneNumber;
           this.form.EmergencyContactRelation = data.emergencyContactRelation;
           this.form.Height = data.height;
           this.form.Weight = data.weight;
 
-          if (data.workOnPlateauStartDate && data.workOnPlateauStartDate.length === 3) {
+          if (
+            data.workOnPlateauStartDate &&
+            data.workOnPlateauStartDate.length === 3
+          ) {
             const [year, month, day] = data.workOnPlateauStartDate;
-            this.form.WorkOnPlateauStartDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+            this.form.WorkOnPlateauStartDate = `${year}-${String(
+              month
+            ).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
           } else {
             this.form.WorkOnPlateauStartDate = "";
           }
@@ -574,52 +578,60 @@ export default {
           try {
             const requestData = {
               userId: this.currentUserId,
-               userType: this.form.userType,
-          name: this.form.name,
-          age: this.form.age,
-          gender: this.form.gender,
-          isPregnant: this.form.IsPregnant,
-          pregnancyWeeks: this.form.PregnancyWeeks,
-          idNumber: this.form.IDNumber,
-          ethnicity: this.form.ethnicity,
-          educationLevel: this.form.EducationLevel,
-          department: this.form.department,
-          specificOccupation: this.form.SpecificOccupation,
-          medicalPersonnelType: this.form.MedicalPersonnelType,
-          otherPositionname: this.form.OtherPositionname,
-          phoneNumber: this.form.phoneNumber,
-          otherphoneNumber: this.form.OtherphoneNumber,
-          emergencyContactname: this.form.EmergencyContactname,
-          emergencyContactphoneNumber: this.form.EmergencyContactphoneNumber,
-          emergencyContactRelation: this.form.EmergencyContactRelation,
-          height: this.form.Height,
-          weight: this.form.Weight,
-          workOnPlateauStartDate: this.form.WorkOnPlateauStartDate,
-          hasMedicalHistory: this.form.hasMedicalHistory,
-          hasHypertension: this.form.hasHypertension,
-          hasDiabetes: this.form.hasDiabetes,
-          hasHyperlipidemia: this.form.hasHyperlipidemia,
-          hasHyperuricemia: this.form.hasHyperuricemia,
-          hasCoronaryHeartDisease: this.form.hasCoronaryHeartDisease,
-          hasStroke: this.form.hasStroke,
-          hasAsthma: this.form.hasAsthma,
-          hasCOPD: this.form.hasCOPD,
-          hasMalignantTumor: this.form.hasMalignantTumor,
-          hasLungCancer: this.form.hasLungCancer,
-          hasOtherCancer: this.form.hasOtherCancer,
-          otherCancername: this.form.OtherCancername,
-          hasOtherDiseases: this.form.hasOtherDiseases,
-          otherDiseasesname: this.form.OtherDiseasesname,
-          smokingStatus: this.form.SmokingStatus,
-          drinkingStatus: this.form.DrinkingStatus,
-          isVaccinatedForCOVID: this.form.IsVaccinatedForCOVID,
-          isVaccinatedForFlu: this.form.IsVaccinatedForFlu,
-          isVaccinatedForPlague: this.form.IsVaccinatedForPlague,
-          isVaccinatedForBCG: this.form.IsVaccinatedForBCG,
-          isVaccinatedForHepatitis: this.form.IsVaccinatedForHepatitis,
+              userType: this.form.userType,
+              name: this.form.name,
+              age: this.form.age,
+              gender: this.form.gender,
+              isPregnant: this.form.IsPregnant,
+              pregnancyWeeks: this.form.PregnancyWeeks,
+              idNumber: this.form.IDNumber,
+              ethnicity: this.form.ethnicity,
+              educationLevel: this.form.EducationLevel,
+              department: this.form.department,
+              specificOccupation: this.form.SpecificOccupation,
+              medicalPersonnelType: this.form.MedicalPersonnelType,
+              otherPositionname: this.form.OtherPositionname,
+              phoneNumber: this.form.phoneNumber,
+              otherphoneNumber: this.form.OtherphoneNumber,
+              emergencyContactname: this.form.EmergencyContactname,
+              emergencyContactphoneNumber:
+                this.form.EmergencyContactphoneNumber,
+              emergencyContactRelation: this.form.EmergencyContactRelation,
+              height: this.form.Height,
+              weight: this.form.Weight,
+              // 转化日期，否则会偏移
+              workOnPlateauStartDate: new Date(this.form.WorkOnPlateauStartDate)
+                .toLocaleDateString("zh-CN", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                })
+                .replace(/\//g, "-"),
+              hasMedicalHistory: this.form.hasMedicalHistory,
+              hasHypertension: this.form.hasHypertension,
+              hasDiabetes: this.form.hasDiabetes,
+              hasHyperlipidemia: this.form.hasHyperlipidemia,
+              hasHyperuricemia: this.form.hasHyperuricemia,
+              hasCoronaryHeartDisease: this.form.hasCoronaryHeartDisease,
+              hasStroke: this.form.hasStroke,
+              hasAsthma: this.form.hasAsthma,
+              hasCOPD: this.form.hasCOPD,
+              hasMalignantTumor: this.form.hasMalignantTumor,
+              hasLungCancer: this.form.hasLungCancer,
+              hasOtherCancer: this.form.hasOtherCancer,
+              otherCancername: this.form.OtherCancername,
+              hasOtherDiseases: this.form.hasOtherDiseases,
+              otherDiseasesname: this.form.OtherDiseasesname,
+              smokingStatus: this.form.SmokingStatus,
+              drinkingStatus: this.form.DrinkingStatus,
+              isVaccinatedForCOVID: this.form.IsVaccinatedForCOVID,
+              isVaccinatedForFlu: this.form.IsVaccinatedForFlu,
+              isVaccinatedForPlague: this.form.IsVaccinatedForPlague,
+              isVaccinatedForBCG: this.form.IsVaccinatedForBCG,
+              isVaccinatedForHepatitis: this.form.IsVaccinatedForHepatitis,
             };
 
-            const response = await updateUserInfo(requestData); 
+            const response = await updateUserInfo(requestData);
 
             if (response.data.code === 1) {
               ElMessage({
@@ -627,7 +639,7 @@ export default {
                 type: "success",
               });
               this.visible = false; // 关闭弹窗
-              this.$emit('update-success');  //通知父组件
+              this.$emit("update-success"); //通知父组件
             } else {
               ElMessage({
                 message: "提交失败：" + response.data.msg,

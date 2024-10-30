@@ -22,14 +22,14 @@
               size="default"
               style="width: 200px"
             >
-              <el-option :key="1" label="是" :value="1"></el-option>
-              <el-option :key="2" label="否" :value="2"></el-option>
+              <el-option :key="1" label="是" :value="true"></el-option>
+              <el-option :key="2" label="否" :value="false"></el-option>
             </el-select>
           </el-form-item>
 
           <el-form-item
             label="最高体温(℃)"
-            v-if="form.hasFever === 1"
+            v-if="form.hasFever === true"
             prop="highestTemperature"
           >
             <el-input
@@ -43,7 +43,7 @@
           </el-form-item>
           <el-form-item
             label="持续时间(h)"
-            v-if="form.hasFever === 1"
+            v-if="form.hasFever === true"
             prop="feverDuration"
           >
             <el-input

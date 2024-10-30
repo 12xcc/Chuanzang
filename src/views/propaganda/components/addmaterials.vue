@@ -49,7 +49,11 @@
               </el-radio-group>
             </el-form-item>
 
-            <el-form-item label="材料所属疾病类型" prop="diseaseTypeName" size="default">
+            <el-form-item
+              label="材料所属疾病类型"
+              prop="diseaseTypeName"
+              size="default"
+            >
               <el-select
                 v-model="form.diseaseTypeName"
                 placeholder="请选择疾病类型"
@@ -136,7 +140,22 @@
       </el-form>
     </div>
   </el-drawer>
+  <div v-if="progressVisible" class="progress-overlay">
+    <div class="progress-content">
+      <span style="color: #ffffff; margin-left: -30px; font-size: 15px"
+        >请稍候...</span
+      >
+      <el-progress
+        :percentage="100"
+        :stroke-width="15"
+        striped
+        striped-flow
+        :duration="10"
+      />
+    </div>
+  </div>
 </template>
+
 
 <script>
 import { ElMessage } from "element-plus";
@@ -167,9 +186,14 @@ export default {
           { required: true, message: "请选择材料类型", trigger: "change" },
         ],
         diseaseTypeName: [
-          { required: true, message: "请选择材料所属疾病类型", trigger: "change" },
+          {
+            required: true,
+            message: "请选择材料所属疾病类型",
+            trigger: "change",
+          },
         ],
       },
+      progressVisible: false,
     };
   },
   methods: {
@@ -183,7 +207,6 @@ export default {
     async handleSubmit() {
       try {
         await this.$refs.form.validate();
-
         const formData = new FormData();
         formData.append("title", this.form.Title);
         formData.append("materialType", this.form.MaterialType);
@@ -198,11 +221,24 @@ export default {
           formData.append("file", this.form.file);
         }
 
-        // 调试代码：打印 FormData 内容
-        for (const pair of formData.entries()) {
-          console.log(`${pair[0]}:`, pair[1]);
-        }
-        const response = await saveMaterial(formData);
+        // 显示上传进度遮罩
+        this.progressVisible = true;
+        console.log("Progress overlay shown.");
+
+        const response = await saveMaterial(formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          onUploadProgress: (progressEvent) => {
+            if (progressEvent.lengthComputable) {
+              this.uploadProgress = Math.round(
+                (progressEvent.loaded * 100) / progressEvent.total
+              );
+              console.log(`Upload progress: ${this.uploadProgress}%`);
+            }
+          },
+        });
+
         if (response.data.code === 1) {
           ElMessage.success("提交成功");
           this.visible = false;
@@ -213,6 +249,9 @@ export default {
         }
       } catch (error) {
         ElMessage.error(error.message || "提交失败");
+      } finally {
+        this.progressVisible = false; // 隐藏进度遮罩
+        this.uploadProgress = 0; // 重置进度
       }
     },
     handleReset() {
@@ -224,7 +263,6 @@ export default {
         link: null,
       };
     },
-    // 接收子组件传递的文件，并确保它是一个有效的 File 对象
     handleFileUpload(file) {
       if (file instanceof File) {
         this.form.file = file;
@@ -236,7 +274,6 @@ export default {
   },
 };
 </script>
-
 
 
 <style scoped>
@@ -315,5 +352,26 @@ h3 {
 }
 .LabTestReport {
   margin-top: 20px;
+}
+
+.progress-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.el-progress {
+  padding: 10px;
+}
+.progress-content {
+  width: 400px;
+  padding: 20px;
+  text-align: center;
 }
 </style>
