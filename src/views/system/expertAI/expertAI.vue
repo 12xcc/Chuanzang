@@ -45,7 +45,7 @@
 <script>
 import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-
+import { systemChange } from '@/api/system/exportAi.js'
 export default {
   data() {
     return {
@@ -81,7 +81,7 @@ export default {
           this.disableExpert(successMessage, failureMessage);
         }
       } catch {
-        // 用户点击了取消
+        //取消
       }
     },
 
@@ -103,12 +103,12 @@ export default {
           this.disableAI(successMessage, failureMessage);
         }
       } catch {
-        // 用户点击了取消
+        // 取消
       }
     },
 
     enableExpert(successMessage, failureMessage) {
-      // 模拟启用操作，实际中可以替换成真实的启用逻辑
+      // 模拟启用操作
       const success = Math.random() > 0.2; // 80% 可能成功
 
       if (success) {
@@ -123,7 +123,7 @@ export default {
     },
 
     disableExpert(successMessage, failureMessage) {
-      // 模拟禁用操作，实际中可以替换成真实的禁用逻辑
+      // 模拟禁用操作
       const success = Math.random() > 0.2; // 80% 可能成功
 
       if (success) {
@@ -138,7 +138,7 @@ export default {
     },
 
     enableAI(successMessage, failureMessage) {
-      // 模拟启用操作，实际中可以替换成真实的启用逻辑
+      // 模拟启用操作
       const success = Math.random() > 0.2; // 80% 可能成功
 
       if (success) {
@@ -153,7 +153,7 @@ export default {
     },
 
     disableAI(successMessage, failureMessage) {
-      // 模拟禁用操作，实际中可以替换成真实的禁用逻辑
+      // 模拟禁用操作
       const success = Math.random() > 0.2; // 80% 可能成功
 
       if (success) {

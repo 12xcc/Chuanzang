@@ -26,7 +26,7 @@ export default {
 .container {
   padding-top: 10px;
   width: 100%;
-  height: 400px;
+  height: 550px;
   background-color: #ffffff;
   padding-bottom: 5px;
   padding-right: 5px;

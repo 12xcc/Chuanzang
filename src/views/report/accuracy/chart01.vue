@@ -21,19 +21,21 @@ onMounted(() => {
   const myChart = echarts.init(chart.value);
 
   const diseaseTypeName = [
-    "流行性热出血",
-    "斑疹伤寒",
-    "蜱传(森林脑炎和莱姆病)",
-    "蚊传(输入性为主)",
-    "结核病",
-    "炭疽",
-    "感染性腹泻",
-    "鼠疫",
-    "流感",
     "新型冠状病毒",
+    "流感",
+    "鼠疫",
+    "感染性腹泻",
+    "炭疽",
+    "结核病",
+    "登革热(蚊媒传染病)",
+    "疟疾(蚊媒传染病)",
+    "森林脑炎(蜱媒传染病)",
+    "发热伴血小板减少综合征(蜱媒传染病)",
+    "斑疹伤寒",
+    "流行性热出血"
   ];
-  const dataHigh = [80, 70, 60, 90, 50, 85, 75, 65, 95, 55];
-  const dataLow = [50, 65, 55, 70, 40, 65, 65, 55, 80, 45];
+  const dataHigh = [80, 70, 60, 90, 50, 85, 75, 65, 95, 55,80,100];
+  const dataLow = [50, 65, 55, 70, 40, 65, 65, 55, 80, 45,70,80];
   const option = {
     color: ["#424242", "#285AC8"],
     legend: {
@@ -44,13 +46,14 @@ onMounted(() => {
       left: "4%",
       right: "1%",
       top: "20%",
-      bottom: "10%",
+      bottom: "30%",
     },
     xAxis: {
       type: "category",
       data: diseaseTypeName,
       axisLabel: {
         interval: 0,
+        rotate:45,
       },
       axisLine: { show: false },
       axisTick: { show: false },
@@ -135,7 +138,7 @@ onMounted(() => {
 <style scoped>
 .container {
   width: 100%;
-  height: auto;
+  height: 100%;
 }
 
 .chart-container {

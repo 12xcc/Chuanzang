@@ -52,10 +52,14 @@ export const getUserStation = async () => {
 
 
 // 疾病统计报表
-export const getDiseaseStatisticsListInfo = async (params) => {
-  const response = await axiosInstance.get(
-    "/cdcStaff/statisticsDisease/getDiseaseStatisticsListInfo",
-    { params }
-  );
+export const getDiseaseStatisticsListInfo = async (dateBegin, dateEnd, diseaseList, sourceType) => {
+  const response = await axiosInstance.get("/cdcStaff/statisticsDisease/getDiseaseStatisticsListInfo", {
+    params: {
+      dateBegin,
+      dateEnd,
+      diseaseList,
+      sourceType
+    }
+  });
   return response;
 };
