@@ -45,7 +45,7 @@
 <script>
 import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { systemChange } from '@/api/system/exportAi.js'
+// import { systemChange } from '@/api/system/exportAi.js'
 export default {
   data() {
     return {
