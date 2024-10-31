@@ -111,7 +111,7 @@
               type="primary"
               size="large"
               @click="handleClick(scope.row.materialId)"
-              >6 查看 / 编辑
+              >查看 / 编辑
             </el-button>
             <el-button
               link

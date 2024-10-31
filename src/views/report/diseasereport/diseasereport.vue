@@ -3,7 +3,7 @@
     <div class="title-container">
       <div class="title">
         <div class="blue-box"></div>
-        <span class="title-text">时间段</span>
+        <span class="title-text">时间段(暂时无法查询，接口对接中)</span>
       </div>
       <span class="contents">
         <el-radio-group v-model="radio">
@@ -16,7 +16,14 @@
       </span>
     </div>
     <div v-if="radio === 5" class="date-selection-container">
-      <DateSelection v-model="customDateRange" />
+      <el-date-picker
+      value-format="YYYY-MM-DD"
+       v-model="customDateRange" 
+        type="daterange"
+        range-separator="到"
+        start-placeholder="开始时间"
+        end-placeholder="结束时间"
+        :size="size"/>
     </div>
 
     <div class="title-container">
@@ -25,10 +32,10 @@
         <span class="title-text">数据类型</span>
       </div>
       <span class="contents">
-        <el-checkbox-group v-model="checkList">
-           <el-checkbox value="自动诊断疾病数据">自动诊断疾病数据</el-checkbox>
-    <el-checkbox value="医院诊断疾病统计">医院诊断疾病统计</el-checkbox>
-        </el-checkbox-group>
+        <el-radio-group v-model="checkList">
+          <el-radio label="自动诊断" :value="'自动诊断'">自动诊断</el-radio>
+          <el-radio label="医院诊断" :value="'医院诊断'">医院诊断</el-radio>
+        </el-radio-group>
       </span>
     </div>
 
@@ -45,38 +52,127 @@
           <el-checkbox label="感染性腹泻" value="感染性腹泻" />
           <el-checkbox label="炭疽" value="炭疽" />
           <el-checkbox label="结核病" value="结核病" />
-          <el-checkbox
-            label="登革热（蚊媒传染病）"
-            value="登革热（蚊媒传染病）"
-          />
+          <el-checkbox label="登革热（蚊媒传染病）" value="登革热（蚊媒传染病）" />
           <el-checkbox label="疟疾（蚊媒传染病）" value="疟疾（蚊媒传染病）" />
-          <el-checkbox
-            label="森林脑炎（蜱媒传染病）"
-            value="森林脑炎（蜱媒传染病）"
-          />
-          <el-checkbox
-            label="发热伴血小板减少综合征（蜱媒传染病）"
-            value="发热伴血小板减少综合征（蜱媒传染病）"
-          />
+          <el-checkbox label="森林脑炎（蜱媒传染病）" value="森林脑炎（蜱媒传染病）" />
+          <el-checkbox label="发热伴血小板减少综合征（蜱媒传染病）" value="发热伴血小板减少综合征（蜱媒传染病）" />
           <el-checkbox label="斑疹伤寒" value="斑疹伤寒" />
           <el-checkbox label="流行性出血热" value="流行性出血热" />
           <el-checkbox label="其他" value="其他" />
         </el-checkbox-group>
       </span>
     </div>
-    <LineChart  :DiseaseType="DiseaseType" :TimePeriod="radio" :customDateRange="customDateRange" />
+
+    <div class="chart-container">
+      <div ref="chart" class="chart"></div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch, onMounted } from "vue";
+import * as echarts from "echarts";
+import dayjs from "dayjs";
 import DateSelection from "@/components/linedate.vue";
-import LineChart from './components/LineChart.vue'; 
+import { getDiseaseStatisticsListInfo } from "@/api/report/screen.js"; 
 
 const radio = ref(1); // 默认选择当天
-const checkList = ref(["自动诊断疾病数据"]);
+const checkList = ref("自动诊断");
 const DiseaseType = ref([]);
-const customDateRange = ref([]); // 自定义日期范围
+const customDateRange = ref([]);
+const chart = ref(null);
+
+const initChart = () => {
+  if (!chart.value) return;
+  const myChart = echarts.init(chart.value);
+
+  const updateChart = async () => {
+    const selectedTypes = DiseaseType.value; 
+    const sourceType = checkList.value;
+    let dateBegin, dateEnd;
+
+    if (radio.value === 5) {
+      // 自定义时间范围
+      dateBegin = customDateRange.value[0];
+      dateEnd = customDateRange.value[1];
+    } else {
+      // 用当前时间和时间段计算开始日期
+      const endDate = dayjs();
+      const startDate = endDate.subtract(
+        { 1: 0, 2: 7, 3: 30, 4: 365 }[radio.value],
+        "day"
+      );
+      dateBegin = startDate.format("YYYY-MM-DD");
+      dateEnd = endDate.format("YYYY-MM-DD");
+    }
+  console.log({
+    dateBegin,
+    dateEnd,
+    diseaseList: selectedTypes,
+    sourceType
+  });  
+    try {
+      const response = await getDiseaseStatisticsListInfo(
+        dateBegin,
+        dateEnd,
+        selectedTypes,
+        sourceType
+      );
+      const data = response.data;
+
+      // 将数据格式转换为图表所需格式
+      const xAxisData = [];
+      const seriesData = selectedTypes.map((type) => ({
+        name: type,
+        type: "line",
+        smooth: true,
+        data: [],
+      }));
+
+      Object.keys(data).forEach((disease, index) => {
+        if (selectedTypes.includes(disease)) {
+          data[disease].forEach((entry) => {
+            const date = dayjs(entry.key).format("MM-DD");
+            const value = entry.value;
+
+            if (!xAxisData.includes(date)) xAxisData.push(date);
+            seriesData[index].data.push(value);
+          });
+        }
+      });
+
+      // 更新图表配置
+      myChart.clear();
+      myChart.setOption({
+        tooltip: { trigger: "axis" },
+        legend: { show: true, data: selectedTypes },
+        xAxis: { type: "category", data: xAxisData },
+        yAxis: { type: "value" },
+        series: seriesData,
+      });
+    } catch (error) {
+      console.error("数据获取失败：", error);
+    }
+  };
+
+  watch([() => DiseaseType.value, () => radio.value], updateChart, {
+    immediate: true,
+  });
+  watch(
+    () => customDateRange.value,
+    () => {
+      if (radio.value === 5) updateChart();
+    }
+  );
+  watch(
+    () => checkList.value,
+    () => {
+      updateChart();
+    }
+  );
+};
+
+onMounted(() => initChart());
 </script>
 
 <style scoped>
@@ -86,37 +182,31 @@ const customDateRange = ref([]); // 自定义日期范围
   height: 900px;
   background-color: #ffffff;
 }
-
 .title-container {
   margin-top: 30px;
   margin-left: 10px;
   align-items: center;
 }
-
 .blue-box {
   width: 6px;
   height: 22px;
   background-color: #285ac8;
   margin-right: 10px;
 }
-
 .title-text {
   font-size: 16px;
   font-weight: bold;
   color: #333333;
 }
-
 .contents {
   display: flex;
   align-items: center;
   margin-left: 20px;
 }
-
 .el-radio {
   margin-left: 60px;
   margin-top: 10px;
 }
-
 .date-selection-container {
   margin-top: 20px;
   margin-left: 90px;
@@ -128,4 +218,14 @@ const customDateRange = ref([]); // 自定义日期范围
 .title {
   display: flex;
 }
+.chart-container {
+  width: 100%;
+  height: 400px;
+}
+.chart {
+  width: 100%;
+  height: 100%;
+}
 </style>
+
+
