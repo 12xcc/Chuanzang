@@ -89,13 +89,14 @@
         <el-table-column prop="MaterialType" label="宣传材料类型" width="120" />
         <el-table-column prop="Title" label="标题" width="220" />
         <el-table-column prop="FilePath" label="文件路径" width="120" />
-        <el-table-column prop="Link" label="网页链接" width="200" >
-        <template #default="scope">
-            <el-button link type="primary">
-              {{scope.row.Link}}
+        <el-table-column prop="Link" label="网页链接" width="200">
+          <template #default="scope">
+            <el-button link type="primary" @click="openLink(scope.row.Link)">
+              {{ scope.row.Link }}
             </el-button>
-        </template>
+          </template>
         </el-table-column>
+
         <el-table-column prop="PublishDate" label="发布日期" width="200" />
         <el-table-column
           prop="LearningNumber"
@@ -110,8 +111,7 @@
               type="primary"
               size="large"
               @click="handleClick(scope.row.materialId)"
-            >
-              查看 / 编辑
+              >6 查看 / 编辑
             </el-button>
             <el-button
               link
@@ -134,7 +134,7 @@
         @pagination="handlePagination"
       />
       <Checkmaterials ref="Checkmaterials" :form="queryParams" />
-      <Addmaterials ref="Addmaterials" @update-materails="handleQuery"/>
+      <Addmaterials ref="Addmaterials" @update-materails="handleQuery" />
     </div>
   </div>
 </template>
@@ -275,6 +275,10 @@ export default {
       this.queryParams.pageSize = limit;
       this.handleQuery();
     },
+
+    openLink(link){
+      window.open(link, '_blank');
+    }
   },
 
   mounted() {

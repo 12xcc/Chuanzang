@@ -27,10 +27,10 @@ export default {
   data() {
     return {
       cardData: [
-        { title: "疾病总确诊人次", data: 0, imgSrc: allusernumber },
+        { title: "疾病总确诊人次", data: 0, imgSrc:todaydisease  },
         { title: "疾病总诊断人次", data: 0, imgSrc: allcheckinnumber },
         // { title: "今日打卡人数 (人)", data: 0, imgSrc: todaycheckin },
-        { title: "诊断的识别准确率", data: 0, imgSrc: todayhealth },
+        { title: "诊断的总的识别准确率", data: 0, imgSrc: todayhealth },
 
       ]
     };

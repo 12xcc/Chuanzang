@@ -49,3 +49,13 @@ export const getUserStation = async () => {
   );
   return response;
 };
+
+
+// 疾病统计报表
+export const getDiseaseStatisticsListInfo = async (params) => {
+  const response = await axiosInstance.get(
+    "/cdcStaff/statisticsDisease/getDiseaseStatisticsListInfo",
+    { params }
+  );
+  return response;
+};

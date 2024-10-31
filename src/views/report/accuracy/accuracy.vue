@@ -1,6 +1,6 @@
 <template>
  <div class="container">
-  <div class="title">疾病诊断准确率报表（待完善）</div>
+  <div class="title">疾病诊断准确率报表</div>
     <div>
       <Card />
     </div>
