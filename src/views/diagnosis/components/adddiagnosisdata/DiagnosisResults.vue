@@ -30,6 +30,7 @@
             ></el-date-picker>
           </el-form-item>
         </div>
+        
           <div class="title-container">
             <div class="blue-box"></div>
             <span class="title-text">确诊疾病</span>

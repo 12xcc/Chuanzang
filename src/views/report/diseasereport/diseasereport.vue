@@ -3,7 +3,7 @@
     <div class="title-container">
       <div class="title">
         <div class="blue-box"></div>
-        <span class="title-text">时间段(暂时无法查询，接口对接中)</span>
+        <span class="title-text">时间段</span>
       </div>
       <span class="contents">
         <el-radio-group v-model="radio">
@@ -17,13 +17,14 @@
     </div>
     <div v-if="radio === 5" class="date-selection-container">
       <el-date-picker
-      value-format="YYYY-MM-DD"
-       v-model="customDateRange" 
+        value-format="YYYY-MM-DD"
+        v-model="customDateRange"
         type="daterange"
         range-separator="到"
         start-placeholder="开始时间"
         end-placeholder="结束时间"
-        :size="size"/>
+        :size="size"
+      />
     </div>
 
     <div class="title-container">
@@ -52,10 +53,19 @@
           <el-checkbox label="感染性腹泻" value="感染性腹泻" />
           <el-checkbox label="炭疽" value="炭疽" />
           <el-checkbox label="结核病" value="结核病" />
-          <el-checkbox label="登革热（蚊媒传染病）" value="登革热（蚊媒传染病）" />
+          <el-checkbox
+            label="登革热（蚊媒传染病）"
+            value="登革热（蚊媒传染病）"
+          />
           <el-checkbox label="疟疾（蚊媒传染病）" value="疟疾（蚊媒传染病）" />
-          <el-checkbox label="森林脑炎（蜱媒传染病）" value="森林脑炎（蜱媒传染病）" />
-          <el-checkbox label="发热伴血小板减少综合征（蜱媒传染病）" value="发热伴血小板减少综合征（蜱媒传染病）" />
+          <el-checkbox
+            label="森林脑炎（蜱媒传染病）"
+            value="森林脑炎（蜱媒传染病）"
+          />
+          <el-checkbox
+            label="发热伴血小板减少综合征（蜱媒传染病）"
+            value="发热伴血小板减少综合征（蜱媒传染病）"
+          />
           <el-checkbox label="斑疹伤寒" value="斑疹伤寒" />
           <el-checkbox label="流行性出血热" value="流行性出血热" />
           <el-checkbox label="其他" value="其他" />
@@ -74,7 +84,7 @@ import { ref, watch, onMounted } from "vue";
 import * as echarts from "echarts";
 import dayjs from "dayjs";
 import DateSelection from "@/components/linedate.vue";
-import { getDiseaseStatisticsListInfo } from "@/api/report/screen.js"; 
+import { getDiseaseStatisticsListInfo } from "@/api/report/screen.js";
 
 const radio = ref(1); // 默认选择当天
 const checkList = ref("自动诊断");
@@ -86,74 +96,114 @@ const initChart = () => {
   if (!chart.value) return;
   const myChart = echarts.init(chart.value);
 
-  const updateChart = async () => {
-    const selectedTypes = DiseaseType.value; 
-    const sourceType = checkList.value;
-    let dateBegin, dateEnd;
+const updateChart = async () => { 
+  const selectedTypes = Array.from(DiseaseType.value);
+  const sourceType = checkList.value;
+  let dateBegin, dateEnd, xAxisData = [];
 
-    if (radio.value === 5) {
-      // 自定义时间范围
-      dateBegin = customDateRange.value[0];
-      dateEnd = customDateRange.value[1];
-    } else {
-      // 用当前时间和时间段计算开始日期
-      const endDate = dayjs();
-      const startDate = endDate.subtract(
-        { 1: 0, 2: 7, 3: 30, 4: 365 }[radio.value],
-        "day"
-      );
-      dateBegin = startDate.format("YYYY-MM-DD");
-      dateEnd = endDate.format("YYYY-MM-DD");
+  const today = dayjs();
+
+  if (radio.value === 1) {
+    dateBegin = today.format("YYYY-MM-DD");
+    dateEnd = today.format("YYYY-MM-DD");
+    xAxisData = ["00-06时", "06-12时", "12-18时", "18-24时"];
+  } else if (radio.value === 2) {
+    dateBegin = today.subtract(6, "day").format("YYYY-MM-DD");
+    dateEnd = today.format("YYYY-MM-DD");
+    xAxisData = Array.from({ length: 7 }, (_, i) =>
+      today.subtract(i, "day").format("YYYY-MM-DD")
+    ).reverse();
+  } else if (radio.value === 3) {
+    dateBegin = today.subtract(29, "day").format("YYYY-MM-DD");
+    dateEnd = today.format("YYYY-MM-DD");
+    xAxisData = Array.from({ length: 30 }, (_, i) =>
+      today.subtract(i, "day").format("YYYY-MM-DD")
+    ).reverse();
+  } else if (radio.value === 4) {
+    dateBegin = today.subtract(364, "day").format("YYYY-MM-DD");
+    dateEnd = today.format("YYYY-MM-DD");
+    xAxisData = Array.from({ length: 365 }, (_, i) =>
+      today.subtract(i, "day").format("YYYY-MM-DD")
+    ).reverse();
+  } else if (radio.value === 5 && customDateRange.value.length === 2) {
+    // 自定义时间范围
+    dateBegin = customDateRange.value[0];
+    dateEnd = customDateRange.value[1];
+
+    const start = dayjs(dateBegin);
+    const end = dayjs(dateEnd);
+    xAxisData = [];
+
+    let current = start;
+    while (current.isBefore(end) || current.isSame(end, 'day')) {
+      xAxisData.push(current.format("YYYY-MM-DD"));
+      current = current.add(1, "day");
     }
-  console.log({
-    dateBegin,
-    dateEnd,
-    diseaseList: selectedTypes,
-    sourceType
-  });  
-    try {
-      const response = await getDiseaseStatisticsListInfo(
-        dateBegin,
-        dateEnd,
-        selectedTypes,
-        sourceType
-      );
-      const data = response.data;
+  }
 
-      // 将数据格式转换为图表所需格式
-      const xAxisData = [];
-      const seriesData = selectedTypes.map((type) => ({
-        name: type,
-        type: "line",
-        smooth: true,
-        data: [],
-      }));
+  console.log("生成的X轴:", xAxisData);
 
-      Object.keys(data).forEach((disease, index) => {
-        if (selectedTypes.includes(disease)) {
-          data[disease].forEach((entry) => {
-            const date = dayjs(entry.key).format("MM-DD");
-            const value = entry.value;
+  try {
+    const response = await getDiseaseStatisticsListInfo(
+      dateBegin,
+      dateEnd,
+      selectedTypes,
+      sourceType
+    );
 
-            if (!xAxisData.includes(date)) xAxisData.push(date);
-            seriesData[index].data.push(value);
-          });
-        }
-      });
+    // 使用 data.data 作为疾病数据的实际来源
+    const diseaseData = response.data.data;
+    console.log("API 响应的疾病数据:", diseaseData);
 
-      // 更新图表配置
-      myChart.clear();
-      myChart.setOption({
-        tooltip: { trigger: "axis" },
-        legend: { show: true, data: selectedTypes },
-        xAxis: { type: "category", data: xAxisData },
-        yAxis: { type: "value" },
-        series: seriesData,
-      });
-    } catch (error) {
-      console.error("数据获取失败：", error);
-    }
-  };
+    const seriesData = selectedTypes.map((type) => ({
+      name: type,
+      type: "line",
+      smooth: true,
+      data: xAxisData.map(() => 0), 
+    }));
+
+    console.log("要查询的疾病类型:", selectedTypes);
+    console.log("数据中的键（疾病名称）:", Object.keys(diseaseData));
+
+    selectedTypes.forEach((type, seriesIndex) => {
+      const typeData = diseaseData[type];  // 从 diseaseData 获取特定疾病数据
+      if (typeData) {
+        console.log(`正在处理 ${type} 的数据:`, typeData);
+
+        typeData.forEach((entry) => {
+          const entryDate = dayjs(entry.key.join("-")).format("YYYY-MM-DD");
+          const entryValue = entry.value;
+
+          console.log(`正在处理 ${type} :`, { 日期: entryDate, 数值: entryValue });
+
+          const xAxisIndex = xAxisData.indexOf(entryDate);
+          if (xAxisIndex !== -1) {
+            seriesData[seriesIndex].data[xAxisIndex] = entryValue;
+            console.log(`匹配到日期 ${entryDate} 于索引 ${xAxisIndex}, 设置数值为 ${entryValue}`);
+          } else {
+            console.log(`日期 ${entryDate} 未在X轴数据中找到`);
+          }
+        });
+      } else {
+        console.log(`未找到 ${type} 的数据`);
+      }
+    });
+
+    myChart.clear();
+    myChart.setOption({
+      tooltip: { trigger: "axis" },
+      legend: { show: false },
+      xAxis: { type: "category", data: xAxisData },
+      yAxis: { type: "value" },
+      series: seriesData,
+    });
+  } catch (error) {
+    console.error("数据获取失败：", error);
+  }
+};
+
+
+
 
   watch([() => DiseaseType.value, () => radio.value], updateChart, {
     immediate: true,

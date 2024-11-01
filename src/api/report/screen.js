@@ -51,13 +51,18 @@ export const getUserStation = async () => {
 };
 
 
-// 疾病统计报表
 export const getDiseaseStatisticsListInfo = async (dateBegin, dateEnd, diseaseList, sourceType) => {
+  console.log("Params:", {
+    dateBegin,
+    dateEnd,
+    diseaseList,
+    sourceType
+  });
   const response = await axiosInstance.get("/cdcStaff/statisticsDisease/getDiseaseStatisticsListInfo", {
     params: {
       dateBegin,
       dateEnd,
-      diseaseList,
+      diseaseList: diseaseList.join(","), // 将数组转为逗号分隔字符串
       sourceType
     }
   });

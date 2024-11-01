@@ -3,6 +3,7 @@
     :model-value="visible"
     direction="rtl"
     size="800px"
+    
     :with-header="false"
     custom-class="custom-drawer"
     @close="handleCancel"
@@ -76,7 +77,24 @@
             </el-form-item>
           </div>
         </div>
+        <div class="title-container">
+          <div class="blue-box"></div>
+          <span class="title-text">诊断日期</span>
+        </div>
 
+        <div class="discoveryMethod">
+          <!-- 提交日期-->
+          <el-form-item label="诊断日期" prop="diagnosisDate">
+            <el-date-picker
+              format="YYYY-MM-DD"
+              v-model="form.diagnosisDate"
+              type="date"             
+              placeholder=""
+              clearable
+              :disabled="allDisabled"
+            ></el-date-picker>
+          </el-form-item>
+        </div>
         <div class="select flex gap-2 mb-4">
           <div class="title-container">
             <div class="blue-box"></div>
@@ -162,7 +180,7 @@
 <script>
 import { ElMessage } from "element-plus";
 import UploadSection from '@/components/UploadSection.vue';
-import { getLabTestFile,updateLabTest } from "@/api/check/check.js"; 
+import { getLabTestFile,updateLabTest,selectLabTest  } from "@/api/check/check.js"; 
 
 export default {
   components: {
@@ -185,7 +203,9 @@ export default {
         vomit: [],
         blood: [],
       },
-      rules: {},
+      rules: {
+        diagnosisDate: [{ required: true, message: "请选择该诊断的诊断日期" }],
+      },
     };
   },
   methods: {
@@ -196,6 +216,7 @@ export default {
       this.form = { ...user };
       this.visible = true;
       this.getLabTestFile(user.labTestReportId);
+      this.selectLabTest(user.labTestReportId)
     },
     handleCancel() {
       this.visible = false;
@@ -249,18 +270,34 @@ export default {
     handleReset() {
       this.message = "";
     },
+
+    async selectLabTest(labTestReportId){
+        try{
+          const response = await selectLabTest(labTestReportId);
+
+          if (response.data.code === 1) {
+          this.form.isVirusAntigenTestDone = response.data.data.isVirusAntigenTestDone;
+          this.form.isVirusNucleicAcidTestDone=response.data.data.isVirusNucleicAcidTestDone;          
+          this.form.isSerologicalTestDone = response.data.data.isSerologicalTestDone;
+          this.form.isVirusCultureIsolationDone = response.data.data.isVirusCultureIsolationDone;
+        }
+        console.log(this.form);
+        }catch(error){
+          ElMessage.error(error);
+        }
+    },
+
     async getLabTestFile(labTestReportId) {
       try {
         const response = await getLabTestFile(labTestReportId);
 
-        // 将返回的文件分配给对应的上传框
         if (response && response.data) {
           this.reports.hasStoolTest = response.data.hasStoolTest || [];
           this.reports.vomit = response.data.vomit || [];
           this.reports.blood = response.data.blood || [];
         }
       } catch (error) {
-        console.error("Error fetching lab test file:", error);
+        console.error(error);
         return null;
       }
     },
