@@ -11,6 +11,25 @@
     >
       <div class="GeneralSymptoms">
         <div class="Condition">
+
+          <div class="title-container">
+          <div class="blue-box"></div>
+          <span class="title-text">诊断日期</span>
+        </div>
+
+        <div class="discoveryMethod">
+          <!-- 提交日期-->
+          <el-form-item label="诊断日期" prop="diagnosisDate" style="margin-left: 20px">
+            <el-date-picker
+              format="YYYY-MM-DD"
+              v-model="form.diagnosisDate"
+              type="date"             
+              placeholder=""
+              clearable
+              :disabled="allDisabled"
+            ></el-date-picker>
+          </el-form-item>
+        </div>
           <div class="title-container">
             <div class="blue-box"></div>
             <span class="title-text">确诊疾病</span>
@@ -465,6 +484,7 @@ export default {
         otherDiscoveryMethodName: [
           { required: true, message: "请填写其他途径" },
         ],
+        diagnosisDate: [{ required: true, message: "请选择该诊断的诊断日期" }],
         otherRegistrationDetails: [{ required: true, message: "请填写其他" }],
       },
     };
@@ -509,6 +529,10 @@ export default {
     },
     validate() {
       return new Promise((resolve, reject) => {
+        // 确诊疾病必填
+        if(!this.form.diseaseType){
+          return reject(new Error("请选择确诊疾病类型"));
+        }
         // 选择了鼠疫，必须选择子选项
         if (this.form.diseaseType === "鼠疫") {
           if (!this.form.plagueSubtype) {

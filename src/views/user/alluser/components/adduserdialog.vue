@@ -701,7 +701,7 @@ handleAge() {
 
   // 验证生日格式
   const birthYear = parseInt(idNumber.slice(6, 10));
-  const birthMonth = parseInt(idNumber.slice(10, 12)) - 1; // 月份从0开始
+  const birthMonth = parseInt(idNumber.slice(10, 12)) - 1;
   const birthDay = parseInt(idNumber.slice(12, 14));
 
   const birthDate = new Date(birthYear, birthMonth, birthDay);
@@ -723,7 +723,7 @@ handleAge() {
     .reduce((acc, num, index) => acc + parseInt(num) * weights[index], 0);
   const calculatedCheckCode = checkCodes[sum % 11];
   if (calculatedCheckCode !== idNumber[17].toUpperCase()) {
-    this.form.age = "身份证号校验码无效";
+    this.form.age = "身份证号有误";
     return;
   }
 
@@ -736,7 +736,6 @@ handleAge() {
   ) {
     age--;
   }
-
   this.form.age = age;
 },
     handleMedicalHistoryChange() {

@@ -198,7 +198,7 @@
 
     <Checkuser ref="Checkuser" :users="allData" :visible="checkUserVisible" />
     <Checkdaignosisdata ref="Checkdaignosisdata" @update="handleQuery"/>
-    <Checkuserdata ref="Checkuserdata" />
+    <Checkuserdata ref="Checkuserdata" @update="handleQuery"/>
   </div>
 </template>
 

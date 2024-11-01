@@ -76,7 +76,7 @@
       暂无数据
     </div>
   </el-drawer>
-  <Adddiagnosisdata ref="Adddiagnosisdata" />
+  <Adddiagnosisdata ref="Adddiagnosisdata" @update="handleQuery"/>
 </template>
 
 <script>
@@ -161,6 +161,9 @@ export default {
       this.dialogVisible = false;
       this.resetForm();
     },
+    handleQuery(){
+      this.$emit("update");
+    }
   },
   watch: {
     visible(val) {

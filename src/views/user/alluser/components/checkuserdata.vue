@@ -68,7 +68,6 @@
           </el-radio-group>
           <el-form-item v-if="form.IsPregnant === true" label="孕周">
             <el-input
-              
               v-model="form.PregnancyWeeks"
               placeholder="孕周"
               style="width: 100px"
@@ -83,6 +82,7 @@
             style="width: 200px"
             clearable
             placeholder="身份证号"
+            @blur="handleAge"
           ></el-input>
         </el-form-item>
 
@@ -142,9 +142,7 @@
 
         <!-- 是否为特定职业人群 -->
         <el-form-item label="是否为特定职业人群" prop="SpecificOccupation">
-          <el-radio-group
-            v-model="form.SpecificOccupation"
-          >
+          <el-radio-group v-model="form.SpecificOccupation">
             <el-radio value="否">否</el-radio>
             <el-radio value="医务人员">医务人员</el-radio>
             <el-radio value="病原微生物检测人员">病原微生物检测人员</el-radio>
@@ -228,9 +226,7 @@
 
         <!-- 既往病史和基本情况 -->
         <el-form-item label="既往病史和基本情况" prop="hasMedicalHistory">
-          <el-radio-group
-            v-model="form.hasMedicalHistory"
-          >
+          <el-radio-group v-model="form.hasMedicalHistory">
             <el-radio :value="true">有</el-radio>
             <el-radio :value="false">无</el-radio>
           </el-radio-group>
@@ -272,10 +268,7 @@
 
             <!-- 恶性肿瘤 -->
             <el-form-item>
-              <el-checkbox
-                v-model="form.hasMalignantTumor"
-                label="恶性肿瘤"
-              >
+              <el-checkbox v-model="form.hasMalignantTumor" label="恶性肿瘤">
                 恶性肿瘤
               </el-checkbox>
               <!-- 恶性肿瘤子选项 -->
@@ -494,8 +487,7 @@ export default {
     // 根据id获取用户信息
     async fetchUserInfo(userId) {
       try {
-        
-        const response = await fetchUserInfoById(userId); 
+        const response = await fetchUserInfoById(userId);
 
         if (response.data.code === 1) {
           const data = response.data.data;
@@ -517,17 +509,23 @@ export default {
           this.form.phoneNumber = data.phoneNumber; // 手机号码
           this.form.OtherphoneNumber = data.otherphoneNumber; // 其他电话号码
           this.form.EmergencyContactname = data.emergencyContactname; // 紧急联系人姓名
-          this.form.EmergencyContactphoneNumber = data.emergencyContactphoneNumber; // 紧急联系人电话
+          this.form.EmergencyContactphoneNumber =
+            data.emergencyContactphoneNumber; // 紧急联系人电话
           this.form.EmergencyContactRelation = data.emergencyContactRelation; // 紧急联系人关系
           this.form.Height = data.height; // 身高
           this.form.Weight = data.weight; // 体重
 
           // 格式化 WorkOnPlateauStartDate
-          if (data.workOnPlateauStartDate && data.workOnPlateauStartDate.length === 3) {
+          if (
+            data.workOnPlateauStartDate &&
+            data.workOnPlateauStartDate.length === 3
+          ) {
             const [year, month, day] = data.workOnPlateauStartDate;
-            this.form.WorkOnPlateauStartDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+            this.form.WorkOnPlateauStartDate = `${year}-${String(
+              month
+            ).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
           } else {
-            this.form.WorkOnPlateauStartDate = ""; 
+            this.form.WorkOnPlateauStartDate = "";
           }
 
           // 既往病史映射
@@ -564,6 +562,35 @@ export default {
 
     handleCancel() {
       this.visible = false;
+    },
+
+    // 根据当前年份动态修改年龄 待修改
+    handleAge() {
+      const idNumber = this.form.IDNumber;
+      // 长度必须为18位
+      if (idNumber.length !== 18) {
+        this.form.age = "身份证号格式不正确";
+        return;
+      }
+
+      // 验证生日格式
+      const birthYear = parseInt(idNumber.slice(6, 10));
+      const birthMonth = parseInt(idNumber.slice(10, 12)) - 1;
+      const birthDay = parseInt(idNumber.slice(12, 14));
+
+      const birthDate = new Date(birthYear, birthMonth, birthDay);
+
+      // 计算年龄
+      const today = new Date();
+      let age = today.getFullYear() - birthYear;
+      if (
+        today.getMonth() < birthMonth ||
+        (today.getMonth() === birthMonth && today.getDate() < birthDay)
+      ) {
+        age--;
+      }
+      this.form.age = age;
+      console.log(this.form.age);
     },
 
     handleSubmit() {

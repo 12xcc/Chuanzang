@@ -13,7 +13,9 @@
         <div class="footer">
           <!-- <el-button v-if="isEditing" @click="handleQuit">取消</el-button> -->
           <el-button v-if="!isEditing" @click="handleEdit">编辑</el-button>
-          <el-button v-if="isEditing" type="primary" @click="handleSubmit">提交</el-button>
+          <el-button v-if="isEditing" type="primary" @click="handleSubmit"
+            >提交</el-button
+          >
         </div>
       </div>
       <el-form
@@ -21,8 +23,8 @@
         label-width="100px"
         class="form-container"
         ref="form"
+        :rules="rules"
         :data="allData"
-        :disabled="InfoDisabled"
       >
         <div class="BaseInfo">
           <div class="title-container">
@@ -37,6 +39,7 @@
                 style="width: 200px"
                 placeholder="请输入姓名"
                 clearable
+                :disabled="InfoDisabled"
               ></el-input>
             </el-form-item>
 
@@ -47,6 +50,7 @@
                 style="width: 200px"
                 placeholder=""
                 clearable
+                :disabled="InfoDisabled"
               ></el-input>
             </el-form-item>
 
@@ -57,6 +61,7 @@
                 style="width: 200px"
                 placeholder="根据身份证号生成"
                 clearable
+                :disabled="InfoDisabled"
               ></el-input>
             </el-form-item>
 
@@ -67,6 +72,7 @@
                 style="width: 200px"
                 placeholder=""
                 clearable
+                :disabled="InfoDisabled"
               ></el-input>
             </el-form-item>
 
@@ -77,6 +83,7 @@
                 style="width: 200px"
                 placeholder=""
                 clearable
+                :disabled="InfoDisabled"
               ></el-input>
             </el-form-item>
           </div>
@@ -124,10 +131,7 @@
         <div>
           <!-- 诊断信息 -->
           <div v-show="selectedTag === 'DiagnosisResults'">
-            <DiagnosisResults
-              ref="DiagnosisResults"
-              :data="diagnosisResults"
-            />
+            <DiagnosisResults ref="DiagnosisResults" :data="diagnosisResults" />
           </div>
 
           <!-- 基本信息 -->
@@ -204,7 +208,7 @@
             <DiagnosisExaminations
               ref="DiagnosisExaminations"
               :data="diagnosisexaminations"
-               @updateReports="handleReportsUpdate" 
+              @updateReports="handleReportsUpdate"
             />
           </div>
         </div>
@@ -226,11 +230,8 @@ import OtherSymptoms from "./OtherSymptoms.vue";
 import RiskFactorsAndExposure from "./RiskFactorsAndExposure.vue";
 import DiagnosisPersonalInfo from "./DiagnosisPersonalInfo.vue";
 import DiagnosisExaminations from "./DiagnosisExaminations.vue";
-import DigestiveSymptoms from '../checkdaignosisdata/DigestiveSymptoms.vue';
-import {
-  selectDiagnosis,
-  updateDiagnosis,
-} from "@/api/diagnosis/diagnosis";
+import DigestiveSymptoms from "../checkdaignosisdata/DigestiveSymptoms.vue";
+import { selectDiagnosis, updateDiagnosis } from "@/api/diagnosis/diagnosis";
 
 export default {
   components: {
@@ -248,13 +249,14 @@ export default {
   },
   data() {
     return {
-      allData:[],
-      InfoDisabled:true,
+      allData: [],
+      InfoDisabled: true,
       allDisabled: true,
       visible: false, // 控制弹窗显示
       selectedTag: null, // 当前选中的标签
       form: {},
-      rules: {},
+      rules: {
+      },
       isEditing: false,
       refs: [
         "DiagnosisResults",
@@ -269,7 +271,7 @@ export default {
         "RiskFactorsAndExposure",
         "DiagnosisExaminations",
       ],
-      
+
       // 用于存储子组件数据的属性，初始为 null
       diagnosisResults: null, // 诊断信息
       diagnosispersonalinfo: null, // 基本信息
@@ -317,20 +319,25 @@ export default {
         const response = await selectDiagnosis(userId);
         if (response && response.data && response.data.code === 1) {
           const data = response.data.data;
+          this.form.diagnosisDate = data.diagnosisresults.diagnosisDate;
           console.log("后端响应：", data);
           // 分发数据到各个子组件，若数据为 null，则赋值为 null
           this.diagnosisResults = data.diagnosisresults || null;
           this.diagnosispersonalinfo = data.diagnosispersonalinfo || null;
           this.diagnosisgeneralsymptoms = data.diagnosisgeneralsymptoms || null;
-          this.diagnosisrespiratorysymptoms = data.diagnosisrespiratorysymptoms || null;
-          this.diagnosiscirculatorysymptoms = data.diagnosiscirculatorysymptoms || null;
-          this.diagnosisneurologicalsymptoms = data.diagnosisneurologicalsymptoms || null;
+          this.diagnosisrespiratorysymptoms =
+            data.diagnosisrespiratorysymptoms || null;
+          this.diagnosiscirculatorysymptoms =
+            data.diagnosiscirculatorysymptoms || null;
+          this.diagnosisneurologicalsymptoms =
+            data.diagnosisneurologicalsymptoms || null;
           this.diagnosislocalsymptoms = data.diagnosislocalsymptoms || null;
           this.diagnosisothersymptoms = data.diagnosisothersymptoms || null;
           this.diagnosiscomplications = data.diagnosiscomplications || null;
-          this.diagnosisdigestivesymptoms = data.diagnosisdigestivesymptoms || null;
+          this.diagnosisdigestivesymptoms =
+            data.diagnosisdigestivesymptoms || null;
           this.diagnosisexaminations = data.diagnosisexaminations || null;
-          console.log("data:",data.diagnosisresults);
+          console.log("data:", data.diagnosisresults);
           // 更新标签的 enabled 状态
           this.updateTagEnabledStatus();
 
@@ -349,7 +356,7 @@ export default {
     // 更新标签的 enabled 状态
     updateTagEnabledStatus() {
       this.tags.forEach((tag) => {
-        switch (tag.name) { 
+        switch (tag.name) {
           case "DiagnosisResults":
             tag.enabled = this.diagnosisResults !== null;
             break;
@@ -394,12 +401,12 @@ export default {
         reports,
         fileList,
       };
-      console.log('Updated reports and fileList:', this.reportsData);
+      console.log("Updated reports and fileList:", this.reportsData);
     },
 
     handleCancel() {
       this.allDisabled = true;
-      this.isEditing = false; 
+      this.isEditing = false;
       this.refs.forEach((ref) => {
         if (this.$refs[ref] && this.$refs[ref].handleCancel) {
           this.$refs[ref].handleCancel();
@@ -426,62 +433,61 @@ export default {
     },
 
     async handleSubmit() {
-  try {
-    // 调用子组件的 validate 方法
-    for (const refName of this.refs) {
-      const component = this.$refs[refName];
-      if (component && component.validate) {
-        await component.validate();
+      try {
+        // 调用子组件的 validate 方法
+        for (const refName of this.refs) {
+          const component = this.$refs[refName];
+          if (component && component.validate) {
+            await component.validate();
+          }
+        }
+
+        // 如果子组件验证通过，继续处理其他数据
+        const submitData = {};
+
+        for (const refName of this.refs) {
+          const component = this.$refs[refName];
+          if (component && component.getData) {
+            submitData[refName] = component.getData();
+          }
+        }
+
+        // 手动修改对象键名
+        const mappedSubmitData = {
+          diagnosisresults: submitData.DiagnosisResults,
+          diagnosispersonalinfo: submitData.DiagnosisPersonalInfo,
+          diagnosisgeneralsymptoms: submitData.GeneralSymptoms,
+          diagnosisrespiratorysymptoms: submitData.RespiratorySymptoms,
+          diagnosiscirculatorysymptoms: submitData.CirculatorySymptoms,
+          diagnosisneurologicalsymptoms: submitData.NeurologicalSymptoms,
+          diagnosislocalsymptoms: submitData.DiagnosisLocalSymptoms,
+          diagnosisothersymptoms: submitData.OtherSymptoms,
+          diagnosiscomplications: submitData.RiskFactorsAndExposure,
+          diagnosisexaminations: submitData.DiagnosisExaminations,
+          diagnosisdigestivesymptoms: submitData.DigestiveSymptoms,
+        };
+
+        console.log("提交数据:", mappedSubmitData);
+
+        // 调用更新接口，提交修改后的数据
+        const response = await updateDiagnosis(mappedSubmitData);
+        if (response && response.data && response.data.code === 1) {
+          ElMessage.success("提交成功");
+          this.visible = false;
+          this.handleReset();
+          this.$emit("update");
+        } else {
+          ElMessage.error(response.data.msg || "提交失败");
+        }
+      } catch (error) {
+        // 处理验证错误
+        console.error("验证失败:", error.message);
+        ElMessage({
+          message: error.message,
+          type: "error",
+        });
       }
-    }
-
-    // 如果子组件验证通过，继续处理其他数据
-    const submitData = {};
-
-    for (const refName of this.refs) {
-      const component = this.$refs[refName];
-      if (component && component.getData) {
-        submitData[refName] = component.getData();
-      }
-    }
-
-    // 手动修改对象键名
-    const mappedSubmitData = {
-      diagnosisresults: submitData.DiagnosisResults,
-      diagnosispersonalinfo: submitData.DiagnosisPersonalInfo,
-      diagnosisgeneralsymptoms: submitData.GeneralSymptoms,
-      diagnosisrespiratorysymptoms: submitData.RespiratorySymptoms,
-      diagnosiscirculatorysymptoms: submitData.CirculatorySymptoms,
-      diagnosisneurologicalsymptoms: submitData.NeurologicalSymptoms,
-      diagnosislocalsymptoms: submitData.DiagnosisLocalSymptoms,
-      diagnosisothersymptoms: submitData.OtherSymptoms,
-      diagnosiscomplications: submitData.RiskFactorsAndExposure,
-      diagnosisexaminations: submitData.DiagnosisExaminations,
-      diagnosisdigestivesymptoms: submitData.DigestiveSymptoms,
-
-    };
-
-    console.log("提交数据:", mappedSubmitData);
-
-    // 调用更新接口，提交修改后的数据
-    const response = await updateDiagnosis(mappedSubmitData);
-    if (response && response.data && response.data.code === 1) {
-      ElMessage.success("提交成功");
-      this.visible = false;
-      this.handleReset();
-      this.$emit("update");
-    } else {
-      ElMessage.error(response.data.msg || "提交失败");
-    }
-  } catch (error) {
-    // 处理验证错误
-    console.error("验证失败:", error.message);
-    ElMessage({
-      message: error.message,
-      type: "error",
-    });
-  }
-},
+    },
 
     handleReset() {
       this.message = "";

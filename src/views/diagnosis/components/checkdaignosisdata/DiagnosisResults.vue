@@ -11,6 +11,26 @@
     >
       <div class="GeneralSymptoms">
         <div class="Condition">
+
+        <div class="title-container">
+          <div class="blue-box"></div>
+          <span class="title-text">诊断日期</span>
+        </div>
+
+        <div class="discoveryMethod">
+          <!-- 提交日期-->
+          <el-form-item label="诊断日期" prop="diagnosisDate" style="margin-left: 20px">
+            <el-date-picker
+              format="YYYY-MM-DD"
+              v-model="form.diagnosisDate"
+              type="date"             
+              placeholder=""
+              clearable
+              :disabled="allDisabled"
+            ></el-date-picker>
+          </el-form-item>
+        </div>
+
           <div class="title-container">
             <div class="blue-box"></div>
             <span class="title-text">确诊疾病</span>
@@ -464,10 +484,10 @@ export default {
         otherRegistrationDetails: null, // 登记分类其他详情
         plagueSubtype: null, // 鼠疫子类
         anthraxSubtype: null, // 炭疽子类
+        diagnosisDate:null, // 诊断日期
       },
       rules: {
-        diseaseType: [{ required: true, message: "请选择确诊疾病", trigger: "blur" }],
-        // 根据需要，添加其他验证规则
+        diagnosisDate: [{ required: true, message: "请选择该诊断的诊断日期" }],
       },
     };
   },
@@ -476,11 +496,18 @@ watch: {
     immediate: true,
     handler(newVal) {
       if (newVal && newVal !== null) { // 确保 newVal 不为 null
-        // 创建一个新的对象，排除 submissionTime 和 submissionUserId 字段
+        // 排除 submissionTime 和 submissionUserId 字段
         const { submissionTime, submissionUserId, ...rest } = newVal;
-
         // 将其余的数据映射到 form
         this.form = { ...this.form, ...rest };
+        
+          // 格式化 diagonosisDate
+        if (newVal.diagnosisDate && newVal.diagnosisDate.length === 3) {
+          const [year, month, day] = newVal.diagnosisDate;
+          this.form.diagnosisDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+        } else {
+          this.form.diagnosisDate = "";
+        }
 
         // 格式化 admissionDate
         if (newVal.admissionDate && newVal.admissionDate.length === 3) {
@@ -489,7 +516,7 @@ watch: {
         } else {
           this.form.admissionDate = "";
         }
-
+        
         // 格式化 dischargeDate
         if (newVal.dischargeDate && newVal.dischargeDate.length === 3) {
           const [year, month, day] = newVal.dischargeDate;
@@ -577,6 +604,7 @@ watch: {
         otherRegistrationDetails: null, // 登记分类其他详情
         plagueSubtype: null, // 鼠疫子类
         anthraxSubtype: null, // 炭疽子类
+        diagnosisDate:null, // 诊断日期
       };
     },
 
@@ -589,6 +617,11 @@ watch: {
     },
     validate() {
       return new Promise((resolve, reject) => {
+
+        // 确诊疾病必填
+        if(!this.form.diseaseType){
+          return reject(new Error("请选择确诊疾病类型"));
+        }
         // 选择了鼠疫，必须选择子选项
         if (this.form.diseaseType === "鼠疫") {
           if (!this.form.plagueSubtype) {

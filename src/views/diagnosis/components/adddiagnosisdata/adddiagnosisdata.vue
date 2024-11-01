@@ -24,13 +24,14 @@
         class="form-container"
         ref="form"
         :rules="rules"
-        :disabled="allDisabled"
+        
       >
         <div class="BaseInfo">
           <div class="title-container">
             <div class="blue-box"></div>
             <span class="title-text">个人基本信息</span>
           </div>
+
           <div class="BaseInfoDetail">
             <!-- 姓名 -->
             <el-form-item label="姓名" prop="name">
@@ -39,6 +40,7 @@
                 style="width: 200px"
                 placeholder="请输入姓名"
                 clearable
+                :disabled="allDisabled"
               ></el-input>
             </el-form-item>
 
@@ -49,6 +51,7 @@
                 style="width: 200px"
                 placeholder=""
                 clearable
+                :disabled="allDisabled"
               ></el-input>
             </el-form-item>
 
@@ -59,6 +62,7 @@
                 style="width: 200px"
                 placeholder="根据身份证号生成"
                 clearable
+                :disabled="allDisabled"
               ></el-input>
             </el-form-item>
 
@@ -69,6 +73,7 @@
                 style="width: 200px"
                 placeholder=""
                 clearable
+                :disabled="allDisabled"
               ></el-input>
             </el-form-item>
 
@@ -79,10 +84,12 @@
                 style="width: 200px"
                 placeholder=""
                 clearable
+                :disabled="allDisabled"
               ></el-input>
             </el-form-item>
-          </div>
+          </div>          
         </div>
+
 
         <!-- 症状标签 -->
         <div class="select flex gap-2 mb-4">
@@ -185,7 +192,8 @@ export default {
       visible: false,
       selectedTag: null,
       form: {},
-      rules: {},
+      rules: {
+      },
       userId: null,
       allDisabled: true, // 控制表单是否禁用
       tags: [
@@ -272,12 +280,13 @@ export default {
           ElMessage.success("提交成功");
           this.visible = false;
           this.handleReset();
+          this.$emit("update");
         } else {
           ElMessage.error("提交失败，请稍后重试");
         }
       } catch (error) {
-        console.error("提交失败:", error.message);
-        ElMessage.error("提交失败，请稍后重试");
+        // console.error("提交失败:", error.message);
+        ElMessage.error(error.message);
       }
     },
     handleReset() {
